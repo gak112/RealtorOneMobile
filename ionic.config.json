@@ -1,0 +1,7 @@
+{
+  "name": "RealtorOneMobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
