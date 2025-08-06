@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
@@ -22,16 +21,9 @@ export class SMSService {
   // };
   status;
   // private http: HttpClient,
-  constructor( private afs: AngularFirestore) {}
-
-
-
-
-
+  constructor(private afs: AngularFirestore) {}
 
   // sendSingleMessage(message: string): Promise<any> {
-
-
 
   //   const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
 
@@ -56,39 +48,39 @@ export class SMSService {
   }
 
   processOTPSMS(otp: string, phone: string): any {
-   // const phones = phone.split('-');
+    // const phones = phone.split('-');
 
-  //  const countryCode = phones[0];
-  //  const phoneNumber = phones[1];
+    //  const countryCode = phones[0];
+    //  const phoneNumber = phones[1];
 
-  //  if (countryCode === '91') {
-     // phone = `${phoneNumber}`;
-      return this.sendotpSMS(otp, phone, 'smsOTP');
+    //  if (countryCode === '91') {
+    // phone = `${phoneNumber}`;
+    return this.sendotpSMS(otp, phone, 'smsOTP');
     // } else {
     //   phone = `${countryCode}${phoneNumber}`;
     //   return this.sendInternationalSMS(otp, phone, 'internationalSMSRequest');
     // }
   }
 
-  processInternationalSMS(phone, message){
+  processInternationalSMS(phone, message) {
     return this.afs
-    .collection('internationalSMSRequest')
-    .add({ message, to: phone, createdAt: new Date(), status });
+      .collection('internationalSMSRequest')
+      .add({ message, to: phone, createdAt: new Date(), status });
   }
 
   processPassSMS(pass: string, phone: string): any {
-      return this.sendPassSMS(pass, phone, 'smsRequest');
+    return this.sendPassSMS(pass, phone, 'smsRequest');
   }
   sendotpSMS(otp, phone, status) {
     return this.afs
-    .collection('smsOTP')
-    .add({ otp, to: phone, createdAt: new Date(), status });
+      .collection('smsOTP')
+      .add({ otp, to: phone, createdAt: new Date(), status });
   }
 
   sendPassSMS(pass, phone, status) {
     return this.afs
-    .collection('smsPass')
-    .add({ pass, to: phone, createdAt: new Date(), status });
+      .collection('smsPass')
+      .add({ pass, to: phone, createdAt: new Date(), status });
   }
 
   sendSMS(message, phone, table): any {

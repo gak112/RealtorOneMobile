@@ -1,7 +1,7 @@
 <div class="property-card">
   <!-- Property Image Section -->
   <div class="property-image-section">
-    <swiper-container [zoom]="true" [slidesPerView]="1" [spaceBetween]="20" loop="true" autoplay-delay="2000"
+    <swiper-container [zoom]="true" [slidesPerView]="1" loop="true" autoplay-delay="2000"
       autoplay-disable-on-interaction="false" class="mySwiper">
       @for(image of property().propertyImages; track image.id) {
       <swiper-slide>
