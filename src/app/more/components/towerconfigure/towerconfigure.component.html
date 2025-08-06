@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()"></ion-icon>
+    <ion-title>Configuaration</ion-title>
+    <!-- <ion-button color="warning" *ngIf="copiedFlatData" size="small" expand="block" (click)="pasteAllFlats()" >
+      <ion-label>Paste All Flats</ion-label>
+    </ion-button> -->
+  </ion-toolbar>
+  <ion-toolbar *ngIf="copiedData" class="ion-toolbar-settings" style="--min-height: 44px;">
+    <div class="div-flex" >
+      <ion-button color="warning" size="small" expand="block" (click)="clearClipboard()" >
+        <ion-label>Clear Clipboard</ion-label>
+      </ion-button>  
+      <ion-button color="warning" size="small" expand="block" (click)="pasteAll()" >
+        <ion-label>Paste All</ion-label>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div class="div-img" *ngIf="configuring">
+    <ion-img src="assets/img/configure.gif"></ion-img>
+    <ion-label>Configuring<br>Please Wait ...</ion-label>
+  </div>
+
+  <div *ngIf="!configuring">
+  <app-towerfloor-box  (copied)="copiedVilla($event)" (copiedFlatData)="copiedFData($event)" 
+  *ngFor="let floor of floorsData; let i = index" [user]="user"
+  [copiedData]="copiedData" [pasteAll]="pasteAllData" [copiedFltsData]="copiedFlatData" [floor]="floor"></app-towerfloor-box>
+  <!-- <app-towerflat-box *ngIf="false"></app-towerflat-box> -->
+  </div>
+
+</ion-content>

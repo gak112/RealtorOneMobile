@@ -1,0 +1,69 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from 'src/app/services/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { collection } from 'firebase/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { IonContent, IonFooter, IonLabel, ModalController, IonIcon, IonListHeader, IonItem, IonList,
+   IonToggle, IonToolbar, IonTitle, IonImg, IonHeader, IonButton, IonInput } from "@ionic/angular/standalone";
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+
+@Component({
+  selector: 'app-deleteaccount',
+  templateUrl: './deleteaccount.component.html',
+  styleUrls: ['./deleteaccount.component.scss'],
+  standalone: true,
+  imports: [IonButton, IonHeader, IonToolbar, IonListHeader, IonItem, IonList, IonTitle, IonContent,
+      IonLabel, IonImg, IonIcon, IonToggle, IonFooter, NgIf, IonInput, FormsModule ],
+  providers: [ModalController]
+})
+export class DeleteaccountComponent {
+  @Input() user;
+  password;
+  showPassword = false;
+  showConfirmPassword;
+  deleteAccError;
+  constructor(private toast: ToastService, 
+    private afs: AngularFirestore, private afAuth: AngularFireAuth,
+     private auth: AuthService, private modalController: ModalController) { }
+
+
+  // submit(event) {
+  //   console.log(this.password, this.user.secureData)
+     
+  //   // this.auth.deleteUser().
+  //   then( val => {
+
+  //     const batch = this.afs.firestore.batch();
+
+  //     const usersRef = this.afs.firestore.collection('users').doc(this.user.uid);
+
+  //     batch.update(usersRef, Object.assign({
+  //       delete: true,
+  //       status: 'rejected',
+  //     }));
+
+  //     batch.commit().then(()=> {
+  //       this.modalController.dismiss();
+  //       this.toast.showMessage('Account Permanently Deleted');
+  //       // this.auth.logout();
+  //     }).catch(err => {
+  //       this.toast.showError(err.message);
+  //     });
+
+  //   }).catch(err => {
+  //     if('Firebase: This operation is sensitive and requires recent authentication. Log in again before retrying this request. (auth/requires-recent-login).') {
+  //         this.toast.showError("To ensure your account's security, please log in once more before proceeding with this action.");
+  //     }
+      
+  //     console.log(err.message)
+      
+  //   });
+  // }
+  setPassword(val) {
+    this.showPassword = val;
+  }
+
+}

@@ -1,0 +1,69 @@
+.div-edit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--margin-16);
+    margin-bottom: var(--margin-10);
+  
+    ion-icon {
+        color: var(--color-5e7ccc);
+        font-size: var(--font-size-20);
+    }
+}
+
+.ion-label-heading {
+    margin: calc(var(--margin-10) * 0);
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-700);
+    letter-spacing: var( --letter-spacing-5);
+    display: block;
+}
+
+.div-specification-display {
+    margin-bottom: var(--margin-10);
+    border-radius: var(--border-radius-4);
+    overflow: hidden;
+    
+    .ion-label-main {
+        display: block;
+        font-size: var(--font-size-12);
+        // font-weight: var(--font-weight-600);
+        letter-spacing: var( --letter-spacing-5);
+        padding:  var(--margin-10);
+        border-bottom: var(--border-ddd);
+        line-height: 1.5;
+        background: var(--background-main); //var(--background-5e7ccc);
+        text-align: center;
+        color: var(--color-white);
+    }
+  
+    .div-specification-sub {
+        display: flex;
+        align-items: center;
+        background: var( --content-background-white);
+        border: 1px solid #eee;
+        border-top: none;
+            
+        .ion-label-title {
+            display: block;
+            font-size: var(--font-size-12);
+            font-weight: var(--font-weight-600);
+            letter-spacing: var( --letter-spacing-5);
+            padding:  var(--margin-10);
+            line-height: 1.5;
+            background: var(--background-main);
+            text-align: center;
+            width: 50%;
+            color: var(--color-white); //var(--color-white);
+        }
+    
+        .ion-label-desc {
+            display: block;
+            font-size: var(--font-size-12);
+            font-weight: var(--font-weight-600);
+            padding:  var(--margin-10);
+            line-height: 1.5;
+            width: 50%;
+        }
+    }
+}

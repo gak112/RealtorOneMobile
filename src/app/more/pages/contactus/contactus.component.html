@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="dismiss()">
+      <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Contact Us</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-form-main">
+    <div>
+      <ion-input [(ngModel)]="subject" type="text" mode="md" label="Subject" label-placement="floating" fill="outline" placeholder="Enter Subject"></ion-input>
+    </div>
+    <div>
+      <ion-input [(ngModel)]="name" type="text" mode="md" label="Name" label-placement="floating" fill="outline" placeholder="Enter Name"></ion-input>
+    </div>
+    <div>
+      <ion-input [(ngModel)]="email" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"  type="text" mode="md" label="Email" label-placement="floating" fill="outline" placeholder="Enter Email"></ion-input>
+    </div>
+      <div class="div-formgroup">
+        <ion-textarea [(ngModel)]="message" type="text" mode="md" label="Message" label-placement="floating" fill="outline" placeholder="Enter Message" rows="5" style="height: auto;"></ion-textarea>
+      </div>  
+      <div class="div-button">
+        <ion-button expand="block" (click)="submit()" color="danger">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+          {{loading ? "...." : 'Send'}}
+        </ion-button>
+      </div>
+  </div>
+</ion-content>

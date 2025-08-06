@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-title>
+      Flat Numbers
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-flat-main">
+    <div class="div-flat-sub">
+      <div class="div-no-price">
+        <div class="div-number">
+          <ion-label class="label-no">201</ion-label>
+          <div class="div-price-buttons">
+            <ion-label class="label-price">₹15,00,000</ion-label>
+            <div class="div-view1">
+              <ion-icon name="add"></ion-icon>
+              <ion-label>Add</ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="div-view-add">
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="eye"></ion-icon>
+          <ion-label>View</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="heart"></ion-icon>
+          <ion-label>Interested</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="hand-right"></ion-icon>
+          <ion-label>Leads</ion-label>
+        </div>
+      </div>
+    </div>
+    <div class="div-flat-sub">
+      <div class="div-no-price">
+        <div class="div-number">
+          <ion-label class="label-no" style="color:red;">202</ion-label>
+          <div class="div-price-buttons">
+            <ion-label class="label-price">₹15,00,000</ion-label>
+            <div class="div-view">
+              <ion-label class="label-soldout">Sold out</ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="div-view-add" style="background-color: red;">
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="eye"></ion-icon>
+          <ion-label>View</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="heart"></ion-icon>
+          <ion-label>Interested</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="hand-right"></ion-icon>
+          <ion-label>Leads</ion-label>
+        </div>
+      </div>
+    </div>
+    <div class="div-flat-sub">
+      <div class="div-no-price">
+        <div class="div-number">
+          <ion-label class="label-no">203</ion-label>
+          <div class="div-price-buttons">
+            <ion-label class="label-price">₹15,00,000</ion-label>
+            <div class="div-view1">
+              <ion-icon name="create"></ion-icon>
+              <ion-label>Edit</ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="div-view-add">
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="eye"></ion-icon>
+          <ion-label>View</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="heart"></ion-icon>
+          <ion-label>Interested</ion-label>
+        </div>
+        <div class="div-view" (click)="openFlatViewers()">
+          <ion-icon name="hand-right"></ion-icon>
+          <ion-label>Leads</ion-label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

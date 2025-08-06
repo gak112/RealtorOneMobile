@@ -1,0 +1,126 @@
+ion-content {
+    --background: #f6f9fa;
+}
+
+.div-welcome-main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.img-settings {
+    height: 150px;
+    margin-bottom: 30px;
+    filter: drop-shadow(1px 1px 2px #999);
+}
+
+// .label-name {
+//     display: block;
+//     font-size: 34px;
+//     font-weight: 400;
+//     letter-spacing: 1px;
+//     text-align: center;
+//     margin-bottom: 20px;
+//     color: #0c77c1;
+//     line-height: 1.75;
+//     text-shadow: 1px 1px 2px #314d9b;
+//     text-transform: uppercase;
+// }
+
+.div-welcome-sub {
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    margin-bottom: 20px;
+
+    // ion-img {
+    //     height: 60px;
+    //     margin-right: 16px;
+    //     width: 60px;
+    //     background: #f6f9fa;
+    //     padding: 14px;
+    //     border-radius: 50%;
+    //     overflow: hidden;
+    //     border: 1px solid #eee;
+    // }
+
+    .div-labels {
+        text-align: center;
+
+        .label-welcome {
+            line-height: 1;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: #999;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .label-user-name {
+            line-height: 1;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-family: "Grechen Fuemen", cursive;
+        }
+    }
+}
+
+.div-footer {
+    display: flex;
+    align-items: center;
+
+    :not(:last-child) {
+        margin-right: 16px;
+    }
+
+    ion-button {
+        width: 50%;
+        --border-radius: 4px;
+        margin: 0;
+        text-transform: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        filter: drop-shadow(2px 2px 4px #777);
+    }
+}
+
+.label-title {
+    text-align: center;
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.div-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+
+    :not(:last-child) {
+        margin-right: 16px;
+        border-right: 1px solid rgba(94, 123, 204, 0.5);
+        padding-right: 16px;
+    }
+
+    ion-label {
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #0c77c1;
+    }
+}

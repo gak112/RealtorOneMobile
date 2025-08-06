@@ -1,0 +1,37 @@
+ion-content {
+    --background: #000;
+}
+
+ion-slide {
+    position: relative;
+    flex-direction: column;
+
+    ion-button {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        --border-radius: 4px;
+        text-transform: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+}
+
+.img-settings {
+    height: auto;
+    width: 100vw;
+    background: white;
+}
+
+ion-label {
+    color: white;
+    margin: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px #777;
+    text-align: center;
+    display: block;
+}

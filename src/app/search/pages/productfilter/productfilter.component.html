@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="dismissicon" (click)="dismiss()"></ion-icon>
+      <ion-title>Filters</ion-title>
+      <ion-button size="small" color="warning" class="span-apply">Clear Filters</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-accordion-group expand="inset">
+      <ion-accordion [value]="fObject.facet"  *ngFor="let fObject of facetObject">
+        <ion-item slot="header" color="rose">
+          <ion-label>{{fObject.facet}}</ion-label>
+        </ion-item>
+
+    
+
+
+        <div *ngIf="fObject.type ==='amount'" class="div-content" slot="content">
+          <ion-range aria-label="Dual Knobs Range" [dualKnobs]="true" [value]="{ lower: 20, upper: 80 }">
+              <ion-label slot="start">{{fObject.data.facetHits[1].value}}</ion-label>
+              <ion-label slot="end">{{fObject.data.facetHits[0].value}}</ion-label>
+          </ion-range>
+        
+        </div>
+
+    
+      <div class="div-content" slot="content">
+        
+      </div>
+          <div   *ngFor="let facet of fObject.data.facetHits" [class.div-content]="fObject.type !=='amount'" slot="content">
+  
+      
+              <div *ngIf="fObject.type !=='amount'">
+                    <ion-checkbox labelPlacement="end">
+      
+      
+      
+                  {{fObject.type === 'bool' ? (facet.value === 'true' ? 'Available' : 'Out of Stock') : facet.value}}
+      
+              </ion-checkbox>
+              <span style=" border-radius: 5px; float: right; font-size: 12px; "> <ion-badge slot="end"
+                      style="background: transparent;color:black;font-size:14px;margin: auto;">{{facet.count}}</ion-badge></span>
+              </div>
+            
+      
+      
+          </div>
+  
+     
+     
+   
+      </ion-accordion>
+    </ion-accordion-group>
+</ion-content>

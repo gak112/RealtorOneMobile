@@ -1,0 +1,108 @@
+ion-buttons {
+    padding: 0 5px!important;
+
+    .icon-back {
+        font-size: 24px;
+        color: #000;
+    }
+}
+
+ion-toolbar {
+    --background: #f6f9fa;
+}
+
+ion-header ion-toolbar ion-buttons {
+    padding: 0 10px 0 0!important;
+}
+
+ion-content {
+    --background: #f6f9fa;
+}
+
+.div-img {
+    display: flex;
+    align-items: center;
+
+    ion-img {
+        height: 45px;
+        width: 45px;
+        border-radius: 4px;
+        margin-right: 10px;
+        overflow: hidden;
+    }
+
+    .div-name {
+        width: calc(100% - 60px);
+
+        .h6-username {
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0;
+            font-size: 14px;
+            text-transform: capitalize;
+            color: #000;
+            display: block;
+            
+            // .span-active {
+            //     color: #76d13a;
+            //     font-size: 20px;
+            //     line-height: 1;
+            // }
+
+            // .span-inactive {
+            //     color: red;
+            //     font-size: 20px;
+            //     line-height: 1;
+            // }
+        }
+
+        // .p-usertype {
+        //     margin: 0;
+        //     font-size: 12px;
+        //     letter-spacing: 1px;
+        //     font-weight: 500;
+        //     color: #999;
+        //     display: block;
+        // }
+    }
+}
+
+ion-segment {
+    background: #0c77c1;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    height: 45px;
+    border-radius: 0;
+
+    .segment-button-checked {
+
+        ion-label {
+            color: #0c77c1;
+        }
+    }
+
+    ion-segment-button {
+        min-width: 100px;
+        --border-radius: 4px;
+        margin: 5px;
+
+        ion-label {
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: white;
+            line-height: 1;
+            margin: 5px 0;
+        }
+    }
+}
+
+.ion-toolbar-settings {
+    --padding-top: 0px;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+    position: sticky;
+    top: 0;
+}

@@ -1,0 +1,143 @@
+ 
+<ion-header>
+  <ion-toolbar>
+      <ion-icon name="chevron-back-outline" class="icon-back" (click)="dismiss()"></ion-icon>
+      <ion-title>FAQ's</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-accordin">
+      <ion-accordion-group value="1" >
+          <ion-accordion [value]="'question' + i" *ngFor="let faq of questionanswers; let i = index">
+              <ion-item slot="header" class="item-header" >
+                  <ion-label class="label-title">{{faq.question}}</ion-label>
+              </ion-item>        
+              <ion-list slot="content" value="'question' + i">
+                  <div class="div-desc">
+                      <ion-label>
+                          {{faq.answer}}
+                      </ion-label>
+                  </div>
+              </ion-list>
+          </ion-accordion>  
+          
+          <ion-accordion value="1">
+            <ion-item slot="header" class="item-header">
+                <ion-label class="label-title">What is ur name?</ion-label>
+            </ion-item>
+            <ion-list slot="content" value="1">
+                <div class="div-desc">
+                    <ion-label>
+                        My name is Shiva Venkata Naga Ashok Kumar
+                    </ion-label>
+                </div>
+            </ion-list>
+          </ion-accordion>
+          <ion-accordion value="2">
+            <ion-item slot="header" class="item-header">
+                <ion-label class="label-title">What is ur name?</ion-label>
+            </ion-item>
+            <ion-list slot="content" value="2">
+                <div class="div-desc">
+                    <ion-label>
+                        My name is Shiva Venkata Naga Ashok Kumar
+                    </ion-label>
+                </div>
+            </ion-list>
+          </ion-accordion>          <ion-accordion value="3">
+            <ion-item slot="header" class="item-header">
+                <ion-label class="label-title">What is ur name?</ion-label>
+            </ion-item>
+            <ion-list slot="content" value="3">
+                <div class="div-desc">
+                    <ion-label>
+                        My name is Shiva Venkata Naga Ashok Kumar
+                    </ion-label>
+                </div>
+            </ion-list>
+          </ion-accordion>          <ion-accordion value="4">
+            <ion-item slot="header" class="item-header">
+                <ion-label class="label-title">What is ur name?</ion-label>
+            </ion-item>
+            <ion-list slot="content" value="4">
+                <div class="div-desc">
+                    <ion-label>
+                        My name is Shiva Venkata Naga Ashok Kumar
+                    </ion-label>
+                </div>
+            </ion-list>
+          </ion-accordion>
+      </ion-accordion-group>        
+  </div>    
+</ion-content> 
+
+
+<!-- <ion-header>
+    <ion-toolbar>
+        <ion-icon name="chevron-back-outline" class="icon-back" (click)="dismiss()"></ion-icon>
+        <ion-title>FAQ's</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content> -->
+    <!-- <div class="div-accordin"> -->
+        <!-- <ion-accordion-group value="1" > -->
+            <!-- <ion-accordion [value]="'question' + i" *ngFor="let faq of questionanswers; let i = index">
+                <ion-item slot="header" class="item-header" >
+                    <ion-label class="label-title">{{faq.question}}</ion-label>
+                </ion-item>        
+                <ion-list slot="content" value="'question' + i">
+                    <div class="div-desc">
+                        <ion-label>
+                            {{faq.answer}}
+                        </ion-label>
+                    </div>
+                </ion-list>
+            </ion-accordion>   -->
+            
+            <!-- <ion-accordion value="1">
+              <ion-item slot="header" class="item-header">
+                <ion-skeleton-text [animated]="true" style="width: 278px;height: 21px;margin: 10px 8px 10px 0px;"></ion-skeleton-text>
+              </ion-item>
+              <ion-list slot="content" value="1">
+                  <div class="div-desc">
+                    <ion-skeleton-text [animated]="true" style="width: 298px;height: 44px;"></ion-skeleton-text>
+                      
+                  </div>
+              </ion-list>
+            </ion-accordion>
+            <ion-accordion value="2">
+              <ion-item slot="header" class="item-header">
+                <ion-skeleton-text [animated]="true" style="width: 278px;height: 21px;margin: 10px 8px 10px 0px;"></ion-skeleton-text>
+                 
+              </ion-item>
+              <ion-list slot="content" value="2">
+                  <div class="div-desc">
+                    <ion-skeleton-text [animated]="true" style="width: 298px;height: 44px;"></ion-skeleton-text>
+                    
+                  </div>
+              </ion-list>
+            </ion-accordion>          <ion-accordion value="3">
+              <ion-item slot="header" class="item-header">
+                <ion-skeleton-text [animated]="true" style="width: 278px;height: 21px;margin: 10px 8px 10px 0px;"></ion-skeleton-text>
+              </ion-item>
+              <ion-list slot="content" value="3">
+                  <div class="div-desc">
+                    <ion-skeleton-text [animated]="true" style="width: 298px;height: 44px;"></ion-skeleton-text>
+                    
+                  </div>
+              </ion-list>
+            </ion-accordion>          <ion-accordion value="4">
+              <ion-item slot="header" class="item-header">
+                <ion-skeleton-text [animated]="true" style="width: 278px;height: 21px;margin: 10px 8px 10px 0px;"></ion-skeleton-text>
+                 
+              </ion-item>
+              <ion-list slot="content" value="4">
+                  <div class="div-desc">
+                    <ion-skeleton-text [animated]="true" style="width: 298px;height: 44px;"></ion-skeleton-text>
+                     
+                  </div>
+              </ion-list>
+            </ion-accordion>
+        </ion-accordion-group>        
+    </div>     -->
+  <!-- </ion-content> -->

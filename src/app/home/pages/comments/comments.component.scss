@@ -1,0 +1,244 @@
+ion-toolbar {
+    --min-height: 60px;
+
+    ion-icon {
+        font-size: 24px;
+    }
+}
+
+.div-comments-main {
+
+    .div-comments-sub {
+        display: flex;
+        margin: 10px;
+        margin-bottom: 0;
+
+        .div-img {
+            margin-right: 10px;
+
+            img {
+                height: 45px;
+                width: 45px;
+                border-radius: 50%;
+            }
+        }
+
+        .div-name-comments {
+            width: calc(100% - 45px);
+            padding-top: 10px;
+
+            .div-name-time {
+                margin-bottom: 16px;
+
+                h6 {
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: 14px;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 5px;
+                }
+
+                span {
+                    display: block;
+                    font-size: 10px;
+                    color: #999;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                }
+            }
+
+            .div-comment-section {
+
+                p {
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    color: #777;
+                }
+            }
+        }
+    }
+
+    .div-reply-sub {
+        display: flex;
+        padding: 10px;
+        margin: 0 10px 10px;
+        margin-left: 65px;
+        background: #f6f9fa;
+        border-radius: 10px;
+        padding-bottom: 0;
+
+        .div-img {
+            margin-right: 10px;
+
+            img {
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+            }
+        }
+
+        .div-name-comments {
+            width: calc(100% - 35px);
+            padding-top: 5px;
+            border-bottom: 1px solid #eee;
+
+            .div-name-time {
+                margin-bottom: 10px;
+
+                h6 {
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: 12px;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 5px;
+                }
+
+                span {
+                    display: block;
+                    color: #999;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    font-size: 8px;
+                }
+            }
+
+            .div-comment-section {
+
+                p {
+                    margin: 0;
+                    font-size: 12px;
+                    font-weight: 500;
+                    line-height: 1.5;
+                    color: #777;
+                }
+            }
+        }
+    }
+}
+
+.span-settings1 {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    margin-left: 20px;
+    letter-spacing: 0.5px;
+}
+
+.div-like {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    position: relative;
+
+    .div-like-main {
+        display: flex;
+        align-items: center;
+
+        .div-like-sub {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .div-bookmark {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+ion-icon {
+    font-size: 18px;
+    color: #999;
+    margin-right: 2px;
+}
+
+.span-settings {
+    font-size: 10px;
+    color: #999;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.div-like-share {
+    display: flex;
+    align-items: center;
+}
+.like-settings {
+    display: flex;
+    align-items: center;
+
+}
+
+.like-btn {
+    display: inline-block;
+    Cursor: pointer;
+    width: 55px;
+    height: 55px;
+    position: absolute;
+    top: -8%;
+    left: -20px;
+}
+
+.like-btn {
+  background:url('/assets/img/heart.png') no-repeat 0% 50%;  //url('https://i.ibb.co/vw78mf3/heart.png') no-repeat 0% 50%;
+  background-size: 2900%;
+}
+
+.like-active {
+  animation-name: animate;
+  animation-duration: .8s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.like-active {
+  animation-timing-function: steps(28);
+}
+
+@keyframes animate {
+  0%   { background-position: left;  }
+  50%  { background-position: right; }
+  100% { background-position: right; }
+}
+
+.input-settings {
+    background: #fff;
+    --padding-start: 10px;
+    height: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 100px;
+    border: 1px solid #eee;
+    color: #999;
+    --placeholder-opacity: 1;
+    margin-right: 10px;
+    --padding-start: 16px;
+}
+
+ion-footer {
+
+    .div-footer-reply {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        background: #f6f9fa;
+
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .icon-reply {
+            margin-right: 0;
+            font-size: 40px;
+            color: #0c77c1;
+        }
+    }
+}

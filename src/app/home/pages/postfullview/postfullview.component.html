@@ -1,0 +1,525 @@
+<!-- <ion-header *ngIf="property">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+        </ion-buttons>
+        <ion-title>{{dummyproperty.actionType}} <span *ngIf="property.bhkType"> - {{dummyproperty.bhkType}}</span></ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="property">
+    <div class="div-fullview-main">
+        <div class="div-slides">
+            <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+                <swiper-slide *ngFor="let image of property.resources">
+                    <div class="div-img">
+                        <img [src]="image.resourceUrl" alt="">
+                    </div>
+                </swiper-slide>
+            </swiper-container>
+        </div>
+        <div class="div-details-main">
+            <div class="div-rent">
+                <ion-label class="label-rent-title">{{dummyproperty.action}}</ion-label>
+                <ion-label class="label-amount">{{dummyproperty.costOfProperty | currency:'INR'}}</ion-label>
+            </div>
+            <ion-label class="label-title">{{dummyproperty.title}}</ion-label>
+            <ion-label class="h6-size" style="margin: 10px;">{{property?.addressOfProperty?.address}}</ion-label>
+            <div class="div-individual" *ngIf="property.houseType">
+                <ion-label class="label-property">House Type</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.houseType}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.bhkType">
+                <ion-label class="label-property">BHK Type</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.bhkType}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.toilets">
+                <ion-label class="label-property">Toilets</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.toilets}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.poojaRoom">
+                <ion-label class="label-property">Pooja Room</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.poojaRoom}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.livinigDining">
+                <ion-label class="label-property">Living/Dining</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.livingDining}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.kitchen">
+                <ion-label class="label-property">Kitchen</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.kitchen}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="property.propertySize">
+                <ion-label class="label-property">Total Size of Property</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.propertySize}}<span>{{dummyproperty.propertyUnits}}</span></ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Property Size (Build up)</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.propertySize}}<span>{{dummyproperty.propertyUnits}}</span></ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Dimensions</ion-label>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">North
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.northFacing}}</ion-label></li>
+                    <li><ion-label class="h6-size">{{dummyproperty.northSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">South
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.southFacing}}</ion-label></li>
+                    <li><ion-label class="h6-size">{{dummyproperty.southSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">East
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.eastFacing}}</ion-label></li>
+                    <li><ion-label class="h6-size">{{dummyproperty.eastSize}}<span>{{dummyproperty.units}}</span></ion-label></li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">West
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.westFacing}}</ion-label></li>
+                    <li><ion-label class="h6-size">{{dummyproperty.westSize}}<span>{{dummyproperty.units}}</span></ion-label></li>
+                </ul>
+            </div>
+            <div class="div-individual" *ngIf="property.floor">
+                <ion-label class="label-property">Floor</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.floor}}</ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Age of Property</ion-label>
+                <ion-label class="h6-size" *ngIf="property.ageOfPropertyAction === 'noofyears'">
+                    {{dummyproperty.noOfYears}} Years
+                </ion-label>
+                <ion-label class="h6-size" *ngIf="property.ageOfPropertyAction === 'underconstruction'">
+                    Under Construction
+                </ion-label>
+            </div>
+            <div class="div-individual" style="padding-bottom: 0;">
+                <ion-label class="label-property">Amenities</ion-label>
+                <div *ngFor="let amenity of property.amenities">
+                    <app-amentity-card [amenity]="amenity"></app-amentity-card>
+                </div>
+            </div>
+
+
+            <br> <div class="div-individual">
+            <ion-label class="label-property">Ownership</ion-label>
+            <ion-label class="h6-size">{{dummyproperty.ownership}}</ion-label>
+        </div>
+             <div class="div-individual">
+            <ion-label class="label-property">Rent</ion-label>
+            <ion-label class="h6-size">{{dummyproperty.rent | currency:'INR'}}<span>{{dummyproperty.rentUnits}}</span></ion-label>
+        </div> 
+             <div class="div-individual">
+            <ion-label class="label-property">Cost of Property</ion-label>
+            <ion-label class="h6-size">{{dummyproperty.costOfProperty | currency:'INR'}}</ion-label>
+        </div> 
+             <div class="div-individual">
+            <ion-label class="label-property">Address of Property</ion-label>
+            <ion-label class="h6-size">{{property?.addressOfProperty?.address}}</ion-label>
+        </div> <br>
+
+            <div class="div-individual">
+                <ion-label class="label-property">Description</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.description}}</ion-label>
+            </div>
+        </div>
+    </div>
+</ion-content>
+
+
+<ion-footer>
+    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
+        <div class="div-mobile-icon" [class.blur]="true" *ngIf="users$ | async as user">
+            <div>
+                <ion-label>{{user.fullName}}</ion-label>
+                <ion-label>{{user.phone}}</ion-label>
+            </div>
+
+            <br>
+            <div>
+                <ion-label>Seller Name</ion-label>
+                <ion-label>90XXXXXX90</ion-label>
+            </div><br>
+
+            <a href="tel:property.phone" style="height: 45px;">
+                <ion-icon name="call-outline" [class.bRent]="action === 'rent'"
+                    [class.bSale]="action === 'sale'"></ion-icon>
+            </a>
+        </div>
+    </div>
+</ion-footer> -->
+
+
+
+ <!-- <ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+        </ion-buttons>
+        <ion-title>{{dummyproperty.actionType}} <span *ngIf="dummyproperty.bhkType"> -
+                {{dummyproperty.bhkType}}</span></ion-title>
+    </ion-toolbar>
+</ion-header>  -->
+
+<ion-header>
+    <ion-toolbar style="width: 375px;height: 60px;padding: 0px 8px;">
+        <ion-buttons slot="start">
+            <!-- <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;"></ion-skeleton-text> -->
+            <ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+        </ion-buttons>
+        <ion-title style="width: 359px;height: 60px;padding: 0px 16px;">
+            <!-- <ion-skeleton-text [animated]="true" style="width: 359px;height: 60px;padding: 0px;height: 16px;"></ion-skeleton-text> -->
+            {{dummyproperty.actionType}} <span *ngIf="dummyproperty.bhkType"> -
+                {{dummyproperty.bhkType}}</span> 
+            </ion-title>
+    </ion-toolbar>
+</ion-header>
+ <ion-content>
+    <div class="div-fullview-main">
+        <div class="div-slides">
+            <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+                <swiper-slide *ngFor="let image of dummyproperty.resources">
+                    <div class="div-img">
+
+                        <img [src]="image.resourceUrl" alt="">
+                    </div>
+                </swiper-slide>
+            </swiper-container>
+        </div>
+        <div class="div-details-main">
+            <div class="div-rent">
+                <ion-label class="label-rent-title">{{dummyproperty.action}}</ion-label>
+                <ion-label class="label-amount">{{dummyproperty.costOfProperty | currency:'INR'}}</ion-label>
+            </div>
+            <ion-label class="label-title">{{dummyproperty.title}}</ion-label>
+            <ion-label class="h6-size" style="margin: 10px;">{{property?.addressOfProperty?.address}}</ion-label>
+            <div class="div-individual" *ngIf="dummyproperty.houseType">
+                <ion-label class="label-property">House Type</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.houseType}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.bhkType">
+                <ion-label class="label-property">BHK Type</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.bhkType}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.toilets">
+                <ion-label class="label-property">Toilets</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.toilets}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.poojaRoom">
+                <ion-label class="label-property">Pooja Room</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.poojaRoom}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.livinigDining">
+                <ion-label class="label-property">Living/Dining</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.livingDining}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.kitchen">
+                <ion-label class="label-property">Kitchen</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.kitchen}}</ion-label>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.propertySize">
+                <ion-label class="label-property">Total Size of Property</ion-label>
+                <ion-label
+                    class="h6-size">{{dummyproperty.propertySize}}<span>{{dummyproperty.propertyUnits}}</span></ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Property Size (Build up)</ion-label>
+                <ion-label
+                    class="h6-size">{{dummyproperty.propertySize}}<span>{{dummyproperty.propertyUnits}}</span></ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Dimensions</ion-label>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">North
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.northFacing}}</ion-label></li>
+                    <li><ion-label
+                            class="h6-size">{{dummyproperty.northSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">South
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.southFacing}}</ion-label></li>
+                    <li><ion-label
+                            class="h6-size">{{dummyproperty.southSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">East
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.eastFacing}}</ion-label></li>
+                    <li><ion-label
+                            class="h6-size">{{dummyproperty.eastSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">West
+                    Dimensions:</ion-label>
+                <ul>
+                    <li><ion-label class="h6-size">{{dummyproperty.westFacing}}</ion-label></li>
+                    <li><ion-label
+                            class="h6-size">{{dummyproperty.westSize}}<span>{{dummyproperty.units}}</span></ion-label>
+                    </li>
+                </ul>
+            </div>
+            <div class="div-individual" *ngIf="dummyproperty.floor">
+                <ion-label class="label-property">Floor</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.floor}}</ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Age of Property</ion-label>
+                <ion-label class="h6-size" *ngIf="dummyproperty.ageOfPropertyAction === 'noofyears'">
+                    {{dummyproperty.noOfYears}} Years
+                </ion-label>
+                <ion-label class="h6-size" *ngIf="dummyproperty.ageOfPropertyAction === 'underconstruction'">
+                    Under Construction
+                </ion-label>
+            </div>
+            <div class="div-individual" style="padding-bottom: 0;">
+                <ion-label class="label-property">Amenities</ion-label>
+                <div *ngFor="let amenity of property.amenities">
+                    <app-amentitycard [amenity]="amenity"></app-amentitycard>
+                </div>
+            </div>
+
+
+            <br>
+            <div class="div-individual">
+                <ion-label class="label-property">Ownership</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.ownership}}</ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Rent</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.rent |
+                    currency:'INR'}}<span>{{dummyproperty.rentUnits}}</span></ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Cost of Property</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.costOfProperty | currency:'INR'}}</ion-label>
+            </div>
+            <div class="div-individual">
+                <ion-label class="label-property">Address of Property</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.addressOfProperty.address}}</ion-label>
+            </div> <br>
+
+            <div class="div-individual">
+                <ion-label class="label-property">Description</ion-label>
+                <ion-label class="h6-size">{{dummyproperty.description}}</ion-label>
+            </div>
+        </div>
+    </div>
+</ion-content> 
+ 
+<!-- <ion-content>
+    <div class="div-fullview-main">
+        <div class="div-slides">
+            <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+                <swiper-slide *ngFor="let image of dummyproperty.resources">
+                    <div class="div-img">
+                       <ion-skeleton-text [animated]="true" style="width: 100%;height: 100%px;"></ion-skeleton-text> 
+                    </div>
+                </swiper-slide>
+            </swiper-container>
+        </div>
+        <div class="div-details-main">
+            <div style="width: 355px;height: 29px;margin: 10px;" class="div-rent">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 67px;height: 29px;padding: 5px 16px;border-radius: 100px;"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true"
+                    style="width: 164px;height: 29px;padding: 5px 16px;border-radius: 100px;"></ion-skeleton-text>
+            </div>
+            <ion-skeleton-text [animated]="true" style="width: 355px;height: 24px;margin: 10px;"></ion-skeleton-text>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.houseType">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.bhkType">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.toilets">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.poojaRoom">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.livinigDining">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.kitchen">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.propertySize">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+            </div>
+            <div style=" border-radius: 4px;" class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height:25px;top: -35px;"></ion-skeleton-text>
+                <ul style="width: 317px; height: 43px;margin: 16px 0px;padding: 0px 0px 0px 40px;">
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+                    </li>
+
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+                    </li>
+                </ul>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height:25px;"></ion-skeleton-text>
+                <ul style="width: 317px; height: 43px;margin: 16px 0px;padding: 0px 0px 0px 40px;">
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+                    </li>
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+
+                    </li>
+                </ul>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height:25px;"></ion-skeleton-text>
+
+                <ul style="width: 317px; height: 43px;margin: 16px 0px;padding: 0px 0px 0px 40px;">
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+
+                    </li>
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+
+                    </li>
+                </ul>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height:25px;"></ion-skeleton-text>
+
+                <ul style="width: 317px; height: 43px;margin: 16px 0px;padding: 0px 0px 0px 40px;">
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+
+                    </li>
+                    <li style="width: 7.2px;height: 24px;">
+                        <ion-skeleton-text [animated]="true" style="width: 277px ;height: 15px;"></ion-skeleton-text>
+
+                    </li>
+                </ul>
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual" *ngIf="dummyproperty.floor">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+
+
+
+            <br>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+            <div style="width: 351px;height: 87px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 33px;top: -35px;"></ion-skeleton-text>
+
+
+            </div> <br>
+
+            <div style="width: 351px;height: 70px;margin: 30px 12px 12px;padding: 36px 16px 16px;"
+                class="div-individual">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 317px;height: 32px;padding: 8px 16px;top:-50px;border-radius: 4px;background: var(--background-main);"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 317px;height: 16px;top: -35px;"></ion-skeleton-text>
+
+            </div>
+        </div>
+    </div>
+</ion-content>  -->
+
+
+<ion-footer>
+    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
+        <div class="div-mobile-icon" [class.blur]="false">
+            <div>
+                <ion-label>{{dummyuser.fullName}}</ion-label>
+                <ion-label>{{dummyuser.phone}}</ion-label>
+            </div>
+
+            <a href="tel:property.phone" style="height: 45px;">
+                <ion-icon name="call-outline" [class.bRent]="action === 'rent'"
+                    [class.bSale]="action === 'sale'"></ion-icon>
+            </a>
+        </div>
+    </div>
+</ion-footer> 
+<!-- skeleton-code -->
+<!-- <ion-footer style="width: 375px;height: 80px;padding: 16px;">
+    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
+        <div class="div-mobile-icon" [class.blur]="false">
+            <div>
+                <ion-skeleton-text [animated]="true" style="width: 174px;height: 24px;"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true" style="width: 174px;height: 24px;"></ion-skeleton-text>
+
+            </div>
+
+            <a href="tel:property.phone" style="height: 45px;">
+                <ion-skeleton-text [animated]="true"
+                    style="width: 45px;height: 45px; border-radius: 100px;"></ion-skeleton-text>
+            </a>
+        </div>
+    </div>
+</ion-footer> -->

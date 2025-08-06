@@ -1,0 +1,139 @@
+ion-toolbar {
+    --background: white;
+}
+
+ion-title {
+    color: blue;
+}
+
+.div-header1 {
+    display: flex;
+    align-items: center;
+}
+
+.icon-close {
+    font-size: 20px;
+    color: white;
+}
+
+ion-searchbar {
+    padding: 0;
+    padding-left: 10px;
+    --cancel-button-color: white !important;
+    --color: white;
+    --icon-color: white;
+    --border-radius: 4px;
+    --background: rgb(255 255 255 / 20%);
+    --placeholder-opacity: 1;
+}
+
+.div-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+
+    .div-icon-name {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        justify-content: space-between;
+
+        .div-titles {
+
+            .label-title {
+                font-size: 16px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                margin: 0;
+                margin-bottom: 5px;
+                color: blue;
+                display: block;
+            }
+
+            .label-nos {
+                margin: 0;
+                font-size: 14px;
+                letter-spacing: 1px;
+                color: blue;
+                display: block;
+            }
+        }
+    }
+
+    .div-search-more {
+        display: flex;
+        align-items: center;
+
+        :not(:last-child) {
+            margin-right: 16px;
+        }
+
+        ion-icon {
+            font-size: 24px;
+            color: blue;
+        }
+    }
+}
+
+.div-chat-box {
+    padding-top: 16px;
+    overflow-y: scroll;
+}
+
+.div-chat-individual {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 16px;
+    padding-right: 0;
+
+    .div-chat-img {
+
+        .img-chat {
+            height: 50px;
+            border-radius: 50%;
+            width: 50px;
+            overflow: hidden;
+        }
+    }
+
+    .div-chat-img1 {
+        height: 50px;
+        width: 50px;
+        background: blue;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 4;
+
+        ion-icon {
+            font-size: 24px;
+            color: white;
+        }
+    }
+
+    .div-chat-name {
+        width: calc(100% - 60px);
+        margin-left: 10px;
+        // padding-bottom: 10px;
+
+        .p-settings {
+            margin: 0;
+            font-size: 14px;
+            color: black;
+            font-weight: 600;
+            display: block;
+        }
+
+        .p-settings1 {
+            margin: 0;
+            font-size: 12px;
+            color: #777;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+    }
+}
+
+ion-header {
+    overflow: hidden;
+  }

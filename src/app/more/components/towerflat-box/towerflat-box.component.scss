@@ -1,0 +1,48 @@
+.div-tower-box {
+    position: relative;
+    margin: 16px;
+    background: var(--content-background-white);
+    border-radius: 14px;
+    border: var(--border);
+    overflow: hidden;
+}
+
+.ion-button-settings {
+    --border-radius: 100px;
+    margin: 0;
+    text-transform: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.div-title-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-main);
+    padding: 16px;
+
+    .label-title {
+        display: block;
+        color: var(--color-white);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        flex-grow: 1;
+    }
+}
+
+.div-icons-button {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+
+    :not(:last-child) {
+        margin-right: 16px;
+    }
+
+    ion-icon {
+        color: var(--color-white);
+        font-size: 20px;
+    }
+}

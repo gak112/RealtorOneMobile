@@ -1,0 +1,294 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>More</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+  <ion-list>
+    <div class="ion-item-settings">
+
+
+      <div class="div-names">
+        <!-- <ion-skeleton-text [animated]="true" style="width: 144px;height: 16px;margin: 0px 0px 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width: 144px;height: 18px;margin: 5px 0px 0px;"></ion-skeleton-text> -->
+        <ion-label class="ion-label-settings">SVN AShok Kumar</ion-label>
+        <span (click)="goToProfile()">view profile</span>
+      </div>
+      @if(user.photo) {
+      <div class="div-img" (click)="selectMedia()">
+        <!-- <ion-skeleton-text [animated]="true" style="height: 70px; width: 70px; margin: 0;"></ion-skeleton-text>  -->
+        <ion-img
+          [src]="user.photo || 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6c08249-45b1-4852-ac3c-f5e49a7f6d25/d6v0umi-48db83ce-8367-4e06-b71c-103b296794c5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2YzA4MjQ5LTQ1YjEtNDg1Mi1hYzNjLWY1ZTQ5YTdmNmQyNVwvZDZ2MHVtaS00OGRiODNjZS04MzY3LTRlMDYtYjcxYy0xMDNiMjk2Nzk0YzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.HhR535GRJ9MzqUS54LJ2XWtf-Y2v-aOuN4GTD6MC0q4'"
+          class="img-user-settings" (click)="openFullImage([user.photoURL])"></ion-img>
+        <ion-icon name="camera-outline"></ion-icon>
+        <!-- <ion-skeleton-text [animated]="true" style="height: 5px;width: 5px;"></ion-skeleton-text>  -->
+      </div>
+      } @else {
+      <div class="div-img" (click)="selectMedia()" style="background: var(--background-main);">
+        <!-- <ion-skeleton-text [animated]="true" style="height: 70px; width: 70px; margin: 0;"></ion-skeleton-text>  -->
+        <ion-label class="label-firstchar">AK</ion-label>
+        <ion-icon name="camera-outline"></ion-icon>
+        <!-- <ion-skeleton-text [animated]="true" style="height: 5px;width: 5px;"></ion-skeleton-text>  -->
+      </div>
+      }
+    </div>
+    <div (click)="openAuth()" class="ion-item-settings" *ngIf="false">
+      <div class="div-img">
+        <ion-img src="assets/img/loginnouser.png" class="img-nouser-settings"></ion-img>
+      </div>
+      <div class="div-names">
+        <ion-label class="ion-label-settings">Login / Register</ion-label>
+      </div>
+    </div>
+
+    <ion-item (click)="setTheme()">
+      <ion-icon class="icon-toggle" slot="start" name="moon-outline" />
+      <ion-label class="label-toggle">Dark Mode</ion-label>
+      <ion-toggle slot="end" color="tertiary" [checked]="theme() === 'dark'" />
+    </ion-item>
+    <!-- darkmode skeleton-code start -->
+
+    <!-- <ion-item style="width: 100%;height: 44px;">
+       <ion-skeleton-text [animated]="true"
+        style="width: 30px;height: 30px;border-radius: 100px;   margin: 7px 16px 7px 0px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true"
+        style="width: 150px;height: 20px;margin: 10px 8px 10px 0px;"></ion-skeleton-text> 
+
+
+       <ion-skeleton-text [animated]="true" slot="end"
+        style="width: 51px; height: 32px;border-radius: 20px;position: relative;"></ion-skeleton-text> 
+      <ion-skeleton-text [animated]="true" style="width: 13px;height: 13px; border-radius: 100px;"></ion-skeleton-text> 
+    
+    </ion-item> -->
+    <!-- skeleton code end -->
+    <!-- <ion-list-header>Company Information</ion-list-header>
+
+    <div class="div-icon-main">
+      <div class="div-icon-name" (click)="openCompanyProfile()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>About Realtor '1'</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+    </div> -->
+
+    <ion-list-header style="padding-top: 16px;">
+
+      Personal Information
+
+    </ion-list-header>
+
+    <div class="div-icon-main">
+      <div class="div-icon-name" (click)="openCompanyProfile()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>About Realtor '1'</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="goToProfile()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>Profile</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="goToMyRequests()">
+        <div class="div-icon-sub">
+          <ion-icon name="git-compare-outline" class="icon-title"></ion-icon>
+          <ion-label>My Properties</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+
+      <div class="div-icon-name" (click)="goToSavedProperties()">
+        <div class="div-icon-sub">
+          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-label>Saved Properties</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="goToPropertyViews()">
+        <div class="div-icon-sub">
+          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-label>Property Views</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+
+      <!-- <div class="div-icon-name" (click)="goToMyPayments()">
+          <div class="div-icon-sub">
+            <ion-icon name="card-outline" class="icon-title"></ion-icon>
+            <ion-label >Payments</ion-label>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        </div> -->
+    </div>
+
+    <!-- Personal Information start -->
+
+    <!-- <ion-skeleton-text [animated]="true" style="width: 50%; height: 21px;margin: 15px;"></ion-skeleton-text> 
+    <div class="div-icon-main">
+      <div style="width: 100%;height: 56px;" class="div-icon-name" (click)="goToProfile()">
+        <div class="div-icon-sub" style="display: flex;align-items: center;width: 81px;height:20px;">
+         <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 45px;height: 18px;"></ion-skeleton-text>
+        </div>
+     <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+      <div class="div-icon-name" (click)="goToMyRequests()">
+        <div style="width: 132px;height: 20px;" class="div-icon-sub">
+     <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+        <ion-skeleton-text [animated]="true" style="width: 96px;height: 18px;"></ion-skeleton-text> 
+        </div>
+ <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+
+      <div class="div-icon-name" (click)="goToSavedProperties()">
+        <div style="width: 155px;height: 20px;" class="div-icon-sub">
+      <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 119px;height: 18px;"></ion-skeleton-text> 
+        </div>
+        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
+      </div>
+      <div class="div-icon-name" (click)="goToPropertyViews()">
+        <div style="width: 140px;height: 20px;" class="div-icon-sub">
+       <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+    <ion-skeleton-text [animated]="true" style="width: 104px;height: 18px;"></ion-skeleton-text>  
+        </div>
+        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+
+      <div class="div-icon-name" (click)="goToMyPayments()">
+          <div class="div-icon-sub">
+          </div>
+        </div> 
+    </div> -->
+
+    <!-- Personal Information end -->
+
+    <ion-list-header>Account Privacy</ion-list-header>
+    <div class="div-icon-main" style="margin-bottom: 0;">
+
+      <div class="div-icon-name" (click)="faqs()">
+        <div class="div-icon-sub">
+          <ion-icon name="help-outline" class="icon-title"></ion-icon>
+          <ion-label>Faqs</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="helpus()">
+        <div class="div-icon-sub">
+          <ion-icon name="mail-outline" class="icon-title"></ion-icon>
+          <ion-label>Help Us</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="termsConditions()">
+        <div class="div-icon-sub">
+          <ion-icon name="clipboard-outline" class="icon-title"></ion-icon>
+          <ion-label>Terms & Conditions</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="privacyPolicy()">
+        <div class="div-icon-sub">
+          <ion-icon name="document-outline" class="icon-title"></ion-icon>
+          <ion-label>Privacy Policy</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+
+
+      <div class="div-icon-name" (click)="alertLogout()">
+        <div class="div-icon-sub">
+          <ion-icon name="log-out-outline" class="icon-title"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+
+    </div>
+
+    <!-- Account Privacy Start-->
+
+
+    <!-- <ion-skeleton-text [animated]="true" style="width: 50%; height: 21px;margin: 15px;"></ion-skeleton-text>
+    <div class="div-icon-main" style="margin-bottom: 0;">
+
+      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="faqs()">
+        <div style="width: 69px;height: 20px;" class="div-icon-sub">
+          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+          <ion-skeleton-text [animated]="true" style="width: 33px;height: 18px;"></ion-skeleton-text> 
+        </div>
+        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
+      </div>
+      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="helpus()">
+        <div style="width: 88px;height: 20px;" class="div-icon-sub">
+         <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+          <ion-skeleton-text [animated]="true" style="width: 52px;height: 18px;"></ion-skeleton-text> 
+        </div>
+        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
+      </div>
+      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="termsConditions()">
+        <div style="width: 173px;height: 20px;" class="div-icon-sub">
+          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 137px;height: 18px;"></ion-skeleton-text> 
+        </div>
+       <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="privacyPolicy()">
+        <div style="width: 134px;height: 20px;" class="div-icon-sub">
+          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 98px;height: 18px;"></ion-skeleton-text> 
+        </div>
+         <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+
+
+      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="alertLogout()">
+        <div style="width: 83px;height: 20px;" class="div-icon-sub">
+           <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 47px;height: 18px;"></ion-skeleton-text> 
+        </div>
+        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+      </div>
+
+    </div> -->
+
+    <!-- Account Privacy end-->
+
+  </ion-list>
+
+
+  <div class="div-company">
+    <label class="name">
+      <span> SBP </span>
+      Consulting Private Limited
+    </label>
+    <p
+      style="font-size:14px; font-family: 'gak'!important;color: var(--color-black); font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%); letter-spacing: 1px;">
+      Developed by GAK</p>
+    <ion-img src="assets/img/mwl.png" style="height: 50px; width: 100%" />
+  </div>
+
+</ion-content>
+
+
+
+
+<ion-footer style="display: none;">
+  <div class="div-company" style="width: 100%;height: 113px;padding: 10px 10px 30px;">
+
+    <span class="name">SBP Consulting Pvt ltd</span>
+    <p class="from">Powered by</p>
+
+    <!-- <ion-skeleton-text [animated]="true" style="width: 284px;height: 18px;margin: auto; "></ion-skeleton-text> -->
+    <!-- <ion-skeleton-text [animated]="true" -->
+    <!-- style="width: 80px;height: 20px;margin:auto;margin-top: 5px;"></ion-skeleton-text> -->
+    <p
+      style="font-size:14px; font-family: 'gak'!important;color: white; font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%);">
+      Developed by GAK</p>
+  </div>
+</ion-footer>

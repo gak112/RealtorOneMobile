@@ -1,0 +1,294 @@
+<ion-header>
+  <ion-toolbar>
+      <div class="user-bar">
+          <div class="back" style="display:flex;" (click)="close()">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+          <div class="avatar">
+              <ion-img src="assets/img/logo.png"></ion-img>
+          </div>
+          <div class="name">
+              <span class="span-name">Quick Store Team</span>         
+              <!-- <span class="status" >Online</span> -->
+          </div>
+          <!-- <div class="actions" (click)="openVideoCall()">
+              <ion-icon name="videocam" class="icon-video"></ion-icon>            
+          </div>
+          <div class="actions attachment" (click)="openAudioCall()">
+              <ion-icon name="call" class="icon-video"></ion-icon>
+          </div> -->
+      </div> 
+  </ion-toolbar>           
+</ion-header>       
+<ion-content>   
+<div class="conversation" >
+    <div class="conversation-container" >
+
+        <!-- <app-chatmsg  *ngFor="let msg of chat" [channelId]="channelObject.id" [chat]="msg" [uid]="currentuid"></app-chatmsg>   -->
+         
+            <div class="message sent">
+                    <ion-label class="p-entertext">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio ad laboriosam aperiam unde ipsum et impedit ut fugiat omnis illum a sunt neque, aliquid dolor obcaecati eum veniam ex asperiores!
+                        </ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received president">
+              <ion-label class="p-username">Gunda Abhinav</ion-label>
+              <ion-label class="p-desgination">(QS Admin)</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Donda Venkanna</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/5.jpg" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/5.jpg" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+                <ion-label class="p-username">Pogula Srinu</ion-label>
+                <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/5.jpg" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message sent">
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-desgination">(QS Team)</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message sent">
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-desgination">(QS Team)</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-img src="assets/img/5.jpg" class="img-settings"></ion-img>
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/ryan.jpg" class="img-settings"></ion-img>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received president">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/ryan.jpg" class="img-settings"></ion-img>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <ion-img src="assets/img/ryan.jpg" class="img-settings"></ion-img>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message sent">
+                <ion-img src="assets/img/india.png" class="img-settings"></ion-img>
+                <ion-label class="p-entertext"> What happened last night swaibu?</ion-label>                       
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-img src="assets/img/india.png" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-img src="assets/img/india.png" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+              <ion-label class="p-desgination">(QS Team)</ion-label>
+                <div class="div-reply-text">
+                    <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-usertext">Hi Hello How Are you</ion-label>
+                </div>
+                <ion-img src="assets/img/india.png" class="img-settings"></ion-img>
+                <span class="metadata"><span class="time">01:59 PM</span></span>
+            </div>
+            <div class="message sent">
+                <div class="div-img-reply">
+                    <div class="div-reply-text1">
+                        <ion-label class="p-username">Pogula Srinu</ion-label>
+                        <ion-label class="p-desgination">(QS Team)</ion-label>
+                        <div class="div-p">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label class="p-usertext">Photo</ion-label>
+                        </div>
+                    </div>
+                    <div class="div-img">
+                        <ion-img src="assets/img/india.png" class="img-reply"></ion-img>
+                    </div>
+                </div>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                <div class="div-img-reply">
+                    <div class="div-reply-text1">
+                        <ion-label class="p-username">Pogula Srinu</ion-label>
+                        <div class="div-p">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label class="p-usertext">Photo</ion-label>
+                        </div>
+                    </div>
+                    <div class="div-img">
+                        <ion-img src="assets/img/india.png" class="img-reply"></ion-img>
+                    </div>
+                </div>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                <div class="div-img-reply">
+                    <div class="div-reply-text1">
+                        <ion-label class="p-username">Pogula Srinu</ion-label>
+                        <div class="div-p">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label class="p-usertext">Photo</ion-label>
+                        </div>
+                    </div>
+                    <div class="div-img">
+                        <ion-img src="assets/img/india.png" class="img-reply"></ion-img>
+                    </div>
+                </div>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                <div class="div-img-reply">
+                    <div class="div-reply-text1">
+                        <ion-label class="p-username">Pogula Srinu</ion-label>
+                        <div class="div-p">
+                            <ion-icon name="camera"></ion-icon>
+                            <ion-label class="p-usertext">Photo</ion-label>
+                        </div>
+                    </div>
+                    <div class="div-img">
+                        <ion-img src="assets/img/india.png" class="img-reply"></ion-img>
+                    </div>
+                </div>
+                <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message sent">
+                <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message sent">
+                    <ion-label class="p-entertext">Yaa I am fine</ion-label>
+                <span class="metadata">
+                    <span class="time">01:59 PM</span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                </span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+            <div class="message received">
+              <ion-label class="p-username">Pogula Srinu</ion-label>
+                    <ion-label class="p-entertext">You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"</ion-label>
+                    <span class="metadata"><span class="time">10:00 PM</span></span>
+            </div>
+    </div>
+</div>
+</ion-content>
+<ion-footer>
+<form class="conversation-compose">
+    <!-- <app-personalreplyfooter *ngIf="replyFooter" (close)="closeReply()" [chat]="replyChat"></app-personalreplyfooter> -->
+    <div class="emoji">
+        <ion-icon name="add"></ion-icon>                
+    </div>
+    <ion-textarea class="input-msg" name="input" placeholder="Type a message" autocomplete="off" autofocus></ion-textarea>
+    <ion-icon name="arrow-redo-circle" class="i-send-settings"></ion-icon>
+</form>
+</ion-footer>

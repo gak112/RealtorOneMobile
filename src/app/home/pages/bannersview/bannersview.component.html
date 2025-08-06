@@ -1,0 +1,22 @@
+<ion-header style="box-shadow: none;">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+      <ion-title>Banner Products</ion-title>
+      <div class="div-select-filter">
+          <ion-button size="small" color="warning" class="span-apply"  (click)=" showFilters()">Filter (10)</ion-button>
+      </div>
+  </ion-toolbar>
+  <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;padding: 0;">
+      <ion-searchbar class="ion-searchbar-settings" [debounce]="1000" [placeholder]="'Search Products'"></ion-searchbar>    
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="banner">
+  <!-- <div *ngFor="let property of banner.properties">
+    <app-banner-product [hit]="property" [user]="user"></app-banner-product>
+  </div>   -->
+
+  <app-banner-product></app-banner-product>
+
+
+  <app-banner-product></app-banner-product><app-banner-product></app-banner-product><app-banner-product></app-banner-product>
+</ion-content>

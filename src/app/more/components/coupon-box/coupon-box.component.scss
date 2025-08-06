@@ -1,0 +1,131 @@
+.div-coupon-main {
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    margin: 16px;
+    box-shadow: 3px 0px 14px -4px #ccc;
+
+    .div-left-title {
+        padding: 20px;
+        background-color: orangered;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        ion-label {
+            display: block;
+            color: #fff;
+            line-height: 1;
+            text-transform: uppercase;
+            writing-mode: vertical-lr;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transform: rotate(180deg);
+        }
+
+        .div-backgrounds {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column-reverse;
+            position: absolute;
+            top: 50%;
+            left: -8px;
+            transform: translateY(-50%);
+
+            :not(:first-child) {
+                margin-bottom: 10px;
+            }
+
+            .div-single-background {
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                background-color: #fff;
+            }
+        }
+    }
+}
+
+.div-right-details {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .div-flex-img {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .div-img-main {
+            display: flex;
+            align-items: center;
+
+            .div-img {
+                margin-right: 16px;
+
+                ion-img {
+                    height: 40px;
+                    width: 40px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 5px;
+                }
+            }
+
+            ion-label {
+                display: block;
+                line-height: 1;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                color: #555;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+.label-apply {
+    line-height: 1;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: orangered;
+}
+
+.label-small-desc {
+    display: block;
+    line-height: 1.5;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    margin-bottom: 16px;
+    border-bottom: 2px dotted #ddd;
+    padding-bottom: 16px;
+    color: green;
+}
+
+.label-desc {
+    display: block;
+    line-height: 1.5;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.label-more {
+    display: block;
+    line-height: 1;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

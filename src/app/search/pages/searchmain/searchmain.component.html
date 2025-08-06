@@ -1,0 +1,24 @@
+<ion-header style="box-shadow: none;">
+  <ion-toolbar>
+      <ion-title>Search</ion-title>
+      <div class="div-select-filter">
+          <ion-button size="small" color="warning" class="span-apply"  (click)=" showFilters()">Filter (10)</ion-button>
+      </div>
+  </ion-toolbar>
+  <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
+      <ion-searchbar [debounce]="1000" [placeholder]="'Search Area/City/Pincode'"></ion-searchbar>    
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <!-- <div *ngIf="properties$ | async as properties">
+      <app-product-box *ngFor="let property of properties" [user]="user" [hit]="property"></app-product-box>
+  </div> -->
+
+ <div class="">
+  @for(property of properties(); track property.id) {
+    <app-realestate-card [property]="property"></app-realestate-card>
+    }
+ </div>
+
+</ion-content>

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+      <ion-title>
+        Properties List
+      </ion-title>
+     
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-main" *ngIf="properties$ | async as properties">
+    <div *ngFor="let property of properties; let i=index">
+      <app-homeventurecard ></app-homeventurecard>
+    </div>
+  </div>
+</ion-content>

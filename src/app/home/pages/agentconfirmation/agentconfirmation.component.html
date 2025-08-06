@@ -1,0 +1,1319 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+      <ion-title>
+        Agent
+      </ion-title>
+     
+        <!-- <ion-button size="small" color="danger" class="leave">Leave Agent</ion-button> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-main">
+      <div class="div-description">
+
+        <div class="div-select" style="margin-bottom: 10px;">
+          <ion-checkbox slot="start" [(ngModel)]="agentVerified"></ion-checkbox>
+          <ion-label class="description">
+            I Want to become agent in RealtorOne                 
+        </ion-label>        
+        </div>
+        <div class="div-select">
+            <ion-checkbox slot="start" [(ngModel)]="conditionsVerified"></ion-checkbox>
+            <ion-label class="description">
+              I agree to the Terms & Conditions                 
+          </ion-label>        
+          </div>
+      </div>
+      <div class="div-label" >
+        <ion-label class="description">
+            This Application <span>Realtor1</span> , including any subdomains thereof, and any other websites through which its services are made available,
+             our mobile, tablet and other smart device applications, and application program interfaces etc, , (hereinafter collectively
+              referred to as "Realtor1") is owned, hosted and operated by SBP Consulting Pvt Ltd (hereinafter referred to as SBP), a company
+               incorporated in India under the Companies Act, 1956 and having its registered office at II Floor, C-Block, Cyber Gateway, Software Units Layout, Hitech City,
+               Telangana, India - 500081.                      
+        </ion-label>        
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            These terms and conditions, privacy policy and community guidelines regulating use of these
+            Services constitute a legally binding agreement between Realtor1 and the User (the “Agreement”).
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <ion-label class="description">Realtor1 and/or any other Application(s) linked to this Application is an online information and communications service provided to you, subject to your compliance with the terms and conditions set forth below.</ion-label>
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            SBP may amend/modify these terms and conditions at any time, and such modifications shall be effective immediately
+             upon posting of the modified terms and conditions on Realtor1. You may review the modified terms and conditions periodically
+              to be aware of such modifications and your continued access or use of Realtor1, shall be deemed conclusive proof of your
+               acceptance of these terms and conditions, as amended/modified from time to time. SBP may also suspend the operation of
+                Realtor1 for support or technical upgradation, maintenance work, in order to update the content or for any other reason.
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            If you utilize Realtor1 in a manner inconsistent with these terms and conditions, SBP may terminate your access,
+             block your future access and/or seek such additional relief as the circumstances of your misuse may be deemed to
+              be fit and proper.
+        </ion-label>    
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >DEFINITIONS</ion-label>
+        </div>
+        
+        <ion-label class="description">The term Subscriber would include any person, whether an individual or a legal entity who has subscribed
+             to the Services of Realtor1 (whether on a paid or free basis), and to whom the access to Realtor1 is restricted by the use of a sign
+              in user name and a password. The user name and password are either allotted by Realtor1 or chosen by the Subscriber or agreed upon
+               by Realtor1. It is made abundantly clear that only the authorized User has the right to access the Services so offered by Realtor1.</ion-label>
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            The use and access to Realtor1 shall be subject to these terms and conditions and community guidelines.
+             For the purposes of this Agreement, any person who does not have a legal or a contractual right to access
+              the Services, but does so, will fall within the definition of an 'unauthorized user' and will nevertheless be subject
+               to the terms and conditions regulating the usage of Realtor1, and expressly so with respect to respecting the intellectual
+                property rights of the SBP, and abiding by terms and conditions below mentioned.
+        </ion-label>    
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            The terms 'User' and 'Customer' would include both the Subscriber/Advertiser(s) and Browser/Visitor(s)
+        </ion-label>    
+    </div>
+    <div class="div-label">
+        <ion-label class="description">
+            The terms 'Service' or 'Services' would mean to include the interactive online information service offered by Realtor1
+             on the internet through which the user may access information carried by Realtor1 in the database maintained by it.
+              The terms would also include to mean the search tools through which the User can search through the hosted databases
+               and information using a number of search tools that are present with a selection matching their search criteria.
+                The term would also include services by way of space used by customers for advertisements such as listings and
+                 banners. Users then select one or more of the items presented to view the full document/ record. The term Service
+                  does not extend to Realtor1 acting as an agent either express or implied on behalf of any User/Customer and is merely
+                   acting as a medium of information exchange.
+        </ion-label>    
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Services</ion-label>
+        </div>
+        
+        <ion-label class="description">Company provides a number of internet-based services through its platform and shall include:<br></ion-label>
+        <ion-label class="description">
+            <span>1.</span>
+            Posting User profile or listing for the purpose of sale/rental of property, and related property services etc.<br>
+        </ion-label> 
+        <ion-label class="description">
+            <span>2.</span>
+            Find a property through Realtor1 and its internet links.<br>
+        </ion-label> 
+        <ion-label class="description">
+            <span>3.</span>
+            Place a print advertisement in any of the group publications through the Realtor1 application.<br>
+        </ion-label> 
+        <ion-label class="description">
+            <span>4.</span>
+            Post advertisements on Realtor1.<br>
+        </ion-label> 
+        <ion-label class="description">
+            <span>5.</span>
+            Send advertisements and promotional messages through emails and messages.<br><br>
+        </ion-label> 
+
+        <ion-label class="description">The Services can be purchased through various methods of payments offered. The purchase of Services shall be additionally governed by specific policies of sale, like subscription fees, payment and Refund policy, cancellation policy etc.</ion-label>
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Eligibility:</ion-label>
+        </div>
+        <ion-label class="description">
+            You hereby represent and warrant to the Company that you are at least eighteen (18) years of age or above and are capable of entering,
+             performing and adhering to these Terms. While individuals under the age of 18 may utilize the Service of the site,
+             they shall do so only with the involvement & guidance of their parents and / or legal guardians, under such Parent /Legal guardian's
+              registered account. You agree to register prior to uploading any content and / or comment and any other use or services of this site
+               and provide your details including but not limited to complete name, age, email address, residential address, and contact number.
+        </ion-label>            
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Subscription Fees:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+           The applicable rate of the Subscription Fees for the Service provided shall be such as mentioned in the "My Subscriptions"
+            page or as may be prescribed by the Company from time to time.
+            <br>                  
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            Liability for the Subscription Fees shall accrue from the Date of Commencement.
+            <br>                  
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            All individual Users who access or make posting of information on the Site for the purpose of buying property
+             shall be exempted from the application of this clause.
+            <br>                  
+        </ion-label>
+    
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Payment & Refund clause:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            For all services bought, 50% of the order amount would be towards the activation/administration
+             fees & the rest 50% would be refunded on pro-rata basis, considering the usages of the services. Customer agrees that 
+             the refund process would take at least 21 days after the complete documentation has been received by the Finance team
+              for processing such refund.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+                 Where Subscription Fees accrues it shall be payable at or within such time as stated in the invoice(s) issued by the Company to the User.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            The Subscription Fees shall be paid by the User on demand. In case the user disputes the same for any reason whatsoever,
+             he shall make the payment towards the Subscription Fees accrued subject to the decision of the Company on the dispute.
+              In the event of Company's deciding the dispute in the User's favour, the Company shall refund to the User any excess
+               amount paid by the User free of interest.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            Any delay in the payment by the User of any sums due under this Agreement, the Company shall have the right to charge interest on the outstanding amount from the date the payment
+             became due until the date of final payment by the User.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            Payments made to the Company through IOS app shall not be refundable under any circumstances,
+             including but not limited to the termination of this Agreement for whatever reason.
+              <br>
+        </ion-label>
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Owners Services:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            The Owners Service once subscribed shall be non-refundable, however, Company may refund the amount in the event a property
+             is not linked with the package so bought. In such an event 50% of the order amount would be towards the activation/administration
+             fees and shall be forfeited & the rest 50% would be refunded on pro-rata basis.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            If it is brought to the notice of the Company that the User is not the Owner of the property, instead is a Builder/Agent, in such an event the listing
+             would be deactivated without any notification and the amount paid shall be forfeited.
+              <br>
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Charge Back Policy:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            Payment for the services offered shall be on 100% advance basis.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            Payment for service once subscribed to by the subscriber, is not refundable and any amount paid shall stand appropriated.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+                Refund if any will be at the sole discretion of the Company only.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            User acknowledges and agrees that the Company at its sole discretion and without prejudice to other rights and remedies
+             that it may have under the applicable laws, shall be entitled to set off the amount paid by a subscriber/user, against 
+             any amount(s) payable by user to the Company under any other agreement or commercial relationship towards other products/services.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            The Company offers no guarantees whatsoever for the accuracy or timeliness of the refunds reaching the Subscribers card/bank accounts.
+             This is on account of the multiplicity of organizations involved in processing of online transactions, the problems with Internet
+              infrastructure currently available and working days/holidays
+             of financial institutions.
+              <br>
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Cancellation:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            Company shall reserve the exclusive right to cancel any content whatsoever from being published or reflected on its website or in any other
+             mode. The cancellation charges payable to the User shall be at the applicable rates laid down in the cancellation and refund policy.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            For Platinum listing packages, there shall be no cancellation or refund of orders booked/payments made via online payment options
+             (except in the case of Cheque & Demand Draft). Cancellations requests for orders placed via cheque/demand draft can be made only before such payment is realized by the Company.
+              <br>
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >SECURITY:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            Transactions on the Site are secure and protected. Any information entered by the User when transacting on the Site is encrypted
+             to protect the User against unintentional disclosure to third parties. The User's credit and debit card information is not received,
+              stored by or retained by the Company / Site in any manner. This information is supplied by the User directly to the relevant
+               payment gateway which is authorized to handle the information provided, and is compliant with
+             the regulations and requirements of various banks and institutions and payment franchisees that it is associated with.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            To protect the secrecy of user identification and/or password the User shall take all such measures as may be necessary (including but without limiting to changing his password from time to time and shall not reveal the same to any other person(s).
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            Since a user identification is necessary to access the Service; the User shall use only his own user identification.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            It is agreed by the User that he acquires no rights to any mailbox number or/and the User identification or/and circuit reference or/and any codes assigned to him by the Company. The User further agrees that except as otherwise proved herein, the Company reserves the right to change or/and re-assign the same to the User, at its sole discretion without being liable to the User for any kind of damages or/and relief or/and any other consequence/s.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            In the event of theft or/and loss of User identification or/and password or/and security word, the User shall notify the Company immediately via telephone or/and concurrently in person provide the Company with a written notice to the same effect. The User shall remain liable for use of the Services by any third party until such theft or loss is notified to the Company.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>6.</span>
+            The password and username being made available to the customer shall be used only by the organization named by the customer and the employee of the organization. The User shall take all necessary pre-cautions to prevent un-authorized access or/and leakage of username or/and password being provided by the Company to him.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>7.</span>
+            The User shall not use any software to automatically download or/and extract either a complete or/and partial
+             listing from Realtor1 database without prior consent from Realtor1 in writing.
+
+              <br>
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Obligations and Representations of User/Subscriber:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            To provide accurate, complete and correct registration data on initial application for the Services.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            The User agrees that any data entered on the Site will be subject to mandatory verification process by the Company.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            Any and all licenses, permits, consents, approvals and intellectual property or other rights as may be required for using the Service shall be obtained by the User at his own cost.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            The User will ensure compliance with all notices or instructions given by the Company from time to time to enable the use of the Service.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            The User understands and agrees that the User is responsible for all applicable taxes and for all costs that are incurred in using the Site service(s).
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>6.</span>
+            The User shall be solely responsible for all information retrieved, stored and transmitted by him.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>7.</span>
+            The User shall keep confidential and not disclose to any person the User's password and user identification
+             and all activities and transmission performed by the User through his user identification.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>8.</span>
+            The User shall be responsible for all the activities that occur his/its display name and password.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>9.</span>
+            The User agrees to immediately notify the Company of any unauthorized use / breach of his/its
+             password or account and ensure to exit from the account at the end of each session.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>10.</span>
+            The User shall immediately notify the Company of any un-authorized use of the User's account or any other breach of security known to the User.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>11.</span>
+            The User shall promptly make the payment to the Company towards the Subscription Fees as and when it becomes payable.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>12.</span>
+            The User shall be responsible for the set-up or configuration of his equipment for access to the Services.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>13.</span>
+            User hereby declares that he/it is fully aware that the online advertisements placed with Realtor1 shall be reflected after 48 hours and agrees to the stipulated 48 hours processing.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>14.</span>
+            The User agrees that any data entered into herein can and shall be saved, used and commercially exploited by Realtor1 as deemed fit by them.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>15.</span>
+            The User shall give out to the Company a non-exclusive, worldwide, royalty-free, irrevocable, sub-licensable right
+             (through multiple tiers) to exercise all copyright and publicity rights, in any existing or future media, known or unknown,
+              over the material or User Data displayed in your listings. For the purpose of this Agreement, "User Data" shall mean all information
+               (if any) submitted by the User on Realtor1 with the exception of trading data, credit card numbers, checking account numbers, etc.
+                "Individually Identifiable User Data" shall mean that subset of "User Data" which can be reasonably used to identify a specific
+                 individual such as their name, address, phone number, etc.
+             The User Data shall be deemed to be the property of Realtor1. The User shall take all reasonable efforts to ensure that it is accurate
+              and complete and not misleading in any.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>16.</span>
+            The User shall give out to the Company a non-exclusive, worldwide, royalty-free, irrevocable, sub-licensable right
+             (through multiple tiers) to exercise all copyright and publicity rights, in any existing or future media, known or unknown,
+              over the material or User Data displayed in your listings. For the purpose of this Agreement, "User Data" shall mean all information
+               (if any) submitted by the User on Realtor1 with the exception of trading data, credit card numbers, checking account numbers, etc.
+                "Individually Identifiable User Data" shall mean that subset of "User Data" which can be reasonably used to identify a specific
+                 individual such as their name, address, phone number, etc.
+             The User Data shall be deemed to be the property of Realtor1. The User shall take all reasonable efforts to ensure that it is accurate
+              and complete and not misleading in any.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>17.</span>
+            The User will indemnify Realtor1 for any action or claim committed/made by any third party resulting
+             from any information posted on the Site by the User or/and anybody else on his behalf and account.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>18.</span>
+            The User is solely responsible for any data entered on the Site. The User who has entered the data is fully<br>
+             responsible for any wrong data entered and shall be liable for any and all action(s) taken by third party<br>
+              (whether civil/criminal). The Company however shall endeavour to use the best industry practice, of weeding <br>
+              out all wrong data/ false data entered by the User and undertakes to withdraw all such data within reasonable<br>
+               time after verifying the complaint.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>18.</span>
+            User of the Application agrees to indemnify and keep Realtor1 indemnified from any wrong/false
+             data entered into and hereby warrants and covenants that all data
+             entered into the Application is true and correct and belongs exclusively to him/it and not to any other third party.
+              <br>
+        </ion-label>
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Prohibited Actions:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            User is restrained from allowing any person other than the authorized person(s) named in the application form to use the Service.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            The User undertakes not to resell or assign his/its rights or obligations under these Terms & Conditions. User also agrees not to make any unauthorized commercial use of the Service.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            The User shall not print, download, duplicate or otherwise copy, delete, vary or amend or use any data or personal information posted by any User on Site except such data and information which is posted by the particular User himself/itself.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            The Service shall not be used to send or receive any message, which is offensive on moral, religious, racial or political grounds or of abusive, indecent, obscene, defamatory or menacing nature.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            The User is prohibited from postings any information or content on Site, which directly or indirectly cause any threat or/and harassment or/and annoyance or/and anxiety or/and any other inconvenience of whatsoever nature.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>6.</span>
+            The User shall not infringe intellectual property rights of any person/party and/or retain information in any computer system or otherwise with an intention to do so.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>7.</span>
+            The User agrees not to make use of anyone else's information other than as necessary to complete any transactions in which User is involved.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>8.</span>
+            The User shall not violate, or attempt to violate the security of the Site and/or any web sites linked to Realtor1 or gain un-authorized access any information regarded as private by other User(s) or persons, including but without limitation to accessing data and information not intended for them or logging onto a server or account which the User is not authorized to access, attempting to probe, scan or test the vulnerability of a system or network or attempting to breach security or authentication.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>9.</span>
+            The User shall be prohibited to introduce, post or transmit any information or software, which contains a virus, worm or other harmful component into the internet or Site network system.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>10.</span>
+            In the event that the User breaches any of the above mentioned covenants, the Company shall have the right to delete any material relating to the violations. The Company reserves the unilateral right to suspend or/and deactivate the User's access to the Site Service and/or any other related facility in case of violation of terms of use. In addition to the right to indemnity available to the Company, the Company shall have the right to recourse to any legal remedy against the User to recover the loss suffered by the Company and the harm caused to the reputation of the Company, due to such violation by the User.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>11.</span>
+            In the event that the User breaches terms of use of service, the Company reserves the unilateral right to suspend or/and deactivate the User's access to the Site Service and/or any other related facility. Further Company at its sole discretion, permanently or temporarily, blacklist a User. The unutilized amount paid towards the service being the agreed quantum of liquidated damages shall stand forfeited by the Company. In addition to the right to indemnity available to the Company, the Company shall have the right to recourse to any legal remedy against the User to recover the loss suffered by the Company and the harm caused to the reputation of the Company, due to violation by the User.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>12.</span>
+            The Users shall avail Services on Realtor1 or any other related site for lawful purposes alone. Transmission or/and distribution or/and storage of material or/and conduct in violation of any applicable local or/and state or/and Central or/and foreign law or/and regulation is prohibited. This includes without limitation any unauthorized use of material protected by patent or/and copyright or/and trademark or/and other intellectual property right, material that is obscene or/and defamatory or/and libelous or/and constitutes an illegal threat, or/and violates rights of privacy or publicity, or/and violates export control laws. The User may use the information on our site only to the extent necessary to facilitate the related transactions.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>13.</span>
+            Company strongly opposes SPAM, which floods the Internet with unwanted and unsolicited email and deteriorates the performance and availability of the Realtor1 site. All forms of SPAM, or any other activities that have the effect of facilitating SPAM, are strictly prohibited.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>14.</span>
+            Company also prohibits the use of another internet service to send or post SPAM to drive visitors to your site hosted on or through Realtor1.com site, whether or not the messages were originated by you, under your direction, or by or under the direction of a related or unrelated third party.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>15.</span>
+            You shall not use any "deep-link", "page-scrape", "robot", "spider" or other automatic device, program, algorithm or methodology, or any similar or equivalent manual process, to access, acquire, copy or monitor any portion of the Site or any Content, or in any way reproduce or circumvent the navigational structure or presentation of the Site or any Content, to obtain or attempt to obtain any materials, documents or information through any means not otherwise made available through the Platform. We reserve Our right to bar any such activity.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>16.</span>
+            You shall not attempt to gain unauthorized access to any portion or feature of the Platform, or any other systems or networks connected to the Platform or to any server, computer, network, or to any of the services offered on or through the Platform, by hacking, password "mining" or any other illegitimate means.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>17.</span>
+            You shall not engage in advertising to, or solicitation of, other Users of the Platform to buy or sell any services, including, but not limited to, services related to that being displayed on the Site or related to us.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>18.</span>
+            The Content posted does not necessarily reflect Company views. In no event shall Company assume or have any responsibility or liability for any Content posted or for any claims, damages or losses resulting from use of Content and/or appearance of Content on the Site. You hereby represent and warrant that You have all necessary rights in and to all Content which You provide and all information it contains and that such Content shall not infringe any proprietary or other rights of third parties or contain any libelous, tortious, or otherwise unlawful information.
+              <br>
+        </ion-label>
+        <br>
+        <ion-label>You agree that You shall not host, display, upload, modify, publish, transmit, update or share any information on the Site, that:</ion-label>
+       <br>
+        <ion-label class="description">
+            <span>1.</span>
+            belongs to another person and to which the user does not have any right;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            is defamatory, obscene, pornographic, paedophilic, invasive of another's privacy, including bodily privacy, insulting or harassing on the basis of gender, libellous, racially or ethnically objectionable, relating or encouraging money laundering or gambling, or otherwise inconsistent with or contrary to the laws in force;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            is harmful to Child,
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            infringes any patent, trademark, copyright or other proprietary rights;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>5.</span>
+            violates any law for the time being in force;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>6.</span>
+            deceives or misleads the addressee about the origin of the message or knowingly and intentionally communicates any information which is patently false or misleading in nature but may reasonably be perceived as a fact;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>7.</span>
+            impersonates another person;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>8.</span>
+            hreatens the unity, integrity, defence, security or Sovereignty of India, friendly relations with foreign States, or public order, or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting any foreign States;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>9.</span>
+            contains software virus or any other computer code, file or program designed to interrupt, destroy or limit the functionality of any computer resource;
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>10.</span>
+            is patently false and untrue, and is written or published in any form, with the intent to mislead or harass a person, entity or agency for financial gain or to causes
+              <br>
+        </ion-label>
+       
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Limitation of Liability:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            User agrees that neither Company nor its group companies, directors, officers or employee shall be liable for any direct or/and indirect or/and incidental or/and special or/and consequential or/and exemplary damages, resulting from the use or/and the inability to use the service or/and for cost of procurement of substitute goods or/and services or resulting from any goods or/and data or/and information or/and services purchased or/and obtained or/and messages received or/and transactions entered into through or/and from the service or/and resulting from unauthorized access to or/and alteration of user's transmissions or/and data or/and arising from any other matter relating to the service, including but not limited to, damages for loss of profits or/and use or/and data or other intangible, even if Company has been advised of the possibility of such damages. User further agrees that Company shall not be liable for any damages arising from interruption, suspension or termination of service, including but not limited to direct and/or indirect and/or incidental or/and special consequential or/and exemplary damages, whether such interruption or/and suspension or/and termination was justified or not, negligent or intentional, inadvertent or advertent. User agrees that Company shall not be responsible or liable to user, or anyone, for the statements or conduct of any third party of the service. In sum, in no event shall Company's total liability to the User for all damages or/and losses or/and causes of action exceed the amount paid by the User to Company, if any, that is related to the cause of action.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>2.</span>
+            The Company takes no responsibility/liability whatsoever for shortage or non-fulfilment of the service/s on Company or any other related site due to or arising out of technical failure or/and malfunctioning or/and otherwise and the User hereby undertakes that in such situation/s, the User shall not claim any right/damages/ relief, etc. against the Company for "Deficiency of service" under The Consumer Protection Act or any other Act/Rules, etc.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>3.</span>
+            Company shall not be liable for any and all costs, charges, expenses, etc. incurred in relation to the downloading fees by third party, airtime, ISP connection costs, etc., of which are to be borne by the user personally.
+              <br>
+        </ion-label>
+        <ion-label class="description">
+            <span>4.</span>
+            Company shall not be responsible for any malfunctioning, non-functioning of the mobile phone or any other application, and or any damage, loss, either direct or indirect arising out of the use of the Realtor1 mobile application on your mobile phone.
+              <br>
+        </ion-label>                
+    </div>
+
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Indemnity:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            User hereby releases and indemnify, or at its option and settle any third party lawsuit or proceeding brought against the Company based upon or otherwise any claim arising from the fact that the User Content, Site and/or User features infringe any copyright, trade secret or trademark of such third party and second, the Company's use of any User Content, provided that such use complies with the requirements of the Agreement and third, the User's use of the Services in any manner inconsistent with or in breach of the Agreement; and/or fourth, any claim alleging facts that would constitute a breach of User's representations and warranties made in this Agreement. Any such claim/proceeding if made directly on the User shall promptly be communicated to the Company by the User with all reasonable e information, assistance and cooperation in defending the lawsuit or proceeding. The User shall give the Company full control and sole authority over the defence and settlement of such claim. The User may join in defence with counsel of its choice at its own expense subject to the approval of the company. The User unilaterally agree to indemnify and hold harmless, without objection, the Company, its officers, directors, employees and agents from and against any claims, actions and/or demands and/or liabilities and/or losses and/or damages whatsoever arising from or resulting from their use of Realtor1.com or their breach of the terms of this Agreement. Indemnification shall be provided for any claim which shall arise and shall be limited to payment by the e indemnifying party ("User") of all damages and costs finally awarded for such claim, or settlement costs approved in writing by the Indemnitor (Company).
+              <br>
+        </ion-label>                           
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Notice:</ion-label>
+        </div>
+        <ion-label class="description">
+            <span>1.</span>
+            All notices (a) if sent to the User to the address identified on the Application Form and (b) if sent to the Company to such address as provided in writing for such notice purposes; provided, however, that all invoices and payments shall be sent to the attention of The Company's Finance department, all legal notices shall be sent to the attention of the Company's Legal Department, and all other correspondence shall be sent to the attention of the account manager specified by the Company. Notice shall be deemed given upon receipt when delivered personally and upon receiving acknowledgment / written verification of receipt from overnight courier.
+              <br>
+        </ion-label> 
+    </div>
+  
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Non-exclusive Remedy:</ion-label>
+        </div>
+        <ion-label class="description">
+            Termination or expiration of this Agreement, in part or in whole, shall not limit either party from pursuing other remedies available to it, nor shall either party be relieved of its obligation to pay all fees that are due and owing under this Agreement through the effective date of termination. Neither party shall be liable to the other for any damages resulting solely from termination as permitted herein.
+              <br>
+        </ion-label> 
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Waiver:</ion-label>
+        </div>
+        <ion-label class="description">
+             The failure of Company to exercise or enforce any right or provision of these Terms & Conditions shall not constitute a waiver of such right or provision. If any provision of these Terms & Conditions is found by a court of competent jurisdiction to be invalid, the parties nevertheless agree that the court should endeavour to give effect to the parties' intentions as reflected in the provision, and the other provisions of these Terms & Conditions shall remain in full force and effect.
+              <br>
+        </ion-label> 
+    </div>
+    <div class="div-label">
+        <div class="title">
+            <ion-label >Entire Agreement:</ion-label>
+        </div>
+        <ion-label class="description">
+            This Agreement shall constitute the complete and exclusive agreement between the parties with respect to the subject matter hereof, superseding any prior agreements, documents and or communications regarding such subject matter. This Agreement may only be modified, or/and any rights under it waived, by a written document executed by the Company only. The right to change vary or amend, however exclusively rests with the Company.
+              <br>
+        </ion-label> 
+    </div>
+            
+</div>  <div class="div-label">
+              <ion-label class="description">
+                  This Application <span>Realtor1</span> , including any subdomains thereof, and any other websites through which its services are made available,
+                   our mobile, tablet and other smart device applications, and application program interfaces etc, , (hereinafter collectively
+                    referred to as "Realtor1") is owned, hosted and operated by SBP Consulting Pvt Ltd (hereinafter referred to as SBP), a company
+                     incorporated in India under the Companies Act, 1956 and having its registered office at II Floor, C-Block, Cyber Gateway, Software Units Layout, Hitech City,
+                     Telangana, India - 500081.                      
+              </ion-label>        
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  These terms and conditions, privacy policy and community guidelines regulating use of these
+                  Services constitute a legally binding agreement between Realtor1 and the User (the “Agreement”).
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <ion-label class="description">Realtor1 and/or any other Application(s) linked to this Application is an online information and communications service provided to you, subject to your compliance with the terms and conditions set forth below.</ion-label>
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  SBP may amend/modify these terms and conditions at any time, and such modifications shall be effective immediately
+                   upon posting of the modified terms and conditions on Realtor1. You may review the modified terms and conditions periodically
+                    to be aware of such modifications and your continued access or use of Realtor1, shall be deemed conclusive proof of your
+                     acceptance of these terms and conditions, as amended/modified from time to time. SBP may also suspend the operation of
+                      Realtor1 for support or technical upgradation, maintenance work, in order to update the content or for any other reason.
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  If you utilize Realtor1 in a manner inconsistent with these terms and conditions, SBP may terminate your access,
+                   block your future access and/or seek such additional relief as the circumstances of your misuse may be deemed to
+                    be fit and proper.
+              </ion-label>    
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >DEFINITIONS</ion-label>
+              </div>
+              
+              <ion-label class="description">The term Subscriber would include any person, whether an individual or a legal entity who has subscribed
+                   to the Services of Realtor1 (whether on a paid or free basis), and to whom the access to Realtor1 is restricted by the use of a sign
+                    in user name and a password. The user name and password are either allotted by Realtor1 or chosen by the Subscriber or agreed upon
+                     by Realtor1. It is made abundantly clear that only the authorized User has the right to access the Services so offered by Realtor1.</ion-label>
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  The use and access to Realtor1 shall be subject to these terms and conditions and community guidelines.
+                   For the purposes of this Agreement, any person who does not have a legal or a contractual right to access
+                    the Services, but does so, will fall within the definition of an 'unauthorized user' and will nevertheless be subject
+                     to the terms and conditions regulating the usage of Realtor1, and expressly so with respect to respecting the intellectual
+                      property rights of the SBP, and abiding by terms and conditions below mentioned.
+              </ion-label>    
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  The terms 'User' and 'Customer' would include both the Subscriber/Advertiser(s) and Browser/Visitor(s)
+              </ion-label>    
+          </div>
+          <div class="div-label">
+              <ion-label class="description">
+                  The terms 'Service' or 'Services' would mean to include the interactive online information service offered by Realtor1
+                   on the internet through which the user may access information carried by Realtor1 in the database maintained by it.
+                    The terms would also include to mean the search tools through which the User can search through the hosted databases
+                     and information using a number of search tools that are present with a selection matching their search criteria.
+                      The term would also include services by way of space used by customers for advertisements such as listings and
+                       banners. Users then select one or more of the items presented to view the full document/ record. The term Service
+                        does not extend to Realtor1 acting as an agent either express or implied on behalf of any User/Customer and is merely
+                         acting as a medium of information exchange.
+              </ion-label>    
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Services</ion-label>
+              </div>
+              
+              <ion-label class="description">Company provides a number of internet-based services through its platform and shall include:<br></ion-label>
+              <ion-label class="description">
+                  <span>1.</span>
+                  Posting User profile or listing for the purpose of sale/rental of property, and related property services etc.<br>
+              </ion-label> 
+              <ion-label class="description">
+                  <span>2.</span>
+                  Find a property through Realtor1 and its internet links.<br>
+              </ion-label> 
+              <ion-label class="description">
+                  <span>3.</span>
+                  Place a print advertisement in any of the group publications through the Realtor1 application.<br>
+              </ion-label> 
+              <ion-label class="description">
+                  <span>4.</span>
+                  Post advertisements on Realtor1.<br>
+              </ion-label> 
+              <ion-label class="description">
+                  <span>5.</span>
+                  Send advertisements and promotional messages through emails and messages.<br><br>
+              </ion-label> 
+
+              <ion-label class="description">The Services can be purchased through various methods of payments offered. The purchase of Services shall be additionally governed by specific policies of sale, like subscription fees, payment and Refund policy, cancellation policy etc.</ion-label>
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Eligibility:</ion-label>
+              </div>
+              <ion-label class="description">
+                  You hereby represent and warrant to the Company that you are at least eighteen (18) years of age or above and are capable of entering,
+                   performing and adhering to these Terms. While individuals under the age of 18 may utilize the Service of the site,
+                   they shall do so only with the involvement & guidance of their parents and / or legal guardians, under such Parent /Legal guardian's
+                    registered account. You agree to register prior to uploading any content and / or comment and any other use or services of this site
+                     and provide your details including but not limited to complete name, age, email address, residential address, and contact number.
+              </ion-label>            
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Subscription Fees:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                 The applicable rate of the Subscription Fees for the Service provided shall be such as mentioned in the "My Subscriptions"
+                  page or as may be prescribed by the Company from time to time.
+                  <br>                  
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  Liability for the Subscription Fees shall accrue from the Date of Commencement.
+                  <br>                  
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  All individual Users who access or make posting of information on the Site for the purpose of buying property
+                   shall be exempted from the application of this clause.
+                  <br>                  
+              </ion-label>
+          
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Payment & Refund clause:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  For all services bought, 50% of the order amount would be towards the activation/administration
+                   fees & the rest 50% would be refunded on pro-rata basis, considering the usages of the services. Customer agrees that 
+                   the refund process would take at least 21 days after the complete documentation has been received by the Finance team
+                    for processing such refund.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                       Where Subscription Fees accrues it shall be payable at or within such time as stated in the invoice(s) issued by the Company to the User.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  The Subscription Fees shall be paid by the User on demand. In case the user disputes the same for any reason whatsoever,
+                   he shall make the payment towards the Subscription Fees accrued subject to the decision of the Company on the dispute.
+                    In the event of Company's deciding the dispute in the User's favour, the Company shall refund to the User any excess
+                     amount paid by the User free of interest.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  Any delay in the payment by the User of any sums due under this Agreement, the Company shall have the right to charge interest on the outstanding amount from the date the payment
+                   became due until the date of final payment by the User.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  Payments made to the Company through IOS app shall not be refundable under any circumstances,
+                   including but not limited to the termination of this Agreement for whatever reason.
+                    <br>
+              </ion-label>
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Owners Services:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  The Owners Service once subscribed shall be non-refundable, however, Company may refund the amount in the event a property
+                   is not linked with the package so bought. In such an event 50% of the order amount would be towards the activation/administration
+                   fees and shall be forfeited & the rest 50% would be refunded on pro-rata basis.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  If it is brought to the notice of the Company that the User is not the Owner of the property, instead is a Builder/Agent, in such an event the listing
+                   would be deactivated without any notification and the amount paid shall be forfeited.
+                    <br>
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Charge Back Policy:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  Payment for the services offered shall be on 100% advance basis.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  Payment for service once subscribed to by the subscriber, is not refundable and any amount paid shall stand appropriated.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                      Refund if any will be at the sole discretion of the Company only.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  User acknowledges and agrees that the Company at its sole discretion and without prejudice to other rights and remedies
+                   that it may have under the applicable laws, shall be entitled to set off the amount paid by a subscriber/user, against 
+                   any amount(s) payable by user to the Company under any other agreement or commercial relationship towards other products/services.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  The Company offers no guarantees whatsoever for the accuracy or timeliness of the refunds reaching the Subscribers card/bank accounts.
+                   This is on account of the multiplicity of organizations involved in processing of online transactions, the problems with Internet
+                    infrastructure currently available and working days/holidays
+                   of financial institutions.
+                    <br>
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Cancellation:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  Company shall reserve the exclusive right to cancel any content whatsoever from being published or reflected on its website or in any other
+                   mode. The cancellation charges payable to the User shall be at the applicable rates laid down in the cancellation and refund policy.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  For Platinum listing packages, there shall be no cancellation or refund of orders booked/payments made via online payment options
+                   (except in the case of Cheque & Demand Draft). Cancellations requests for orders placed via cheque/demand draft can be made only before such payment is realized by the Company.
+                    <br>
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >SECURITY:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  Transactions on the Site are secure and protected. Any information entered by the User when transacting on the Site is encrypted
+                   to protect the User against unintentional disclosure to third parties. The User's credit and debit card information is not received,
+                    stored by or retained by the Company / Site in any manner. This information is supplied by the User directly to the relevant
+                     payment gateway which is authorized to handle the information provided, and is compliant with
+                   the regulations and requirements of various banks and institutions and payment franchisees that it is associated with.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  To protect the secrecy of user identification and/or password the User shall take all such measures as may be necessary (including but without limiting to changing his password from time to time and shall not reveal the same to any other person(s).
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  Since a user identification is necessary to access the Service; the User shall use only his own user identification.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  It is agreed by the User that he acquires no rights to any mailbox number or/and the User identification or/and circuit reference or/and any codes assigned to him by the Company. The User further agrees that except as otherwise proved herein, the Company reserves the right to change or/and re-assign the same to the User, at its sole discretion without being liable to the User for any kind of damages or/and relief or/and any other consequence/s.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  In the event of theft or/and loss of User identification or/and password or/and security word, the User shall notify the Company immediately via telephone or/and concurrently in person provide the Company with a written notice to the same effect. The User shall remain liable for use of the Services by any third party until such theft or loss is notified to the Company.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>6.</span>
+                  The password and username being made available to the customer shall be used only by the organization named by the customer and the employee of the organization. The User shall take all necessary pre-cautions to prevent un-authorized access or/and leakage of username or/and password being provided by the Company to him.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>7.</span>
+                  The User shall not use any software to automatically download or/and extract either a complete or/and partial
+                   listing from Realtor1 database without prior consent from Realtor1 in writing.
+
+                    <br>
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Obligations and Representations of User/Subscriber:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  To provide accurate, complete and correct registration data on initial application for the Services.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  The User agrees that any data entered on the Site will be subject to mandatory verification process by the Company.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  Any and all licenses, permits, consents, approvals and intellectual property or other rights as may be required for using the Service shall be obtained by the User at his own cost.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  The User will ensure compliance with all notices or instructions given by the Company from time to time to enable the use of the Service.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  The User understands and agrees that the User is responsible for all applicable taxes and for all costs that are incurred in using the Site service(s).
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>6.</span>
+                  The User shall be solely responsible for all information retrieved, stored and transmitted by him.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>7.</span>
+                  The User shall keep confidential and not disclose to any person the User's password and user identification
+                   and all activities and transmission performed by the User through his user identification.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>8.</span>
+                  The User shall be responsible for all the activities that occur his/its display name and password.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>9.</span>
+                  The User agrees to immediately notify the Company of any unauthorized use / breach of his/its
+                   password or account and ensure to exit from the account at the end of each session.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>10.</span>
+                  The User shall immediately notify the Company of any un-authorized use of the User's account or any other breach of security known to the User.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>11.</span>
+                  The User shall promptly make the payment to the Company towards the Subscription Fees as and when it becomes payable.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>12.</span>
+                  The User shall be responsible for the set-up or configuration of his equipment for access to the Services.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>13.</span>
+                  User hereby declares that he/it is fully aware that the online advertisements placed with Realtor1 shall be reflected after 48 hours and agrees to the stipulated 48 hours processing.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>14.</span>
+                  The User agrees that any data entered into herein can and shall be saved, used and commercially exploited by Realtor1 as deemed fit by them.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>15.</span>
+                  The User shall give out to the Company a non-exclusive, worldwide, royalty-free, irrevocable, sub-licensable right
+                   (through multiple tiers) to exercise all copyright and publicity rights, in any existing or future media, known or unknown,
+                    over the material or User Data displayed in your listings. For the purpose of this Agreement, "User Data" shall mean all information
+                     (if any) submitted by the User on Realtor1 with the exception of trading data, credit card numbers, checking account numbers, etc.
+                      "Individually Identifiable User Data" shall mean that subset of "User Data" which can be reasonably used to identify a specific
+                       individual such as their name, address, phone number, etc.
+                   The User Data shall be deemed to be the property of Realtor1. The User shall take all reasonable efforts to ensure that it is accurate
+                    and complete and not misleading in any.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>16.</span>
+                  The User shall give out to the Company a non-exclusive, worldwide, royalty-free, irrevocable, sub-licensable right
+                   (through multiple tiers) to exercise all copyright and publicity rights, in any existing or future media, known or unknown,
+                    over the material or User Data displayed in your listings. For the purpose of this Agreement, "User Data" shall mean all information
+                     (if any) submitted by the User on Realtor1 with the exception of trading data, credit card numbers, checking account numbers, etc.
+                      "Individually Identifiable User Data" shall mean that subset of "User Data" which can be reasonably used to identify a specific
+                       individual such as their name, address, phone number, etc.
+                   The User Data shall be deemed to be the property of Realtor1. The User shall take all reasonable efforts to ensure that it is accurate
+                    and complete and not misleading in any.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>17.</span>
+                  The User will indemnify Realtor1 for any action or claim committed/made by any third party resulting
+                   from any information posted on the Site by the User or/and anybody else on his behalf and account.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>18.</span>
+                  The User is solely responsible for any data entered on the Site. The User who has entered the data is fully<br>
+                   responsible for any wrong data entered and shall be liable for any and all action(s) taken by third party<br>
+                    (whether civil/criminal). The Company however shall endeavour to use the best industry practice, of weeding <br>
+                    out all wrong data/ false data entered by the User and undertakes to withdraw all such data within reasonable<br>
+                     time after verifying the complaint.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>18.</span>
+                  User of the Application agrees to indemnify and keep Realtor1 indemnified from any wrong/false
+                   data entered into and hereby warrants and covenants that all data
+                   entered into the Application is true and correct and belongs exclusively to him/it and not to any other third party.
+                    <br>
+              </ion-label>
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Prohibited Actions:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  User is restrained from allowing any person other than the authorized person(s) named in the application form to use the Service.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  The User undertakes not to resell or assign his/its rights or obligations under these Terms & Conditions. User also agrees not to make any unauthorized commercial use of the Service.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  The User shall not print, download, duplicate or otherwise copy, delete, vary or amend or use any data or personal information posted by any User on Site except such data and information which is posted by the particular User himself/itself.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  The Service shall not be used to send or receive any message, which is offensive on moral, religious, racial or political grounds or of abusive, indecent, obscene, defamatory or menacing nature.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  The User is prohibited from postings any information or content on Site, which directly or indirectly cause any threat or/and harassment or/and annoyance or/and anxiety or/and any other inconvenience of whatsoever nature.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>6.</span>
+                  The User shall not infringe intellectual property rights of any person/party and/or retain information in any computer system or otherwise with an intention to do so.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>7.</span>
+                  The User agrees not to make use of anyone else's information other than as necessary to complete any transactions in which User is involved.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>8.</span>
+                  The User shall not violate, or attempt to violate the security of the Site and/or any web sites linked to Realtor1 or gain un-authorized access any information regarded as private by other User(s) or persons, including but without limitation to accessing data and information not intended for them or logging onto a server or account which the User is not authorized to access, attempting to probe, scan or test the vulnerability of a system or network or attempting to breach security or authentication.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>9.</span>
+                  The User shall be prohibited to introduce, post or transmit any information or software, which contains a virus, worm or other harmful component into the internet or Site network system.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>10.</span>
+                  In the event that the User breaches any of the above mentioned covenants, the Company shall have the right to delete any material relating to the violations. The Company reserves the unilateral right to suspend or/and deactivate the User's access to the Site Service and/or any other related facility in case of violation of terms of use. In addition to the right to indemnity available to the Company, the Company shall have the right to recourse to any legal remedy against the User to recover the loss suffered by the Company and the harm caused to the reputation of the Company, due to such violation by the User.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>11.</span>
+                  In the event that the User breaches terms of use of service, the Company reserves the unilateral right to suspend or/and deactivate the User's access to the Site Service and/or any other related facility. Further Company at its sole discretion, permanently or temporarily, blacklist a User. The unutilized amount paid towards the service being the agreed quantum of liquidated damages shall stand forfeited by the Company. In addition to the right to indemnity available to the Company, the Company shall have the right to recourse to any legal remedy against the User to recover the loss suffered by the Company and the harm caused to the reputation of the Company, due to violation by the User.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>12.</span>
+                  The Users shall avail Services on Realtor1 or any other related site for lawful purposes alone. Transmission or/and distribution or/and storage of material or/and conduct in violation of any applicable local or/and state or/and Central or/and foreign law or/and regulation is prohibited. This includes without limitation any unauthorized use of material protected by patent or/and copyright or/and trademark or/and other intellectual property right, material that is obscene or/and defamatory or/and libelous or/and constitutes an illegal threat, or/and violates rights of privacy or publicity, or/and violates export control laws. The User may use the information on our site only to the extent necessary to facilitate the related transactions.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>13.</span>
+                  Company strongly opposes SPAM, which floods the Internet with unwanted and unsolicited email and deteriorates the performance and availability of the Realtor1 site. All forms of SPAM, or any other activities that have the effect of facilitating SPAM, are strictly prohibited.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>14.</span>
+                  Company also prohibits the use of another internet service to send or post SPAM to drive visitors to your site hosted on or through Realtor1.com site, whether or not the messages were originated by you, under your direction, or by or under the direction of a related or unrelated third party.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>15.</span>
+                  You shall not use any "deep-link", "page-scrape", "robot", "spider" or other automatic device, program, algorithm or methodology, or any similar or equivalent manual process, to access, acquire, copy or monitor any portion of the Site or any Content, or in any way reproduce or circumvent the navigational structure or presentation of the Site or any Content, to obtain or attempt to obtain any materials, documents or information through any means not otherwise made available through the Platform. We reserve Our right to bar any such activity.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>16.</span>
+                  You shall not attempt to gain unauthorized access to any portion or feature of the Platform, or any other systems or networks connected to the Platform or to any server, computer, network, or to any of the services offered on or through the Platform, by hacking, password "mining" or any other illegitimate means.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>17.</span>
+                  You shall not engage in advertising to, or solicitation of, other Users of the Platform to buy or sell any services, including, but not limited to, services related to that being displayed on the Site or related to us.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>18.</span>
+                  The Content posted does not necessarily reflect Company views. In no event shall Company assume or have any responsibility or liability for any Content posted or for any claims, damages or losses resulting from use of Content and/or appearance of Content on the Site. You hereby represent and warrant that You have all necessary rights in and to all Content which You provide and all information it contains and that such Content shall not infringe any proprietary or other rights of third parties or contain any libelous, tortious, or otherwise unlawful information.
+                    <br>
+              </ion-label>
+              <br>
+              <ion-label>You agree that You shall not host, display, upload, modify, publish, transmit, update or share any information on the Site, that:</ion-label>
+             <br>
+              <ion-label class="description">
+                  <span>1.</span>
+                  belongs to another person and to which the user does not have any right;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  is defamatory, obscene, pornographic, paedophilic, invasive of another's privacy, including bodily privacy, insulting or harassing on the basis of gender, libellous, racially or ethnically objectionable, relating or encouraging money laundering or gambling, or otherwise inconsistent with or contrary to the laws in force;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  is harmful to Child,
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  infringes any patent, trademark, copyright or other proprietary rights;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>5.</span>
+                  violates any law for the time being in force;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>6.</span>
+                  deceives or misleads the addressee about the origin of the message or knowingly and intentionally communicates any information which is patently false or misleading in nature but may reasonably be perceived as a fact;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>7.</span>
+                  impersonates another person;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>8.</span>
+                  hreatens the unity, integrity, defence, security or Sovereignty of India, friendly relations with foreign States, or public order, or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting any foreign States;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>9.</span>
+                  contains software virus or any other computer code, file or program designed to interrupt, destroy or limit the functionality of any computer resource;
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>10.</span>
+                  is patently false and untrue, and is written or published in any form, with the intent to mislead or harass a person, entity or agency for financial gain or to causes
+                    <br>
+              </ion-label>
+             
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Limitation of Liability:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  User agrees that neither Company nor its group companies, directors, officers or employee shall be liable for any direct or/and indirect or/and incidental or/and special or/and consequential or/and exemplary damages, resulting from the use or/and the inability to use the service or/and for cost of procurement of substitute goods or/and services or resulting from any goods or/and data or/and information or/and services purchased or/and obtained or/and messages received or/and transactions entered into through or/and from the service or/and resulting from unauthorized access to or/and alteration of user's transmissions or/and data or/and arising from any other matter relating to the service, including but not limited to, damages for loss of profits or/and use or/and data or other intangible, even if Company has been advised of the possibility of such damages. User further agrees that Company shall not be liable for any damages arising from interruption, suspension or termination of service, including but not limited to direct and/or indirect and/or incidental or/and special consequential or/and exemplary damages, whether such interruption or/and suspension or/and termination was justified or not, negligent or intentional, inadvertent or advertent. User agrees that Company shall not be responsible or liable to user, or anyone, for the statements or conduct of any third party of the service. In sum, in no event shall Company's total liability to the User for all damages or/and losses or/and causes of action exceed the amount paid by the User to Company, if any, that is related to the cause of action.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>2.</span>
+                  The Company takes no responsibility/liability whatsoever for shortage or non-fulfilment of the service/s on Company or any other related site due to or arising out of technical failure or/and malfunctioning or/and otherwise and the User hereby undertakes that in such situation/s, the User shall not claim any right/damages/ relief, etc. against the Company for "Deficiency of service" under The Consumer Protection Act or any other Act/Rules, etc.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>3.</span>
+                  Company shall not be liable for any and all costs, charges, expenses, etc. incurred in relation to the downloading fees by third party, airtime, ISP connection costs, etc., of which are to be borne by the user personally.
+                    <br>
+              </ion-label>
+              <ion-label class="description">
+                  <span>4.</span>
+                  Company shall not be responsible for any malfunctioning, non-functioning of the mobile phone or any other application, and or any damage, loss, either direct or indirect arising out of the use of the Realtor1 mobile application on your mobile phone.
+                    <br>
+              </ion-label>                
+          </div>
+
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Indemnity:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  User hereby releases and indemnify, or at its option and settle any third party lawsuit or proceeding brought against the Company based upon or otherwise any claim arising from the fact that the User Content, Site and/or User features infringe any copyright, trade secret or trademark of such third party and second, the Company's use of any User Content, provided that such use complies with the requirements of the Agreement and third, the User's use of the Services in any manner inconsistent with or in breach of the Agreement; and/or fourth, any claim alleging facts that would constitute a breach of User's representations and warranties made in this Agreement. Any such claim/proceeding if made directly on the User shall promptly be communicated to the Company by the User with all reasonable e information, assistance and cooperation in defending the lawsuit or proceeding. The User shall give the Company full control and sole authority over the defence and settlement of such claim. The User may join in defence with counsel of its choice at its own expense subject to the approval of the company. The User unilaterally agree to indemnify and hold harmless, without objection, the Company, its officers, directors, employees and agents from and against any claims, actions and/or demands and/or liabilities and/or losses and/or damages whatsoever arising from or resulting from their use of Realtor1.com or their breach of the terms of this Agreement. Indemnification shall be provided for any claim which shall arise and shall be limited to payment by the e indemnifying party ("User") of all damages and costs finally awarded for such claim, or settlement costs approved in writing by the Indemnitor (Company).
+                    <br>
+              </ion-label>                           
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Notice:</ion-label>
+              </div>
+              <ion-label class="description">
+                  <span>1.</span>
+                  All notices (a) if sent to the User to the address identified on the Application Form and (b) if sent to the Company to such address as provided in writing for such notice purposes; provided, however, that all invoices and payments shall be sent to the attention of The Company's Finance department, all legal notices shall be sent to the attention of the Company's Legal Department, and all other correspondence shall be sent to the attention of the account manager specified by the Company. Notice shall be deemed given upon receipt when delivered personally and upon receiving acknowledgment / written verification of receipt from overnight courier.
+                    <br>
+              </ion-label> 
+          </div>
+        
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Non-exclusive Remedy:</ion-label>
+              </div>
+              <ion-label class="description">
+                  Termination or expiration of this Agreement, in part or in whole, shall not limit either party from pursuing other remedies available to it, nor shall either party be relieved of its obligation to pay all fees that are due and owing under this Agreement through the effective date of termination. Neither party shall be liable to the other for any damages resulting solely from termination as permitted herein.
+                    <br>
+              </ion-label> 
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Waiver:</ion-label>
+              </div>
+              <ion-label class="description">
+                   The failure of Company to exercise or enforce any right or provision of these Terms & Conditions shall not constitute a waiver of such right or provision. If any provision of these Terms & Conditions is found by a court of competent jurisdiction to be invalid, the parties nevertheless agree that the court should endeavour to give effect to the parties' intentions as reflected in the provision, and the other provisions of these Terms & Conditions shall remain in full force and effect.
+                    <br>
+              </ion-label> 
+          </div>
+          <div class="div-label">
+              <div class="title">
+                  <ion-label >Entire Agreement:</ion-label>
+              </div>
+              <ion-label class="description">
+                  This Agreement shall constitute the complete and exclusive agreement between the parties with respect to the subject matter hereof, superseding any prior agreements, documents and or communications regarding such subject matter. This Agreement may only be modified, or/and any rights under it waived, by a written document executed by the Company only. The right to change vary or amend, however exclusively rests with the Company.
+                    <br>
+              </ion-label> 
+          </div>
+                  
+    
+      
+  
+</ion-content>
+
+<ion-footer>
+  <div class="div-button">
+      <ion-button expand="block" color="tertiary" (click)="agentConfirmation()">
+        Submit </ion-button>
+  </div>
+</ion-footer>

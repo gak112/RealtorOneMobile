@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-title>{{actionType}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="properties?.length > 0">
+    <app-product-box *ngFor="let property of properties" [hit]="property"></app-product-box>
+  </div>
+
+  <app-product-box></app-product-box>
+  
+</ion-content>

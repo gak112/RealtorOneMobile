@@ -1,0 +1,51 @@
+ion-content {
+    --background: var(--content-background-white);
+}
+
+ion-footer {
+    background: var(--content-background-white);
+    padding: 10px;
+    border-top: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    :not(:last-child) {
+        margin-right: 10px;
+    }
+}
+
+.div-form-main {
+    margin: 16px;    
+}
+
+.ion-button-settings {
+    --border-radius: 4px;
+    margin: 0;
+    text-transform: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    width: 40%;
+    margin-left: auto;
+}
+
+
+.div-flex {
+    display: flex;
+    align-items: center;
+}
+
+ion-button:not(:last-child) {
+    margin-right: 10px;
+}
+
+ion-button {
+    --border-radius: 6px;
+    margin: 0;
+    text-transform: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    width: 50%;
+}

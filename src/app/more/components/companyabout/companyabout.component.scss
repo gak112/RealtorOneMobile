@@ -1,0 +1,32 @@
+.div-description {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e5e5;
+    margin: 16px;
+
+    .div-desc {
+
+        ion-label {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            word-spacing: 1px;
+            color: #999;
+            font-weight: 600;
+            display: block;
+        }
+    }
+}
+
+.div-img {
+
+    ion-img {
+        height: 250px;
+        width: 100%;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+}

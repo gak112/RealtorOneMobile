@@ -1,0 +1,38 @@
+<div class="div-tower-box">
+  <div class="div-title-section">
+    <ion-label class="label-title">
+      {{floor.floorName | uppercase}}
+    </ion-label>
+    <div class="div-icons-button">
+     
+      <ion-icon name="copy-outline" *ngIf="floor.configured" (click)="copyConfiguration()" style="color: var(--color-white);"></ion-icon>
+      <ion-icon name="clipboard-outline" *ngIf="displayPaste" (click)="pasteConfiguration()" style="color: var(--color-white);"></ion-icon>
+      <!-- <ion-icon class="blink" name="clipboard" *ngIf="!clipboard"></ion-icon> -->
+    </div>
+    <ion-button *ngIf="!floor.configured" (click)="openFloorConfigure(floor)" class="ion-button-settings" size="small" expand="block" color="warning">
+      Configure
+    </ion-button>
+    <ion-button *ngIf="floor.configured" (click)="openFloorConfigure(floor)" class="ion-button-settings" size="small" expand="block" color="warning">
+      Configured
+    </ion-button>
+    <!-- *ngIf="pasteAllFlats" -->
+    <ion-button  (click)="pasteFlatsConfiguration(floor)" class="ion-button-settings" style="margin-left: 10px;" size="small" expand="block" color="warning">
+      Paste
+    </ion-button>
+  </div>
+ 
+  <div class="div-flat-nos">
+    
+    <div class="div-icon shake-animation"  (click)="openFlatConfigure(flat)" *ngFor="let flat of flats; let i = index">
+      <ion-img [src]="'assets/img/tower.png'"></ion-img>
+      <ion-label>{{floor.floorNumber * 100 + flat.flatNumber}}
+      </ion-label>
+      
+      <ion-icon *ngIf="flat.configured" (click)="copyFlatConfiguration(flat)" class="icon-copy" name="copy" ></ion-icon>
+      <ion-icon *ngIf="!flat.configured" (click)="pasteFlatConfiguration(flat)" class="blink icon-copy" name="clipboard" ></ion-icon>
+      <ion-icon name="remove-circle" *ngIf="i === 1"></ion-icon>
+    </div>
+    <!-- class="active" -->
+
+  </div>
+</div>

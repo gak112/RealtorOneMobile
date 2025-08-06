@@ -1,0 +1,102 @@
+.span-settings1 {
+    font-size: 10px;
+    color: var(--color-777);
+    font-weight: 600;
+    margin-left: 5px;
+    letter-spacing: 0.5px;
+}
+
+.div-like {
+    // background-color: #0c77c1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    padding-bottom: 6px;
+    position: relative;
+    border-top: var(--border);
+    
+    .div-share-sub {
+        display: flex;
+        align-items: center;
+    }
+
+    .div-like-main {
+        display: flex;
+        align-items: center;
+
+       
+
+        .div-bookmark {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+    }
+}
+.div-like-sub {
+    display: flex;
+    align-items: center;
+   
+}
+
+.icon-settings {
+    font-size: 18px;
+    color: var(--color-777);
+    margin-right: 3px;
+}
+
+.icon-eye {
+    margin-top: -2px;
+    font-size: 18px;
+    color: var(--color-777);
+}
+
+.span-settings {
+    font-size: 10px;
+    color: var(--color-777);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.div-like-share {
+    display: flex;
+    align-items: center;
+}
+.like-settings {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.like-btn {
+    display: inline-block;
+    Cursor: pointer;
+    width: 55px;
+    height: 55px;
+    position: absolute;
+    top: -8%;
+    left: -1%;
+}
+
+.like-btn {
+  background:url('/assets/img/heart.png') no-repeat 0% 50%;  //url('https://i.ibb.co/vw78mf3/heart.png') no-repeat 0% 50%;
+  background-size: 2900%;
+}
+
+.like-active {
+  animation-name: animate;
+  animation-duration: .8s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.like-active {
+  animation-timing-function: steps(28);
+}
+
+@keyframes animate {
+  0%   { background-position: left;  }
+  50%  { background-position: right; }
+  100% { background-position: right; }
+}
+

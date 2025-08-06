@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+          <ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+      </ion-buttons>
+      <ion-title>Comments</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-comments-main">
+      <div class="div-comments-sub">
+          <div class="div-img">
+              <img src="assets/img/dummy/usher.jpg">
+          </div>
+          <div class="div-name-comments">
+              <div class="div-name-time">
+                  <h6>Pogula Srinu</h6>
+                  <span>22h ago</span>
+              </div>
+              <div class="div-comment-section">
+                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi suscipit quae praesentium! Cumque molestias quidem ducimus porro, possimus nemo voluptatum.</p>
+              </div>
+              <div class="div-like">
+                  <div class="div-like-share">
+                       <div class="like-settings" style="margin-right: 10px;">
+                           <span class="like-btn"  [class.like-active]="true"></span>
+                           <span class="span-settings1">Like</span>
+                       </div>
+                   </div>              
+                   <div class="div-like-main">
+                       <div class="div-like-sub">
+                            <ion-icon name="heart"></ion-icon>
+                            <span class="span-settings" >{{10}} Likes</span>
+                       </div>
+                       <div class="div-bookmark">
+                          <ion-icon name="arrow-undo-outline"></ion-icon>
+                            <span class="span-settings" >Replay</span>
+                       </div>
+                   </div>
+               </div>
+          </div>
+      </div>
+      <div class="div-reply-sub">
+          <div class="div-img">
+              <img src="assets/img/dummy/mike.jpg">
+          </div>
+          <div class="div-name-comments">
+              <div class="div-name-time">
+                  <h6>Gunda Abhinav</h6>
+                  <span>22h ago</span>
+              </div>
+              <div class="div-comment-section">
+                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi suscipit quae praesentium! Cumque molestias quidem ducimus porro, possimus nemo voluptatum.</p>
+              </div>
+              <div class="div-like" style="background: transparent">
+                  <div class="div-like-share">
+                       <div class="like-settings" style="margin-right: 10px;">
+                           <span class="like-btn"  [class.like-active]="true"></span>
+                           <span class="span-settings1">Like</span>
+                       </div>
+                   </div>              
+                   <div class="div-like-main">
+                       <div class="div-like-sub">
+                            <ion-icon name="heart"></ion-icon>
+                            <span class="span-settings" >{{10}} Likes</span>
+                       </div>
+                       <div class="div-bookmark">
+                          <ion-icon name="arrow-undo-outline"></ion-icon>
+                            <span class="span-settings" >Replay</span>
+                       </div>
+                   </div>
+               </div>
+          </div>
+      </div>
+      <div class="div-reply-sub">
+          <div class="div-img">
+              <img src="assets/img/dummy/profile.png">
+          </div>
+          <div class="div-name-comments">
+              <div class="div-name-time">
+                  <h6>Donda Venkanna</h6>
+                  <span>22h ago</span>
+              </div>
+              <div class="div-comment-section">
+                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi suscipit quae praesentium! Cumque molestias quidem ducimus porro, possimus nemo voluptatum.</p>
+              </div>
+              <div class="div-like" style="background: transparent">
+                  <div class="div-like-share">
+                       <div class="like-settings" style="margin-right: 10px;">
+                           <span class="like-btn"  [class.like-active]="true"></span>
+                           <span class="span-settings1">Like</span>
+                       </div>
+                   </div>              
+                   <div class="div-like-main">
+                       <div class="div-like-sub">
+                            <ion-icon name="heart"></ion-icon>
+                            <span class="span-settings" >{{10}} Likes</span>
+                       </div>
+                       <div class="div-bookmark">
+                          <ion-icon name="arrow-undo-outline"></ion-icon>
+                            <span class="span-settings" >Replay</span>
+                       </div>
+                   </div>
+               </div>
+          </div>
+      </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <div class="div-footer-reply">
+      <img src="assets/img/dummy/james.jpg">
+      <ion-input type="text" placeholder="Leave your reply here" class="input-settings"></ion-input>
+      <ion-icon name="arrow-redo-circle" class="icon-reply"></ion-icon>
+  </div>
+</ion-footer>

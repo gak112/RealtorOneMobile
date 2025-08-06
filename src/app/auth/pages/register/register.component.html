@@ -1,0 +1,43 @@
+
+<div class="div-login-main">
+  <div class="div-bg-black">
+  </div>
+  <div class="div-details-main">
+      <div class="div-details">
+          <div class="div-img">
+              <ion-img [src]="'assets/img/logo.png'"></ion-img>
+          </div>
+          <ion-label class="label-main-title">Register</ion-label>
+          <form [formGroup]="registerForm">
+              <div class="div-formgroup">
+                  <!-- <ion-label>Name</ion-label> -->
+                  <ion-input class="ion-auth-input" type="text" formControlName="fullName" placeholder="Full Name"></ion-input>
+              </div>
+              <div *ngIf="f.fullName.touched && f.fullName.invalid" class="alert">
+                  <p *ngIf="f.fullName.errors.required"><ion-icon name="alert-circle-sharp"></ion-icon>Full Name is required.</p>
+                  <p *ngIf="f.fullName.errors.minlength"><ion-icon name="alert-circle-sharp"></ion-icon>Full Name should be minimum 4 characters.</p>
+              </div>
+              
+              <div class="div-formgroup">
+                  <!-- <ion-label>Mobile No</ion-label> -->
+                  <ion-input class="ion-auth-input ion-number" formControlName="phone" type="number" inputmode="numeric" placeholder="Mobile No"></ion-input>
+                  <div *ngIf="f.phone.touched && f.phone.invalid" class="alert">
+                      <p *ngIf="f.phone.errors.required"><ion-icon name="alert-circle-sharp"></ion-icon>Mobile  No is required.</p>
+                      <p *ngIf="f.phone.errors.minlength"><ion-icon name="alert-circle-sharp"></ion-icon>Mobile No should be minimum 10 characters.</p>
+                  </div>
+              </div>
+              <div class="div-buttons">
+                  <ion-button expand="block" class="ion-button-settings" color="warning" (click)="register()">Sign Up</ion-button>
+              </div>
+          </form>
+      </div>
+  </div>
+  <div class="div-h5">
+      <ion-label class="p-register">Back to                         
+          <span (click)="setLogin.emit(true)">Login</span>                          
+      </ion-label>
+      <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>         
+ </div>   
+</div>
+
+

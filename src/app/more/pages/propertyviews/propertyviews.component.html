@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" slot="start" (click)="dismiss()" size="large"></ion-icon>
+    <ion-title>Property Views</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- skeleton code start -->
+  <!-- <ion-card (click)="showViewersList()">
+    <ion-item  style="--inner-border-width: 0;width: 343px;height: 59px;">
+      <ion-skeleton-text [animated]="true" style="height: 36px;width: 36px;border-radius: 50%;"></ion-skeleton-text>
+      <div class="two">
+        <ion-skeleton-text [animated]="true" style="width: 150px;line-height: 20px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width: 50px;line-height: 14px;"></ion-skeleton-text>
+      </div>
+    </ion-item>
+    <div class="main" style="padding: 0 10px;">
+      <ion-skeleton-text [animated]="true" style="height: 150px;width: 100%;border-radius: 16px;"></ion-skeleton-text>
+     
+    </div>
+    <div class="flex">
+      <ion-skeleton-text [animated]="true" style="height: 40px; width: 70px; border-radius: 100px; margin: 0;
+  "></ion-skeleton-text>
+      <div>
+        <ion-skeleton-text [animated]="true" style="height: 40px; width: 150px; border-radius: 100px; margin: 0;
+  "></ion-skeleton-text>
+       
+      </div>
+    </div>
+    <div class="text">
+      <ion-skeleton-text [animated]="true" style="width: 150px;  margin: 0;line-height: 30px;
+  "></ion-skeleton-text>
+      <div class="end" style="display: flex;align-items: center;">
+        <ion-skeleton-text [animated]="true" style="height: 18px;width: 16px;margin-right: 5px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="height: 18px;width: 24px;"></ion-skeleton-text>
+      </div>
+    </div>
+
+  </ion-card> -->
+  <!-- skeletoncode end -->
+
+  <ion-card (click)="showViewersList()">
+    <ion-item>
+      <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <div class="two">
+        <ion-label class="a">Revathi</ion-label>
+        <ion-label class="b">5 days ago</ion-label>
+      </div>
+    </ion-item>
+    <div class="main">
+      <ion-img
+        src="https://www.myhomeconstructions.com/my-home-avali/assests/img/my-home-avali-banner-launching-soon-web.webp"
+        alt="vehicle image"></ion-img>
+    </div>
+    <div class="flex">
+
+      <ion-label class="three">SALE</ion-label>
+
+      <div>
+        <ion-label style="color: rgb(5 143 235); font-weight: 700;font-size: 16px;background-color:rgb(79 171 232 / 21%);border-radius: 20px;
+         padding: 5px;margin-left: 5px;">₹20,202,020.00</ion-label>
+      </div>
+    </div>
+    <div class="text">
+      <ion-label class="name">Commercial--2bhk</ion-label>
+      <div class="end">
+
+
+        <ion-label class="eye">
+          <ion-icon class="icon" name="eye"></ion-icon> 99
+        </ion-label>
+      </div>
+    </div>
+
+  </ion-card> 
+</ion-content>

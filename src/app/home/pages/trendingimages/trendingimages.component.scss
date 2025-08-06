@@ -1,0 +1,26 @@
+ion-header {
+
+    ion-toolbar {
+
+        ion-icon {
+            margin-right: 16px;
+            font-size: 22px;
+        }
+    }
+}
+
+.div-main {
+    padding: 10px;
+}
+
+.div-img {
+    margin-bottom: 10px;
+}
+
+ion-img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    overflow: hidden;
+}

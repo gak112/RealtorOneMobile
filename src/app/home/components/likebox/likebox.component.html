@@ -1,0 +1,17 @@
+<!-- <div class="div-likes-sub" *ngIf="user">
+  <img [src]="user.photoURL || 'assets/img/nouser.jpg'">
+  <div class="div-names">
+      <h6>{{user.fullName}}</h6>
+      <span>{{like.hit?.createdAt?.toDate() | date: 'dd MMM yyyy hh:mm a'}}</span>
+  </div>
+  <ion-icon name="heart-circle"></ion-icon>
+</div> -->
+
+<div class="div-likes-sub" >
+  <img [src]="user.photoURL || 'assets/img/nouser.jpg'">
+  <div class="div-names">
+      <h6>{{user.fullName}}</h6>
+      <span>{{like.hit?.createdAt?.toDate() | date: 'dd MMM yyyy hh:mm a'}}</span>
+  </div>
+  <ion-icon name="heart-circle"></ion-icon>
+</div>

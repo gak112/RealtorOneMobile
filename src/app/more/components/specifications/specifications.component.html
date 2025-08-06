@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-icon name="chevron-back-outline" class="icon-back" (click)="dismiss()"></ion-icon> 
+      <ion-title>
+          Specfications
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="specificationDetails">
+  <div class="div-form">
+
+          <div class="div-flex">
+              <ion-input [(ngModel)]="title" type="text" placeholder="Specfication Title" class="ion-input-settings" style="margin-right: 10px;margin-bottom: 0;"></ion-input>
+              <ion-button color="primary" (click)="add()">Add</ion-button> 
+          </div>
+          <div class="div-specification-display" *ngIf="asp >= 0">
+              <div class="div-title-delete" (click)="asp === -1">
+                  <ion-label class="ion-label-main">{{specifications[asp].title}}</ion-label>
+                  <ion-icon name="trash-outline" (click)="deleteMainSpecification(asp)"></ion-icon>
+              </div>
+              <div class="form-group">
+                  <ion-input type="text" [(ngModel)]="specificationDetails.key" placeholder="Keyword" class="ion-input-settings"></ion-input>
+
+                  <div class="div-input">
+                    <ion-textarea type="text" [(ngModel)]="specificationDetails.value" class="ion-input-settings1" rows="3" style="height: auto;" placeholder="Value" ></ion-textarea>
+                  </div>
+
+                  <ion-button style="margin-top: 10px;" expand="block" color="primary"  (click)="save()">
+                      <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                      {{loading ? "...." : 'Add' }}</ion-button>
+              </div>
+          </div>
+
+
+          <div *ngIf="specifications?.length! > 0">
+              <div class="div-specification-display" (click)="asp = i" [class.active]="asp === i " *ngFor="let specification of specifications; let i = index">
+                  <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">{{specification.title}}</ion-label>
+                  <div class="div-specification-sub" *ngFor="let sd of specification.specifications; let i = index">
+                      <ion-label (input)="keyChanged($event, i)"  class="ion-label-title" contenteditable="true">{{sd.key}}</ion-label>
+                      <ion-label (input)="valueChanged($event, i)" class="ion-label-desc" style="text-align: center;" contenteditable="true" >{{sd.value}}</ion-label>
+                      <ion-icon name="trash-outline" (click)="deleteSpecification(i)" ></ion-icon>
+                  </div>
+
+                  <div class="div-edit-delete">
+                      <ion-label style="color: red;"><ion-icon name="trash-outline"  (click)="delete()"></ion-icon>Delete</ion-label>
+                  </div>
+              </div>
+          </div>
+      <ion-button *ngIf="false" style="margin-top: 10px;" expand="block" color="primary"  (click)="save()">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+          {{loading ? "...." : 'Submit'}}</ion-button>
+  </div>
+</ion-content>

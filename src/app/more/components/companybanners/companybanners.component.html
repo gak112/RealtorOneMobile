@@ -1,0 +1,13 @@
+<!-- <ionic-slides *ngIf="banner$ | async as banners">   -->
+
+  <!-- <ioni-slide *ngFor="let banner of banners"> -->
+    <div class="slide" >
+      <!-- [ngStyle]="{'background-image': 'url(' + 'banner.imagePath' + ')'}" -->
+        <ion-img (click)="openImageModal([banner.imagePath], $event, banner.heading)" [src]="banner.imagePath"></ion-img>
+      <div class="div-details">
+          <ion-label class="label-heading">{{banner.heading}}</ion-label>
+          <ion-label class="label-desc">{{banner.description}}</ion-label>
+      </div>
+    </div>
+  <!-- </ioni-slide> -->
+<!-- </ionic-slides> -->

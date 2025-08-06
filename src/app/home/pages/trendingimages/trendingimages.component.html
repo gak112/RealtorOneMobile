@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-title>
+      Trending
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- <div class="div-main" *ngIf="banners$ | async as banners">
+      <div class="div-img" *ngFor="let banner of banners" (click)="bannersview(banner)">
+        <ion-img [src]="banner.banner"></ion-img>
+      </div>
+  </div> -->
+
+  <!-- <div class="div-main">
+    <div class="div-img" *ngFor="let banner of dummyBanners" (click)="bannersview(banner)">
+      <ion-img [src]="banner.banner"></ion-img>
+    </div>
+</div> -->
+
+
+  <div class="div-main">
+    <div class="div-img" *ngFor="let banner of dummyBanners" (click)="bannersview(banner)">
+      <ion-skeleton-text [animated]="true" style="height: 200px;width: 100%; border-radius:5px;"></ion-skeleton-text>
+    
+    </div>
+  </div>
+
+
+</ion-content>

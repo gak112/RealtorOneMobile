@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="arrow-back-outline" (click)="dismiss()" class="icon-arrow"></ion-icon>
+    <ion-title>Confirm delivery location</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-livelocation></app-livelocation>
+
+  <div class="div-delivery-location">
+    <div class="div-searchbar">
+      <ion-searchbar
+        search-icon="search" 
+        animated="true" 
+        show-clear-button="focus" 
+        clear-icon="close"
+        debounce="800" 
+        placeholder="Search for area, street name ...">
+        <!-- (ionInput)="onSearchChange($event)" -->
+      </ion-searchbar>
+    </div>
+    <div class="div-position">
+      <div class="div-flex" (click)="addAddress()">
+        <ion-img [src]="'assets/img/target.png'"></ion-img>
+        <ion-label>Use current location</ion-label>
+      </div>
+      <div class="div-location-main">
+        <div class="div-location-sub">
+          <ion-icon name="location" style="font-size: 24px;margin-right: 10px;color: red;"></ion-icon>
+          <div style="width: calc(100% - 34px);">
+            <ion-label style="color: var(--color-black);">Home</ion-label>
+            <span>Reddy colony, Miryalaguda</span>
+          </div>
+        </div>
+        <ion-button expand="block" color="danger">
+          Confirm location
+        </ion-button>
+      </div>
+      <div class="div-location-main2" *ngIf="false">
+        <div class="div-location-sub">
+            <ion-label class="skeleton-box"></ion-label>
+            <span class="skeleton-box"></span>
+        </div>
+        <div class="div-location-sub">
+            <ion-label class="skeleton-box" style="width: 55px;"></ion-label>
+            <span class="skeleton-box" style="width: 100px;"></span>
+        </div>
+        <div class="div-flex-skeleton">
+          <ion-label class="skeleton-box"></ion-label>
+          <ion-label class="skeleton-box"></ion-label>
+          <ion-label class="skeleton-box"></ion-label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

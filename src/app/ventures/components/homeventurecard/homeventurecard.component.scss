@@ -1,0 +1,188 @@
+.div-ventors {
+    position: relative;
+    margin: 16px;
+    padding: 10px;
+    background: var(--content-background-white);
+    border-radius: 30px;
+    border: var(--border);
+
+    .slide {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .div-ventortitle {
+        padding: 16px 6px 6px;
+    }
+}
+
+.div-flex {
+    // display: flex;
+    // align-items: center;
+    margin-top: 5px;
+
+    .label-count {
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 5px 16px;
+        background: rgb(12 119 193 / 15%);
+        color: var(--color-main);
+        border-radius: 100px;
+        margin-right: 10px;
+
+        span {
+            padding-right: 10px;
+            margin-right: 10px;
+            border-right: 1px solid #0c77c1;
+        }
+    }
+}
+
+.div-img {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    ion-img {
+        height: 60px;
+        width: 60px;
+        border-radius: 10px;
+        margin-right: 10px;
+        border: var(--border-ddd);
+        padding: 5px;
+    }
+}
+
+.div-details {
+    position: relative;
+
+    .h4-rent {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        color: #0c77c1;
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 1px;
+        background: rgba(94, 124, 204, 0.25);
+        padding: 6px 12px;
+        line-height: 1;
+        border-radius: 6px;
+        padding-top: 7px;
+        font-family: "Alata", sans-serif !important;
+    }   
+}
+
+.label-hbk {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.25px;
+    color: #0c77c1;
+    display: block;
+    // width: calc(100% - 76px);
+
+    span {
+        font-size: 14px;
+        color: var(--color-black);
+        font-family: "operatr" !important;
+        letter-spacing: 1px;
+    }
+}
+
+.div-location-flex {
+    display: flex;
+    margin-top: 5px;
+
+    ion-icon {
+        font-size: 20px;
+        color: #999;
+        margin-right: 5px;
+    }
+    .label-address {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.25px;
+        color: #999;
+        /* width: calc(100% - 30px); */
+        /* border-left: 1px solid #ccc; */
+        /* padding-left: 12px; */
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
+
+.div-types {
+    display: flex;
+    align-items: center;
+
+    :not(:last-child) {
+        margin-right: 10px;
+    }
+
+    .div-type-sub {
+        display: flex;
+        align-items: center;
+
+        ion-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    }
+}
+
+.table {
+    width: 100%;
+    border: var(--border);
+    border-radius: 6px;
+}
+
+thead {
+    border-bottom: var(--border);
+}
+
+th {
+    background: var(--background-main);
+    color: var(--color-white);
+}
+
+th, td {
+    padding: 5px 10px;
+    text-align: left;
+    font-size: 12px;
+
+    &:not(:last-child) {
+        border-right: var(--border);
+    }
+}
+
+tr {
+
+    &:not(:last-child) {
+        border-bottom: var(--border);
+    }
+
+    &:last-child {
+        border-radius: 0 0 10px 10px;
+    }
+}
+
+td {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--color-777);
+}

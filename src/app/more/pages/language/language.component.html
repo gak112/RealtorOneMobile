@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+      <ion-title>
+          {{lngData.languageSettings}}
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-language" >
+      <div (click)="changeLanguage('telugu')" class="div-language-sub" [class.active]="action === 'telugu'" (click)="action = 'telugu'">
+          <ion-label>తెలుగు</ion-label>
+      </div>
+      <div (click)="changeLanguage('hindi')" class="div-language-sub" [class.active]="action === 'hindi'" (click)="action = 'hindi'">
+          <ion-label>हिंदी</ion-label>
+      </div>
+      <div (click)="changeLanguage('english')" class="div-language-sub" [class.active]="action === 'english'" (click)="action = 'english'" style="margin-bottom: 0;">
+          <ion-label>English</ion-label>
+      </div>
+  </div>
+</ion-content>

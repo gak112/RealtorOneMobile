@@ -1,0 +1,160 @@
+.div-history {
+    background: var(--card-background-white);
+    /* padding: 16px; */
+    border-radius: 30px;
+    position: relative;
+    box-shadow: 0 7px 14px -6px #ddd;
+    overflow: hidden;
+    margin-bottom: 16px;
+
+    .div-transheading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: #fd6c35;
+
+        ion-label {
+            font-weight: 600;
+            margin: 0;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: #353a36;
+            display: block;
+            line-height: 1;
+        }
+    }
+   
+    .div-transactions-details {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        background: #353a36;
+        padding-bottom: 46px;
+
+        .div-img {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            width: 50px;
+            margin-right: 16px;
+            border-radius: 50%;
+
+            ion-img {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+                overflow: hidden;
+                object-fit: cover;               
+            }    
+           
+        }
+
+        .h4-cutomername {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            /* margin-bottom: 0; */
+            color: #fff;
+            display: block;
+        }
+        .h5 {
+            margin: 0;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            color: #fd6c35;
+            font-weight: 500;
+            text-transform: capitalize;
+        }    
+    }
+    .div-productdetails {
+        border-radius: 30px;
+        margin-top: -30px;
+        background: white;
+        position: relative;
+
+        .div-product {
+            padding: 20px;
+            position: relative;
+
+            .img-dotted {
+                position: absolute;
+                top: 75px;
+                left: 35px;
+                transform: rotate(-45deg);
+                height: 20px;
+            }
+            
+            .div-planstarts {
+                display: flex;
+                align-items: center;
+
+                .h4-start {
+                    margin: 0;
+                    font-size: 12px;
+                    font-weight: 500;
+                    letter-spacing: 0.5px;
+                    display: block;
+                    color: var(--color-999);
+                    line-height: 1;
+                }
+
+                .h4-items {
+                    font-size: 14px;
+                    // margin-left: 5px;
+                    color: var(--color-black);
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                }
+            }           
+
+            .h3-qty {
+                font-size: 12px;
+                margin: 0;
+                font-weight: 600;
+                color: var(--color-black);
+                span {
+                    font-size: 14px;
+                    // margin-left: 5px;
+                    color: green;
+                    letter-spacing: 0.5px;
+                }
+            }
+        }           
+    }
+}
+
+.div-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: #f6f9fa;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+        font-size: 20px;
+        color: var(--color-black);
+    }
+}
+
+.total {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    padding: 5px 10px;
+    color: #fd6c35;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    z-index: 9;
+    display: block;
+    line-height: 1;
+    border: 1px solid;
+    padding-top: 7px;
+}

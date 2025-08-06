@@ -1,0 +1,27 @@
+<ion-content [scrollY]="false">
+  <div class="div-login-main">
+      <div class="div-bg-black">
+      </div>
+      <!-- <div class="div-bg-color"></div> -->
+      <div class="div-details-main">
+          <div class="div-details">
+              <div class="div-img">
+                  <ion-img [src]="'assets/img/logo.png'"></ion-img>
+              </div>
+              <ion-label class="label-main-title">OTP Validation</ion-label>
+              <ion-label class="label-desc">OTP sent to your registered mobile number<span routerLink="/auth">{{user.phone}}</span></ion-label>
+              <ion-input  [(ngModel)]="gotOTP" type="tel"  >
+              </ion-input>
+                <ion-label class="label-time-left">Time left:<span>{{time}}</span>Seconds</ion-label>
+                <div (click)="start()" class="div-resend" *ngIf="time <= 0">
+                    <ion-icon name="reload-outline"></ion-icon>
+                    <ion-label>Resend OTP</ion-label>
+                </div>
+                <ion-button class="ion-button-settings" color="warning" expand="block" (click)="setOTP()">Submit</ion-button>
+          </div>
+      </div>
+      <div class="div-h5">
+          <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>         
+     </div>   
+  </div>
+</ion-content>

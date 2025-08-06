@@ -1,0 +1,53 @@
+<!-- <div class="div-product-main" *ngIf="true">
+  <app-post-user-header></app-post-user-header>
+   <div class="div-img">
+       <ion-img src="assets/img/dummy/house3.png"></ion-img> -->
+       <!-- <swiper-container
+       [slidesPerView]="1"
+       [autoplay]="true"
+       class="mySwiper">
+       <swiper-slide *ngFor="let image of property.hit.resources">
+           <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
+           <ion-label class="label-edit" (click)="editProperty(property)">Edit</ion-label>
+       </swiper-slide>
+   </swiper-container> -->
+   <!-- </div>
+   <div class="div-details">
+    <div class="div-rent">
+        <ion-label class="label-rent-title">{{'Sale' | uppercase}}</ion-label>
+        <ion-label class="h4-rent">{{20000000 | currency:'INR'}}</ion-label>
+    </div>
+       <ion-label class="label-hbk" (click)="openFullview()"><span>{{'Commercial'}}</span><span *ngIf="true">&nbsp;&mdash;&nbsp;{{'3BHK'}}</span></ion-label>
+       <ion-label class="label-address">{{'property?.hit?.addressOfProperty?.address'}}</ion-label>
+   </div>
+   <app-post-likes></app-post-likes>
+</div> -->
+
+
+
+<div class="div-product-main" *ngIf="true">
+    <app-post-user-header></app-post-user-header>
+     <div class="div-img">
+        <ion-skeleton-text [animated]="true" style="height: 240px;width: 100%;"></ion-skeleton-text>
+         <!-- <ion-img src="assets/img/dummy/house3.png"></ion-img> -->
+     </div>
+     <div class="div-details">
+      <div class="div-rent" style="margin-bottom: 10px;">
+        <ion-skeleton-text [animated]="true" style="height: 40px; width: 70px; border-radius: 100px;border-radius: 100px;
+  "></ion-skeleton-text>
+          <!-- <ion-label class="label-rent-title">{{'Sale' | uppercase}}</ion-label> -->
+          <!-- <ion-label class="h4-rent">{{20000000 | currency:'INR'}}</ion-label> -->
+          <ion-skeleton-text [animated]="true" style="width: 150px; height: 28px; padding: 7px 7px 12px ;border-radius: 100px;"></ion-skeleton-text>
+      </div>
+      
+      <ion-skeleton-text [animated]="true" style="width: 160px; height: 25px;line-height: 10px"></ion-skeleton-text>
+      <!-- <ion-skeleton-text [animated]="true" style="width: 70px; height: 16px;"></ion-skeleton-text> -->
+         <!-- <ion-label class="label-hbk" (click)="openFullview()"><span>{{'Commercial'}}</span><span *ngIf="true">&nbsp;&mdash;&nbsp;{{'3BHK'}}</span></ion-label> -->
+         <!-- <ion-label class="label-address">{{'property?.hit?.addressOfProperty?.address'}}</ion-label> -->
+       
+        <ion-skeleton-text [animated]="true" style="width: 300px;height: 18px;margin: 10px 0px;" ></ion-skeleton-text>
+     </div>
+     <app-post-likes></app-post-likes>
+  </div>
+  
+  

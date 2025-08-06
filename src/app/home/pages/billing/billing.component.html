@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-icon name="chevron-back-outline" class="icon-back" (click)="dismiss()"></ion-icon>
+          <ion-title >Billing Details</ion-title>
+      </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-main">
+    <div class="div-cartcard" >
+      <div class="div-images-display" *ngIf="request.resources.length > 0">
+        <div class="div-img-sub" *ngFor="let resource of request.resources; let i = index">
+            <ion-img [src]="resource.resourceUrl"></ion-img>
+        </div>
+    </div>
+    <div class="div-add-text">
+          <div class="div-useradd" style="margin-bottom:10px">
+              <ion-label style="text-transform: uppercase;">{{request.action}} - {{request.bhkType}}</ion-label>
+              <span>{{request.actionType}}</span>
+              <span *ngIf="request.addressOfProperty.address">{{request.addressOfProperty.address}}</span>
+          </div>
+      </div>
+    </div>
+
+    <ion-label class="items">Bill Details</ion-label>
+    <div class="div-bill" style="margin-top: 0;">
+        <div class="div-icon-name" >
+            <ion-label class="label">Subcription Plan</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">Single post / 1 Month</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">Single post / 1 Month</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">20 posts / 1 Month</ion-label>
+        </div>
+        <!-- <div class="div-icon-name" >
+            <ion-label class="label">Discount</ion-label>
+            <ion-label class="label-title1"> - ₹50.00</ion-label>
+        </div> -->
+        <div class="div-icon-name" >
+            <ion-label class="label">Price</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">₹199.00</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">₹599.00</ion-label>
+            <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">₹1499.00</ion-label>
+        </div>
+
+        <div class="div-icon-name final" >
+          <ion-label class="label">Total</ion-label>
+          <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">₹199.00</ion-label>
+          <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">₹599.00</ion-label>
+          <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">₹1499.00</ion-label>
+      </div>
+    </div>
+
+
+    <div class="div-plan-expiry">
+      <ion-label>you have only remaining <span>1</span> post</ion-label>
+      <ion-button expand="block" color="danger" (click)="goToSubcriptions()">
+       Upgrade my plan</ion-button>
+    </div>
+  </div>
+
+</ion-content>
+
+<!-- <ion-footer>
+  <div class="div-button">
+      <ion-button expand="block" color="tertiary" (click)="confirmAndPay()">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+          Confirm & Pay</ion-button>
+  </div>
+</ion-footer> -->

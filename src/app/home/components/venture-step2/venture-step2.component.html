@@ -1,0 +1,16 @@
+<div class="div-flex" *ngIf="true">
+  <ion-button color="warning" size="small" expand="block" (click)="clearClipboard()" >
+    <ion-label>Clear Clipboard</ion-label>
+  </ion-button>  
+  <ion-button color="warning" size="small" expand="block" (click)="pasteAllData()" >
+    <ion-label>Paste All</ion-label>
+  </ion-button>
+</div>
+
+<div [class.martop] = pasteTowers>
+</div>
+<div *ngIf="true">
+  <app-venture-tower></app-venture-tower>
+</div>
+
+<app-venture-housevilla></app-venture-housevilla>

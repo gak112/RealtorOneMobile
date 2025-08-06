@@ -1,0 +1,97 @@
+<div class="div-ventors">
+  <div class="div-banners">
+    <div class="div-slides">
+      <swiper-container
+      [autoplay]="{delay: 5000,disableOnInteraction: false}"
+      [centeredSlides]="true"
+      class="mySwiper"  *ngIf="true">
+          <swiper-slide>
+            <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
+            <ion-img class="slide" src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
+          </swiper-slide>
+          <swiper-slide>
+            <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
+            <ion-img class="slide" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
+          </swiper-slide>
+      </swiper-container>
+      <swiper-container
+      [autoplay]="{delay: 5000,disableOnInteraction: false}"
+      [centeredSlides]="true"
+      class="mySwiper" *ngIf="true">
+          <swiper-slide *ngFor="let img of towerGallery;let i=index">
+            <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon>
+            <ion-img class="slide" [src]="img"></ion-img>
+          </swiper-slide>
+      </swiper-container>
+      <ion-button class="ion-button-settings2" (click)="ucare.openDialog()" size="small" color="warning">
+        Upload
+      </ion-button>
+      <div class="div-choosefile ">
+        <ngx-uploadcare-widget hidden
+        class="post-entry-btn"
+        #uc
+        (on-upload-complete)="onUploadComplete($event)"
+        [multiple]="true"     
+        data-crop="300:300"
+        public-key="563d1afa2618816d4d42">
+      </ngx-uploadcare-widget>
+      </div>
+    </div>
+    
+
+    <div class="div-ventortitle">
+      <div *ngIf="true">
+        <div>
+          <ion-input [(ngModel)]="tower.towerName" type="text" mode="md" label="Tower/APT Name" label-placement="floating" fill="outline" placeholder="Enter Tower/APT Name"></ion-input>
+        </div>
+        <div class="div-input-flex">
+          <div class="div-formgroup" style="margin-bottom: 0;">
+            <span>Floors</span>
+            <ion-input [(ngModel)]="tower.floors" class="input-settings" type="number"></ion-input>
+          </div>      
+          <div class="div-formgroup" style="margin-bottom: 0;" >
+            <span>Flats</span>
+            <ion-input [(ngModel)]="tower.flats" placeholder="No of Flats" class="input-settings" type="number"></ion-input>
+          </div>
+        </div>
+        <ion-button class="ion-button-settings" (click)="submit()" size="small" expand="block" color="tertiary">
+          <span *ngIf="false" class="spinner-border spinner-border-sm"></span> 
+          {{loading ? "...." : 'Submit'}}
+      </ion-button>
+      </div>
+      <div *ngIf="!false">
+        <div class="div-icons-main">
+          <div class="div-title-img">
+            <ion-img [src]="'assets/img/building.png'"></ion-img>
+            <ion-label>Tower/Apt</ion-label>
+          </div>
+          <div class="div-icons">
+            <ion-icon (click)="towerEntry = !towerEntry" name="create"></ion-icon>
+            <!-- <ion-icon name="eye"></ion-icon> -->
+            <!-- <ion-icon name="copy"></ion-icon>
+            <ion-icon name="clipboard"></ion-icon> -->
+            <ion-icon name="copy" *ngIf="true" (click)="copyConfiguration()"></ion-icon> <!-- copy -->
+            <ion-icon *ngIf="true" (click)="pasteConfiguration()" name="clipboard-outline"></ion-icon>  <!--  paste -->
+          </div>
+        </div>
+        <ion-label class="label-tower-title">{{tower.towerName}}</ion-label>
+        <div class="div-input-flex border" style="margin-bottom: 10px;">
+          <ion-label class="label-count">
+            <span>No of floors:</span>
+            {{tower.floors}}
+          </ion-label>
+          <ion-label class="label-count">
+            <span>No of flats:</span>
+            {{tower.flats}}
+          </ion-label>
+        </div>
+        <ion-button *ngIf="!false" (click)="openTowerConfigure()" class="ion-button-settings" size="small" expand="block" color="tertiary">
+          Configure
+        </ion-button>
+        <ion-button *ngIf="true" (click)="openTowerConfigure()" class="ion-button-settings" size="small" expand="block" color="tertiary">
+          Configured
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>

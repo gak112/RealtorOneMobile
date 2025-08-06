@@ -1,0 +1,55 @@
+<ion-content [scrollY]="false">
+  <div class="div-login-main" *ngIf="action === 'login'">
+      <div class="div-bg-black">
+          <ion-button class="ion-button-skip" (click)="dismiss()" color="light" size="small" fill="clear">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+              skip
+          </ion-button>
+      </div>
+      <!-- <div class="div-bg-color"></div> -->
+      <div class="div-details-main">
+          <div class="div-details">
+              <div class="div-img">
+                  <ion-img [src]="'assets/img/logo.png'"></ion-img>
+              </div>
+              <ion-label class="label-main-title">Login</ion-label>
+                  <div class="div-formgroup">
+                      <!-- <ion-label>Mobile No</ion-label> -->
+                      <ion-input  autocomplete="off" [disabled]="disablePhone" class="ion-auth-input" [(ngModel)]="phone" type="number" inputmode="numeric" placeholder="Mobile No"></ion-input>
+                  </div>
+                  <div class="div-formgroup1" *ngIf="validPhone">
+                      <ion-input autocomplete="off" class="ion-auth-input ion-number" [(ngModel)]="loginOTP" type="number" inputmode="numeric"></ion-input>
+                  </div>
+                  <div *ngIf="validPhone && !resendButton" style="text-align: center;padding-bottom: 16px;">
+                      <ion-label class="label-time-left">Time left:<span>{{time}}</span>Seconds</ion-label>
+                  </div>
+                  <div class="div-resend" (click)="resend()" *ngIf="resendButton">
+                      <ion-icon name="reload-outline"></ion-icon>
+                      <ion-label>Resend OTP</ion-label>
+                  </div>
+
+
+                  <div class="div-buttons">
+                      <ion-button class="ion-button-settings" expand="block" *ngIf="!validPhone" color="warning" (click)="verify()">
+                        <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
+                        <span *ngIf="!loading"> Verify </span>
+                      </ion-button>
+                      <ion-button class="ion-button-settings" expand="block" *ngIf="validPhone"  color="warning" (click)="setOTP()">
+                              <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
+                              <span *ngIf="!loading"> Sign in </span>
+                      </ion-button>
+                  </div>
+          </div>
+      </div>
+      <div class="div-h5">
+          <ion-label class="p-register" (click)="action = 'register'">Don't have an account?                          
+              <span>Register</span>                          
+          </ion-label>
+          <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>         
+     </div>   
+  </div>
+
+  <div class="div-login-main" style="padding: 0;" *ngIf="action === 'register'">
+      <app-register [phone]="phone" (setLogin)="setLogin($event)"></app-register>
+  </div>
+</ion-content>

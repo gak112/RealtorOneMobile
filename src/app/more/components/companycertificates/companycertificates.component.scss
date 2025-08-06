@@ -1,0 +1,19 @@
+.div-media {
+
+    .div-media-sub {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 16px;
+        grid-row-gap: 16px;
+
+        .img-certificate {
+            background: white;
+            height: 150px;
+            width: 100%;
+            border-radius: 6px;
+            object-fit: cover;
+            overflow: hidden;
+        }
+    }
+}

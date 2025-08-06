@@ -1,0 +1,272 @@
+ion-header {
+    background: var(--white);
+
+    ion-toolbar {
+        --min-height: 60px;
+        --background: #fff;
+
+        ion-icon {
+            margin-right: 16px;
+            font-size: 22px;
+            color: #000;
+        }
+
+        ion-back-button {
+            letter-spacing: 0.5px;
+            --color: #34353a;
+        }
+
+        ion-title {
+            --color: #000;
+            padding: 0 15px !important;
+            text-align: justify !important;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: none;
+            display: block;
+            position: relative !important;
+            left: 0;
+            overflow: visible !important;
+        }
+    }
+}
+ion-content {
+    --background: #f6f9fa;
+}
+
+.div-subscription-card {
+    margin: 16px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 20px -8px #ddd;
+    background-color: #fff;
+    position: relative;
+
+    .label-apply-coupon {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        color: #fff;
+        display: block;
+        line-height: 1;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        padding: 10px;
+        background: #ff82a1;
+        border-radius: 8px;
+        border: 1px solid rgb(255 255 255 / 35%);
+    }
+
+    .div-card-sub {
+        background: linear-gradient(135deg, rgb(255 181 184 / 75%), #ff82a1);
+        padding: 30px;
+        border-bottom-right-radius: 77%;
+        text-align: center;
+
+        .label-title {
+            display: block;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .label-price {
+            display: block;
+            font-size: 30px;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            margin-bottom: 20px;
+
+            sup {
+                font-size: 16px;
+                font-weight: 500;
+                top: -16px;
+            }
+
+            sub {
+                font-size: 12px;
+                font-weight: 500;
+                bottom: 0rem;
+            }
+        }
+
+        .label-plan {
+            display: inline-block;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            font-size: 18px;
+            position: relative;
+
+            &::before {
+                content: "";
+                background-color: #fff;
+                height: 1px;
+                width: 50px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: -75px;
+            }
+
+            &::after {
+                content: "";
+                background-color: #fff;
+                height: 1px;
+                width: 50px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: -75px;
+            }
+        }
+    }
+}
+
+.img-settings {
+    position: absolute;
+    bottom: 55px;
+    left: 20px;
+    transform: rotate(0deg);
+    height: 100px;
+    opacity: 0.15;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    :not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    li {
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        font-size: 14px;
+    }
+}
+
+
+
+
+.div-width {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .range-title {
+        font-size: 15px;
+        letter-spacing: 1px;
+         color: white;
+         display: block;
+    }
+    .range-sub {
+        font-size: 12px;
+        letter-spacing: 1px;
+         color: white;
+         display: block;
+    }
+
+    .count {
+        background: white;
+        padding: 0px 6px;
+        font-size: 16px;
+        border: 1px solid #eee;
+        color: #0c77c1;
+        font-weight: 700;
+        border-radius: 4px;
+        margin-left: 10px;
+    }
+}
+
+
+
+  
+ion-footer {
+    padding: var(--margin-10);
+    border-top: var(--border-ddd);
+    background: var(--card-background-white);
+  }
+  
+  
+  ion-button {
+    --border-radius: var(--border-radius-4);
+    margin: calc(var(--margin-16) * 0);
+    text-transform: inherit;
+   font-size: var(--font-size-14);
+    font-weight: var(--font-weight-600);
+    letter-spacing: var(--letter-spacing-5);
+    box-shadow: 0 6px 10px -4px #777;
+  
+    ion-icon {
+     font-size: var(--font-size-20);
+    }
+  }
+
+  .div-upgrade {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .div-text {
+        ion-label {
+            font-weight: 500;
+            letter-spacing: 1px;
+            display: block;
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .input-settings {
+            background: #f6f9fa;
+            --padding-start: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: black;
+            --placeholder-color: #000;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+    }
+  }
+
+  
+.div-info {
+    margin: 16px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 3px 20px -8px #ddd;
+    background-color: #fff;
+    position: relative;
+
+
+    ion-icon {
+        width: 10%;
+        font-size: 18px;
+        color: black;
+    }
+
+    ion-label {
+        display: block;
+        color: black;
+        font-weight: 500;
+        width: 80%;
+        text-align: left;
+        font-size: 14px;
+    }
+
+}

@@ -1,0 +1,211 @@
+<div>
+  <ion-input (ngModelChange)="ventureNameValid($event)" [(ngModel)]="ventures.ventureName" type="text" mode="md"
+    label="Venture Name" label-placement="floating" fill="outline" placeholder="Enter Venture Name"></ion-input>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{ventureNameError}}</span>
+  </div>
+</div>
+<div>
+  <ion-textarea (ngModelChange)="ventureDescriptionValid($event)" [(ngModel)]="ventures.description" type="text"
+    mode="md" label="Description" label-placement="floating" fill="outline" placeholder="Enter Description" rows="5"
+    style="height: auto;"></ion-textarea>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{ventureDescriptionError}}</span>
+  </div>
+</div>
+<div class="div-badges">
+  <ion-badge color="tertiary">{{area}}</ion-badge>
+  <ion-badge color="tertiary">{{city}}</ion-badge>
+  <ion-badge color="tertiary">{{district}}</ion-badge>
+  <ion-badge color="tertiary">{{state}}</ion-badge>
+  <ion-badge color="tertiary">{{pincode}}</ion-badge>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.ventureWebsite" type="text" mode="md" label="Venture Website"
+    label-placement="floating" fill="outline" placeholder="Enter Venture Website"></ion-input>
+</div>
+
+<div class="div-upload">
+  <div class="file-select">
+    <div class="div-choosefile ">
+      <ngx-uploadcare-widget class="post-entry-btn" #uc (on-upload-complete)="onLogoComplete($event)" [multiple]="false"
+        [multiple-max]="3" data-crop="300:300" [images-only]=true (on-change)="uploadLogoValid($event)"
+        public-key="563d1afa2618816d4d42">
+      </ngx-uploadcare-widget>
+    </div>
+    <ion-label class="upload-label">Upload Logo</ion-label>
+  </div>
+</div>
+<div class="div-dataimg2" *ngIf="true">
+  <div class="div-uploading">
+    <img [src]="ventures.logo || 'assets/img/no-image.png'" />
+  </div>
+</div>
+<div class="div-upload">
+  <div class="file-select">
+    <div class="div-choosefile ">
+      <ngx-uploadcare-widget class="post-entry-btn" #ucare (on-upload-complete)="ventureImagesComplete($event)"
+        [multiple]="true" [multiple-max]="3" data-crop="300:300" [images-only]=true public-key="563d1afa2618816d4d42">
+      </ngx-uploadcare-widget>
+    </div>
+    <ion-label class="upload-label">Venture Images</ion-label>
+  </div>
+</div>
+<div class="div-dataimg2" style="display: flex;align-items: center;">
+  <div class="div-uploading" *ngFor="let img of ventures.ventureImages;let i= index">
+    <ion-icon name="trash-outline" (click)="deleteImage(i)"></ion-icon>
+    <img [src]="img" />
+  </div>
+</div>
+<div class="div-formgroup flex">
+  <ion-label style="margin: 0;">Amenities</ion-label>
+  <ion-button size="small" (click)="amenitiesList()">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Add
+  </ion-button>
+</div>
+<div class="div-amenities" *ngIf="true">
+  <h4 *ngFor="let amenity of ventures.amenities">{{amenity}}</h4>
+</div>
+<div>
+  <ion-textarea [(ngModel)]="ventures.directors" type="text" mode="md" label="Directors" label-placement="floating"
+    fill="outline" placeholder="Enter Directors" rows="5" style="height: auto;"></ion-textarea>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.companyName" type="text" mode="md" label="Company Name" label-placement="floating"
+    fill="outline" placeholder="Enter Company Name"></ion-input>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.companyWebsite" type="text" mode="md" label="Company Website"
+    label-placement="floating" fill="outline" placeholder="Enter Company Website"></ion-input>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.facebookLink" type="text" mode="md" label="Facebook Link" label-placement="floating"
+    fill="outline" placeholder="Enter Facebook Link"></ion-input>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.instagramLink" type="text" mode="md" label="Instagram Link"
+    label-placement="floating" fill="outline" placeholder="Enter Instagram Link"></ion-input>
+</div>
+<div>
+  <ion-input [(ngModel)]="ventures.twitterLink" type="text" mode="md" label="Twitter Link" label-placement="floating"
+    fill="outline" placeholder="Enter Twitter Link"></ion-input>
+</div>
+
+<div class="div-upload">
+  <div class="file-select">
+    <div class="div-choosefile ">
+      <ngx-uploadcare-widget class="post-entry-btn" #uc (on-upload-complete)="onBrochureComplete($event)"
+        [multiple]="false" [multiple-max]="3" [clearable]="true" data-crop="300:300" public-key="563d1afa2618816d4d42">
+      </ngx-uploadcare-widget>
+    </div>
+    <ion-label class="upload-label">Brochure</ion-label>
+  </div>
+</div>
+
+<div class="div-dataimg2" *ngIf="true">
+  <div class="div-uploading">
+    <img [src]="ventures.brochure || 'assets/img/no-image.png'" />
+  </div>
+</div>
+<div>
+  <div style="display: flex;align-items: center;">
+    <div style="margin-right: 16px;flex-grow: 1;">
+      <ion-input (ngModelChange)="landAreaValid($event)" [(ngModel)]="ventures.landArea" type="text" mode="md"
+        label="Land Area" label-placement="floating" fill="outline" placeholder="Enter Land Area"></ion-input>
+    </div>
+    <div style="width: 100px;">
+      <ion-select (ngModelChange)="landAreaUnitsValid($event)" [(ngModel)]="ventures.landAreaUnits"
+        toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
+        label-placement="floating" fill="outline">
+        <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+        <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+        <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+        <ion-select-option value="Acre">Acre</ion-select-option>
+      </ion-select>
+    </div>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{landAreaError}}</span>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{landAreaUnitsError}}</span>
+  </div>
+</div>
+<div>
+  <div style="display: flex;align-items: center;">
+    <div style="margin-right: 16px;flex-grow: 1;">
+      <ion-input (ngModelChange)="propertySizeBuildUpValid($event)" [(ngModel)]="ventures.propertySizeBuildUp"
+        type="text" mode="md" label="Property Size (Build up)" label-placement="floating" fill="outline"
+        placeholder="Enter Property Size (Build up)"></ion-input>
+    </div>
+    <div style="width: 100px;">
+      <ion-select (ngModelChange)="landAreaUnitsValid($event)" [(ngModel)]="ventures.landAreaUnits"
+        toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
+        label-placement="floating" fill="outline">
+        <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+        <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+        <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+        <ion-select-option value="Acre">Acre</ion-select-option>
+      </ion-select>
+    </div>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{propertySizeBuildUpError}}</span>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{propertyUnitsError}}</span>
+  </div>
+</div>
+<div style="display: flex;align-items: center;margin-bottom: 16px;">
+  <div style="margin: 0;margin-right: 16px;flex-grow: 1;">
+    <ion-input [(ngModel)]="ventures.openArea" type="text" mode="md" label="Open Area" label-placement="floating"
+      fill="outline" placeholder="Enter Open Area" style="margin: 0 !important;"></ion-input>
+  </div>
+  <ion-label class="label-percentage">%</ion-label>
+</div>
+<div class="div-formgroup flex">
+  <ion-label style="margin: 0;">Specifications</ion-label>
+  <ion-button size="small" (click)="openSpecifications()">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Add
+  </ion-button>
+</div>
+<app-specview></app-specview>
+
+<div class="div-btn" (click)="ventureData()" *ngIf="true">
+  <ion-button size="small" color="warning">Change Data</ion-button>
+</div>
+<div class="div-input-grid" *ngIf="true">
+  <div class="div-input-sub" [class.active]="towerAPT">
+    <div class="div-img-label" (click)="towerAPTCheck()">
+      <ion-img [src]="'assets/img/building.png'"></ion-img>
+      <ion-label>Tower/Apartment</ion-label>
+    </div>
+    <ion-input [disabled]="ventureEdit" (ngModelChange)="towerAPRValid($event)" [(ngModel)]="ventures.towerAPT"
+      type="number"></ion-input>
+  </div>
+  <div class="div-input-sub" [class.active]="houseVilla">
+    <div class="div-img-label" (click)="houseVillaCheck()">
+      <ion-img [src]="'assets/img/duplex.png'"></ion-img>
+      <ion-label>House/Villa</ion-label>
+    </div>
+    <ion-input [disabled]="ventureEdit" (ngModelChange)="simplexValid($event)" [(ngModel)]="ventures.houseVilla"
+      type="number"></ion-input>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{towerAPTError}}</span>
+  </div>
+  <div class="error" *ngIf="true">
+    <ion-icon name="information-circle"></ion-icon>
+    <span class="note-file">{{houseVillaError}}</span>
+  </div>
+
+</div>

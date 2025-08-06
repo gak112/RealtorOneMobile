@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar style="--border-width: 0;">
+    <ion-buttons slot="start">
+      <ion-back-button text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Choose Type</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-request-menu">
+    <div class="div-categories-list">
+      <ion-nav-link router-direction="forward" [component]="propertyComponent">
+        <div class="div-category">
+          <div class="div-img">
+            <ion-img src="assets/img/house2.png"></ion-img>
+          </div>
+          <ion-label>Residential</ion-label>
+        </div>
+      </ion-nav-link>
+      <ion-nav-link router-direction="forward"  [component]="propertyComponent">
+        <div class="div-category" style="background: rgb(66 221 109 / 30%);">
+          <div class="div-img" >
+            <ion-img src="assets/img/residential.png"></ion-img>
+          </div>
+          <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
+        </div>
+      </ion-nav-link>
+      <ion-nav-link router-direction="forward"  [component]="propertyComponent">
+        <div class="div-category" style="background: rgb(232 136 44 / 30%);">
+          <div class="div-img">
+            <ion-img src="assets/img/plot.png"></ion-img>
+          </div>
+          <ion-label style="color: #e8882c;">Plots</ion-label>
+        </div>
+      </ion-nav-link>
+      <ion-nav-link router-direction="forward" [component]="propertyComponent">
+        <div class="div-category" style="background: rgb(228 49 133 / 30%);">
+          <div class="div-img">
+            <ion-img src="assets/img/field.png"></ion-img>
+          </div>
+          <ion-label style="color: #e43185;">Lands</ion-label>
+        </div>
+      </ion-nav-link>
+    </div>
+  </div>
+</ion-content>

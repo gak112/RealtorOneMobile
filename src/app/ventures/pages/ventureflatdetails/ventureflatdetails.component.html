@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-title>
+      101 Flat Details
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <swiper-container
+    [autoplay]="{delay: 5000,disableOnInteraction: false}"
+    [centeredSlides]="true"
+    class="mySwiper">
+    <swiper-slide>
+      <ion-img class="slide" src="https://www.nobroker.in/blog/wp-content/uploads/2021/04/Duplex-House-1.jpg"></ion-img>
+    </swiper-slide>
+    <swiper-slide>
+      <ion-img class="slide" src="https://img.staticmb.com/mbcontent//images/uploads/2022/8/Duplex%20house.jpg"></ion-img>
+    </swiper-slide>
+    <swiper-slide>
+      <ion-img class="slide" src="https://www.shutterstock.com/image-illustration/3d-rendering-interior-house-modern-260nw-2009507924.jpg"></ion-img>
+    </swiper-slide>
+  </swiper-container>
+  <div class="div-video-display" *ngIf="false">
+    <video width="320" height="240" controls>
+        <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <ion-icon name="trash-outline"></ion-icon>
+  </div>
+  <div class="div-form-main">
+    <div class="div-details-display">
+      <div style="text-align: center;">
+        <ion-label class="label-hbk">2HBK</ion-label>
+      </div>
+      <div class="div-title-flex">
+        <div class="div-title-value">
+          <ion-label>
+            <span>Toiltes</span>
+            4
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Pooja Room</span>
+            1
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Living/Dining</span>
+            2
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Kitchen</span>
+            1
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Carpet area</span>
+            3800 Sft
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Balcony area</span>
+            3800 Sft
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Common area</span>
+            3800 Sft
+          </ion-label>
+        </div>
+        <div class="div-title-value">
+          <ion-label>
+            <span>Saleable area</span>
+            3800 Sft
+          </ion-label>
+        </div>
+      </div>
+      <div class="div-layout">
+        <ion-label class="label-layout">Layout</ion-label>
+        <div class="div-dataimg2">
+          <div class="div-uploading" >
+          <img [src]="'https://thumb.cadbull.com/img/product_img/original/1-BHK-Flat-layout-plan-Mon-Sep-2017-04-20-25.png'" />
+          </div>
+        </div>
+      </div>
+      <ion-label class="label-layout">Dimensions</ion-label>
+      <div class="div-dimension-sub">
+        <ion-label class="label-face">North Face</ion-label>
+        <div class="div-face">
+          <ion-label>102</ion-label>
+          <ion-label>3600 Sft</ion-label>
+        </div>
+      </div>
+      <div class="div-dimension-sub">
+        <ion-label class="label-face">South Face</ion-label>
+        <div class="div-face">
+          <ion-label>102</ion-label>
+          <ion-label>3600 Sft</ion-label>
+        </div>
+      </div>
+      <div class="div-dimension-sub">
+        <ion-label class="label-face">East Face</ion-label>
+        <div class="div-face">
+          <ion-label>102</ion-label>
+          <ion-label>3600 Sft</ion-label>
+        </div>
+      </div>
+      <div class="div-dimension-sub">
+        <ion-label class="label-face">West Face</ion-label>
+        <div class="div-face">
+          <ion-label>102</ion-label>
+          <ion-label>3600 Sft</ion-label>
+        </div>
+      </div>
+      <ion-label class="label-layout">Amenities</ion-label>
+      <div class="div-amenities">
+        <div class="div-amenity">
+          <div class="div-title">
+            <div class="div-img">
+              <ion-img [src]="'https://firebasestorage.googleapis.com/v0/b/realtorone-210b5.appspot.com/o/amenities%2F1669378985878_cctv.png?alt=media&token=13beec28-b3f6-4aa2-a525-f5b702cf2a98'"></ion-img>
+            </div>
+            <ion-label>Security Camera</ion-label>
+          </div>        
+        </div>
+        <div class="div-amenity">
+          <div class="div-title">
+            <div class="div-img">
+              <ion-img [src]="'https://firebasestorage.googleapis.com/v0/b/realtorone-210b5.appspot.com/o/amenities%2F1669379624625_park.png?alt=media&token=9ec506fc-71fc-43a6-970c-b3d8f74fe487'"></ion-img>
+            </div>
+            <ion-label>Park</ion-label>
+          </div>        
+        </div>
+        <div class="div-amenity">
+          <div class="div-title">
+            <div class="div-img">
+              <ion-img [src]="'https://firebasestorage.googleapis.com/v0/b/realtorone-210b5.appspot.com/o/amenities%2F1669379589316_prison-guard.png?alt=media&token=1cdcc22c-bc2e-401f-b45a-c063c7411d1b'"></ion-img>
+            </div>
+            <ion-label>Security</ion-label>
+          </div>        
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

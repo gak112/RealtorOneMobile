@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="div-toolbarflex">
+      <ion-title>
+        Amenities
+      </ion-title>
+      <ion-button color="warning" size="small" (click)="addItems()" slot="end">
+        Add
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-amenities" *ngIf="amenities">
+    <div class="div-amenity" *ngFor="let amenity of amenities; let i = index">
+      <div class="div-title">
+        <div class="div-img">
+          <ion-img [src]="amenity.photo"></ion-img>
+        </div>
+        <ion-label>{{amenity.amenity}}</ion-label>
+      </div>
+    
+      <ion-checkbox color="primary" [checked]="amenity?.selected || false"  (ionChange)="selectedChange($event,  i)" slot="start"></ion-checkbox>
+    </div>
+  </div>
+</ion-content>

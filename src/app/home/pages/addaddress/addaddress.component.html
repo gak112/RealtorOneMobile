@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Enter address details</ion-title>
+    <ion-icon name="close-outline" (click)="dismiss()" class="icon-arrow"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-form-main">
+    <div class="div-radio">
+      <ion-label>Who are you ordering for?</ion-label>
+      <ion-radio-group mode="md" [allowEmptySelection]="true" value="myself">
+        <ion-radio labelPlacement="end" color="danger" value="myself">Myself</ion-radio>
+        <ion-radio labelPlacement="end" color="danger" value="someone">Someone else</ion-radio>
+      </ion-radio-group>
+    </div>
+    <div class="div-types">
+      <span>Save address as *</span>
+      <div class="div-type-sub">
+        <ion-label [class.active]="action === 'tab-1'" (click)="action = 'tab-1'">Home</ion-label>
+        <ion-label [class.active]="action === 'tab-2'" (click)="action = 'tab-2'">Work</ion-label>
+        <ion-label [class.active]="action === 'tab-3'" (click)="action = 'tab-3'">Hotel</ion-label>
+        <ion-label [class.active]="action === 'tab-4'" (click)="action = 'tab-4'">Other</ion-label>
+      </div>
+    </div>
+
+    <div class="div-flex">
+      <div class="form-group" style="margin: 0;margin-right: 16px;">
+        <input id="form_name1" class="form-control" type="text" required>
+        <label for="form_name1">Name</label>
+      </div>
+      <ion-img [src]="'assets/img/phonebook.png'"></ion-img>
+      <!-- <ion-input label="Name" label-placement="floating" fill="outline"></ion-input> -->
+    </div>
+    <div class="div-formgroup">
+      <span>+91</span>
+      <div class="form-group">
+        <input id="form_name2" class="form-control" type="number" required style="padding-left: 50px;">
+        <label for="form_name2" style="margin-left: 40px;">Phone Number</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <input id="form_name3" class="form-control" type="text" required>
+      <label for="form_name3">Complete Address</label>
+    </div>
+    <div class="form-group">
+      <input id="form_name4" class="form-control" type="text" required>
+      <label for="form_name4">Floor (optional)</label>
+    </div>
+    <div class="form-group">
+      <input id="form_name5" class="form-control" type="text" required>
+      <label for="form_name5">Nearby landmark (optional)</label>
+    </div>
+    <ion-button expand="block" color="danger">
+      Save Address
+    </ion-button>
+  </div>
+</ion-content>

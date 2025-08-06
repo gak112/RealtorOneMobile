@@ -1,0 +1,29 @@
+<!-- <ion-header>
+  <ion-toolbar>
+          <ion-icon class="icon-back" name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+      <ion-title>Likes</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-likes-main" *ngIf="likesList?.length > 0">
+      <app-likebox *ngFor="let like of likesList" [like]="like"></app-likebox>
+      
+  </div>
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+          <ion-icon class="icon-back" name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+      <ion-title>Likes</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- <div class="div-likes-main" *ngIf="likesList?.length > 0">
+      <app-likebox *ngFor="let like of likesList" [like]="like"></app-likebox>
+      
+  </div> -->
+
+  <div class="div-likes-main">
+    <app-likebox></app-likebox>
+  </div>
+</ion-content>

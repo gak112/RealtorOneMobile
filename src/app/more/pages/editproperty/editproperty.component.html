@@ -1,0 +1,318 @@
+<ion-header>
+  <ion-toolbar style="--border-width: 0;">
+      <ion-buttons slot="start">
+          <ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+      </ion-buttons>
+      <ion-segment class="ion-segment-settings" mode="ios" value="sale" (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="sale">
+              <ion-label>Sale</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="rent">
+              <ion-label>Rent</ion-label>
+          </ion-segment-button>
+          <!-- <ion-segment-button value="lease">
+              <ion-label>Lease</ion-label>
+          </ion-segment-button> -->
+      </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar style="--border-width: 0;">
+      <ion-segment class="ion-segment-settings2" mode="ios" value="Residential" (ionChange)="subSegmentChanged($event)">
+          <ion-segment-button value="Residential">
+              <ion-label>Residential</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Commercial">
+              <ion-label>Commercial</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Plot">
+              <ion-label>Plot</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Land">
+              <ion-label>Land</ion-label>
+          </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-form-main">
+
+      <div class="div-formgroup" >
+          <ion-label>Title</ion-label>
+          <ion-input [(ngModel)]="request.title" class="input-settings" type="text"></ion-input>
+         
+      </div>
+    
+          <div class="div-formgroup" *ngIf="actionType === 'Residential'">
+              <ion-label>Select House Type</ion-label>
+              <ion-select [(ngModel)]="request.houseType" class="select-settings" interface="action-sheet">
+                  <ion-select-option value="Apartment">Apartment</ion-select-option>
+                  <ion-select-option value="Individual House/Villa">Individual House/Villa</ion-select-option>
+                  <ion-select-option value="Gated Community Villa">Gated Community Villa</ion-select-option>
+              </ion-select>
+          </div>
+          <div class="div-formgroup" *ngIf="actionType === 'Residential'">
+              <ion-label>Select BHK Type</ion-label>
+              <ion-select [(ngModel)]="request.bhkType" class="select-settings" interface="action-sheet">
+                  <ion-select-option value="1BHK">1BHK</ion-select-option>
+                  <ion-select-option value="2BHK">2BHK</ion-select-option>
+                  <ion-select-option value="3BHK">3BHK</ion-select-option>
+                  <ion-select-option value="4BHK">4BHK</ion-select-option>
+                  <ion-select-option value="5BHK">5BHK</ion-select-option>
+                  <ion-select-option value="+5BHK">+5BHK</ion-select-option>
+              </ion-select>
+             
+          </div>
+          <div class="div-formgroup">
+              <ion-label>Property Size (Build up)</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.propertySizeBuildUp" class="input-settings" type="number"></ion-input>
+                  <ion-select [(ngModel)]="request.propertyUnits" class="select-settings" placeholder="Units">
+                      <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+                      <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+                      <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+                      <ion-select-option value="Acre">Acre</ion-select-option>
+                  </ion-select>
+              </div>
+             
+          </div>
+          <div class="div-input-select">
+              <ion-label>Enter North Dimensions</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.northFacing" class="input-settings" placeholder="North Face" type="text"></ion-input>
+                  <ion-input [(ngModel)]="request.northSize" class="input-settings2" placeholder="Size" type="number" style="margin-right: 5px;"></ion-input>
+                  <ion-select [(ngModel)]="request.units" class="select-settings" placeholder="Units">
+                      <ion-select-option value="Feet">Feet</ion-select-option>
+                      <ion-select-option value="Yard">Yard</ion-select-option>
+                      <ion-select-option value="Mtr">Mtr</ion-select-option>
+                      <ion-select-option value="Acre">Acre</ion-select-option>
+                  </ion-select>
+              </div>
+          </div>
+          <div class="div-input-select">
+              <ion-label>Enter South Dimensions</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.southFacing" class="input-settings" placeholder="South Face" type="text"></ion-input>
+                  <ion-input [(ngModel)]="request.southSize" class="input-settings2" placeholder="Size" type="number"></ion-input>
+                  <div class="div-label">
+                      <ion-label>{{request.units || 'Ft'}}</ion-label>
+                  </div>
+              </div>
+          </div>
+          <div class="div-input-select">
+              <ion-label>Enter East Dimensions</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.eastFacing" class="input-settings" placeholder="East Face" type="text"></ion-input>
+                  <ion-input [(ngModel)]="request.eastSize" class="input-settings2" type="number" placeholder="Size"></ion-input>
+                  <div class="div-label">
+                      <ion-label>{{request.units || 'Ft'}}</ion-label>
+                  </div>
+              </div>
+          </div>
+          <div class="div-input-select">
+              <ion-label>Enter West Dimensions</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.westFacing" class="input-settings" type="text" placeholder="West Face"></ion-input>
+                  <ion-input [(ngModel)]="request.westSize" class="input-settings2" type="number" placeholder="Size"></ion-input>
+                  <div class="div-label">
+                      <ion-label>{{request.units || 'Ft'}}</ion-label>
+                  </div>
+              </div>
+          </div>
+          <div class="div-formgroup">
+              <ion-label>Enter Total Size of Property</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.propertySize" class="input-settings" type="number"></ion-input>
+                  <ion-select [(ngModel)]="request.totalPropertyUnits" class="select-settings" placeholder="Units">
+                      <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+                      <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+                      <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+                      <ion-select-option value="Acre">Acre</ion-select-option>
+                  </ion-select>
+              </div>
+             
+          </div>
+          <div class="div-formgroup">
+              <ion-label>Floor</ion-label>
+              <ion-select [(ngModel)]="request.floor" class="select-settings" interface="action-sheet">
+                  <ion-select-option value="1st Floor">1st Floor</ion-select-option>
+                  <ion-select-option value="2nd Floor">2nd Floor</ion-select-option>
+                  <ion-select-option value="3rd Floor">3rd Floor</ion-select-option>
+                  <ion-select-option value="4th Floor">4th Floor</ion-select-option>
+                  <ion-select-option value="5th Floor">5th Floor</ion-select-option>
+                  <ion-select-option value="6th Floor">6th Floor</ion-select-option>
+                  <ion-select-option value="7th Floor">7th Floor</ion-select-option>
+                  <ion-select-option value="8th Floor">8th Floor</ion-select-option>
+                  <ion-select-option value="9th Floor">9th Floor</ion-select-option>
+                  <ion-select-option value="10th Floor">10th Floor</ion-select-option>
+                  <ion-select-option value="+10 Floor">+10 Floor</ion-select-option>
+              </ion-select>
+             
+          </div>
+          <div class="div-formgroup flex">
+            <ion-label style="margin: 0;">Amenities</ion-label>   
+            <ion-button size="small" (click)="amenitiesList()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add 
+            </ion-button> 
+        </div>
+          <div class="div-amenities" *ngIf="request?.amenities!.length > 0">
+            <h4 *ngFor="let amenity of request.amenities">{{amenity}}</h4>        
+          </div> 
+          <div class="div-formgroup">
+              <ion-label>Age of Property</ion-label>
+              <div class="div-property-segment">
+                  <ion-segment mode="ios" value="underconstruction" (ionChange)="ageOfPropertyChanged($event)">
+                      <ion-segment-button value="underconstruction">
+                          <ion-label>Under Construction</ion-label>
+                      </ion-segment-button>
+                      <ion-segment-button value="noofyears">
+                          <ion-label>No Of Years</ion-label>
+                      </ion-segment-button>
+                  </ion-segment>
+                  <div class="div-property-input" *ngIf="ageOfPropertyAction === 'noofyears'">
+                      <ion-input [(ngModel)]="request.noOfYears" class="input-settings" type="number" placeholder="Enter No of Years"></ion-input>
+                  </div>
+                 
+              </div>
+          </div>
+          <!-- <div class="div-formgroup">
+              <ion-label>Ownership</ion-label>
+              <ion-select [(ngModel)]="request.ownership" class="select-settings" interface="action-sheet">
+                  <ion-select-option value="Self Owned">Self Owned</ion-select-option>
+                  <ion-select-option value="On Lease">On Lease</ion-select-option>
+              </ion-select>
+              
+          </div> -->
+          <div class="div-input-select" *ngIf="action === 'rent'">
+              <ion-label>Enter Rent</ion-label>
+              <div class="div-input-select-sub">
+                  <ion-input [(ngModel)]="request.rent" class="input-settings" type="number"></ion-input>
+                  <ion-select [(ngModel)]="request.rentUnits" class="select-settings" placeholder="Units">
+                      <ion-select-option value="Monthly">Monthly</ion-select-option>
+                      <ion-select-option value="Yearly">Yearly</ion-select-option>
+                  </ion-select>
+              </div>
+              
+              
+          </div>
+          <div class="div-formgroup" *ngIf="action === 'sale'">
+              <ion-label>Enter Cost of Property</ion-label>
+              <ion-input [(ngModel)]="request.costOfProperty" class="input-settings" type="number"></ion-input>
+             
+          </div>
+          <div class="div-formgroup">
+              <ion-label>Enter Address of Property</ion-label>
+              <!-- <ion-input [(ngModel)]="request.addressOfProperty" class="input-settings" type="text"></ion-input> -->
+              <!-- <input #places class="input-settings" placeholder="Enter Location" ngx-google-places-autocomplete #placesRef="ngx-places"
+              (onAddressChange)="handleAddressChange($event)" style="display: block;
+              width: 100%;padding-left:10px"> -->
+              
+              <div class="div-badges">
+                  <ion-badge color="tertiary">{{area}}</ion-badge>
+                  <ion-badge color="tertiary">{{city}}</ion-badge>
+                  <ion-badge color="tertiary">{{district}}</ion-badge>
+                  <ion-badge color="tertiary">{{state}}</ion-badge>
+                  <ion-badge color="tertiary">{{pincode}}</ion-badge>
+              </div>
+          </div>
+          <div class="div-formgroup">
+              <ion-label>Enter Description</ion-label>
+              <ion-textarea [(ngModel)]="request.description" class="input-settings" type="text" rows="3" style="height: auto;"></ion-textarea>
+            
+          </div>
+          <div class="div-upload-main">
+              <div class="upload-btn-wrapper add-button" style="margin-right: 16px;">
+                  <div class="div-uploadcare">
+                      <ngx-uploadcare-widget 
+                      class="post-entry-btn"
+                      #uc
+                      (on-upload-complete)="onComplete($event)"
+                      [multiple]="true"       
+                      [multiple-max]="3"          
+                      data-crop="300:300"
+                      public-key="563d1afa2618816d4d42">
+                    </ngx-uploadcare-widget>
+                  </div>
+                  <!-- <ion-button fill="clear" expand="block" class="btn">
+                      <ion-icon name="images-outline"></ion-icon>
+                      <p>Upload<span>Images</span></p>
+                  </ion-button>
+                  <input type="file" name="myfile" /> -->
+              </div>
+              <div class="upload-btn-wrapper">
+                  <ion-button fill="clear" expand="block" class="btn"><ion-icon name="videocam-outline"></ion-icon><p>Upload<span>Videos</span></p></ion-button>
+                  <input type="file" name="myfile" />
+              </div>
+          </div>
+          <div class="div-images-display" *ngIf="request.resources.length > 0">
+              <div class="div-img-sub" *ngFor="let resource of request.resources; let i = index">
+                  <ion-img [src]="resource.resourceUrl"></ion-img>
+                  <ion-icon name="trash-outline" (click)="removeImage(i)"></ion-icon>
+              </div>
+          </div>
+          <div class="div-video-display">
+              <video width="320" height="240" controls>
+                  <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+              <ion-icon name="trash-outline"></ion-icon>
+          </div>
+          <!-- <div class="div-payment-main">
+              <ion-segment mode="ios" value="singlePlan" (ionChange)="paymentChanged($event)">
+                  <ion-segment-button value="singlePlan">
+                      <ion-label>Single Plan</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="basicPlan">
+                      <ion-label>Basic Plan</ion-label>
+                  </ion-segment-button>
+                  <ion-segment-button value="bulkPlan">
+                      <ion-label>Bulk Plan</ion-label>
+                  </ion-segment-button>
+              </ion-segment>
+          </div>
+          <div class="div-payment-display">
+              <div class="div-display-sub" *ngIf="paymentAction === 'singlePlan'" style="padding-bottom: 0;margin-bottom: 0;border-bottom:none">
+                  <ion-label>Single post / 10 days</ion-label>
+                  <ion-label class="label-amount" >₹199</ion-label>
+              </div>
+              <div  *ngIf="paymentAction === 'basicPlan'">
+                  <div class="div-display-sub" style="padding-bottom: 0;margin-bottom: 0;border-bottom:none">
+                      <div style="text-align: left;">
+                          <ion-label style="display: block;padding-bottom: 5px;">Single post / 1 Month</ion-label>
+                          <ion-label style="display: block;color: #777;font-weight: 500;">You can add single post & can alter your property multiple times</ion-label>
+                      </div>
+                      <ion-label class="label-amount" >₹599</ion-label>
+                  </div>
+                  <div class="div-info">
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <ion-label >You have already subcribed basic plan., you can add properties & activate single property</ion-label>
+                  </div>
+              </div>
+              <div  *ngIf="paymentAction === 'bulkPlan'">
+                  <div class="div-display-sub" style="padding-bottom: 0;margin-bottom: 0;border-bottom:none">
+                      <div style="text-align: left;">
+                          <ion-label style="display: block;padding-bottom: 5px;">20 posts / 1 Month</ion-label>
+                          <ion-label style="display: block;color: #777;font-weight: 500;">You can add multiple posts </ion-label>
+                      </div>
+                      <ion-label class="label-amount" >₹1499</ion-label>
+                  </div>
+                  <div class="div-info">
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <ion-label >You have already subcribed bulk plan., you have only remaining<span style="font-weight: 600;padding: 0 5px">2</span>posts</ion-label>
+                  </div>
+              </div>
+           
+          </div> -->
+          <div class="div-formgroup">
+              <ion-label>Enter Referral Code of Agent/Employee</ion-label>
+              <ion-input class="input-settings" type="text"></ion-input>
+             
+          </div>
+          <!-- <div class="div-payment-success">
+              <ion-label>You have choosen<span>1 Year</span>plan and payment successfully made<span>₹1199</span></ion-label>
+          </div> -->
+          <!-- (click)="proceed()" -->
+          <!-- <ion-button class="ion-button-settings" expand="block" color="tertiary">Next</ion-button> -->
+          <ion-button class="ion-button-settings" expand="block" color="tertiary" (click)="submit()">Submit</ion-button>
+     
+  </div>
+</ion-content>

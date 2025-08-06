@@ -1,0 +1,73 @@
+<!-- <div class="div-like">
+    <div class="div-like-share">
+
+        <div class="div-like-sub" *ngIf="!savedLike ">
+            <ion-icon (click)="saveLike(hit)" class="icon-settings" name="heart-outline"></ion-icon>
+            <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
+        </div>
+        <div class="div-like-sub" *ngIf="savedLike ">
+            <ion-icon (click)="removeLike()" style="color: red;" class="icon-settings" name="heart"></ion-icon>
+            <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
+        </div>
+    </div>
+
+    <div class="div-like-main">
+
+
+        <br>
+        <div class="like-settings" (click)="viewedPersons()">
+            <ion-icon class="icon-eye" name="eye-outline"></ion-icon>
+            <ion-label class="span-settings1">5,532</ion-label>
+        </div>
+        <div class="div-bookmark" (click)="openChat()">
+            <ion-icon class="icon-settings" name="chatbox-outline"></ion-icon>
+            <ion-label class="span-settings">Chat</ion-label>
+        </div><br>
+
+        <div class="div-bookmark" (click)="share($event)">
+            <ion-icon class="icon-settings" name="share-outline"></ion-icon>
+            <ion-label class="span-settings">Share</ion-label>
+        </div>
+        <div class="div-bookmark" *ngIf="!savedPost " (click)="saveBookMark(hit)">
+            <ion-icon class="icon-settings" name="bookmark-outline"></ion-icon>
+            <ion-label class="span-settings">Save</ion-label>
+        </div>
+        <div class="div-bookmark" *ngIf="savedPost " (click)="removeBookMark()">
+            <ion-icon class="icon-settings" name="bookmark"></ion-icon>
+            <ion-label class="span-settings">Saved</ion-label>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="div-like">
+
+    <div class="div-like-share">
+        <!-- (click)="openLikes()" -->
+        <div class="div-like-sub" *ngIf="!savedLike ">
+            <ion-icon (click)="saveLike(hit)" class="icon-settings" name="heart-outline"></ion-icon>
+            <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
+        </div>
+        <div class="div-like-sub" *ngIf="savedLike ">
+            <ion-icon (click)="removeLike()" style="color: red;" class="icon-settings" name="heart"></ion-icon>
+            <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
+        </div>
+    </div>
+
+    <div class="div-like-main">
+
+        <div class="div-bookmark" (click)="share($event)">
+            <ion-icon class="icon-settings" name="share-outline"></ion-icon>
+            <ion-label class="span-settings">Share</ion-label>
+        </div>
+        <div class="div-bookmark" *ngIf="!savedPost " (click)="saveBookMark(hit)">
+            <ion-icon class="icon-settings" name="bookmark-outline"></ion-icon>
+            <ion-label class="span-settings">Save</ion-label>
+        </div>
+        <div class="div-bookmark" *ngIf="savedPost " (click)="removeBookMark()">
+            <ion-icon class="icon-settings" name="bookmark"></ion-icon>
+            <ion-label class="span-settings">Saved</ion-label>
+        </div>
+    </div>
+    
+</div>

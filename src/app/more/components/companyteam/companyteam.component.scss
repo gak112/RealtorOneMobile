@@ -1,0 +1,124 @@
+.div-media {
+
+    .div-media-sub {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 16px;  
+    }
+  }
+  
+  .card-profile {
+    text-align: center;
+    min-height: 270px;
+    position: relative;
+    background: white;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+  }
+    
+  .div-poistioning {   
+    img {
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      border: 5px solid #e5e5e5;
+    }
+  }
+  .div-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: var(--app-font-size-20);
+    padding: calc(var(--app-margin-20) / 2) calc(var(--app-margin-20) * 0);
+  }
+     
+  .color-twitter {
+    color: #1da1fa;
+    font-size: 26px;
+    cursor: pointer;
+  }
+  .color-facebook {
+    color: #3e5b99;
+    font-size: 26px;
+    cursor: pointer;
+  }
+  .color-instagram {
+    color: #d52d78;
+    font-size: 26px;
+    cursor: pointer;
+  }
+  .color-linkedin { 
+    color: #0077b5;
+    font-size: 26px;
+    cursor: pointer;
+  }
+  
+  .div-naming {
+    text-align: center;
+    margin-bottom: var(--app-margin-16);
+    padding: 16px;
+  
+    .label-name {
+      margin: calc(var(--app-margin-20) * 0);
+      font-size: var(--app-font-size-16);
+      font-weight: var(--app-font-weight-600);
+      text-transform: uppercase;
+      color: #000;    
+      display: block;
+    }
+  
+    .label-desig {
+      margin: calc(var(--app-margin-20) * 0);
+      font-size: var(--app-font-size-12);
+      font-weight: var(--app-font-weight-500);
+      color: #aaa;
+      display: block;
+    }
+  }
+  
+  .div-paragraph {
+  
+    .label-desc {
+      font-size: var(--app-font-size-12);
+      margin: calc(var(--app-margin-20) * 0);
+      padding-bottom: calc(var(--app-margin-20) / 2);
+      color: #000;
+      display: block;
+    }
+  }
+  
+  .card-profile .card-avatar {
+    max-width: 11var(--app-border-radius-4);
+    max-height: 11var(--app-border-radius-4);
+    margin: -40px calc(var(--app-margin-12) * 2) calc(var(--app-margin-20) * 0);
+  }
+  .card-profile .card-avatar img {
+    border-radius: var(--app-border-radius-10) !important;
+  }
+  
+  .div-read-icon {
+    text-align: end;
+  
+      p {
+        font-size: var(--app-font-size-14);
+        font-weight: var(--app-font-weight-600);
+        letter-spacing: calc(var(--app-letter-spacing) / 2);
+        margin: calc(var(--app-margin-20) * 0);
+        background: #ccc;
+        display: inline-block;
+        padding: calc(var(--app-margin-20) / 4) calc(var(--app-margin-20) / 2);
+        border-radius: var(--app-border-radius-4);
+        cursor: pointer;
+        color: #000;
+  
+      i {
+        font-size: var(--app-font-size-16);
+        display: none;
+      }
+    }  
+  }
