@@ -1,0 +1,200 @@
+.venture-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-2);
+  background: var(--content-background-white);
+  padding: 2px;
+  margin: 16px;
+  position: relative;
+  border: var(--border);
+}
+
+.card-image {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+
+  ion-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.menu-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  padding: 4px;
+  z-index: 10;
+}
+
+.div-img {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+
+  ion-img {
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    margin-right: 10px;
+    border: var(--border-ddd);
+    padding: 5px;
+  }
+}
+
+.label-hbk {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  color: #0c77c1;
+  display: block;
+  // width: calc(100% - 76px);
+
+  span {
+    font-size: 14px;
+    color: var(--color-black);
+    font-family: "operatr" !important;
+    letter-spacing: 1px;
+  }
+}
+
+.div-location-flex {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 4px;
+
+  ion-icon {
+    font-size: 16px;
+    color: var(--color-777);
+    margin-right: 5px;
+  }
+  .label-address {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    color: #999;
+    /* width: calc(100% - 30px); */
+    /* border-left: 1px solid #ccc; */
+    /* padding-left: 12px; */
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.card-position {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  padding: 12px;
+  background: var(--content-background-white);
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.card-content {
+  .status-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #888;
+
+    .dot {
+      margin: 0 6px;
+    }
+
+    .active-status {
+      color: #22c55e;
+      font-weight: 500;
+    }
+  }
+
+  .venture-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 8px 0;
+    color: #1e1e1e;
+  }
+}
+
+.divider-section {
+  position: relative;
+  margin: 14px 0;
+  height: 1px;
+  //   background: repeating-linear-gradient(
+  //     to right,
+  //     #d1d5db 0px,
+  //     #d1d5db 8px,
+  //     transparent 8px,
+  //     transparent 16px
+  //   );
+  border-bottom: 2px dashed #ddd;
+  width: 115px;
+}
+
+.divider-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--content-background-black);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: var(--color-white);
+  font-size: 16px;
+  padding: 5px;
+}
+
+.footer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px 0;
+}
+
+.footer-item {
+  text-align: center;
+}
+
+.footer-label {
+  font-size: 11px;
+  color: var(--color-777);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  font-weight: 500;
+}
+
+.footer-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-black);
+  display: block;
+  margin: 6px 0;
+  line-height: 1;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 30px;
+  background: #e5e7eb;
+  margin: 0 16px;
+}

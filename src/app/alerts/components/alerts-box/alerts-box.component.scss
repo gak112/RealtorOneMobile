@@ -1,104 +1,100 @@
 .div-notification-main {
-    height: 100vh;
-    background: var(--content-background);
+  height: 100vh;
+  background: var(--content-background);
 
-    .div-p-title {
-        position: relative;
-        padding: 16px 0;
-        text-align: center;
-        z-index: 99999;
+  .div-p-title {
+    position: relative;
+    padding: 12px 16px;
+    z-index: 99999;
 
-        &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            height: 1px;
-            width: 90%;
-            background: rgba(94, 123, 204, 0.25);
-            transform: translate(-50%, -50%);
-            z-index: -1;
+    // &::after {
+    //     content: "";
+    //     position: absolute;
+    //     top: 50%;
+    //     left: 50%;
+    //     height: 1px;
+    //     width: 90%;
+    //     background: rgba(94, 123, 204, 0.25);
+    //     transform: translate(-50%, -50%);
+    //     z-index: -1;
+    // }
+
+    .p-title {
+      font-size: 12px;
+      letter-spacing: 2px;
+      font-weight: 700;
+      display: inline-block;
+      margin: 0;
+      color: var(--color-skyblue);
+      line-height: 1;
+    }
+  }
+
+  .div-notification-sub {
+    display: flex;
+    align-items: center;
+    background: var(--content-background-white);
+    margin-bottom: 5px;
+    padding: 16px;
+
+    .div-img-name {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+
+      .div-img {
+        margin-right: 16px;
+
+        ion-img {
+          height: 50px;
+          width: 50px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+      }
+
+      .div-name {
+        margin-right: 16px;
+        width: calc(100% - 66px);
+
+        .label-name {
+          margin: 0;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          margin-bottom: 0;
+          font-size: 14px;
+          display: block;
+          color: var(--color-black);
         }
 
-        .p-title {
-            padding: 8px 16px;
-            font-size: 12px;
-            letter-spacing: 2px;
-            font-weight: 700;
-            background: var(--background-main);
-            display: inline-block;
-            border-radius: 100px;
-            margin: 0;
-            color: var(--color-white);
-            line-height: 1;
+        .label-desc {
+          margin: 0;
+          font-size: 12px;
+          color: var(--color-777);
+          letter-spacing: 0.5px;
+          font-weight: 500;
+          display: block;
         }
+      }
     }
 
-    .div-notification-sub {
-        display: flex;
-        align-items: center;
-        background: var(--content-background-white);
-        margin-bottom: 5px;
-        padding: 16px;
+    .div-product-img {
+      text-align: end;
 
-        .div-img-name {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
+      // img {
+      //     height: 40px;
+      //     width: 40px;
+      //     border-radius: 6px;
+      //     object-fit: cover;
+      // }
 
-            .div-img {
-                margin-right: 16px;
-    
-                ion-img {
-                    height: 50px;
-                    width: 50px;
-                    border-radius: 50%;
-                    overflow: hidden;
-                }
-            }
-    
-            .div-name {
-                margin-right: 16px;
-                width: calc(100% - 66px);
-    
-                .label-name {
-                    margin: 0;
-                    font-weight: 600;
-                    letter-spacing: 0.5px;
-                    margin-bottom: 0;
-                    font-size: 14px;
-                    display: block;
-                    color: var(--color-black);
-                }
-    
-                .label-desc {
-                    margin: 0;
-                    font-size: 12px;
-                    color: var(--color-777);
-                    letter-spacing: 0.5px;
-                    font-weight: 500;
-                    display: block;
-                }
-            }
-        }
-
-        .div-product-img {
-            text-align: center;
-
-            // img {
-            //     height: 40px;
-            //     width: 40px;
-            //     border-radius: 6px;
-            //     object-fit: cover;
-            // }
-
-            .span-today {
-                display: block;
-                font-size: 10px;
-                letter-spacing: 1px;
-                color: var(--color-777);
-                font-weight: 500;
-            }
-        }
+      .span-today {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: var(--color-777);
+        font-weight: 500;
+      }
     }
+  }
 }

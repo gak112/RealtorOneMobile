@@ -1,53 +1,65 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-icon name="chevron-back-outline" class="icon-back" (click)="dismiss()"></ion-icon> 
-      <ion-title>
-          Specfications
-      </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+        <ion-title>
+            Specfications
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="specificationDetails">
-  <div class="div-form">
+<ion-content class="ion-padding">
+    <div class="div-form">
+        <div class="div-flex">
+            <ion-input type="text" mode="md" label="Specfication Title" label-placement="floating" fill="outline"
+                placeholder="Enter Specfication Title"></ion-input>
+            <ion-button color="warning" (click)="add()">+&nbsp;Add</ion-button>
+        </div>
+        <div class="div-specification-display">
+            <div class="div-title-delete">
+                <ion-label class="spec-title">Specfication Title</ion-label>
+                <ion-icon name="trash-outline" class="spec-delete"></ion-icon>
+            </div>
+            <div class="div-spec-inputs">
+                <div class="div-formgroup">
+                    <ion-input type="text" mode="md" label="Keyword" label-placement="floating" fill="outline"
+                        placeholder="Enter Keyword"></ion-input>
+                </div>
+                <div class="div-formgroup">
+                    <ion-textarea type="text" mode="md" label="Value" label-placement="floating" fill="outline"
+                        placeholder="Enter Value" rows="5" style="height: auto;"></ion-textarea>
+                </div>
+                <ion-button style="margin-top: 10px;" expand="block" color="primary" (click)="save()">
+                    <span class="spinner-border spinner-border-sm"></span>
+                    Add</ion-button>
+            </div>
+        </div>
+        <div>
+            <div class="div-specification-display">
+                <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">Kitchen
+                    Rooms</ion-label>
+                <div style="padding: 10px;">
+                    @for (spec of [0,1,2,3,4,5,6,7,8,9]; track spec) {
+                    <div class="div-spec-keys-values">
+                        <div class="div-specification-sub">
+                            <ion-label class="ion-label-title" contenteditable="true">Kitchen Rooms</ion-label>
+                            <ion-label class="ion-label-title" style="text-align: center;"
+                                contenteditable="true">3</ion-label>
+                        </div>
+                        <ion-icon name="trash-outline" class="spec-delete"></ion-icon>
+                    </div>
+                    }
+                </div>
+                <div class="div-edit-delete">
+                    <ion-icon name="trash-outline" (click)="delete()"></ion-icon>
+                    <ion-label>Delete</ion-label>
+                </div>
+            </div>
 
-          <div class="div-flex">
-              <ion-input [(ngModel)]="title" type="text" placeholder="Specfication Title" class="ion-input-settings" style="margin-right: 10px;margin-bottom: 0;"></ion-input>
-              <ion-button color="primary" (click)="add()">Add</ion-button> 
-          </div>
-          <div class="div-specification-display" *ngIf="asp >= 0">
-              <div class="div-title-delete" (click)="asp === -1">
-                  <ion-label class="ion-label-main">{{specifications[asp].title}}</ion-label>
-                  <ion-icon name="trash-outline" (click)="deleteMainSpecification(asp)"></ion-icon>
-              </div>
-              <div class="form-group">
-                  <ion-input type="text" [(ngModel)]="specificationDetails.key" placeholder="Keyword" class="ion-input-settings"></ion-input>
+        </div>
 
-                  <div class="div-input">
-                    <ion-textarea type="text" [(ngModel)]="specificationDetails.value" class="ion-input-settings1" rows="3" style="height: auto;" placeholder="Value" ></ion-textarea>
-                  </div>
-
-                  <ion-button style="margin-top: 10px;" expand="block" color="primary"  (click)="save()">
-                      <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
-                      {{loading ? "...." : 'Add' }}</ion-button>
-              </div>
-          </div>
-
-
-          <div *ngIf="specifications?.length! > 0">
-              <div class="div-specification-display" (click)="asp = i" [class.active]="asp === i " *ngFor="let specification of specifications; let i = index">
-                  <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">{{specification.title}}</ion-label>
-                  <div class="div-specification-sub" *ngFor="let sd of specification.specifications; let i = index">
-                      <ion-label (input)="keyChanged($event, i)"  class="ion-label-title" contenteditable="true">{{sd.key}}</ion-label>
-                      <ion-label (input)="valueChanged($event, i)" class="ion-label-desc" style="text-align: center;" contenteditable="true" >{{sd.value}}</ion-label>
-                      <ion-icon name="trash-outline" (click)="deleteSpecification(i)" ></ion-icon>
-                  </div>
-
-                  <div class="div-edit-delete">
-                      <ion-label style="color: red;"><ion-icon name="trash-outline"  (click)="delete()"></ion-icon>Delete</ion-label>
-                  </div>
-              </div>
-          </div>
-      <ion-button *ngIf="false" style="margin-top: 10px;" expand="block" color="primary"  (click)="save()">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
-          {{loading ? "...." : 'Submit'}}</ion-button>
-  </div>
+    </div>
 </ion-content>
+<ion-footer>
+    <ion-button expand="block" color="warning" (click)="save()">
+        <span class="spinner-border spinner-border-sm"></span>
+        Submit</ion-button>
+</ion-footer>

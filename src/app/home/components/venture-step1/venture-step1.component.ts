@@ -1,53 +1,106 @@
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { UcWidgetModule } from 'ngx-uploadcare-widget';
-import { SpecviewComponent } from "../../../more/components/specview/specview.component";
+import {
+  IonBadge,
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonInput,
+  IonLabel,
+  IonSelect,
+  IonSelectOption,
+  IonTextarea,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { informationCircle, trashOutline, add, caretDownOutline, caretUpOutline } from 'ionicons/icons';
-import { IonBadge, IonButton, IonIcon, IonImg, IonInput, IonLabel, IonSelectOption, IonTextarea, ModalController } from '@ionic/angular/standalone';
+import {
+  add,
+  caretDownOutline,
+  caretUpOutline,
+  informationCircle,
+  trashOutline,
+} from 'ionicons/icons';
+import { UcWidgetModule } from 'ngx-uploadcare-widget';
+import { SpecificationsComponent } from 'src/app/more/components/specifications/specifications.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
+import { SpecviewComponent } from '../../../more/components/specview/specview.component';
+import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
+import { VentureTowerComponent } from "../venture-tower/venture-tower.component";
+import { VentureHousevillaComponent } from "../venture-housevilla/venture-housevilla.component";
 
 @Component({
   selector: 'app-venture-step1',
   templateUrl: './venture-step1.component.html',
   styleUrls: ['./venture-step1.component.scss'],
   standalone: true,
-  imports: [IonInput,IonIcon,IonTextarea,NgIf,IonBadge,FormsModule,UcWidgetModule,IonLabel,NgFor,IonButton,IonSelectOption,SpecviewComponent,IonImg,],
-  providers:[ModalController],
+  imports: [
+    IonInput,
+    IonIcon,
+    IonTextarea,
+    IonBadge,
+    FormsModule,
+    UcWidgetModule,
+    IonLabel,
+    IonButton,
+    IonSelectOption,
+    SpecviewComponent,
+    IonImg,
+    IonSelect,
+    VentureTowerComponent,
+    VentureHousevillaComponent
+],
+  providers: [ModalController],
 })
 export class VentureStep1Component implements OnInit {
+  private modalController = inject(ModalController);
+
+  // formBuilder = inject(NonNullableFormBuilder)
+  // ventureForm = this.formBuilder.group({
+  //   ventureName: ['', Validators.required],
+  //   description: ['', Validators.required],
+  //   ventureWebsite: ['', Validators.required],
+  //   logo: ['', Validators.required],
+  // })
 
   constructor() {
-    addIcons({ informationCircle, trashOutline, add, caretDownOutline, caretUpOutline })
+    addIcons({
+      informationCircle,
+      trashOutline,
+      add,
+      caretDownOutline,
+      caretUpOutline,
+    });
   }
 
-  ngOnInit() {
-    return
-   }
+  actionTab = signal<string>('towerAPT');
 
-  ventures: any = {
-    ventureName: "",
-    description: "",
-    ventureWebsite: "",
-    logo: "",
-    ventureImages: [
-      "", "", ""
-    ],
-    amenities: ["", "", ""],
-    directors: "",
-    companyName: "",
-    companyWebsite: "",
-    facebookLink: "",
-    instagramLink: "",
-    twitterLink: "",
-    brochure: "",
-    landArea: "",
-    landAreaUnits: "",
-    propertySizeBuildUp: "",
-    openArea: "",
-    towerAPT: "",
-    houseVilla: "",
+  ngOnInit() {
+    return;
+  }
+
+  ventures = {
+    ventureName: '',
+    description: '',
+    ventureWebsite: '',
+    logo: '',
+    ventureImages: ['', '', ''],
+    amenities: ['', '', ''],
+    directors: '',
+    companyName: '',
+    companyWebsite: '',
+    facebookLink: '',
+    instagramLink: '',
+    twitterLink: '',
+    brochure: '',
+    landArea: '',
+    landAreaUnits: '',
+    propertySizeBuildUp: '',
+    openArea: '',
+    towerAPT: '',
+    houseVilla: '',
   };
 
   ventID: any;
@@ -61,11 +114,11 @@ export class VentureStep1Component implements OnInit {
   }
 
   ventureDescriptionError: any;
-  area: string = "";
-  city: string = "";
-  district: string = "";
-  state: string = "";
-  pincode: string = "";
+  area: string = '';
+  city: string = '';
+  district: string = '';
+  state: string = '';
+  pincode: string = '';
 
   onLogoComplete($event: Event) {
     throw new Error('Method not implemented.');
@@ -83,8 +136,13 @@ export class VentureStep1Component implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  amenitiesList() {
-    throw new Error('Method not implemented.');
+  async amenitiesList() {
+    const modal = await this.modalController.create({
+      component: AmenitiesComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 
   onBrochureComplete($event: Event) {
@@ -109,8 +167,13 @@ export class VentureStep1Component implements OnInit {
   propertySizeBuildUpError: any;
   propertyUnitsError: any;
 
-  openSpecifications() {
-    throw new Error('Method not implemented.');
+  async openSpecifications() {
+    const modal = await this.modalController.create({
+      component: SpecificationsComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 
   user: any;
@@ -119,11 +182,7 @@ export class VentureStep1Component implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  towerAPT: any;
 
-  towerAPTCheck() {
-    throw new Error('Method not implemented.');
-  }
 
   ventureEdit: any;
 
@@ -131,11 +190,6 @@ export class VentureStep1Component implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  houseVilla: any;
-
-  houseVillaCheck() {
-    throw new Error('Method not implemented.');
-  }
 
   simplexValid($event: Event) {
     throw new Error('Method not implemented.');
@@ -143,6 +197,7 @@ export class VentureStep1Component implements OnInit {
 
   towerAPTError: any;
   houseVillaError: any;
-
-
+}
+function backwardLeaveAnimation(baseEl: any, opts?: any): Animation {
+  throw new Error('Function not implemented.');
 }

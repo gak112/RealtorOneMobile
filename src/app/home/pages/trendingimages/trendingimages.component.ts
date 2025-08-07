@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonButtons, IonContent, IonHeader, IonIcon, IonSkeletonText, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonButtons, IonContent, IonHeader, IonIcon, IonSkeletonText, IonTitle, IonToolbar, ModalController, IonImg } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { BannersviewComponent } from '../bannersview/bannersview.component';
 import {  NgFor } from '@angular/common';
@@ -12,7 +12,7 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './trendingimages.component.html',
   styleUrls: ['./trendingimages.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,NgFor,IonSkeletonText,],
+  imports: [IonImg, IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,NgFor,IonSkeletonText,],
   providers:[ModalController],
 })
 export class TrendingimagesComponent implements OnInit {

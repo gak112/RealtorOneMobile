@@ -4,7 +4,7 @@
       <swiper-container
       [autoplay]="{delay: 5000,disableOnInteraction: false}"
       [centeredSlides]="true"
-      class="mySwiper"  *ngIf="true">
+      class="mySwiper">
           <swiper-slide>
             <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
             <ion-img class="slide" src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
@@ -40,8 +40,8 @@
     
 
     <div class="div-ventortitle">
-      <div *ngIf="true">
-        <div>
+      <div>
+        <div class="div-formgroup">
           <ion-input [(ngModel)]="tower.towerName" type="text" mode="md" label="Tower/APT Name" label-placement="floating" fill="outline" placeholder="Enter Tower/APT Name"></ion-input>
         </div>
         <div class="div-input-flex">

@@ -5,10 +5,16 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="properties?.length > 0">
+  <!-- <div *ngIf="properties?.length > 0">
     <app-product-box *ngFor="let property of properties" [hit]="property"></app-product-box>
+  </div> -->
+
+  <!-- <app-product-box></app-product-box> -->
+
+  <div class="">
+    @for(property of properties(); track property.id) {
+    <app-realestate-card [property]="property"></app-realestate-card>
+    }
   </div>
 
-  <app-product-box></app-product-box>
-  
 </ion-content>

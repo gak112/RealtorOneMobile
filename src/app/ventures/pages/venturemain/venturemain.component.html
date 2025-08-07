@@ -10,9 +10,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div>
+  <!-- <div>
     <app-homeventurecard></app-homeventurecard>
     <app-homeventurecard></app-homeventurecard>
     <app-homeventurecard></app-homeventurecard>
+  </div> -->
+  <div class="">
+    @for(venture of ventures(); track venture.id) {
+    <app-venture-card [venture]="venture"></app-venture-card>
+    }
   </div>
 </ion-content>

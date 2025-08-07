@@ -1,20 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonHeader,
+  IonIcon,
+  IonSpinner,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 import { VentureStep1Component } from '../../components/venture-step1/venture-step1.component';
-import { VentureStep2Component } from '../../components/venture-step2/venture-step2.component';
-import {  NgIf } from '@angular/common';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonSpinner, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-venturecreation',
   templateUrl: './venturecreation.component.html',
   styleUrls: ['./venturecreation.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonButtons,IonBackButton,IonTitle,IonContent,VentureStep1Component,VentureStep2Component,IonFooter,NgIf,IonButton,IonSpinner,],
-  providers:[ModalController],
+  imports: [
+    IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    VentureStep1Component,
+    IonFooter,
+    NgIf,
+    IonButton,
+    IonSpinner,
+  ],
 })
 export class VenturecreationComponent implements OnInit {
+  private modalController = inject(ModalController);
   dismiss() {
-    throw new Error('Method not implemented.');
+    this.modalController.dismiss();
   }
   getVentures($event: Event) {
     throw new Error('Method not implemented.');
@@ -37,10 +59,11 @@ export class VenturecreationComponent implements OnInit {
   pasteAllData: any;
   action: any;
 
-  constructor() { }
+  constructor() {
+    addIcons({ chevronBackOutline });
+  }
 
   ngOnInit() {
-    return
-   }
-
+    return;
+  }
 }

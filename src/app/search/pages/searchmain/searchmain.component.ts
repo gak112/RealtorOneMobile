@@ -10,15 +10,12 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { ProductfilterComponent } from '../productfilter/productfilter.component';
-import { IonicModule } from '@ionic/angular';
-import { ProductBoxComponent } from 'src/app/search/components/product-box/product-box.component';
-import { CommonModule } from '@angular/common';
 import {
   IProperty,
   RealestateCardComponent,
 } from 'src/app/home/components/realestate-card/realestate-card.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { ProductfilterComponent } from '../productfilter/productfilter.component';
 
 @Component({
   selector: 'app-searchmain',
@@ -32,7 +29,6 @@ import {
     IonButton,
     IonSearchbar,
     IonContent,
-    ProductBoxComponent,
     RealestateCardComponent,
   ],
   providers: [ModalController],

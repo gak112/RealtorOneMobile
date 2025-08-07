@@ -1,11 +1,20 @@
 <div class="div-edit">
   <ion-label class="ion-label-heading">Specifications</ion-label>
-  <!-- <ion-icon name="create-outline"(click)="openSpecifications()"></ion-icon> -->
+  <div class="div-btn" (click)="openSpecifications()">
+    <ion-button size="small" color="warning">View details</ion-button>
+  </div>
 </div>
-<div class="div-specification-display" *ngFor="let s of specifications; let i = index">
-  <ion-label class="ion-label-main">{{s.title}}</ion-label>
-  <div class="div-specification-sub" *ngFor="let sp of s.specifications; let j = index">
-      <ion-label (input)="keyChanged($event, i, j)" class="ion-label-title" >{{sp.key}}</ion-label>
-      <ion-label (input)="valueChanged($event, i, j)" class="ion-label-desc" style="text-align: center;">{{sp.value}}</ion-label>
+<div class="div-specification-display">
+  <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">Kitchen
+    Rooms</ion-label>
+  <div style="padding: 10px;">
+    @for (spec of [0,1,2,3,4,5,6,7,8,9]; track spec) {
+    <div class="div-spec-keys-values">
+      <div class="div-specification-sub">
+        <ion-label class="ion-label-title" contenteditable="true">Kitchen Rooms</ion-label>
+        <ion-label class="ion-label-title" style="text-align: center;" contenteditable="true">3</ion-label>
+      </div>
+    </div>
+    }
   </div>
 </div>

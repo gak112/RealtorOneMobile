@@ -6,6 +6,10 @@
   }
 }
 
+ion-content {
+  --background: var(--content-background);
+}
+
 ion-searchbar {
   padding: 10px;
   height: 65px;
@@ -48,7 +52,6 @@ ion-fab-button {
     font-size: 10px;
     font-weight: 600;
     height: 25px;
-    --padding-top: 1px;
 
     ion-select {
       --placeholder-opacity: 1;

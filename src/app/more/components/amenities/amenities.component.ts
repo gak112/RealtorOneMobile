@@ -1,25 +1,48 @@
-import {  NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { IonButton, IonCheckbox, IonContent, IonHeader, IonImg, IonLabel, IonTitle, IonToolbar,  } from '@ionic/angular/standalone';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  IonButton,
+  IonCheckbox,
+  IonContent,
+  IonHeader,
+  IonImg,
+  IonLabel,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-amenities',
   templateUrl: './amenities.component.html',
   styleUrls: ['./amenities.component.scss'],
-  standalone:true,
-  imports:[IonHeader,IonToolbar,IonTitle,IonButton,IonContent,IonImg,NgIf,NgFor,IonLabel,IonCheckbox,],
-  providers:[ModalController],
+  standalone: true,
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonContent,
+    IonImg,
+    IonLabel,
+    IonCheckbox,
+    IonIcon,
+  ],
+  providers: [ModalController],
 })
 export class AmenitiesComponent implements OnInit {
+  private modalController = inject(ModalController);
+
+  dismiss() {
+    this.modalController.dismiss();
+  }
 
   @Input() selectedAmenities: string[] = [];
   amenities;
   subscription: Subscription;
 
-
-  constructor(/*private afs: AngularFirestore,*/ private modalController: ModalController) { }
+  constructor(/*private afs: AngularFirestore,*/) {}
 
   ngOnInit() {
     if (this.selectedAmenities === undefined) {
@@ -33,7 +56,6 @@ export class AmenitiesComponent implements OnInit {
 
     //     this.selectedAmenities.forEach((selectedAmenity) => {
 
-
     //       if (amenity.amenity === selectedAmenity) {
     //         this.amenities[i].selected = true;
     //       }
@@ -45,16 +67,12 @@ export class AmenitiesComponent implements OnInit {
     // });
   }
 
-
   selectedChange(event, index) {
-
-
     if (event.detail.checked) {
       this.amenities[index].selected = true;
     } else {
       this.amenities[index].selected = false;
     }
-
   }
 
   addItems() {

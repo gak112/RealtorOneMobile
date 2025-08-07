@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SpecviewComponent } from './specview.component';
+import { VentureCardComponent } from './venture-card.component';
 
-describe('SpecviewComponent', () => {
-  let component: SpecviewComponent;
-  let fixture: ComponentFixture<SpecviewComponent>;
+describe('VentureCardComponent', () => {
+  let component: VentureCardComponent;
+  let fixture: ComponentFixture<VentureCardComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpecviewComponent ],
+      declarations: [ VentureCardComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SpecviewComponent);
+    fixture = TestBed.createComponent(VentureCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
