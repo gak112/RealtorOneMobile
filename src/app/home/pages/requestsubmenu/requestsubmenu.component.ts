@@ -1,25 +1,65 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  IonContent,
+  IonHeader,
+  IonImg,
+  IonLabel,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
 import { PostentryComponent } from '../postentry/postentry.component';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonImg, IonLabel, IonNavLink, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-requestsubmenu',
   templateUrl: './requestsubmenu.component.html',
   styleUrls: ['./requestsubmenu.component.scss'],
-  standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonBackButton,IonTitle,IonContent,IonNavLink,IonImg,IonLabel,],
-  providers:[ModalController],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonImg, IonLabel],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class RequestsubmenuComponent  implements OnInit {
+export class RequestsubmenuComponent implements OnInit {
+  private modalController = inject(ModalController);
 
   @Input() action: any;
   propertyComponent = PostentryComponent;
 
-  constructor() { }
+  constructor() {
+    addIcons({
+      chevronBackOutline,
+    });
+  }
+
+  dismiss() {
+    this.modalController.dismiss();
+  }
+
+  async openPostEntry(type: string) {
+    const modal = await this.modalController.create({
+      component: PostentryComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+      componentProps: {
+        action: type,
+      },
+    });
+    await modal.present();
+  }
 
   ngOnInit() {
-    return
+    return;
   }
 
   // goForward(type: any) {

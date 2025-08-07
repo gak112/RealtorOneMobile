@@ -1,13 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>My properties</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>   
+<ion-content>
   <!-- <div *ngIf="properties?.length > 0">
     <app-propertybox *ngFor="let property of properties" [user]="user" [hit]="property"></app-propertybox>  
   </div>  -->
-
-  <app-propertybox></app-propertybox>
+  <div class="">
+    @for (property of properties(); track property) {
+    <app-my-property-card [property]="property"></app-my-property-card>
+    }
+  </div>
 </ion-content>

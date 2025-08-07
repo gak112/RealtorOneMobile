@@ -1,184 +1,242 @@
 <ion-header>
-  <ion-toolbar style="--border-width: 0;">
-    <ion-buttons slot="start">
-      <ion-back-button text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title>Property Details Entry</ion-title>
-  </ion-toolbar>
+    <ion-toolbar style="--border-width: 0;">
+        <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+        <ion-title>Property Details Entry</ion-title>
+    </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div class="div-form-main">
-      <ion-input [(ngModel)]="request.title" type="text" mode="md" label="Title" label-placement="floating" fill="outline" placeholder="Enter Title"></ion-input>
-      <div *ngIf="actionType === 'Residential'">
-          <ion-select [(ngModel)]="request.houseType" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Select House Type" label-placement="floating" fill="outline">
-              <ion-select-option value="Apartment">Apartment</ion-select-option>
-              <ion-select-option value="Individual House/Villa">Individual House/Villa</ion-select-option>
-              <ion-select-option value="Gated Community Villa">Gated Community Villa</ion-select-option>
-          </ion-select>
-      </div>
-      <div *ngIf="actionType === 'Residential'">
-          <ion-select [(ngModel)]="request.bhkType" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Select BHK Type" label-placement="floating" fill="outline">
-              <ion-select-option value="1BHK">1BHK</ion-select-option>
-              <ion-select-option value="2BHK">2BHK</ion-select-option>
-              <ion-select-option value="3BHK">3BHK</ion-select-option>
-              <ion-select-option value="4BHK">4BHK</ion-select-option>
-              <ion-select-option value="5BHK">5BHK</ion-select-option>
-              <ion-select-option value="+5BHK">+5BHK</ion-select-option>
-          </ion-select>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.propertySize" type="text" mode="md" label="Size of the property" label-placement="floating" fill="outline" placeholder="Enter size of the property" style="margin-right: 16px;"></ion-input>
-          <ion-select [(ngModel)]="request.totalPropertyUnits" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units" label-placement="floating" fill="outline" style="width: 150px;">
-              <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
-              <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
-              <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
-              <ion-select-option value="Acre">Acre</ion-select-option>
-          </ion-select>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.propertySizeBuildUp" type="text" mode="md" label="Property size (Build up)" label-placement="floating" fill="outline" placeholder="Enter Property size (Build up)" style="margin-right: 16px;"></ion-input>
-          <ion-select [(ngModel)]="request.totalPropertyUnits" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units" label-placement="floating" fill="outline" style="width: 150px;">
-              <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
-              <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
-              <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
-              <ion-select-option value="Acre">Acre</ion-select-option>
-          </ion-select>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.northFacing" type="text" mode="md" label="North Dimensions" label-placement="floating" fill="outline" placeholder="Enter North Dimensions" style="margin-right: 16px;"></ion-input>
-          <ion-input [(ngModel)]="request.northSize" type="text" mode="md" label="Size" label-placement="floating" fill="outline" placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
-          <ion-select [(ngModel)]="request.units" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units" label-placement="floating" fill="outline" style="width: 225px;">
-              <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
-              <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
-              <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
-              <ion-select-option value="Acre">Acre</ion-select-option>
-          </ion-select>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.southFacing" type="text" mode="md" label="South Dimensions" label-placement="floating" fill="outline" placeholder="Enter South Dimensions" style="margin-right: 16px;"></ion-input>
-          <ion-input [(ngModel)]="request.southSize" type="text" mode="md" label="Size" label-placement="floating" fill="outline" placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
-          <div class="div-label">
-              <ion-label>{{request.units || 'Ft'}}</ion-label>
+<ion-content class="ion-padding">
+    <div class="div-form-main">
+        <div class="div-formgroup">
+            <ion-input type="text" mode="md" label="Title" label-placement="floating" fill="outline"
+                placeholder="Enter Title"></ion-input>
+        </div>
+        @if(actionType === 'Residential') {
+        <div class="div-formgroup">
+            <ion-select mode="md" label="Select House Type" label-placement="floating" fill="outline">
+                <ion-select-option value="Apartment">Apartment</ion-select-option>
+                <ion-select-option value="Individual House/Villa">Individual House/Villa</ion-select-option>
+                <ion-select-option value="Gated Community Villa">Gated Community Villa</ion-select-option>
+            </ion-select>
+        </div>
+        <div class="div-formgroup">
+            <ion-select mode="md" label="Select BHK Type" label-placement="floating" fill="outline">
+                <ion-select-option value="1BHK">1BHK</ion-select-option>
+                <ion-select-option value="2BHK">2BHK</ion-select-option>
+                <ion-select-option value="3BHK">3BHK</ion-select-option>
+                <ion-select-option value="4BHK">4BHK</ion-select-option>
+                <ion-select-option value="5BHK">5BHK</ion-select-option>
+                <ion-select-option value="+5BHK">+5BHK</ion-select-option>
+            </ion-select>
+        </div>
+        }
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input type="text" mode="md" label="Size of the property" label-placement="floating" fill="outline"
+                    placeholder="Enter size of the property" style="margin-right: 16px;"></ion-input>
+                <ion-select mode="md" label="Units" label-placement="floating" fill="outline" style="width: 150px;"
+                    class="select-units">
+                    <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+                    <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+                    <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+                    <ion-select-option value="Acre">Acre</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input [(ngModel)]="request.propertySizeBuildUp" type="text" mode="md"
+                    label="Property size (Build up)" label-placement="floating" fill="outline"
+                    placeholder="Enter Property size (Build up)" style="margin-right: 16px;"></ion-input>
+                <ion-select mode="md" label="Units" label-placement="floating" fill="outline" style="width: 150px;"
+                    class="select-units">
+                    <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+                    <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+                    <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+                    <ion-select-option value="Acre">Acre</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input type="text" mode="md" label="North Dimensions" label-placement="floating" fill="outline"
+                    placeholder="Enter North Dimensions" style="margin-right: 16px;"></ion-input>
+                <ion-input type="text" mode="md" label="Size" label-placement="floating" fill="outline"
+                    placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
+                <ion-select mode="md" label="Units" label-placement="floating" fill="outline" style="width: 225px;"
+                    class="select-units">
+                    <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+                    <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+                    <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+                    <ion-select-option value="Acre">Acre</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input type="text" mode="md" label="South Dimensions" label-placement="floating" fill="outline"
+                    placeholder="Enter South Dimensions" style="margin-right: 16px;"></ion-input>
+                <ion-input type="text" mode="md" label="Size" label-placement="floating" fill="outline"
+                    placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
+                <div class="div-label">
+                    <ion-label>{{request.units || 'Ft'}}</ion-label>
+                </div>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input type="text" mode="md" label="East Dimensions" label-placement="floating" fill="outline"
+                    placeholder="Enter East Dimensions" style="margin-right: 16px;"></ion-input>
+                <ion-input type="text" mode="md" label="Size" label-placement="floating" fill="outline"
+                    placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
+                <div class="div-label">
+                    <ion-label>{{request.units || 'Ft'}}</ion-label>
+                </div>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;">
+                <ion-input type="text" mode="md" label="West Dimensions" label-placement="floating" fill="outline"
+                    placeholder="Enter West Dimensions" style="margin-right: 16px;"></ion-input>
+                <ion-input type="text" mode="md" label="Size" label-placement="floating" fill="outline"
+                    placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
+                <div class="div-label">
+                    <ion-label>{{request.units || 'Ft'}}</ion-label>
+                </div>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div class="div-grid">
+                <ion-input type="number" mode="md" label="Toilets" label-placement="floating" fill="outline"
+                    placeholder="Enter Toilets"></ion-input>
+                <ion-input type="number" mode="md" label="Pooja Room" label-placement="floating" fill="outline"
+                    placeholder="Enter Pooja Room"></ion-input>
+                <ion-input type="number" mode="md" label="Living/Dining" label-placement="floating" fill="outline"
+                    placeholder="Enter Living/Dining"></ion-input>
+                <ion-input type="number" mode="md" label="Kitchen" label-placement="floating" fill="outline"
+                    placeholder="Enter Kitchen"></ion-input>
+            </div>
+        </div>
+        @if(actionType === 'Residential') {
+        <div class="div-formgroup">
+            <ion-select mode="md" label="Select Floor" label-placement="floating" fill="outline">
+                <ion-select-option value="1st Floor">1st Floor</ion-select-option>
+                <ion-select-option value="2nd Floor">2nd Floor</ion-select-option>
+                <ion-select-option value="3rd Floor">3rd Floor</ion-select-option>
+                <ion-select-option value="4th Floor">4th Floor</ion-select-option>
+                <ion-select-option value="5th Floor">5th Floor</ion-select-option>
+                <ion-select-option value="6th Floor">6th Floor</ion-select-option>
+                <ion-select-option value="7th Floor">7th Floor</ion-select-option>
+                <ion-select-option value="8th Floor">8th Floor</ion-select-option>
+                <ion-select-option value="9th Floor">9th Floor</ion-select-option>
+                <ion-select-option value="10th Floor">10th Floor</ion-select-option>
+                <ion-select-option value="+10 Floor">+10 Floor</ion-select-option>
+            </ion-select>
+        </div>
+        }
+        <div class="div-formgroup flex">
+            <ion-label style="margin: 0;font-size: 16px;">Amenities</ion-label>
+            <ion-button size="small" (click)="amenitiesList()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add
+            </ion-button>
+        </div>
+        <div class="div-amenities">
+            <h4>Amenities</h4>
+        </div>
+        <div class="div-formgroup">
+            <ion-label>Age of Property</ion-label>
+            <div class="div-property-segment">
+                <ion-segment color="primary" mode="ios" value="underconstruction"
+                    (ionChange)="ageOfPropertyChanged($event)">
+                    <ion-segment-button value="underconstruction">
+                        <ion-label>Under Construction</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="noofyears">
+                        <ion-label>No Of Years</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+                <div *ngIf="ageOfPropertyAction === 'noofyears'" style="margin-top: 16px;">
+                    <ion-input [(ngModel)]="request.noOfYears" type="number" mode="md" label="No of years"
+                        label-placement="floating" fill="outline" placeholder="Enter no of years"></ion-input>
+                </div>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <div style="display: flex;align-items: center;" *ngIf="action === 'rent'">
+                <ion-input [(ngModel)]="request.rent" type="text" mode="md" label="Rent" label-placement="floating"
+                    fill="outline" placeholder="Enter Rent" style="margin-right: 16px;"></ion-input>
+                <ion-select [(ngModel)]="request.rentUnits" toggleIcon="caret-down-outline"
+                    expandedIcon="caret-up-outline" mode="md" label="Units" label-placement="floating" fill="outline"
+                    style="width: 150px;">
+                    <ion-select-option value="Monthly">Monthly</ion-select-option>
+                    <ion-select-option value="Yearly">Yearly</ion-select-option>
+                </ion-select>
+            </div>
+        </div>
+        @if(action === 'sale') {
+        <div class="div-formgroup">
+            <ion-input type="text" mode="md" label="Cost of Property" label-placement="floating" fill="outline"
+                placeholder="Enter Cost of Property"></ion-input>
+        </div>
+        }
+        <div class="div-formgroup">
+            <div class="div-flex">
+                <ion-label>Enter Address of Property</ion-label>
+                <ion-button fill="outline" color="tertiary" (click)="openLocation()">Locate me</ion-button>
+            </div>
+            <div class="div-location">
+                <ion-label class="label-location">H No 6/3/900, 1/2, Raj Bhavan Rd, Durga Nagar Colony, Somajiguda,
+                    Hyderabad, Telangana 500082, India - 500082</ion-label>
+            </div>
+        </div>
+        <div class="div-formgroup">
+            <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
+                placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
+        </div>
+        <div class="div-upload">
+            <ion-label class="upload-label">Upload images</ion-label>
+            <div class="div-add">
+              <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+              <ion-label class="label-add">
+                Upload a file or drag and drop
+              </ion-label>
+              <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+            </div>
           </div>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.eastFacing" type="text" mode="md" label="East Dimensions" label-placement="floating" fill="outline" placeholder="Enter East Dimensions" style="margin-right: 16px;"></ion-input>
-          <ion-input [(ngModel)]="request.eastSize" type="text" mode="md" label="Size" label-placement="floating" fill="outline" placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
-          <div class="div-label">
-              <ion-label>{{request.units || 'Ft'}}</ion-label>
-          </div>
-      </div>
-      <div style="display: flex;align-items: center;">
-          <ion-input [(ngModel)]="request.westFacing" type="text" mode="md" label="West Dimensions" label-placement="floating" fill="outline" placeholder="Enter West Dimensions" style="margin-right: 16px;"></ion-input>
-          <ion-input [(ngModel)]="request.westSize" type="text" mode="md" label="Size" label-placement="floating" fill="outline" placeholder="Enter Size" style="margin-right: 16px;width: 150px;"></ion-input>
-          <div class="div-label">
-              <ion-label>{{request.units || 'Ft'}}</ion-label>
-          </div>
-      </div>
-      <div class="div-grid">
-          <ion-input [(ngModel)]="request.toilets" type="number" mode="md" label="Toilets" label-placement="floating" fill="outline" placeholder="Enter Toilets"></ion-input>
-          <ion-input [(ngModel)]="request.poojaRoom" type="number" mode="md" label="Pooja Room" label-placement="floating" fill="outline" placeholder="Enter Pooja Room"></ion-input>
-          <ion-input [(ngModel)]="request.livingDining" type="number" mode="md" label="Living/Dining" label-placement="floating" fill="outline" placeholder="Enter Living/Dining"></ion-input>
-          <ion-input [(ngModel)]="request.kitchen" type="number" mode="md" label="Kitchen" label-placement="floating" fill="outline" placeholder="Enter Kitchen"></ion-input>
-      </div>
-      <div *ngIf="actionType === 'Residential'">
-          <ion-select [(ngModel)]="request.floor" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Select Floor" label-placement="floating" fill="outline">
-              <ion-select-option value="1st Floor">1st Floor</ion-select-option>
-              <ion-select-option value="2nd Floor">2nd Floor</ion-select-option>
-              <ion-select-option value="3rd Floor">3rd Floor</ion-select-option>
-              <ion-select-option value="4th Floor">4th Floor</ion-select-option>
-              <ion-select-option value="5th Floor">5th Floor</ion-select-option>
-              <ion-select-option value="6th Floor">6th Floor</ion-select-option>
-              <ion-select-option value="7th Floor">7th Floor</ion-select-option>
-              <ion-select-option value="8th Floor">8th Floor</ion-select-option>
-              <ion-select-option value="9th Floor">9th Floor</ion-select-option>
-              <ion-select-option value="10th Floor">10th Floor</ion-select-option>
-              <ion-select-option value="+10 Floor">+10 Floor</ion-select-option>
-          </ion-select>
-      </div>
-      <div class="div-formgroup flex">
-          <ion-label style="margin: 0;font-size: 16px;">Amenities</ion-label>   
-          <ion-button size="small" (click)="amenitiesList()">
-              <ion-icon slot="start" name="add"></ion-icon>
-              Add 
-          </ion-button> 
-      </div>
-      <div class="div-amenities" *ngIf="request?.amenities!.length > 0">
-          <h4 *ngFor="let amenity of request.amenities">{{amenity}}</h4>        
-      </div> 
-      <div class="div-formgroup">
-          <ion-label>Age of Property</ion-label>
-          <div class="div-property-segment">
-              <ion-segment color="primary" mode="ios" value="underconstruction" (ionChange)="ageOfPropertyChanged($event)">
-                  <ion-segment-button value="underconstruction">
-                      <ion-label>Under Construction</ion-label>
-                  </ion-segment-button>
-                  <ion-segment-button value="noofyears">
-                      <ion-label>No Of Years</ion-label>
-                  </ion-segment-button>
-              </ion-segment>
-              <div *ngIf="ageOfPropertyAction === 'noofyears'" style="margin-top: 16px;">
-                  <ion-input [(ngModel)]="request.noOfYears" type="number" mode="md" label="No of years" label-placement="floating" fill="outline" placeholder="Enter no of years"></ion-input>
-              </div>              
-          </div>
-      </div>
-      <div style="display: flex;align-items: center;" *ngIf="action === 'rent'">
-          <ion-input [(ngModel)]="request.rent" type="text" mode="md" label="Rent" label-placement="floating" fill="outline" placeholder="Enter Rent" style="margin-right: 16px;"></ion-input>
-          <ion-select [(ngModel)]="request.rentUnits" toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units" label-placement="floating" fill="outline" style="width: 150px;">
-              <ion-select-option value="Monthly">Monthly</ion-select-option>
-              <ion-select-option value="Yearly">Yearly</ion-select-option>
-          </ion-select>
-      </div>
-      <div *ngIf="action === 'sale'">
-          <ion-input [(ngModel)]="request.costOfProperty" type="text" mode="md" label="Cost of Property" label-placement="floating" fill="outline" placeholder="Enter Cost of Property"></ion-input>
-      </div>   
-      <div class="div-formgroup">
-          <div class="div-flex">
-              <ion-label>Enter Address of Property</ion-label>
-              <ion-button fill="outline" color="tertiary" (click)="openLocation()">Locate me</ion-button>
-          </div>
-          <div class="div-location">
-              <ion-label class="label-location">H No 6/3/900, 1/2, Raj Bhavan Rd, Durga Nagar Colony, Somajiguda, Hyderabad, Telangana 500082, India - 500082</ion-label>
-          </div>
-      </div>
-      <div>
-          <ion-textarea [(ngModel)]="request.description" type="text" mode="md" label="Description" label-placement="floating" fill="outline" placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
-      </div>
-      <div class="div-upload-main">
-          <div class="upload-btn-wrapper add-button" style="margin-right: 16px;">
-              <div class="div-uploadcare">
-                  <ngx-uploadcare-widget 
-                  class="post-entry-btn"
-                  #uc
-                  (on-upload-complete)="onComplete($event)"
-                  [multiple]="true"       
-                  [multiple-max]="10"          
-                  data-crop="300:300"
-                  public-key="563d1afa2618816d4d42">
-                  </ngx-uploadcare-widget>
-              </div>
-          </div>
-          <div class="upload-btn-wrapper">
-              <ion-button fill="clear" expand="block" class="btn"><ion-icon name="videocam-outline"></ion-icon><p>Upload<span>Videos</span></p></ion-button>
-              <input type="file" name="myfile" />
-          </div>
-      </div>
-      <div class="div-images-display" *ngIf="request.resources.length > 0">
-          <div class="div-img-sub" *ngFor="let resource of request.resources; let i = index">
-              <ion-img [src]="resource.resourceUrl"></ion-img>
-              <ion-icon name="trash-outline" (click)="removeImage(i)"></ion-icon>
-          </div>
-      </div>
-      <div class="div-video-display">
-          <video width="320" height="240" controls>
-              <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-          </video>
-          <ion-icon name="trash-outline"></ion-icon>
-      </div>
-      <ion-button class="ion-button-settings" expand="block" color="danger" (click)="submit()">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span> 
-              {{loading ? "...." : 'Submit'}}
-      </ion-button>       
-  </div>
+        <!-- <div class="div-upload-main">
+            <div class="upload-btn-wrapper add-button" style="margin-right: 16px;">
+                <div class="div-uploadcare">
+                    <ngx-uploadcare-widget class="post-entry-btn" #uc (on-upload-complete)="onComplete($event)"
+                        [multiple]="true" [multiple-max]="10" data-crop="300:300" public-key="563d1afa2618816d4d42">
+                    </ngx-uploadcare-widget>
+                </div>
+            </div>
+            <div class="upload-btn-wrapper">
+                <ion-button fill="clear" expand="block" class="btn"><ion-icon name="videocam-outline"></ion-icon>
+                    <p>Upload<span>Videos</span></p>
+                </ion-button>
+                <input type="file" name="myfile" />
+            </div>
+        </div> -->
+        <div class="div-images-display">
+            <div class="div-img-sub">
+                <ion-img [src]="'assets/img/no-image.png'"></ion-img>
+                <ion-icon name="trash-outline"></ion-icon>
+            </div>
+        </div>
+        <div class="div-video-display">
+            <video width="320" height="240" controls>
+                <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <ion-icon name="trash-outline"></ion-icon>
+        </div>
+
+    </div>
 </ion-content>
+<ion-footer>
+    <ion-button class="ion-button-settings" expand="block" color="warning" (click)="submit()">
+        <span class="spinner-border spinner-border-sm"></span>
+        Submit
+    </ion-button>
+</ion-footer>

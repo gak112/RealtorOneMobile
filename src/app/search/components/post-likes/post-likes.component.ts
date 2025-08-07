@@ -1,27 +1,30 @@
 import { Component, Input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import {  ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { IonIcon, IonLabel } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import {
+  bookmark,
+  bookmarkOutline,
+  heart,
+  heartOutline,
+  shareOutline,
+} from 'ionicons/icons';
 import { LikesComponent } from 'src/app/home/pages/likes/likes.component';
 import { ToastService } from 'src/app/services/toast.service';
 import { ViewPersonsComponent } from '../view-persons/view-persons.component';
-import { ChatfullviewComponent } from 'src/app/chat/pages/chatfullview/chatfullview.component';
-import { addIcons } from 'ionicons';
-import{heartOutline,heart,shareOutline,bookmarkOutline,bookmark} from 'ionicons/icons';
-import { IonIcon, IonLabel,  } from '@ionic/angular/standalone';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-post-likes',
   templateUrl: './post-likes.component.html',
   styleUrls: ['./post-likes.component.scss'],
   standalone: true,
-  imports: [IonIcon,IonLabel,NgIf,],
-  providers:[ModalController],
+  imports: [IonIcon, IonLabel, NgIf],
+  providers: [ModalController],
 })
-
 export class PostLikesComponent implements OnInit {
-
   @Input() user: any;
   @Input() hit: any;
   @Input() id: any;
@@ -29,12 +32,14 @@ export class PostLikesComponent implements OnInit {
   savedPostObj: any;
   savedLike = true;
   savedLikeObj: any;
-  constructor(private modalController: ModalController, private toast: ToastService,
+  constructor(
+    private modalController: ModalController,
+    private toast: ToastService,
     /*private afs: AngularFirestore,*/
-    private router: Router) { 
-
-      addIcons({heartOutline,heart,shareOutline,bookmarkOutline,bookmark})
-    }
+    private router: Router
+  ) {
+    addIcons({ heartOutline, heart, shareOutline, bookmarkOutline, bookmark });
+  }
 
   ngOnInit(): void {
     return;
@@ -55,33 +60,26 @@ export class PostLikesComponent implements OnInit {
   async openLikes() {
     const modal = await this.modalController.create({
       component: LikesComponent,
-      componentProps: { user: this.user, hit: this.hit }
+      componentProps: { user: this.user, hit: this.hit },
     });
 
     return await modal.present();
   }
 
-  async openChat() {
-    const modal = await this.modalController.create({
-      component: ChatfullviewComponent
-    });
-
-    return await modal.present();
-  }
+  async openChat() {}
 
   async viewedPersons() {
     const modal = await this.modalController.create({
-      component: ViewPersonsComponent
+      component: ViewPersonsComponent,
     });
 
     return await modal.present();
   }
 
   saveBookMark(hit: any) {
-
     if (!this.user) {
       this.toast.showError('User Does not Exist., Please Login');
-      this.router.navigateByUrl('/auth')
+      this.router.navigateByUrl('/auth');
     } else {
       // this.afs.doc(`savedPropertiesList/${this.id + this.user.uid}`)
       //   .set({
@@ -90,45 +88,33 @@ export class PostLikesComponent implements OnInit {
       //     createdAt: firebase.firestore.FieldValue.serverTimestamp()
       //   })
       //   .then(success => {
-
       //     this.toast.showMessage('Added to your Saved Properties');
-
       //   }).catch(err => this.toast.showError(err.message));
     }
   }
 
   removeBookMark() {
-
-
     // this.afs.doc(`savedPropertiesList/${this.id + this.user.uid}`)
     //   .delete()
     //   .then(success => {
-
     //     this.toast.showMessage('Removed from your Saved Properties');
     //     this.savedPost = false;
-
-
     //   }).catch(err => this.toast.showError(err.message));
-
   }
 
   saveLike(hit: any) {
-
     if (!this.user) {
       this.toast.showError('User Does not Exist., Please Login');
-      this.router.navigateByUrl('/auth')
+      this.router.navigateByUrl('/auth');
     } else {
       // this.afs.doc(`likesList/${this.id + this.user.uid}`)
       //   .set({
-
       //     id: this.id,
       //     uid: this.user.uid,
       //     createdAt: firebase.firestore.FieldValue.serverTimestamp()
       //   })
       //   .then(success => {
-
       //     // this.toast.showMessage('Added to your Saved Properties');
-
       //   }).catch(err => this.toast.showError(err.message));
     }
   }
@@ -141,22 +127,18 @@ export class PostLikesComponent implements OnInit {
     //   }).catch(err => this.toast.showError(err.message));
   }
 
-
   share(event: any) {
-
-
-
     if (navigator.share) {
-      navigator.share({
-        title: 'Realtor One',
-        text: 'Search Homes for Sale, Rent',
-        url: 'https://dearjob.org/#/',
-      })
+      navigator
+        .share({
+          title: 'Realtor One',
+          text: 'Search Homes for Sale, Rent',
+          url: 'https://dearjob.org/#/',
+        })
         .then(() => console.log('Successful share'))
         .catch((error) => console.log('Error sharing', error));
     } else {
       this.toast.showError('Your system does not support sharing files.');
     }
   }
-
 }

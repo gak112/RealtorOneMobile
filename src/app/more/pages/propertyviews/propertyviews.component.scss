@@ -1,84 +1,8 @@
-ion-card {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  margin: 16px;
+ion-title {
+  text-align: left;
+  padding-left: 40px;
 }
 
-ion-img {
-  margin: 0px 10px;
-}
-
-ion-img::part(image) {
-  border-radius: 10px;
-}
-
-.text {
-  display: flex;
-  justify-content: space-between;
-
-  background-color: white;
-  margin: 10px;
-  // padding: 15px;
-  border-bottom-left-radius: 20px;
-}
-
-.name {
-  // color: rgb(14, 168, 214);
-  font-size: 16px;
-  font-weight: 900;
-  color: black;
-  letter-spacing: 0.5px;
-  padding-left: 5px;
-}
-
-.a {
-  font-weight: 700;
-}
-
-.b {
-  font-size: 10px;
-
-  color: lightgrey;
-  color: #989aa2;
-}
-
-.two {
-  padding: 10px;
-}
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 15px;
-}
-
-.three {
-  border-radius: 20px;
-
-  background-color: #2b71;
-  padding: 10px;
-  background: #2154ad;
-  border-radius: 20px;
-  color: white;
-  text-align: center;
-  font-weight: 700;
-  // height: 30px;
-  width: 70px;
-}
-
-.eye {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #2154ad;
-  margin-right: 5px;
-}
-
-.icon {
-  // background-color: #2154ad;
-  color: #2154ad;
-  font-size: 22px;
+ion-content {
+  --background: var(--content-background);
 }

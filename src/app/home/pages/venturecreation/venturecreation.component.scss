@@ -11,13 +11,6 @@ ion-footer {
   background: var(--content-background-white);
   padding: 10px;
   border-top: var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  :not(:last-child) {
-    margin-right: 10px;
-  }
 }
 
 .div-form-main {
@@ -48,8 +41,7 @@ ion-button {
   --border-radius: 6px;
   margin: 0;
   text-transform: inherit;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  width: 50%;
 }

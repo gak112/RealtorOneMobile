@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IonBadge, IonButton, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonBadge, IonButton, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { IProfile } from 'src/app/languages/interface/profile/profile.interface';
 import { LanguageService } from 'src/app/services/language.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -10,7 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './profileedit.component.html',
   styleUrls: ['./profileedit.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,ReactiveFormsModule,IonBadge,IonButton,IonSpinner],
+  imports: [IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, ReactiveFormsModule, IonBadge, IonButton, IonSpinner, IonFooter],
   providers:[ModalController],
 })
 export class ProfileeditComponent  implements OnInit {

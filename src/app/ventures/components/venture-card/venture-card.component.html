@@ -5,7 +5,7 @@
     <swiper-slide>
       <div class="card-image">
         <ion-img [src]="image.image" alt="Venture Image"></ion-img>
-        
+
       </div>
     </swiper-slide>
     }
@@ -19,7 +19,7 @@
         <span class="active-status">{{ venture().ventureStatus }}</span>
       </div>
 
-      <div class="div-img">
+      <div class="div-img" (click)="openVentureFullview()">
         <ion-img [src]="'assets/img/onlylogo.png'"></ion-img>
         <div style="width: calc(100% - 70px);">
           <ion-label class="label-hbk" (click)="openVentureFullview()"><span>{{ venture().ventureName

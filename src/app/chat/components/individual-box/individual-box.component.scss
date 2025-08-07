@@ -1,0 +1,240 @@
+// ion-item {
+//   --min-height: 70px;
+//   border-radius: 6px;
+
+//   &:not(:last-child) {
+//     margin-bottom: 2px;
+//   }
+// }
+
+// ion-avatar {
+//   height: 55px;
+//   width: 55px;
+// }
+
+// .span-settings {
+//   position: absolute;
+//   bottom: 16px;
+//   width: 56px;
+//   right: 3px;
+//   text-align: center;
+//   margin: auto;
+//   color: #000;
+//   font-weight: 400;
+//   font-size: 10px;
+// }
+
+// .div-flex {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   width: 100%;
+//   border-bottom: 1px solid #ddd;
+// }
+
+// ion-badge {
+//   margin: auto;
+//   margin-top: 15px;
+//   background-color: var(--background-main);
+//   color: var(--color-white);
+//   font-size: 10px;
+//   font-weight: 400;
+//   width: 20px;
+//   height: 20px;
+//   padding: 4px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .div-flex1 {
+//   // width: 245px;
+//   display: flex;
+//   flex-direction: column;
+//   width: calc(100% - 20px);
+
+//   .label-name {
+//     font-size: 14px;
+//     font-weight: 500;
+//     color: var(--color-black);
+//     letter-spacing: 0.2px;
+//     text-transform: capitalize;
+//   }
+
+//   .div-flex2 {
+//     display: flex;
+//     align-items: center;
+//     gap: 5px;
+
+//     ion-icon {
+//       font-size: 16px;
+//       color: var(--color-777);
+//     }
+
+//     .span-message {
+//       font-size: 12px;
+//       align-items: center;
+//       font-weight: 400;
+//       display: -webkit-box;
+//       text-overflow: ellipsis;
+//       overflow: hidden;
+//       -webkit-line-clamp: 1;
+//       -webkit-box-orient: vertical;
+//       width: 150px;
+//       color: var(--color-black);
+//     }
+//   }
+// }
+
+
+.div-chat-individual {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  padding-right: 0;
+  /* border-bottom: var(--border-ddd); */
+//   background: var(--content-background);
+
+  .div-chat-img {
+
+      .img-chat {
+          height: 55px;
+          border-radius: 50%;
+          width: 55px;
+          overflow: hidden;
+          object-fit: cover;
+      }
+  }
+
+  .div-name-time {
+      // display: flex;
+      // justify-content: space-between;
+      flex-grow: 1;
+      padding: 14px 0;
+      margin-left: 16px;
+      padding-right: 16px;
+      border-bottom: var(--border-ddd);
+
+      .div-chat-name {
+
+          .p-settings {
+            margin: 0;
+            margin-bottom: 5px;
+            color: var(--color-black);
+            font-weight: 600;
+            display: block;
+            text-transform: capitalize;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+          }
+
+          .p-settings1 {
+            margin: 0;
+            font-size: 13px;
+            color: var(--color-777);
+            font-weight: 500;
+            display: -webkit-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.25;
+            // text-indent: 22px;
+            letter-spacing: 0.5px;
+          }
+      }
+
+      .div-time {
+         text-align: right;
+         min-width: 60px;
+
+          .p-settings4 {
+              margin: 0;
+              margin-bottom: 5px;
+              font-size: 13px;
+              color: var(--color-999);
+              font-weight: 600;
+              display: block;
+          }
+
+          .p-width {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+          }
+      }
+  }
+}
+
+.div-p-flex {
+  position: relative;
+  min-height: 35px;
+  display: flex;
+  // align-items: center;
+  justify-content: space-between;
+
+  .icon-single-tick {
+      font-size: 18px;
+      color: var(--color-777);
+      margin-right: 5px;
+      min-width: 18px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-top: -1px;
+  }
+
+  .icon-double-tick {
+      font-size: 18px;
+      color: #1ea962;
+      margin-right: 5px;
+      min-width: 18px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-top: -1px;
+
+      &.active {
+          color: var(--color-5e7ccc);
+      }
+  }
+
+}
+
+.p-settings2 {
+  margin: 0;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: var(--color-777);
+  font-weight: 300;
+  display: block;
+}
+
+.icon-double-tick {
+  font-size: 18px;
+  color: #1ea962;
+  margin-right: 5px;
+  min-width: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: -1px;
+}
+
+.div-no {
+  background-color: #1ea962;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .p-settings3 {
+    font-size: 10px;
+    color: var(--color-white);
+    font-weight: 600;
+    display: block;
+    margin-top: 1px;
+  }
+}

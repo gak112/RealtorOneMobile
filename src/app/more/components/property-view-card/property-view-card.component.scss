@@ -1,0 +1,150 @@
+.venture-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: var(--content-background-white);
+  padding: 0;
+  margin: 16px;
+  position: relative;
+
+  .card-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 40%;
+
+    ion-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .menu-icon {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 24px;
+      color: var(--color-777);
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      padding: 4px;
+      z-index: 10;
+    }
+  }
+
+  .curve-bg {
+    position: absolute;
+    top: -23px;
+    right: 24px;
+    width: 50px;
+    height: 50px;
+    transform: rotate(51deg);
+  }
+
+  .card-position {
+    padding: 12px;
+    background: var(--content-background-white);
+    border-radius: 20px 0 20px 20px;
+    margin-top: -16px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .property-type {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-skyblue);
+    background: var(--content-background-white);
+    padding: 6px 16px;
+    border-radius: 12px 0 0 0;
+    position: absolute;
+    top: -23px;
+    right: 0;
+    line-height: 1;
+  }
+
+  .card-content {
+    .status-row {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: var(--color-777);
+      font-weight: 500;
+
+      .dot {
+        margin: 0 6px;
+      }
+
+      .active-status {
+        color: var(--color-skyblue);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .venture-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 8px 0;
+      color: var(--color-black);
+    }
+
+    .avatars-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: var(--dashed-2);
+
+      .avatars {
+        display: flex;
+        align-items: center;
+
+        ion-img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          margin-left: -8px;
+          overflow: hidden;
+          object-fit: cover;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+
+        .more-count {
+          background: var(--background-gray);
+          color: var(--color-black);
+          font-size: 12px;
+          font-weight: 500;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: -8px;
+          border: 2px solid #fff;
+          overflow: hidden;
+        }
+      }
+
+      .div-price {
+        .label-price {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--color-white);
+          background: var(--background-main);
+          padding: 4px 12px;
+          border-radius: 50px;
+        }
+      }
+    }
+  }
+}

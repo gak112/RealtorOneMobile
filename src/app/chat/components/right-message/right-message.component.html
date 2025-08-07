@@ -1,0 +1,76 @@
+<ion-item-sliding #slider appLongPress (longPress)="selectMessage()">
+  <!--[style.background-color]="
+      selectedMessage()?.id === message().id ? 'rgb(59 89 152 / 40%)' : null
+    "-->
+
+  <!-- <ion-icon name="close-circle" style="
+      position: absolute;
+      top: 8px;
+      left: 4px;
+      z-index: 10;
+      font-size: 24px;
+      color: gray;
+    "></ion-icon> -->
+
+  <ion-item style="
+      --background: transparent;
+      --inner-border-width: 0;
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      width: 80%;
+      margin-left: auto;
+      position: relative;
+    ">
+    <div class="right-flex">
+      <div class="message sent" style="margin-left: 0; margin-right: 10px">
+
+        <!-- <ion-label class="p-entertext">
+          <ion-icon name="warning-outline"></ion-icon> The message has been
+          deleted</ion-label> -->
+
+        <div class="div-img-reply">
+
+          <div class="div-reply-text1">
+            <ion-label class="p-username">{{
+              'You'
+              }}</ion-label>
+            <ion-label class="label-reply-text">
+              Hello</ion-label>
+
+            <div class="div-p">
+              <ion-icon name="camera"></ion-icon>
+              <ion-label class="p-usertext">Photo</ion-label>
+            </div>
+
+          </div>
+          <!-- @if(imageUrl){
+          <div class="div-img">
+            <ion-img [src]="imageUrl" class="img-reply" style="margin: 0;border-radius: 0px;"></ion-img>
+          </div>
+          } -->
+        </div>
+
+        <ion-label class="p-entertext">Hello</ion-label>
+
+        <ion-img [src]="'assets/img/noimage.avif'" class="img-settings"></ion-img>
+
+        <span class="metadata">
+
+
+          <span class="time">07/08/2025 10:00 AM</span>
+
+          <span class="tick">
+            <ion-icon name="checkmark-done-sharp" style="color: #3880ff"></ion-icon>
+          </span>
+
+          <!-- <span class="tick">
+            <ion-icon name="checkmark-sharp" style="color: var(--color-777);"></ion-icon>
+          </span> -->
+
+        </span>
+
+      </div>
+    </div>
+  </ion-item>
+  <ion-item-options> </ion-item-options>
+</ion-item-sliding>

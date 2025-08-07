@@ -1,0 +1,221 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="user-bar">
+      <div class="back" style="display: flex" (click)="close()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </div>
+      <div class="avatar">
+        <ion-img [src]="'assets/img/noimage.avif'"></ion-img>
+      </div>
+      <div class="name">
+        <span class="span-name" (click)="openProfile()">{{
+          'SVN AShok Kumar'
+          }}</span>
+        <span class="status">Online</span>
+        <!-- <span class="status">{{ 'tap here for contact info' }}</span> -->
+      </div>
+      <div class="div-video-call">
+        <ion-icon name="videocam-outline" style="font-size: 28px"></ion-icon>
+        <ion-icon name="call-outline"></ion-icon>
+      </div>
+      <!-- @let triggerID = 'click-trigger-' + (otherUserData()?.objectID ??
+      otherUserData()?.uid);
+      <ion-icon name="ellipsis-vertical" class="icon-menu" [id]="triggerID"></ion-icon>
+      <ion-popover #popover [trigger]="triggerID" triggerAction="click" style="
+          --max-width: 150px;
+          --backdrop-opacity: 0;
+          --background: transparent;
+          --box-shadow: none;
+        ">
+        <ng-template>
+          <ion-content style="--background: transparent">
+            <div class="div-display">
+              <div class="div-display-sub">
+                <ion-icon name="warning-outline"></ion-icon>
+                <ion-label>Report</ion-label>
+              </div>
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-popover> -->
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="conversation">
+    <div class="conversation-sub">
+
+      <app-left-message></app-left-message>
+
+      <app-right-message></app-right-message>
+
+      <span class="span-date">07/08/2025</span>
+
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="footer-settings" style="text-align: left">
+  <div class="div-footer-flex">
+    <ion-img [src]="'assets/img/footerchat.png'"></ion-img>
+    <div style="width: calc(100% - 51px)">
+      <ion-label class="label-invite" style="margin: 0">Invite (SVN AShok Kumar)
+        to chat</ion-label>
+      <span class="span-desc" style="margin: 0">You can send more messages after your invitation has been
+        accepted</span>
+    </div>
+  </div>
+</ion-footer>
+
+<ion-footer class="footer-settings" style="display: none">
+  <ion-label class="label-invite">Invitation Sent</ion-label>
+  <span class="span-desc">You can send more messages after your invitation has been accepted</span>
+</ion-footer>
+
+<ion-footer class="footer-settings" style="display: none">
+  <ion-label class="label-invite">Accept message request from
+    SVN AShok Kumar</ion-label>
+  <span class="span-desc">If you accept, they will also be able to call you and see info such as your
+    activity status and when you're read messages.</span>
+  <div class="div-button-flex">
+    <!-- <ion-button expand="block" fill="outline" color="dark"> Block </ion-button> -->
+    <ion-button expand="block" fill="outline" color="dark">
+      Delete
+    </ion-button>
+    <ion-button expand="block" fill="outline" color="dark">
+      Accept
+    </ion-button>
+  </div>
+</ion-footer>
+
+<ion-footer style="background: transparent; display: none">
+
+  <div class="div-img-add">
+    <ion-icon name="close-circle-sharp"></ion-icon>
+    <ion-img [src]="'assets/img/noimage.avif'"></ion-img>
+  </div>
+
+  <!---->
+
+  <div class="div-img-reply" style="position: relative">
+    <div class="div-reply-text1">
+      <ion-label class="p-username">{{
+        'You'
+        }}</ion-label>
+      <ion-label class="label-reply-text">
+        Hello</ion-label>
+
+      <div class="div-p">
+        <ion-icon name="camera"></ion-icon>
+        <ion-label class="p-usertext">Photo</ion-label>
+      </div>
+
+    </div>
+    <ion-icon name="close-circle" style="
+        position: absolute;
+        top: 50%;
+        right: 4px;
+        z-index: 10;
+        font-size: 24px;
+        color: gray;
+        transform: translateY(-50%);
+      "></ion-icon>
+
+    <div class="div-img">
+      <ion-img [src]="'assets/img/noimage.avif'" class="img-reply"></ion-img>
+    </div>
+
+  </div>
+
+  <form class="conversation-compose">
+
+    <div class="emoji">
+      <ion-icon name="add"></ion-icon>
+    </div>
+
+    <div class="div-footer-input">
+
+      <ion-textarea class="input-msg" name="input" autocomplete="off" auto-grow="true" rows="1" [required]="true"
+        [minlength]="1"></ion-textarea>
+      <!-- <ion-icon name="document-outline"></ion-icon> -->
+    </div>
+    <ion-icon name="camera-outline" class="icon-camera"></ion-icon>
+
+
+    <ion-icon name="paper-plane-outline" class="i-send-settings"></ion-icon>
+
+    <!-- <ion-icon name="mic-outline" class="icon-camera"></ion-icon> -->
+
+  </form>
+</ion-footer>
+
+
+<!-- skeleton-code-start -->
+
+<!-- <div class="div-img-uploading">
+        <div class="div-img2">
+            <img [src]="'/assets/img/noimage.avif'" class="upload-temp" />
+        </div>
+        <div class="div-reply-del">
+            <ion-icon name="trash-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="div-img-reply">
+        <div class="div-reply-text1">
+            <ion-label class="p-username">Pogula Srinu</ion-label>
+            <ion-label class="label-reply-text"> Hi Hello how are you? </ion-label>
+            <div class="div-p">
+                <ion-icon name="camera"></ion-icon>
+                <ion-label class="p-usertext">Photo</ion-label>
+            </div>
+        </div>
+        <div class="flex-i">
+            <div class="div-img">
+                <ion-img [src]="'/assets/img/noimage.avif'" class="img-reply"></ion-img>
+            </div>
+            <div class="div-reply-del">
+                <ion-icon name="trash-outline"></ion-icon>
+            </div>
+        </div>
+    </div> -->
+
+<ion-header style="display: none">
+  <ion-toolbar>
+    <div class="user-bar">
+      <div class="back" style="display: flex" (click)="close()">
+        <ion-skeleton-text animated="true" style="width: 24px; height: 24px; margin-right: 16px"></ion-skeleton-text>
+      </div>
+      <div class="avatar">
+        <ion-skeleton-text animated="true" style="width: 35px; height: 35px; border-radius: 50%"></ion-skeleton-text>
+      </div>
+      <div class="name">
+        <ion-skeleton-text animated="true" style="width: 117px; height: 20px"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 50px; height: 15px"></ion-skeleton-text>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content style="display: none">
+  <div class="conversation">
+    <div class="conversation-container">
+      <app-chatenterbox></app-chatenterbox>
+    </div>
+  </div>
+</ion-content>
+<ion-footer style="display: none">
+  <form class="conversation-compose">
+    <div class="emoji">
+      <ion-skeleton-text animated="true" style="width: 24px; height: 24px"></ion-skeleton-text>
+    </div>
+    <ion-input class="input-msg" name="input" placeholder="Type a message" autocomplete="off" autofocus></ion-input>
+    <ion-skeleton-text animated="true" style="
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        margin-left: 5px;
+        margin-right: 10px;
+      "></ion-skeleton-text>
+  </form>
+</ion-footer>
+
+<!-- skeleton-code-end -->

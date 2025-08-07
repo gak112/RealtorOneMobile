@@ -1,300 +1,50 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-      <ion-title>Chats</ion-title>
+    <ion-icon name="ellipsis-horizontal" class="icon-ellipsis"></ion-icon>
+    <ion-title>Chats</ion-title>
+    <div class="div-icon-flex">
+      <ion-icon name="camera"></ion-icon>
+      <ion-icon name="add-circle"></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div class="div-chat-individual fixed-chat" (click)="openQuickStore()">
-      <div class="div-chat-img">
-        <!-- <ion-skeleton-text [animated]="true" style="width: 50px;height: 50px;border-radius:100px ;"></ion-skeleton-text> -->
-          <ion-img src="assets/img/logo.png" class="img-chat"></ion-img>
-      </div>
-      <div class="div-name-time">
-          <div class="div-chat-name">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 130px; line-height: 20px;"></ion-skeleton-text> -->
-              <ion-label class="p-settings">Supporting Team</ion-label>
-              <div class="div-p-flex" style="display: flex;align-items: center;width: 123px;height: 20px; ">
-                <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text>
-                <ion-skeleton-text [animated]="true" style="height: 18px;width: 110px;"></ion-skeleton-text> -->
-              </div>
-          </div>
-          
-          <div class="div-time">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 44.55px;height: 18.4px;margin-bottom: 5px;margin: 0px;"></ion-skeleton-text> -->
-              <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-              <div class="p-width">
-                <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings3">3</ion-label>
-              </div>
-          </div>
-      </div>
-      
-      <div class="div-img">
-          <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-      </div>
+<ion-content [fullscreen]="true">
+
+
+  <ion-toolbar style="
+      --padding-start: 0px;
+      --padding-end: 0px;
+      --min-height: 55px;
+      --padding-top: 0;
+      --padding-bottom: 0;
+    ">
+    <!-- <ion-icon class="icon-microphone" name="mic-outline"></ion-icon> -->
+    <ion-searchbar [placeholder]="'Ask Meta AI or Search'"></ion-searchbar>
+  </ion-toolbar>
+  <div class="div-tabs">
+    <ion-label [class.active]="chatSegment() === 'all'" (click)="chatSegment.set('all')">All</ion-label>
+    <ion-label [class.active]="chatSegment() === 'unRead'" (click)="chatSegment.set('unRead')">Unread</ion-label>
   </div>
-  
-  <!-- <div class="div-chat-background">
-      <ion-img src="assets/img/NOCHAT.gif"></ion-img>
-      <ion-label class="start">
-          <span class="end1">N</span>
-          <span class="middle1">o&nbsp;Chats&nbsp;Availabl</span>
-          <span class="middle2"><ion-icon name="chatbubble-outline" style="color: #0c77c1;padding: 0 5px;font-size: 20px;"></ion-icon></span>
-          <span class="end2">E</span>
-      </ion-label>
-      <ion-label>No Chats Available</ion-label>
-  </div> -->
   <div class="div-chat-box">
+    @for(i of [1,2,3,4,5,6,7,8,9,10]; track i){
 
-      <div class="div-chat-individual" (click)="openChatFullview()">
-        <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text> -->
-          <div class="div-chat-img">
-              <ion-img src="assets/img/james.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 130px; line-height: 20px;"></ion-skeleton-text> -->
-                   <ion-label class="p-settings">Pogula Srinu</ion-label> 
-                 <div class="div-p-flex">
-                    <!-- <ion-skeleton-text [animated]="true" ></ion-skeleton-text> -->
-                      <ion-icon name="checkmark-done-outline" class="icon-double-tick"></ion-icon> 
-                      <ion-label class="p-settings1">Good Morning</ion-label> 
-                  </div>  
-                  <div class="div-p-flex" style="display: flex;align-items: center; ">
-                    <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text>
-                    <ion-skeleton-text [animated]="true" style="height: 18px;width: 110px;"></ion-skeleton-text> -->
-                  </div>
-              </div>
-              <div class="div-time" style="width: 44px;height: 47px;">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 44.55px;height: 18.4px;margin-bottom: 5px;margin: 0px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                    <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-        <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text> -->
-           <div class="div-chat-img">
-              <ion-img src="assets/img/olivia.jpg" class="img-chat"></ion-img>
-          </div> 
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 130px; line-height: 20px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings">Pawan Aluvala</ion-label>
-                  <div class="div-p-flex"style="display: flex;align-items: center; ">
-                   <!-- <ion-img src="assets/img/whatsapptickmark.png" class="img-whatsapp-settings"></ion-img> -->
-                   <ion-icon name="checkmark-outline" class="icon-single-tick"></ion-icon>
-                      <ion-label class="p-settings1">Good Morning</ion-label> 
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text> -->
-                    <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 100px;"></ion-skeleton-text> -->
-                  </div>
-              </div>
-              <div class="div-time" style="width: 44px;height: 47px;">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 44.55px;height: 18.4px;margin-bottom: 5px;margin: 0px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                    <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-        <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text>  -->
-          <div class="div-chat-img">
-              <!-- <ion-img src="assets/img/mike.jpg" class="img-chat"></ion-img> -->
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 130px; line-height: 20px;"></ion-skeleton-text> -->
-                                  
-               
-
-                  <ion-label class="p-settings">Gunda Abhinav</ion-label>
-                  
-                  <div class="div-p-flex"style="display: flex;align-items: center; ">
-                      <ion-icon name="camera-outline" class="icon-single-tick"></ion-icon> 
-                    <ion-label class="p-settings1">Photo</ion-label>
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text>
-                      <ion-skeleton-text [animated]="true" style="height: 18px;width: 100px;"></ion-skeleton-text>  -->
-                  </div>
-              </div>
-              <div class="div-time">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 44.55px;height: 18.4px;margin-bottom: 5px;margin: 0px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                    <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-        <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text>  -->
-          <div class="div-chat-img">
-              <ion-img src="assets/img/ryan.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 130px; line-height: 20px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings">A Srikanth</ion-label>
-                  <div class="div-p-flex"style="display: flex;align-items: center; ">
-                      <ion-icon name="checkmark-done-outline" class="icon-double-tick active"></ion-icon>
-                      <ion-label class="p-settings1">Good Morning</ion-label>
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text> -->
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 84px;"></ion-skeleton-text> -->
-                  </div>
-              </div>
-              <div class="div-time" >
-                <!-- <ion-skeleton-text [animated]="true" style="width: 62px;height: 18px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings4">31/07/2019</ion-label>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-          <div class="div-chat-img">
-            <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text>  -->
-              <ion-img src="assets/img/james.jpg" class="img-chat"></ion-img>
-          </div>
-          <div style="width: 266px;height: 68px;margin: 0px 0px 0px 10px;padding: 10px 0px;"   class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 109px; line-height: 20px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings">L Chandra</ion-label>
-                  <div class="div-p-flex">
-                    <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text> -->
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 84px;"></ion-skeleton-text> -->
-                    <ion-icon name="checkmark-done-outline" class="icon-double-tick"></ion-icon>
-                      <ion-label class="p-settings1">Good Morning</ion-label>
-                  </div>
-              </div>
-              <div class="div-time">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 44.5px;height: 18px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                    <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-          <div class="div-chat-img">
-            <!-- <ion-skeleton-text [animated]="true" style="height: 50px;width: 50px;border-radius: 50%;margin: 0px 0px 5px;"></ion-skeleton-text>  -->
-              <ion-img src="assets/img/mike.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 109px; line-height: 20px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings">Vemula Ramu</ion-label>
-                  <div class="div-p-flex">
-                    <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 30px;margin-right: 5px;"></ion-skeleton-text> -->
-                      <!-- <ion-skeleton-text [animated]="true" style="height: 18px;width: 84px;"></ion-skeleton-text> -->
-                      <ion-img src="assets/img/whatsapptickmark.png" class="img-whatsapp-settings"></ion-img> 
-                      <ion-icon name="checkmark-outline" class="icon-single-tick"></ion-icon>
-                      <ion-label class="p-settings1">Good Morning</ion-label> 
-                  </div>
-              </div>
-              <div class="div-time"style="width: 44.5px;height: 18px; margin: 0px 0px 5px;">
-                <!-- <ion-skeleton-text [animated]="true" style="width: 44.5px;height: 18px; margin: 0px 0px 5px;"></ion-skeleton-text> -->
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                    <!-- <ion-skeleton-text [animated]="true" style="height:20px;width: 20px; border-radius: 50%; margin-left: 15px;"></ion-skeleton-text> -->
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-          <div class="div-chat-img">
-              <ion-img src="assets/img/james.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                  <ion-label class="p-settings">Pogula Srikanth</ion-label>
-                  <div class="div-p-flex">
-                      <ion-icon name="camera-outline" class="icon-single-tick"></ion-icon>
-                      <ion-label class="p-settings1">Photo</ion-label>
-                  </div>
-              </div>
-              <div class="div-time">
-                  <ion-label class="p-settings4">30/06/2019</ion-label>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-          <div class="div-chat-img">
-              <ion-img src="assets/img/ryan.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                  <ion-label class="p-settings">Donda Venkanna</ion-label>
-                  <div class="div-p-flex">
-                      <ion-icon name="videocam-outline" class="icon-single-tick"></ion-icon>
-                      <ion-label class="p-settings1">Video</ion-label>
-                  </div>
-              </div>
-              <div class="div-time">
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-          <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-      <div class="div-chat-individual" (click)="openChatFullview()">
-          <div class="div-chat-img">
-              <ion-img src="assets/img/mike.jpg" class="img-chat"></ion-img>
-          </div>
-          <div class="div-name-time">
-              <div class="div-chat-name">
-                  <ion-label class="p-settings">Shivakoti Narendar</ion-label>
-                  <div class="div-p-flex">
-                      <ion-icon name="videocam-outline" class="icon-single-tick"></ion-icon>
-                      <ion-label class="p-settings1">Video</ion-label>
-                  </div>
-              </div>
-              <div class="div-time">
-                  <ion-label class="p-settings2">3:20&nbsp;PM</ion-label>
-                  <div class="p-width">
-                      <ion-label class="p-settings3">3</ion-label>
-                  </div>
-              </div>
-          </div>
-              <div class="div-img">
-              <ion-icon name="chevron-forward-outline" class="icon-right-arrow"></ion-icon>
-          </div>
-      </div>
-
-
-      <!-- <app-recentchatbox  *ngFor="let channel of channels" [uid]="user.uid" [channelObject]="channel"></app-recentchatbox> -->
-
+    <app-individual-box></app-individual-box>
+    }
 
   </div>
 </ion-content>
+
+<!-- skeleton-code-start -->
+<ion-header style="display: none">
+  <ion-toolbar>
+    <div class="div-flex-header">
+      <ion-skeleton-text animated="true" style="width: 35px; height: 35px; border-radius: 50%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated="true" style="width: 138px; height: 27px; margin-left: 10px"></ion-skeleton-text>
+    </div>
+    <div class="div-icon" (click)="openNotifications()">
+      <ion-skeleton-text animated="true" style="width: 35px; height: 35px"></ion-skeleton-text>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<!-- skeleton-code-end -->

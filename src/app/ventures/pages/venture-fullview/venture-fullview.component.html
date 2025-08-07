@@ -1,35 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>
       Venture Details
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="div-fullview-main" >
+  <div class="div-fullview-main">
     <div class="div-ventors">
       <div class="div-banners">
         <div class="div-slides">
-          <swiper-container
-          [autoplay]="{delay: 5000,disableOnInteraction: false}"
-          [centeredSlides]="true"
-          class="mySwiper">
-              <swiper-slide >
-                <ion-img class="slide" src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/"></ion-img>
-              </swiper-slide>
+          <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
+            class="mySwiper">
+            <swiper-slide>
+              <ion-img class="slide"
+                src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/"></ion-img>
+            </swiper-slide>
           </swiper-container>
         </div>
-  
+
         <div class="div-ventortitle">
           <div class="div-details">
             <div class="div-img">
-              <ion-img [src]="'assets/img/onlylogo.png'"></ion-img>
-              <ion-label class="label-hbk" ><span>Ashok Constructions</span></ion-label>
+              <ion-img src="assets/img/onlylogo.png"></ion-img>
+              <ion-label class="label-hbk"><span>Ashok Constructions</span></ion-label>
             </div>
             <div class="div-location-flex">
               <ion-icon name="location-outline"></ion-icon>
-              <ion-label class="label-address">18-1350, Ashok Nagar, Near Sitting Gandhi , Miryalaguda, Nalgonda Dist - 508207</ion-label>
+              <ion-label class="label-address">18-1350, Ashok Nagar, Near Sitting Gandhi , Miryalaguda, Nalgonda Dist -
+                508207</ion-label>
             </div>
           </div>
         </div>
@@ -45,8 +45,8 @@
     </div>
     <div class="div-description">
       <ion-label class="label-title">Amenities</ion-label>
-      <div >
-        <app-amentitycard ></app-amentitycard>
+      <div>
+        <app-amentitycard></app-amentitycard>
       </div>
     </div>
     <div class="div-description">
@@ -72,18 +72,21 @@
           <ion-label class="label-name">Venture Website</ion-label>
           <ion-label class="label-subtitle"></ion-label>
         </div>
-      
-        
+
+
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998"></ion-icon>Facebook Link</ion-label>
+          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998"></ion-icon>Facebook
+            Link</ion-label>
           <ion-label class="label-subtitle">www.as-infra.com</ion-label>
         </div>
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee"></ion-icon>Twitter Link</ion-label>
+          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee"></ion-icon>Twitter
+            Link</ion-label>
           <ion-label class="label-subtitle">www.twitter.com/u/asinfra</ion-label>
         </div>
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50"></ion-icon>Instagram Link</ion-label>
+          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50"></ion-icon>Instagram
+            Link</ion-label>
           <ion-label class="label-subtitle">www.instagram.com/u/asinfra</ion-label>
         </div>
       </div>
@@ -97,7 +100,7 @@
         <div class="div-details-pdf">
           <ion-label>Ashok Ventures</ion-label>
           <div class="div-sizes">
-            
+
             <!-- <span>1.75 MB</span>
             &nbsp;
             &#x2022;
@@ -107,10 +110,10 @@
         </div>
         <div class="div-pdf-img2">
           <a [href]="" target="_blank" download>
-          <ion-img src="assets/img/download.png" alt=""></ion-img>
-        </a>
+            <ion-img src="assets/img/download.png" alt=""></ion-img>
+          </a>
         </div>
-      </div>  
+      </div>
     </div>
     <div class="div-description">
       <ion-label class="label-title">Property Details</ion-label>
@@ -126,7 +129,7 @@
         <div class="div-details">
           <ion-label class="label-name">Open Area (%)</ion-label>
           <ion-label class="label-subtitle">20 Acres</ion-label>
-        </div>       
+        </div>
       </div>
     </div>
     <div class="div-description div-specifications">
@@ -175,18 +178,18 @@
     <div class="div-ventors2">
       <div class="div-banners">
         <div class="div-slides">
-          <swiper-container
-          [autoplay]="{delay: 5000,disableOnInteraction: false}"
-          [centeredSlides]="true"
-          class="mySwiper">
-              <swiper-slide>
-                <ion-img class="slide" src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
-              </swiper-slide>
-              <swiper-slide>
-                <ion-img class="slide" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
-              </swiper-slide>
+          <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
+            class="mySwiper">
+            <swiper-slide>
+              <ion-img class="slide"
+                src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
+            </swiper-slide>
+            <swiper-slide>
+              <ion-img class="slide"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
+            </swiper-slide>
           </swiper-container>
-        </div>   
+        </div>
         <div class="div-ventortitle">
           <div>
             <div class="div-icons-main">
@@ -194,7 +197,8 @@
                 <ion-img src="assets/img/building.png"></ion-img>
                 <ion-label>Tower/Apt</ion-label>
               </div>
-              <ion-button (click)="openVentureFloorDetails()" color="warning" size="small" class="ion-button-settings">View details</ion-button>
+              <ion-button (click)="openVentureFloorDetails()" color="warning" size="small"
+                class="ion-button-settings">View details</ion-button>
             </div>
             <ion-label class="label-tower-title">Sai Enclave</ion-label>
             <div class="div-input-flex border">

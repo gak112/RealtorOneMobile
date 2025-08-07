@@ -1,0 +1,20 @@
+ion-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+ion-icon {
+    position: absolute;
+    top: 50px;
+    left: 16px;
+    font-size: 24px;
+    z-index: 9;
+    color: var(--color-black);
+    background: var(--content-background-white);
+    padding: 5px;
+    border: var(--border);
+    border-radius: 4px;
+}

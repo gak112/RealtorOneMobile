@@ -1,53 +1,76 @@
-<!-- <div class="div-product-main" *ngIf="true">
-  <app-post-user-header></app-post-user-header>
-   <div class="div-img">
-       <ion-img src="assets/img/dummy/house3.png"></ion-img> -->
-       <!-- <swiper-container
-       [slidesPerView]="1"
-       [autoplay]="true"
-       class="mySwiper">
-       <swiper-slide *ngFor="let image of property.hit.resources">
-           <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
-           <ion-label class="label-edit" (click)="editProperty(property)">Edit</ion-label>
-       </swiper-slide>
-   </swiper-container> -->
-   <!-- </div>
-   <div class="div-details">
-    <div class="div-rent">
-        <ion-label class="label-rent-title">{{'Sale' | uppercase}}</ion-label>
-        <ion-label class="h4-rent">{{20000000 | currency:'INR'}}</ion-label>
+<div class="property-card">
+    <!-- Property Image Section -->
+    <div class="property-image-section">
+        <swiper-container [zoom]="true" [slidesPerView]="1" loop="true" autoplay-delay="2000"
+            autoplay-disable-on-interaction="false" class="mySwiper">
+            @for(image of property().propertyImages; track image.id) {
+            <swiper-slide>
+                <ion-img [src]="image.image" alt="Property Image" class="property-image"></ion-img>
+            </swiper-slide>
+            }
+        </swiper-container>
+        <div class="image-overlay"></div>
+        <div class="property-status-badge">{{ property().type }}</div>
     </div>
-       <ion-label class="label-hbk" (click)="openFullview()"><span>{{'Commercial'}}</span><span *ngIf="true">&nbsp;&mdash;&nbsp;{{'3BHK'}}</span></ion-label>
-       <ion-label class="label-address">{{'property?.hit?.addressOfProperty?.address'}}</ion-label>
-   </div>
-   <app-post-likes></app-post-likes>
-</div> -->
-
-
-
-<div class="div-product-main" *ngIf="true">
-    <app-post-user-header></app-post-user-header>
-     <div class="div-img">
-        <ion-skeleton-text [animated]="true" style="height: 240px;width: 100%;"></ion-skeleton-text>
-         <!-- <ion-img src="assets/img/dummy/house3.png"></ion-img> -->
-     </div>
-     <div class="div-details">
-      <div class="div-rent" style="margin-bottom: 10px;">
-        <ion-skeleton-text [animated]="true" style="height: 40px; width: 70px; border-radius: 100px;border-radius: 100px;
-  "></ion-skeleton-text>
-          <!-- <ion-label class="label-rent-title">{{'Sale' | uppercase}}</ion-label> -->
-          <!-- <ion-label class="h4-rent">{{20000000 | currency:'INR'}}</ion-label> -->
-          <ion-skeleton-text [animated]="true" style="width: 150px; height: 28px; padding: 7px 7px 12px ;border-radius: 100px;"></ion-skeleton-text>
-      </div>
-      
-      <ion-skeleton-text [animated]="true" style="width: 160px; height: 25px;line-height: 10px"></ion-skeleton-text>
-      <!-- <ion-skeleton-text [animated]="true" style="width: 70px; height: 16px;"></ion-skeleton-text> -->
-         <!-- <ion-label class="label-hbk" (click)="openFullview()"><span>{{'Commercial'}}</span><span *ngIf="true">&nbsp;&mdash;&nbsp;{{'3BHK'}}</span></ion-label> -->
-         <!-- <ion-label class="label-address">{{'property?.hit?.addressOfProperty?.address'}}</ion-label> -->
-       
-        <ion-skeleton-text [animated]="true" style="width: 300px;height: 18px;margin: 10px 0px;" ></ion-skeleton-text>
-     </div>
-     <app-post-likes></app-post-likes>
-  </div>
-  
-  
+    <!-- Property Information Container -->
+    <div class="info-container">
+        <!--herat icon-->
+        <div class="heart-icon">
+            <ion-icon name="heart-outline"></ion-icon>
+        </div>
+        <!-- Main Information Section -->
+        <div class="main-info-section">
+            <!-- Location Section -->
+            <div class="location-section">
+                <ion-label class="location-code">{{ property().locationCode }}</ion-label>
+                <ion-label class="location-full">{{ property().location }}</ion-label>
+                <ion-label class="price-info">₹{{ property().price }}/sqft</ion-label>
+            </div>
+            <!-- Property Details Section -->
+            <div class="property-details">
+                <ion-label class="property-type">{{ property().propertyType }}</ion-label>
+                <ion-label class="property-size">{{ property().propertySize }}, {{ property().propertySqft }}
+                    sqft</ion-label>
+                <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
+            </div>
+        </div>
+        <!-- Divider with Home Icon -->
+        <div class="divider-section">
+            <div class="divider-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" x="0"
+                    y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+                    <g>
+                        <g xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="m443.143 378.714h-34.429v-34.428h-30v34.428h-34.428v30h34.428v34.429h30v-34.429h34.429z"
+                                fill="#ffffff" data-original="#000000" class="" />
+                            <path d="m137.714 174.636h167.715v30h-167.715z" fill="#ffffff" data-original="#000000"
+                                class="" />
+                            <path
+                                d="m408.714 276.376v-60.247l34.429 20.657v-103.843l-221.572-132.943-53.857 32.314v-32.314h-98.857v91.628l-68.857 41.315v103.843l34.429-20.657v227.015h251.837c18.754 40.606 59.861 68.856 107.448 68.856 65.223 0 118.286-53.062 118.286-118.286 0-60.142-45.118-109.945-103.286-117.338zm-309.857-246.376h38.856v20.314l-38.856 23.314zm-68.857 119.928 191.571-114.943 191.571 114.943v33.872l-191.571-114.943-191.571 114.943zm34.429 48.2 157.143-94.286 157.143 94.286v78.247c-28.998 3.686-54.747 17.917-73.285 38.709v-74.084h-167.716v172.143h-73.285zm211 215.015h-107.715v-142.143h107.715zm118.285 68.857c-48.681 0-88.285-39.605-88.285-88.286s39.604-88.286 88.285-88.286c48.682 0 88.286 39.605 88.286 88.286s-39.604 88.286-88.286 88.286z"
+                                fill="#ffffff" data-original="#000000" class="" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+        <!-- Footer Information -->
+        <div class="footer-info">
+            <div class="footer-item">
+                <ion-label class="footer-label">Agent</ion-label>
+                <ion-label class="footer-value">{{ property().agentName }}</ion-label>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-item">
+                <ion-label class="footer-label">Property ID</ion-label>
+                <ion-label class="footer-value">{{ property().propertyId }}</ion-label>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-item">
+                <ion-label class="footer-label">Listing</ion-label>
+                <ion-label class="footer-value">{{ property().listingType }}</ion-label>
+            </div>
+        </div>
+    </div>
+</div>

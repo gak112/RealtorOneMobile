@@ -1,22 +1,16 @@
 <ion-header>
   <ion-toolbar style="--border-width: 0;">
-    <ion-buttons slot="start">
-      <ion-back-button text=""></ion-back-button>
-    </ion-buttons>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>Request Menu</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="div-request-menu">
-    <ion-nav-link router-direction="forward" [component]="propertyComponent" style="margin-bottom: 40px;">
-      <div class="div-request-sub">
-        <ion-img [src]="'assets/img/sale.png'"></ion-img>
-      </div>
-    </ion-nav-link>
-    <ion-nav-link router-direction="forward" [component]="propertyComponent">
-      <div class="div-request-sub">
-        <ion-img [src]="'assets/img/rent.png'" style="background: rgb(64 224 208 / 20%);"></ion-img>
-      </div>
-    </ion-nav-link>
+    <div class="div-request-sub" (click)="openRequestSubMenu('sale')">
+      <ion-img [src]="'assets/img/sale.png'"></ion-img>
+    </div>
+    <div class="div-request-sub" (click)="openRequestSubMenu('rent')">
+      <ion-img [src]="'assets/img/rent.png'" style="background: rgb(64 224 208 / 20%);"></ion-img>
+    </div>
   </div>
 </ion-content>

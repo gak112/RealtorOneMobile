@@ -1,24 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { IonAvatar, IonCard, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonSkeletonText, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
-import { PropertieslistComponent } from 'src/app/home/pages/propertieslist/propertieslist.component';
-import { PropertyviewerslistComponent } from '../propertyviewerslist/propertyviewerslist.component';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  IonAvatar,
+  IonCard,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonImg,
+  IonItem,
+  IonLabel,
+  IonSkeletonText,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, eye } from 'ionicons/icons';
+import { PropertyviewerslistComponent } from '../propertyviewerslist/propertyviewerslist.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
+import { PropertyViewCardComponent } from "../../components/property-view-card/property-view-card.component";
 
 @Component({
   selector: 'app-propertyviews',
   templateUrl: './propertyviews.component.html',
   styleUrls: ['./propertyviews.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonCard,IonItem,IonSkeletonText,IonAvatar,IonLabel,IonImg],
-  providers:[ModalController],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonCard,
+    IonItem,
+    IonSkeletonText,
+    IonAvatar,
+    IonLabel,
+    IonImg,
+    PropertyViewCardComponent
+],
 })
 export class PropertyviewsComponent implements OnInit {
+  private modalController = inject(ModalController);
 
   async showViewersList() {
     const modal = await this.modalController.create({
-      component: PropertyviewerslistComponent
+      component: PropertyviewerslistComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
     });
 
     return await modal.present();
@@ -28,12 +59,11 @@ export class PropertyviewsComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  constructor(private modalController: ModalController) {
-    addIcons({ chevronBackOutline,eye })
+  constructor() {
+    addIcons({ chevronBackOutline, eye });
   }
 
   ngOnInit() {
     return;
-   }
-
+  }
 }

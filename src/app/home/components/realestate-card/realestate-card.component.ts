@@ -4,6 +4,7 @@ import {
   input,
   OnInit,
 } from '@angular/core';
+import { IonIcon, IonLabel, IonImg } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heartOutline } from 'ionicons/icons';
 
@@ -11,6 +12,8 @@ import { heartOutline } from 'ionicons/icons';
   selector: 'app-realestate-card',
   templateUrl: './realestate-card.component.html',
   styleUrls: ['./realestate-card.component.scss'],
+  standalone: true,
+  imports: [IonIcon, IonLabel, IonImg],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RealestateCardComponent implements OnInit {

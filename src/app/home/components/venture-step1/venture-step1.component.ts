@@ -17,6 +17,7 @@ import {
   add,
   caretDownOutline,
   caretUpOutline,
+  cloudUploadOutline,
   informationCircle,
   trashOutline,
 } from 'ionicons/icons';
@@ -28,8 +29,8 @@ import {
 } from 'src/app/services/animation';
 import { SpecviewComponent } from '../../../more/components/specview/specview.component';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
-import { VentureTowerComponent } from "../venture-tower/venture-tower.component";
-import { VentureHousevillaComponent } from "../venture-housevilla/venture-housevilla.component";
+import { VentureTowerComponent } from '../venture-tower/venture-tower.component';
+import { VentureHousevillaComponent } from '../venture-housevilla/venture-housevilla.component';
 
 @Component({
   selector: 'app-venture-step1',
@@ -50,8 +51,8 @@ import { VentureHousevillaComponent } from "../venture-housevilla/venture-housev
     IonImg,
     IonSelect,
     VentureTowerComponent,
-    VentureHousevillaComponent
-],
+    VentureHousevillaComponent,
+  ],
   providers: [ModalController],
 })
 export class VentureStep1Component implements OnInit {
@@ -72,10 +73,17 @@ export class VentureStep1Component implements OnInit {
       add,
       caretDownOutline,
       caretUpOutline,
+      cloudUploadOutline
     });
   }
 
   actionTab = signal<string>('towerAPT');
+
+  isTowerDataOpen = signal(false);
+
+  openTower() {
+    this.isTowerDataOpen.set(!this.isTowerDataOpen());
+  }
 
   ngOnInit() {
     return;
@@ -182,14 +190,11 @@ export class VentureStep1Component implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-
-
   ventureEdit: any;
 
   towerAPRValid($event: Event) {
     throw new Error('Method not implemented.');
   }
-
 
   simplexValid($event: Event) {
     throw new Error('Method not implemented.');

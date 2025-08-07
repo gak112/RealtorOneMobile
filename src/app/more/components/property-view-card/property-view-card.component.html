@@ -1,0 +1,41 @@
+<ion-card class="venture-card">
+  <swiper-container [zoom]="true" [slidesPerView]="1" loop="true" autoplay-delay="2000"
+    autoplay-disable-on-interaction="false" class="mySwiper w-full">
+    <swiper-slide>
+      <div class="card-image">
+        <ion-img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'"
+          alt="Venture Image"></ion-img>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+
+
+  <div class="card-position">
+    <svg [style.fill]="'var(--content-background-white)'" class="curve-bg" width="51" height="51" viewBox="0 0 51 51"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M10 41C10 46.5229 5.52344 51 0 51H51.001V0C51.001 5.52295 46.5234 10 41.001 10H26C17.1641 10 10 17.1636 10 26V41Z" />
+    </svg>
+
+    <div class="card-content">
+      <span class="property-type">Sale</span>
+      <div class="status-row">
+        <span class="active-status">Ashok Kumar</span>
+        <span class="dot">•</span>
+        <span class="timestamp">5 days ago</span>
+      </div>
+      <h2 class="venture-title">Commercial -3BHK</h2>
+      <div class="avatars-row" (click)="openViewersList()">
+        <div class="avatars">
+          <ion-img src="https://wallup.net/wp-content/uploads/2015/07/Little-children-on-the-field.jpg"></ion-img>
+          <ion-img src="https://i.pinimg.com/originals/58/e0/24/58e024e098a7cb1afd885f62a9b7f8a5.jpg"></ion-img>
+          <ion-img src="https://i.pinimg.com/originals/58/e0/24/58e024e098a7cb1afd885f62a9b7f8a5.jpg"></ion-img>
+          <ion-label class="more-count">+99</ion-label>
+        </div>
+        <div class="div-price">
+          <ion-label class="label-price">₹2000000</ion-label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-card>

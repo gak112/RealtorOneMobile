@@ -1,0 +1,62 @@
+<div class="div-chat-individual" (click)="openChatFullview()">
+  <div class="div-chat-img">
+    <!-- <ion-skeleton-text animated style="height: 55px; width: 55px; border-radius: 50%; overflow: hidden"
+      [style.display]="isLoaded() ? 'none' : 'block'"></ion-skeleton-text> -->
+    <ion-img class="img-chat" [src]="'assets/img/noimage.avif'"></ion-img>
+  </div>
+  <div class="div-name-time">
+    <div class="div-chat-name">
+      <div style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          justify-content: space-between;
+        ">
+        <ion-label class="p-settings">SVN AShok Kumar</ion-label>
+        <div class="div-time">
+          <app-chat-timestamp [timestamp]="1723075200" [isUnseen]="true"></app-chat-timestamp>
+        </div>
+      </div>
+      <div class="div-p-flex">
+        <!-- <ion-icon class="icon-double-tick" name="checkmark-done" style="color: #3880ff"></ion-icon> -->
+        <!-- <ion-icon class="icon-double-tick" name="checkmark" style="color: #777"></ion-icon> -->
+        <!-- <ion-icon name="image" class="icon-double-tick" style="color: var(--color-999)"></ion-icon> -->
+        <ion-label class="p-settings1">Hello</ion-label>
+        <div class="p-width">
+          <div class="div-no">
+            <ion-label class="p-settings3">1</ion-label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- skeleton-code-start -->
+
+<ion-item style="display: none">
+  <ion-skeleton-text animated="true" style="
+      min-width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 16px;
+    "></ion-skeleton-text>
+  <div class="div-flex">
+    <div class="div-flex1">
+      <ion-skeleton-text animated="true" style="width: 138px; height: 20px"></ion-skeleton-text>
+      <div class="div-flex2">
+        <ion-skeleton-text animated="true" style="width: 245px; height: 18px"></ion-skeleton-text>
+      </div>
+    </div>
+    <ion-item style="width: 65px; --inner-padding-end: 0; --background: transparent">
+      <div class="" style="display: flex; flex-direction: column; align-items: center">
+        <ion-skeleton-text animated="true" style="width: 20px; height: 20px; border-radius: 50%"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 56px; height: 15px"></ion-skeleton-text>
+      </div>
+    </ion-item>
+  </div>
+</ion-item>
+
+<!-- skeleton-code-end -->

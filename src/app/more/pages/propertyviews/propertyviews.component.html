@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" slot="start" (click)="dismiss()" size="large"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>Property Views</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -40,40 +40,11 @@
   </ion-card> -->
   <!-- skeletoncode end -->
 
-  <ion-card (click)="showViewersList()">
-    <ion-item>
-      <ion-avatar>
-        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
-      <div class="two">
-        <ion-label class="a">Revathi</ion-label>
-        <ion-label class="b">5 days ago</ion-label>
-      </div>
-    </ion-item>
-    <div class="main">
-      <ion-img
-        src="https://www.myhomeconstructions.com/my-home-avali/assests/img/my-home-avali-banner-launching-soon-web.webp"
-        alt="vehicle image"></ion-img>
-    </div>
-    <div class="flex">
-
-      <ion-label class="three">SALE</ion-label>
-
-      <div>
-        <ion-label style="color: rgb(5 143 235); font-weight: 700;font-size: 16px;background-color:rgb(79 171 232 / 21%);border-radius: 20px;
-         padding: 5px;margin-left: 5px;">₹20,202,020.00</ion-label>
-      </div>
-    </div>
-    <div class="text">
-      <ion-label class="name">Commercial--2bhk</ion-label>
-      <div class="end">
+  <div class="">
+    @for (item of [1,2,3,4,5,6,7,8,9,10]; track item) {
+    <app-property-view-card></app-property-view-card>
+    }
+  </div>
 
 
-        <ion-label class="eye">
-          <ion-icon class="icon" name="eye"></ion-icon> 99
-        </ion-label>
-      </div>
-    </div>
-
-  </ion-card> 
 </ion-content>

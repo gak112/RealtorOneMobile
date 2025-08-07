@@ -1,59 +1,61 @@
 <div class="div-ventors">
   <div class="div-banners">
     <div class="div-slides">
-      <swiper-container
-      [autoplay]="{delay: 5000,disableOnInteraction: false}"
-      [centeredSlides]="true"
-      class="mySwiper"  *ngIf="true">
-          <swiper-slide>
-            <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
-            <ion-img class="slide" src="https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg"></ion-img>
-          </swiper-slide>
-          <swiper-slide>
-            <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
-            <ion-img class="slide" src="https://is1-2.housingcdn.com/4f2250e8/597d139da7217705ad0ff568ef9dba38/v0/fs/vision_urjith-tellapur-hyderabad-vision_avenues_pvt_ltd.jpeg"></ion-img>
-          </swiper-slide>
+      <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true" class="mySwiper"
+        *ngIf="true">
+        <swiper-slide>
+          <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
+          <ion-img class="slide"
+            src="https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg"></ion-img>
+        </swiper-slide>
+        <swiper-slide>
+          <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
+          <ion-img class="slide"
+            src="https://is1-2.housingcdn.com/4f2250e8/597d139da7217705ad0ff568ef9dba38/v0/fs/vision_urjith-tellapur-hyderabad-vision_avenues_pvt_ltd.jpeg"></ion-img>
+        </swiper-slide>
       </swiper-container>
-      <swiper-container
-      [autoplay]="{delay: 5000,disableOnInteraction: false}"
-      [centeredSlides]="true"
-      class="mySwiper" *ngIf="true">
-          <swiper-slide *ngFor="let img of ventures.villaResources;let i=index">
-            <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon>
-            <ion-img class="slide" [src]="'https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg'"></ion-img>
-          </swiper-slide> 
-      </swiper-container>
+      <!-- <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true" class="mySwiper"
+        *ngIf="true">
+        <swiper-slide *ngFor="let img of ventures.villaResources;let i=index">
+          <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon>
+          <ion-img class="slide"
+            [src]="'https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg'"></ion-img>
+        </swiper-slide>
+      </swiper-container> -->
       <ion-button class="ion-button-settings2" (click)="ucare.openDialog()" size="small" color="warning">
         Upload
       </ion-button>
       <div class="div-choosefile">
-        <ngx-uploadcare-widget hidden
-        class="post-entry-btn"
-        #uc
-        (on-upload-complete)="onUploadComplete($event)"
-        [multiple]="true"     
-        data-crop="300:300"
-        public-key="563d1afa2618816d4d42">
-      </ngx-uploadcare-widget>
+        <ngx-uploadcare-widget hidden class="post-entry-btn" #uc (on-upload-complete)="onUploadComplete($event)"
+          [multiple]="true" data-crop="300:300" public-key="563d1afa2618816d4d42">
+        </ngx-uploadcare-widget>
       </div>
     </div>
-    
+
 
     <div class="div-ventortitle">
-      <div *ngIf="true">
-        <div>
-          <ion-input [(ngModel)]="ventures.villaName" type="text" mode="md" label="House/Villa" label-placement="floating" fill="outline" placeholder="Enter House/Villa"></ion-input>
+      <div>
+        <div class="div-formgroup">
+          <ion-input type="text" mode="md" label="House/Villa" label-placement="floating" fill="outline"
+            placeholder="Enter House/Villa"></ion-input>
         </div>
-       
-        <div>
-          <ion-input [(ngModel)]="ventures.houseVilla" type="number" mode="md" label="No of Houses" label-placement="floating" fill="outline" placeholder="Enter No of Houses"></ion-input>
-        </div>  
-        <ion-button class="ion-button-settings" (click)="submit()" size="small" expand="block" color="tertiary">
-          <span *ngIf="false" class="spinner-border spinner-border-sm"></span> 
-          {{loading ? "...." : 'Submit'}}
-      </ion-button>
+        <div class="div-formgroup">
+          <ion-input type="number" mode="md" label="No of Houses" label-placement="floating" fill="outline"
+            placeholder="Enter No of Houses"></ion-input>
+        </div>
+        <ion-button class="ion-button-settings" (click)="submit()" expand="block" color="primary" mode="ios">
+          <span class="spinner-border spinner-border-sm"></span>
+          Submit
+        </ion-button>
       </div>
-      <div *ngIf="!false">
+
+
+
+
+
+
+
+      <div style="display: none;">
         <div class="div-icons-main">
           <div class="div-title-img">
             <ion-img [src]="'assets/img/duplex.png'"></ion-img>
@@ -73,11 +75,12 @@
             {{ventures.houseVilla || 0}}
           </ion-label>
         </div>
-        <ion-button (click)="openTowerConfigure()" class="ion-button-settings" size="small" expand="block" color="tertiary">
+        <ion-button (click)="openTowerConfigure()" class="ion-button-settings" size="small" expand="block"
+          color="tertiary">
           Configure
-      </ion-button>
+        </ion-button>
       </div>
-      
+
     </div>
   </div>
 </div>

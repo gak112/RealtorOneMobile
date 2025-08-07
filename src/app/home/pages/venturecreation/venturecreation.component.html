@@ -9,32 +9,6 @@
     <app-venture-step1></app-venture-step1>
   </div>
 </ion-content>
-<ion-footer *ngIf="true">
-  <ion-button *ngIf="true" class="ion-button-settings" size="small" expand="block" color="danger"
-    (click)="action = action - 1" style="margin-right: auto;margin-left: inherit;">
-    Back
-  </ion-button>
-  <ion-button *ngIf="true" class="ion-button-settings" size="small" expand="block" color="tertiary" (click)="next()">
-    Next
-  </ion-button>
-  <ion-button *ngIf="true" class="ion-button-settings" (click)="saveVenture()" size="small" expand="block"
-    color="tertiary">
-    <ion-spinner *ngIf="false" name="bubbles"></ion-spinner>
-    {{loading ? "...." : 'Save & Next'}}
-  </ion-button>
-</ion-footer>
-<ion-footer *ngIf="false">
-  <ion-button *ngIf="true" class="ion-button-settings" size="small" expand="block" color="danger"
-    (click)="action = action - 1" style="width: 50%;">
-    Back
-  </ion-button>
-  <ion-button *ngIf="true" class="ion-button-settings" size="small" expand="block" color="tertiary" (click)="next()"
-    style="width: 50%;">
-    Next
-  </ion-button>
-  <ion-button style="width: 100%;" *ngIf="true" class="ion-button-settings" (click)="saveVenture()" size="small"
-    expand="block" color="tertiary">
-    <ion-spinner *ngIf="false" name="bubbles"></ion-spinner>
-    {{loading ? "...." : 'Save & Next'}}
-  </ion-button>
+<ion-footer>
+  <ion-button mode="ios" expand="block" color="warning">Submit</ion-button>
 </ion-footer>

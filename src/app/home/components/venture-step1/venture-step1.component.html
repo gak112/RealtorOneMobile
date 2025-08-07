@@ -31,6 +31,16 @@
     placeholder="Enter Venture Website"></ion-input>
 </div>
 <div class="div-upload">
+  <ion-label class="upload-label">Upload logo</ion-label>
+  <div class="div-add">
+    <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+    <ion-label class="label-add">
+      Upload a file or drag and drop
+    </ion-label>
+    <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+  </div>
+</div>
+<!-- <div class="div-upload">
   <div class="file-select">
     <div class="div-choosefile ">
       <ngx-uploadcare-widget class="post-entry-btn" [multiple-max]="3" data-crop="300:300" [images-only]=true
@@ -39,7 +49,7 @@
     </div>
     <ion-label class="upload-label">Upload Logo</ion-label>
   </div>
-</div>
+</div> -->
 <div class="div-dataimg2">
   <div class="div-uploading" style="width: auto;">
     <ion-icon name="trash-outline"></ion-icon>
@@ -47,13 +57,13 @@
   </div>
 </div>
 <div class="div-upload">
-  <div class="file-select">
-    <div class="div-choosefile ">
-      <ngx-uploadcare-widget class="post-entry-btn" [multiple]="true" [multiple-max]="3" data-crop="300:300"
-        [images-only]=true public-key="563d1afa2618816d4d42">
-      </ngx-uploadcare-widget>
-    </div>
-    <ion-label class="upload-label">Venture Images</ion-label>
+  <ion-label class="upload-label">Upload Venture Images</ion-label>
+  <div class="div-add">
+    <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+    <ion-label class="label-add">
+      Upload a file or drag and drop
+    </ion-label>
+    <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
   </div>
 </div>
 <div class="div-venture-images">
@@ -65,9 +75,9 @@
   }
 </div>
 <div class="div-formgroup flex">
-  <ion-label style="margin: 0;">Amenities</ion-label>
-  <ion-button size="small" (click)="amenitiesList()">
-    <ion-icon slot="start" name="add"></ion-icon>
+  <ion-label class="label-heading">Amenities</ion-label>
+  <ion-button size="small" color="warning" (click)="amenitiesList()">
+    <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
     Add
   </ion-button>
 </div>
@@ -100,13 +110,13 @@
 </div>
 
 <div class="div-upload">
-  <div class="file-select">
-    <div class="div-choosefile ">
-      <ngx-uploadcare-widget class="post-entry-btn" [multiple]="false" [multiple-max]="3" [clearable]="true"
-        data-crop="300:300" public-key="563d1afa2618816d4d42">
-      </ngx-uploadcare-widget>
-    </div>
-    <ion-label class="upload-label">Brochure</ion-label>
+  <ion-label class="upload-label">Upload Brochure</ion-label>
+  <div class="div-add">
+    <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+    <ion-label class="label-add">
+      Upload a file or drag and drop
+    </ion-label>
+    <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
   </div>
 </div>
 
@@ -158,9 +168,9 @@
   <ion-label class="label-percentage">%</ion-label>
 </div>
 <div class="div-formgroup flex">
-  <ion-label style="margin: 0;">Specifications</ion-label>
-  <ion-button size="small" (click)="openSpecifications()">
-    <ion-icon slot="start" name="add"></ion-icon>
+  <ion-label class="label-heading">Specifications</ion-label>
+  <ion-button size="small" color="warning" (click)="openSpecifications()">
+    <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
     Add
   </ion-button>
 </div>
@@ -169,21 +179,47 @@
   <div class="div-input-sub" [class.active]="actionTab() === 'towerAPT'" (click)="actionTab.set('towerAPT')">
     <div class="div-img-label">
       <ion-img [src]="'assets/img/building.png'"></ion-img>
-      <ion-label>Tower/Apartment</ion-label>
+      <ion-label class="label-text">Tower/Apartment</ion-label>
     </div>
   </div>
   <div class="div-input-sub" [class.active]="actionTab() === 'houseVilla'" (click)="actionTab.set('houseVilla')">
     <div class="div-img-label">
       <ion-img [src]="'assets/img/duplex.png'"></ion-img>
-      <ion-label>House/Villa</ion-label>
+      <ion-label class="label-text">House/Villa</ion-label>
     </div>
   </div>
 </div>
-
 @if(actionTab() === 'towerAPT') {
-<app-venture-tower></app-venture-tower>
+<div class="">
+  <div class="div-edit">
+    <ion-label class="label-heading">Tower/Apartments</ion-label>
+    <ion-button size="small" color="warning" (click)="openTower()">
+      <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+      Add
+    </ion-button>
+  </div>
+  @if(isTowerDataOpen()) {
+  <app-venture-tower></app-venture-tower>
+  }
+</div>
+}
+@if(actionTab() === 'houseVilla') {
+<div class="">
+  <div class="div-edit">
+    <ion-label class="label-heading">Houses/Villas</ion-label>
+    <ion-button size="small" color="warning" (click)="openTower()">
+      <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+      Add
+    </ion-button>
+  </div>
+  @if(isTowerDataOpen()) {
+  <app-venture-housevilla></app-venture-housevilla>
+  }
+</div>
 }
 
-@if(actionTab() === 'houseVilla') {
-<app-venture-housevilla></app-venture-housevilla>
-}
+
+
+<!-- <ngx-uploadcare-widget class="post-entry-btn" [multiple]="true" [multiple-max]="3" data-crop="300:300"
+        [images-only]=true public-key="563d1afa2618816d4d42">
+      </ngx-uploadcare-widget> -->

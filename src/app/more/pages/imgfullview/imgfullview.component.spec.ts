@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ChatfullviewComponent } from './chatfullview.component';
+import { ImgfullviewComponent } from './imgfullview.component';
 
-describe('ChatfullviewComponent', () => {
-  let component: ChatfullviewComponent;
-  let fixture: ComponentFixture<ChatfullviewComponent>;
+describe('ImgfullviewComponent', () => {
+  let component: ImgfullviewComponent;
+  let fixture: ComponentFixture<ImgfullviewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatfullviewComponent ],
+      declarations: [ ImgfullviewComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ChatfullviewComponent);
+    fixture = TestBed.createComponent(ImgfullviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

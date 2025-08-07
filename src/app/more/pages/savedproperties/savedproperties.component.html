@@ -1,18 +1,14 @@
 <ion-header>
   <ion-toolbar>
-      <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
-      <ion-title>
-         Saved Properties
-      </ion-title>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-title>
+      Saved Properties
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="div-ventures" *ngIf="savedProperties?.length > 0">
-    <div *ngFor="let savedProperty of savedProperties;let i= index">
-      <app-savedpropertycard [user]="user" [property]="savedProperty"></app-savedpropertycard>
-    </div>    
-  </div>
-
-  <app-savedpropertycard></app-savedpropertycard>
+  @for (property of savedProperties(); track property) {
+  <app-savedpropertycard [property]="property"></app-savedpropertycard>
+  }
 </ion-content>

@@ -1,64 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent, IonImg, IonSkeletonText, IonIcon } from '@ionic/angular/standalone';
-import { ChatsData } from 'src/app/languages/data/chats.data';
-import { IChats } from 'src/app/languages/interface/chats.interface';
-import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/environments/environment';
-import { GroupchatComponent } from '../groupchat/groupchat.component';
-import { FriendsComponent } from '../friends/friends.component';
-import { ChatfullviewComponent } from '../chatfullview/chatfullview.component';
-import { IonicModule } from '@ionic/angular';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonImg,
+  IonLabel,
+  IonSkeletonText,
+  IonToolbar,
+  IonSearchbar,
+  IonTitle,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { checkmarkDoneOutline, chevronForwardOutline, checkmarkOutline, cameraOutline, videocamOutline } from 'ionicons/icons';
-import { NgFor } from '@angular/common';
+
+import {
+  arrowRedoOutline,
+  checkmarkCircle,
+  notificationsOutline,
+  ellipsisHorizontal,
+  camera,
+  addCircle,
+} from 'ionicons/icons';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import {
+  ChatData,
+  IndividualBoxComponent,
+} from '../../components/individual-box/individual-box.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+
 @Component({
-    selector: 'app-personalchat',
-    templateUrl: './personalchat.component.html',
-    styleUrls: ['./personalchat.component.scss'],
-    standalone: true,
-    imports: [IonHeader,IonToolbar,IonTitle,IonContent,IonImg,IonLabel,IonSkeletonText,IonIcon,NgFor,],
-    providers:[ModalController]
+  selector: 'app-personalchat',
+  templateUrl: './personalchat.component.html',
+  styleUrls: ['./personalchat.component.scss'],
+  standalone: true,
+  imports: [
+    IonSearchbar,
+    IonSkeletonText,
+    IonHeader,
+    IonToolbar,
+    IonContent,
+    IndividualBoxComponent,
+    IonLabel,
+    IonIcon,
+    IonSkeletonText,
+    ReactiveFormsModule,
+    IonTitle,
+  ],
 })
-export class PersonalchatComponent implements OnInit {
+export class PersonalchatComponent {
+  chatSegment = signal<'all' | 'unRead'>('all');
 
-    chatsData: IChats;
-    user: any;
-    constructor(private modalController: ModalController, private auth: AuthService,) {
-        this.chatsData = new ChatsData().getData(environment.language);
+  async openRequestForm() {}
 
-        addIcons({ checkmarkDoneOutline, chevronForwardOutline,  checkmarkOutline, cameraOutline, videocamOutline })
-    }
+  constructor() {
+    addIcons({
+      checkmarkCircle,
+      notificationsOutline,
+      arrowRedoOutline,
+      ellipsisHorizontal,
+      camera,
+      addCircle,
+    });
+  }
 
-    ngOnInit(): void {
-        return
-        // this.auth.user$.subscribe(user => {
-        //     this.user = user;
-        //       this.chatsData = new ChatsData().getData(this.user?.language || 'english');
-        // });
-    }
+  async openNotifications() {}
 
-    async openFriends() {
-        const modal = await this.modalController.create({
-            component: FriendsComponent
-        });
-        return await modal.present();
-    }
-
-    async openChatFullview() {
-        const modal = await this.modalController.create({
-            component: ChatfullviewComponent
-        });
-        return await modal.present();
-    }
-    async openQuickStore() {
-        const modal = await this.modalController.create({
-            component: GroupchatComponent
-        });
-        return await modal.present();
-    }
-
-    dismiss() {
-        this.modalController.dismiss();
-    }
-
+  async openProfile() {}
 }

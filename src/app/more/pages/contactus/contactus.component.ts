@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -12,10 +12,11 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './contactus.component.html',
   styleUrls: ['./contactus.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonInput,FormsModule,IonButton,NgIf,],
-  providers:[ModalController],
+  imports: [IonFooter, IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonInput,FormsModule,IonButton,NgIf,],
 })
 export class ContactusComponent implements OnInit {
+
+  private modalController = inject(ModalController);
 
   loading = false;
   name!: string;
@@ -23,7 +24,7 @@ export class ContactusComponent implements OnInit {
   email!: string;
   message!: string;
 
-  constructor(private modalController: ModalController,
+  constructor(
     private toast: ToastService,/* private afs: AngularFirestore*/) {
     addIcons({ chevronBackOutline })
   }

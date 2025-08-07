@@ -1,46 +1,36 @@
 <ion-header>
   <ion-toolbar style="--border-width: 0;">
-    <ion-buttons slot="start">
-      <ion-back-button text=""></ion-back-button>
-    </ion-buttons>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>Choose Type</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="div-request-menu">
     <div class="div-categories-list">
-      <ion-nav-link router-direction="forward" [component]="propertyComponent">
-        <div class="div-category">
-          <div class="div-img">
-            <ion-img src="assets/img/house2.png"></ion-img>
-          </div>
-          <ion-label>Residential</ion-label>
+      <div class="div-category" (click)="openPostEntry('residential')">
+        <div class="div-img">
+          <ion-img src="assets/img/house2.png"></ion-img>
         </div>
-      </ion-nav-link>
-      <ion-nav-link router-direction="forward"  [component]="propertyComponent">
-        <div class="div-category" style="background: rgb(66 221 109 / 30%);">
-          <div class="div-img" >
-            <ion-img src="assets/img/residential.png"></ion-img>
-          </div>
-          <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
+        <ion-label style="color: #0c77c1;">Residential</ion-label>
+      </div>
+      <div class="div-category" style="background: rgb(66 221 109 / 30%);" (click)="openPostEntry('commercial')">
+        <div class="div-img">
+          <ion-img src="assets/img/residential.png"></ion-img>
         </div>
-      </ion-nav-link>
-      <ion-nav-link router-direction="forward"  [component]="propertyComponent">
-        <div class="div-category" style="background: rgb(232 136 44 / 30%);">
-          <div class="div-img">
-            <ion-img src="assets/img/plot.png"></ion-img>
-          </div>
-          <ion-label style="color: #e8882c;">Plots</ion-label>
+        <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
+      </div>
+      <div class="div-category" style="background: rgb(232 136 44 / 30%);" (click)="openPostEntry('plots')">
+        <div class="div-img">
+          <ion-img src="assets/img/plot.png"></ion-img>
         </div>
-      </ion-nav-link>
-      <ion-nav-link router-direction="forward" [component]="propertyComponent">
-        <div class="div-category" style="background: rgb(228 49 133 / 30%);">
-          <div class="div-img">
-            <ion-img src="assets/img/field.png"></ion-img>
-          </div>
-          <ion-label style="color: #e43185;">Lands</ion-label>
+        <ion-label style="color: #e8882c;">Plots</ion-label>
+      </div>
+      <div class="div-category" style="background: rgb(228 49 133 / 30%);" (click)="openPostEntry('lands')">
+        <div class="div-img">
+          <ion-img src="assets/img/field.png"></ion-img>
         </div>
-      </ion-nav-link>
+        <ion-label style="color: #e43185;">Lands</ion-label>
+      </div>
     </div>
   </div>
 </ion-content>
