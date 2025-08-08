@@ -1,27 +1,57 @@
 <ion-content [scrollY]="false">
-  <div class="div-login-main">
-      <div class="div-bg-black">
-      </div>
-      <!-- <div class="div-bg-color"></div> -->
-      <div class="div-details-main">
-          <div class="div-details">
-              <div class="div-img">
-                  <ion-img [src]="'assets/img/logo.png'"></ion-img>
-              </div>
-              <ion-label class="label-main-title">OTP Validation</ion-label>
-              <ion-label class="label-desc">OTP sent to your registered mobile number<span routerLink="/auth">{{user.phone}}</span></ion-label>
-              <ion-input  [(ngModel)]="gotOTP" type="tel"  >
-              </ion-input>
-                <ion-label class="label-time-left">Time left:<span>{{time}}</span>Seconds</ion-label>
-                <div (click)="start()" class="div-resend" *ngIf="time <= 0">
+    <div class="div-bg-dot">
+        <ion-img src="assets/img/dot-bg.jpg"></ion-img>
+    </div>
+    <div class="div-login-main">
+        <div class="div-logo-title">
+            <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
+            <div class="div-label">
+                <ion-label class="label-title">Welcome Back!</ion-label>
+                <span class="subtitle">Realtor One</span>
+            </div>
+        </div>
+        <div style="display: flex;
+        flex-direction: column;
+        gap: 24px;
+        justify-content: center;
+        height: 100%;">
+            <div class="div-otp-section">
+                <ion-label class="p-text-format">Please Enter Verification Code Sent To Your Mobile Number
+                    <span>
+                        +91 9876543210
+                    </span></ion-label>
+                <div class="otp-inputs">
+                    @for (otpItem of [0,1,2,3,4,5]; track $index) {
+                    <ion-input fill="outline" mode="md" maxlength="1" inputmode="numeric" style="
+              font-size: 20px;
+              font-weight: 600;
+              color: var(--color-black);
+              min-height: 50px !important;
+            "></ion-input>
+                    }
+                </div>
+
+                <ion-label class="label-time-left">Time Left: <span>60</span> Seconds</ion-label>
+
+
+                <div class="div-resend">
                     <ion-icon name="reload-outline"></ion-icon>
                     <ion-label>Resend OTP</ion-label>
                 </div>
-                <ion-button class="ion-button-settings" color="warning" expand="block" (click)="setOTP()">Submit</ion-button>
-          </div>
-      </div>
-      <div class="div-h5">
-          <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>         
-     </div>   
-  </div>
+
+            </div>
+
+            <div class="div-button" style="margin: 10px 16px;">
+                <ion-button class="ion-button-settings" expand="block" color="warning">
+                    <!-- <ion-spinner name="bubbles"></ion-spinner> -->
+                    <span> Verify Code </span>
+                </ion-button>
+            </div>
+
+
+        </div>
+        <div class="div-h5">
+            <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>
+        </div>
+    </div>
 </ion-content>

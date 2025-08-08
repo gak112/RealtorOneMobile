@@ -53,17 +53,17 @@ ion-title {
     object-fit: cover;
     overflow: hidden;
     border-radius: 6px;
-
-    // .tag-count {
-    //   position: absolute;
-    //   top: 50%;
-    //   right: 50%;
-    //   transform: translate(50%, -50%);
-    //   background-color: var(--content-background-white);
-    //   font-size: 12px;
-    //   font-weight: 600;
-    //   color: var(--color-black);
-    // }
+    position: relative;
+  }
+  .tag-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-black);
   }
 }
 

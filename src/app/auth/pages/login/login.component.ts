@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, reloadOutline } from 'ionicons/icons';
 import { register } from 'swiper/element';
+import { OtpComponent } from '../otp/otp.component';
 
 @Component({
   selector: 'app-login',
@@ -230,6 +231,14 @@ export class LoginComponent implements OnInit {
   resend() {
     this.resendButton = false;
     this.start(this.currentUser);
+  }
+
+  async opensetOTP() {
+    const modal = await this.modalController.create({
+      component: OtpComponent,
+    });
+
+    await modal.present();
   }
 
   // number to word

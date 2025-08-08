@@ -18,6 +18,22 @@ ion-toolbar {
   }
 }
 
+.img-more-bg {
+  width: 100%;
+  height: 100%;
+}
+
+.span-more {
+  position: absolute;
+  top: 20px;
+  left: 16px;
+  color: var(--color-white);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
 .label-toggle {
   display: block;
   font-size: 14px;
@@ -40,18 +56,19 @@ ion-list {
   // border-bottom: 1px solid hsl(209deg 30% 20%);
   // margin-bottom: 50px;
   // background: aliceblue;
-  background: var(--content-background) !important;
+  background: var(--content-background-white) !important;
 }
 
 ion-list-header {
   align-items: inherit;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 1px;
   min-height: auto;
   padding: 16px;
   text-transform: capitalize;
   color: #a52a2a;
+  font-family: "Prompt", sans-serif !important;
 }
 
 .ion-item-settings {
@@ -62,11 +79,17 @@ ion-list-header {
   margin: 0 10px 10px;
   border-radius: 6px;
   margin-bottom: 16px;
+  position: absolute;
+  top: 80px;
+  left: 16px;
+  right: 16px;
+  z-index: 99;
 }
 
 .div-img {
   height: 70px;
   width: 70px;
+  min-width: 70px;
   position: relative;
   margin-right: 10px;
   background: var(--content-background-white);
@@ -118,13 +141,13 @@ ion-item {
 }
 
 .div-names {
-  p {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin-top: 5px;
-    color: var(--color-777);
+  .ion-label-settings {
+    color: var(--color-white);
+    font-weight: 600 !important;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+    font-family: "operatr" !important;
+    font-size: 18px;
   }
 
   span {
@@ -133,17 +156,9 @@ ion-item {
     font-size: 12px;
     margin-top: 4px;
     letter-spacing: 0.5px;
-    color: var(--color-skyblue);
+    color: var(--color-white);
     font-weight: 500;
   }
-}
-
-.ion-label-settings {
-  color: var(--color-black);
-  font-weight: 600 !important;
-  letter-spacing: 1px;
-  margin-bottom: 5px;
-  font-family: "operatr" !important;
 }
 
 .div-icon-main {
@@ -156,9 +171,12 @@ ion-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 16px 0;
   background: var(--content-background-white);
-  border-bottom: var(--border);
+
+  &:not(:last-child) {
+    border-bottom: var(--border);
+  }
 
   .div-icon-sub {
     display: flex;
@@ -172,20 +190,21 @@ ion-item {
     }
 
     .icon-title {
-      color: var(--color-white);
+      color: var(--color-black);
       margin-right: var(--margin-12);
       font-size: var(--font-size-18);
       border-radius: 50%;
       padding: 8px;
-      background: var(--background-main);
+      background: var(--background-gray);
     }
 
     ion-label {
-      margin: 0;
-      color: var(--color-black);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      margin: calc(var(--margin-16) * 0);
+      color: var(--color-555);
+      font-weight: var(--font-weight-500);
+      letter-spacing: var(--letter-spacing-5);
+      text-transform: capitalize;
+      font-family: "Prompt", sans-serif !important;
     }
   }
 
@@ -198,7 +217,7 @@ ion-item {
 .div-company {
   text-align: center;
   padding: 30px 0;
-  background: var(--content-background);
+  background: var(--content-background-white);
 
   .from {
     margin: 0;
