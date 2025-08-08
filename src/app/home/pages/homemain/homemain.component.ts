@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
@@ -8,25 +8,6 @@ import {
 import { ModalController } from '@ionic/angular';
 import { RequestmenuComponent } from '../requestmenu/requestmenu.component';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AuthService } from 'src/app/services/auth.service';
-import { Observable } from 'rxjs';
-import { LocationnewComponent } from '../locationnew/locationnew.component';
-import { PostentryComponent } from '../postentry/postentry.component';
-import { HomeItWorksComponent } from '../home-it-works/home-it-works.component';
-import { BannersviewComponent } from '../bannersview/bannersview.component';
-import { AgentconfirmationComponent } from '../agentconfirmation/agentconfirmation.component';
-import { TrendingimagesComponent } from '../trendingimages/trendingimages.component';
-import { PropertieslistComponent } from '../propertieslist/propertieslist.component';
-import { AlerttabComponent } from 'src/app/alerts/pages/alerttab/alerttab.component';
-import { addIcons } from 'ionicons';
-import {
-  chevronForwardOutline,
-  home,
-  business,
-  notificationsOutline,
-} from 'ionicons/icons';
-import { ProductBoxComponent } from 'src/app/search/components/product-box/product-box.component';
-import { VenturecreationComponent } from '../venturecreation/venturecreation.component';
 import {
   IonButton,
   IonContent,
@@ -37,18 +18,38 @@ import {
   IonIcon,
   IonImg,
   IonLabel,
-  IonNavLink,
+  IonSearchbar,
   IonSkeletonText,
-  IonToolbar,
+  IonToolbar
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import {
+  business,
+  chevronDownOutline,
+  chevronForwardOutline,
+  home,
+  location,
+  notificationsOutline,
+} from 'ionicons/icons';
+import { Observable } from 'rxjs';
+import { AlerttabComponent } from 'src/app/alerts/pages/alerttab/alerttab.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
+import { AuthService } from 'src/app/services/auth.service';
 import {
   IProperty,
   RealestateCardComponent,
 } from '../../components/realestate-card/realestate-card.component';
+import { AgentconfirmationComponent } from '../agentconfirmation/agentconfirmation.component';
+import { BannersviewComponent } from '../bannersview/bannersview.component';
+import { HomeItWorksComponent } from '../home-it-works/home-it-works.component';
+import { LocationnewComponent } from '../locationnew/locationnew.component';
+import { PostentryComponent } from '../postentry/postentry.component';
+import { PropertieslistComponent } from '../propertieslist/propertieslist.component';
+import { TrendingimagesComponent } from '../trendingimages/trendingimages.component';
+import { VenturecreationComponent } from '../venturecreation/venturecreation.component';
 
 @Component({
   selector: 'app-homemain',
@@ -61,18 +62,15 @@ import {
     IonLabel,
     IonIcon,
     IonContent,
-    NgIf,
     IonButton,
     IonImg,
     AsyncPipe,
-    NgFor,
-    ProductBoxComponent,
     IonFab,
     IonFabButton,
     IonFabList,
-    IonNavLink,
     IonSkeletonText,
     RealestateCardComponent,
+    IonSearchbar,
   ],
   providers: [ModalController],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -96,7 +94,14 @@ export class HomemainComponent implements OnInit {
     private modalController: ModalController,
     private auth: AuthService /* private afs: AngularFirestore*/
   ) {
-    addIcons({ chevronForwardOutline, home, business, notificationsOutline });
+    addIcons({
+      chevronForwardOutline,
+      home,
+      business,
+      notificationsOutline,
+      location,
+      chevronDownOutline,
+    });
   }
 
   ngOnInit(): void {
@@ -141,12 +146,11 @@ export class HomemainComponent implements OnInit {
     return await modal.present();
   }
 
-  async bannersview(banner: any) {
+  async bannersview() {
     const modal = await this.modalController.create({
       component: BannersviewComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
-      componentProps: { banner },
     });
     return await modal.present();
   }

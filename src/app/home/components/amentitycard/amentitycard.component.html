@@ -1,8 +1,8 @@
-<div class="div-amenity" *ngIf="amenity">
+<div class="div-amenity">
   <div class="div-title">
     <div class="div-img">
-      <ion-img [src]="amenity.photo"></ion-img>
+      <ion-img [src]="amentity().image"></ion-img>
     </div>
-    <ion-label>{{amenity.amenity}}</ion-label>
-  </div>        
+    <ion-label>{{amentity().name}}</ion-label>
+  </div>
 </div>

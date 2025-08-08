@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 // import { AuthService } from 'src/app/services/auth.service';
-import { ToastService } from 'src/app/services/toast.service';
-import { chevronBackOutline } from 'ionicons/icons';
 import {
   IonButton,
-  IonButtons,
   IonCheckbox,
   IonContent,
   IonFooter,
@@ -18,6 +15,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { chevronBackOutline } from 'ionicons/icons';
+import { ToastService } from 'src/app/services/toast.service';
 @Component({
   selector: 'app-agentconfirmation',
   templateUrl: './agentconfirmation.component.html',
@@ -25,7 +24,6 @@ import {
   standalone: true,
   imports: [
     IonHeader,
-    IonButtons,
     IonToolbar,
     IonIcon,
     IonTitle,
@@ -39,12 +37,13 @@ import {
   providers: [ModalController],
 })
 export class AgentconfirmationComponent implements OnInit {
+  private modalController = inject(ModalController);
+
   user: any;
   agentVerified = false;
   conditionsVerified = false;
   agent = false;
   constructor(
-    private modalController: ModalController,
     private toast: ToastService /*private auth: AuthService,
     private afs: AngularFirestore*/
   ) {

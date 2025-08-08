@@ -1,7 +1,5 @@
-import { CommonModule, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonicModule } from '@ionic/angular';
 import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 
 @Component({
@@ -9,25 +7,24 @@ import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
   templateUrl: './amentitycard.component.html',
   styleUrls: ['./amentitycard.component.scss'],
   standalone: true,
-  imports:[IonImg,IonLabel,NgIf],
-  providers:[ModalController]
+  imports: [IonImg, IonLabel],
+  providers: [ModalController],
 })
 export class AmentitycardComponent implements OnInit {
+  amentity = input<IAmentity>();
 
-  @Input() amenity: any;
-  amenities: any;
-  dummydate = {
-    photo:"",
-    amenity:""
-  }
-  
-  constructor(/*private afs: AngularFirestore*/) { }
+  constructor(/*private afs: AngularFirestore*/) {}
 
   ngOnInit() {
-    return
+    return;
     // this.afs.collection(`amenities`, ref => ref.where('amenity', '==', this.amenity)).valueChanges().subscribe((data: any) => {
     //   this.amenities = data[0];
     // });
   }
+}
 
+export interface IAmentity {
+  id: string;
+  name: string;
+  image: string;
 }

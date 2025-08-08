@@ -1,96 +1,73 @@
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
   Component,
-  Input,
-  OnInit,
+  CUSTOM_ELEMENTS_SCHEMA,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import {
-  IonButton,
-  IonContent,
   IonHeader,
-  IonIcon,
-  IonImg,
-  IonLabel,
-  IonTitle,
+  IonContent,
   IonToolbar,
+  IonIcon,
+  IonTitle,
+  IonImg,
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  callOutline,
   chevronBackOutline,
-  globe,
-  home,
+  imagesOutline,
   locationOutline,
-  logoFacebook,
-  logoInstagram,
-  logoTwitter,
 } from 'ionicons/icons';
 import {
   AmentitycardComponent,
   IAmentity,
-} from 'src/app/home/components/amentitycard/amentitycard.component';
+} from '../../components/amentitycard/amentitycard.component';
+import { HomeAllPhotosComponent } from '../home-all-photos/home-all-photos.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
-import { register } from 'swiper/element';
-import { VenturefloordetailsComponent } from '../venturefloordetails/venturefloordetails.component';
-import { HouseFactsFeaturesComponent } from '../../components/house-facts-features/house-facts-features.component';
-register();
 
 @Component({
-  selector: 'app-venture-fullview',
-  templateUrl: './venture-fullview.component.html',
-  styleUrls: ['./venture-fullview.component.scss'],
+  selector: 'app-property-full-view',
+  templateUrl: './property-full-view.component.html',
+  styleUrls: ['./property-full-view.component.scss'],
   standalone: true,
   imports: [
     IonHeader,
+    IonContent,
     IonToolbar,
     IonIcon,
     IonTitle,
-    IonContent,
     IonImg,
-    IonLabel,
     AmentitycardComponent,
-    IonButton,
-    HouseFactsFeaturesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [ModalController],
 })
-export class VentureFullviewComponent implements OnInit {
+export class PropertyFullViewComponent implements OnInit {
   private modalController = inject(ModalController);
-  @Input() venture: any;
-  safeURL: any;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
     addIcons({
       chevronBackOutline,
       locationOutline,
-      logoFacebook,
-      logoTwitter,
-      logoInstagram,
-      globe,
-      home,
+      callOutline,
+      imagesOutline,
     });
-  }
-
-  ngOnInit() {
-    this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.venture?.brochure
-    );
   }
 
   dismiss() {
     this.modalController.dismiss();
   }
 
-  async openVentureFloorDetails() {
+  ngOnInit() {}
+
+  async openAllPhotos() {
     const modal = await this.modalController.create({
-      component: VenturefloordetailsComponent,
+      component: HomeAllPhotosComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });

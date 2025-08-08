@@ -1,67 +1,54 @@
-<!-- <div class="div-product-main" *ngIf="property">
-  <app-postuserheader [hit]="property"></app-postuserheader>
-   <div class="div-img">
-
-    <br>       <ion-img src="assets/img/dummy/house3.png"></ion-img><br>
-
-       <swiper-container 
-            style="--swiper-navigation-color: #fff;--swiper-pagination-color: #fff"
-            [spaceBetween]="30"
-            [zoom]="true"
-            [autoplay]="{delay: 5000,disableOnInteraction: false}"
-            [centeredSlides]="true"
-            [pagination]="{clickable: true}"
-            class="mySwiper">
-            <swiper-slide *ngFor="let image of property.resources">
-                <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
-            </swiper-slide>
-        </swiper-container>
-
-   </div>
-   <div class="div-details">
-        <div class="div-rent">
-            <ion-label class="label-rent-title">{{property.action | uppercase}}</ion-label>
-            <ion-label class="h4-rent">{{property.costOfProperty | currency:'INR'}}</ion-label>
-        </div>
-       <ion-label class="label-hbk" (click)="openFullview()"><span>{{property.actionType}}</span><span *ngIf="property.bhkType">&nbsp;&mdash;&nbsp;{{property.bhkType}}</span></ion-label>
-       <ion-label class="label-address">{{property.addressOfProperty.address}}</ion-label>
-   </div>
-   <app-postlikes [hit]="hit" [user]="user" [id]="hit.objectID"></app-postlikes>
-</div> -->
-
-
-
-
 <div class="div-product-main">
-    <app-post-user-header ></app-post-user-header>
+    <app-post-user-header></app-post-user-header>
     <div class="div-img">
 
-  
+        <br> <ion-img src="assets/img/dummy/house3.png"></ion-img><br>
 
         <swiper-container style="--swiper-navigation-color: #fff;--swiper-pagination-color: #fff" [spaceBetween]="30"
             [zoom]="true" [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
             [pagination]="{clickable: true}" class="mySwiper">
-            <swiper-slide *ngFor="let image of dummyProperty.resources">
-                <ion-skeleton-text [animated]="true" style="height: 250px;width: 321px; border-radius:15px;"></ion-skeleton-text>
-<!--     
-                <ion-img class="slide" [src]="image.resourceUrl"></ion-img> -->
-            </swiper-slide>
+            <!-- <swiper-slide>
+                <ion-img class="slide" src="https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/"></ion-img>
+            </swiper-slide> -->
         </swiper-container>
 
     </div>
     <div class="div-details">
         <div class="div-rent">
-            <ion-skeleton-text [animated]="true" style="height:29px;width:67px;border-radius:100px; "></ion-skeleton-text>
-            <!-- <ion-label class="label-rent-title">{{dummyProperty.action | uppercase}}</ion-label> -->
-            <ion-skeleton-text [animated]="true" style="height:27px;width:157px;border-radius:100px; "></ion-skeleton-text>
-            <!-- <ion-label class="h4-rent">{{dummyProperty.costOfProperty | currency:'INR'}}</ion-label> -->
+            <ion-label class="label-rent-title">Rent</ion-label>
+            <ion-label class="h4-rent">10000</ion-label>
         </div>
-        <ion-skeleton-text [animated]="true" style="height:25px;width:200px; "></ion-skeleton-text>
-        <!-- <ion-label class="label-hbk" (click)="openFullview()"><span>{{dummyProperty.actionType}}</span><span
-                *ngIf="dummyProperty.bhkType">&nbsp;&mdash;&nbsp;{{dummyProperty.bhkType}}</span></ion-label> -->
-
-                <ion-skeleton-text [animated]="true" style="height:36px;width:301px; "></ion-skeleton-text>
-        <!-- <ion-label class="label-address">{{dummyProperty.addressOfProperty.address}}</ion-label> -->
+        <ion-label class="label-hbk" (click)="openFullview()"><span>2
+            </span><span>&nbsp;&mdash;&nbsp;BHK</span></ion-label>
+        <ion-label class="label-address">123, New York, USA</ion-label>
     </div>
     <app-post-likes></app-post-likes>
 </div>
+
+
+
+
+<!-- <div class="div-product-main" style="display: none;">
+    <app-post-user-header></app-post-user-header>
+    <div class="div-img">
+        <swiper-container style="--swiper-navigation-color: #fff;--swiper-pagination-color: #fff" [spaceBetween]="30"
+            [zoom]="true" [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
+            [pagination]="{clickable: true}" class="mySwiper">
+            <swiper-slide>
+                <ion-skeleton-text [animated]="true"
+                    style="height: 250px;width: 321px; border-radius:15px;"></ion-skeleton-text>
+            </swiper-slide>
+        </swiper-container>
+    </div>
+    <div class="div-details">
+        <div class="div-rent">
+            <ion-skeleton-text [animated]="true"
+                style="height:29px;width:67px;border-radius:100px; "></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true"
+                style="height:27px;width:157px;border-radius:100px; "></ion-skeleton-text>
+        </div>
+        <ion-skeleton-text [animated]="true" style="height:25px;width:200px; "></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="height:36px;width:301px; "></ion-skeleton-text>
+    </div>
+    <app-post-likes></app-post-likes>
+</div> -->

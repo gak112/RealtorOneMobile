@@ -155,14 +155,17 @@
                         <ion-label>No Of Years</ion-label>
                     </ion-segment-button>
                 </ion-segment>
-                <div *ngIf="ageOfPropertyAction === 'noofyears'" style="margin-top: 16px;">
-                    <ion-input [(ngModel)]="request.noOfYears" type="number" mode="md" label="No of years"
-                        label-placement="floating" fill="outline" placeholder="Enter no of years"></ion-input>
+                @if(ageOfPropertyAction === 'noofyears') {
+                <div style="margin-top: 16px;">
+                    <ion-input type="number" mode="md" label="No of years" label-placement="floating" fill="outline"
+                        placeholder="Enter no of years"></ion-input>
                 </div>
+                }
             </div>
         </div>
         <div class="div-formgroup">
-            <div style="display: flex;align-items: center;" *ngIf="action === 'rent'">
+            @if(action === 'rent') {
+            <div style="display: flex;align-items: center;">
                 <ion-input [(ngModel)]="request.rent" type="text" mode="md" label="Rent" label-placement="floating"
                     fill="outline" placeholder="Enter Rent" style="margin-right: 16px;"></ion-input>
                 <ion-select [(ngModel)]="request.rentUnits" toggleIcon="caret-down-outline"
@@ -172,6 +175,7 @@
                     <ion-select-option value="Yearly">Yearly</ion-select-option>
                 </ion-select>
             </div>
+            }
         </div>
         @if(action === 'sale') {
         <div class="div-formgroup">
@@ -196,13 +200,13 @@
         <div class="div-upload">
             <ion-label class="upload-label">Upload images</ion-label>
             <div class="div-add">
-              <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
-              <ion-label class="label-add">
-                Upload a file or drag and drop
-              </ion-label>
-              <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+                <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+                <ion-label class="label-add">
+                    Upload a file or drag and drop
+                </ion-label>
+                <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
             </div>
-          </div>
+        </div>
         <!-- <div class="div-upload-main">
             <div class="upload-btn-wrapper add-button" style="margin-right: 16px;">
                 <div class="div-uploadcare">

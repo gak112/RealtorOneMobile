@@ -31,24 +31,43 @@ ion-fab-button {
   justify-content: space-between;
 }
 .div-f {
+  padding: 0 12px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
 
-  ion-img {
-    height: 48px;
-    width: 48px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
-  }
-
-  ion-label {
-    font-size: 18px;
-    font-weight: 600;
+  .span-location {
+    font-size: 12px;
+    font-weight: 500;
     letter-spacing: 1.5px;
     text-align: left;
-    padding-left: 12px;
-    text-transform: uppercase;
-    font-family: "hanover", sans-serif !important;
-    color: var(--color-black);
+    color: var(--color-777);
+  }
+  .div-location-flex {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    margin-left: -5px;
+
+    .label-location {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-align: left;
+      color: var(--color-black);
+    }
+
+    .icon-location {
+      height: 20px;
+      width: 20px;
+      object-fit: contain;
+      margin-right: 4px;
+    }
+
+    .icon-chevron-down {
+      font-size: 16px;
+      color: var(--color-black);
+    }
   }
 }
 // .div-main {

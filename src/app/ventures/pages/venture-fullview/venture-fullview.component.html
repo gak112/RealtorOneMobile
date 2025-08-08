@@ -38,61 +38,24 @@
     <div class="div-description">
       <ion-label class="label-title">Description</ion-label>
       <div class="div-desc-sub">
-        <ion-label>
-          The Best House Venture in the World
+        <ion-label class="label-description">
+          A business venture is an entrepreneurial undertaking because it has an element of risk and reward. The
+          founder, entrepreneur or investor can expose their resources to the venture's risk to pursue rewards. For
+          example, they can risk their money, time and labour to undertake its activities.
         </ion-label>
       </div>
     </div>
     <div class="div-description">
       <ion-label class="label-title">Amenities</ion-label>
       <div>
-        <app-amentitycard></app-amentitycard>
+        @for(amentity of amentities(); track amentity) {
+        <app-amentitycard [amentity]="amentity"></app-amentitycard>
+        }
       </div>
     </div>
-    <div class="div-description">
-      <ion-label class="label-title">Company Details</ion-label>
-      <div class="div-desc-sub">
-        <div class="div-details">
-          <ion-label class="label-name">Company Name</ion-label>
-          <ion-label class="label-subtitle">AS Constructions Pvt Ltd</ion-label>
-        </div>
-        <div class="div-details">
-          <ion-label class="label-name">Company Website</ion-label>
-          <ion-label class="label-subtitle">www.as-infra.com</ion-label>
-        </div>
-        <div class="div-details">
-          <ion-label class="label-name">Directors</ion-label>
-          <ul style="margin-bottom: 0;">
-            <li>
-              <ion-label class="label-subtitle">Shiva Venkata Naga Ashok Kumar Kapalavai</ion-label>
-            </li>
-          </ul>
-        </div>
-        <div class="div-details">
-          <ion-label class="label-name">Venture Website</ion-label>
-          <ion-label class="label-subtitle"></ion-label>
-        </div>
 
-
-        <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998"></ion-icon>Facebook
-            Link</ion-label>
-          <ion-label class="label-subtitle">www.as-infra.com</ion-label>
-        </div>
-        <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee"></ion-icon>Twitter
-            Link</ion-label>
-          <ion-label class="label-subtitle">www.twitter.com/u/asinfra</ion-label>
-        </div>
-        <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50"></ion-icon>Instagram
-            Link</ion-label>
-          <ion-label class="label-subtitle">www.instagram.com/u/asinfra</ion-label>
-        </div>
-      </div>
-    </div>
-    <ion-label class="label-title" style="margin-left: 16px;">Brouchures</ion-label>
-    <div class="div-desc-sub" style="margin: 16px;">
+    <ion-label class="label-title" style="margin: 16px;">Brouchures</ion-label>
+    <div class="div-desc-sub" style="padding: 16px; border-bottom: var(--border-7);">
       <div class="div-pdf">
         <div class="div-pdf-img">
           <ion-img src="assets/img/pdf.png" alt=""></ion-img>
@@ -132,88 +95,142 @@
         </div>
       </div>
     </div>
-    <div class="div-description div-specifications">
-      <ion-label class="label-spec">
-        Specifications
-      </ion-label>
-      <div class="div-spec-sub" *ngFor="let s of venture.specifications; let i = index">
-        <ion-label class="label-title">{{s.title}}</ion-label>
-        <div class="div-desc-sub mb">
-          <ion-label class="label-keyword">
-            External Walls
-          </ion-label>
-          <ion-label class="label-value">
-            Reinforced shear walls
-          </ion-label>
-        </div>
-        <div class="div-desc-sub mb">
-          <ion-label class="label-keyword">
-            Internal Walls
-          </ion-label>
-          <ion-label class="label-value">
-            Reinforced shear walls
-          </ion-label>
-        </div>
-      </div>
-      <div class="div-spec-sub">
-        <ion-label class="label-title">Ceiling Finishes</ion-label>
-        <div class="div-desc-sub mb">
-          <ion-label class="label-keyword">
-            Drawing, Dining, Living, Bedrooms, Kitchen and Balcony
-          </ion-label>
-          <ion-label class="label-value">
-            Smoothly finished with putty and acrylic emulsion paint.
-          </ion-label>
-        </div>
-        <div class="div-desc-sub mb">
-          <ion-label class="label-keyword">
-            Bathrooms
-          </ion-label>
-          <ion-label class="label-value">
-            Grid ceiling to cover all sevice lines.
-          </ion-label>
-        </div>
+    <div class="div-description" style="padding: 16px 0 ;">
+      <ion-label class="label-title" style="padding: 0 16px;">Specifications</ion-label>
+      <div style="padding-top: 16px;">
+        <app-house-facts-features></app-house-facts-features>
       </div>
     </div>
-    <div class="div-ventors2">
-      <div class="div-banners">
-        <div class="div-slides">
-          <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
-            class="mySwiper">
-            <swiper-slide>
-              <ion-img class="slide"
-                src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
-            </swiper-slide>
-            <swiper-slide>
-              <ion-img class="slide"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
-            </swiper-slide>
-          </swiper-container>
-        </div>
-        <div class="div-ventortitle">
-          <div>
-            <div class="div-icons-main">
-              <div class="div-title-img">
-                <ion-img src="assets/img/building.png"></ion-img>
-                <ion-label>Tower/Apt</ion-label>
+    <div style="border-bottom: var(--border-7);">
+      <div class="div-ventors2">
+        <div class="div-banners">
+          <div class="div-slides">
+            <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
+              class="mySwiper">
+              <swiper-slide>
+                <ion-img class="slide"
+                  src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
+              </swiper-slide>
+              <swiper-slide>
+                <ion-img class="slide"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
+              </swiper-slide>
+            </swiper-container>
+          </div>
+          <div class="div-ventortitle">
+            <div>
+              <div class="div-icons-main">
+                <div class="div-title-img">
+                  <ion-img src="assets/img/building.png"></ion-img>
+                  <ion-label>Tower/Apt</ion-label>
+                </div>
+                <ion-button (click)="openVentureFloorDetails()" color="warning" size="small"
+                  class="ion-button-settings">View details</ion-button>
               </div>
-              <ion-button (click)="openVentureFloorDetails()" color="warning" size="small"
-                class="ion-button-settings">View details</ion-button>
-            </div>
-            <ion-label class="label-tower-title">Sai Enclave</ion-label>
-            <div class="div-input-flex border">
-              <ion-label class="label-count">
-                <span>No of floors:</span>
-                5
-              </ion-label>
-              <ion-label class="label-count">
-                <span>No of flats:</span>
-                40
-              </ion-label>
+              <ion-label class="label-tower-title">Sai Enclave</ion-label>
+              <div class="div-input-flex border">
+                <ion-label class="label-count">
+                  <span>No of floors:</span>
+                  5
+                </ion-label>
+                <ion-label class="label-count">
+                  <span>No of flats:</span>
+                  40
+                </ion-label>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+    <div class="div-company-details" style="padding: 16px;">
+      <ion-label class="label-title" style="margin-bottom: 24px;">Company Details</ion-label>
+      <div class="div-company-sub">
+        <div class="div-details">
+          <ion-label class="label-name">Company Name</ion-label>
+          <ion-label class="label-subtitle">AS Constructions Pvt Ltd</ion-label>
+        </div>
+        <div class="div-details">
+          <ion-label class="label-name">Company Website</ion-label>
+          <a href="www.as-infra.com" target="_blank" class="label-links">www.as-infra.com</a>
+        </div>
+        <div class="div-details">
+          <ion-label class="label-name">Directors</ion-label>
+          <ul style="margin-bottom: 0;">
+            <li>
+              <ion-label class="label-subtitle">Shiva Venkata Naga Ashok Kumar Kapalavai</ion-label>
+            </li>
+          </ul>
+        </div>
+        <div class="div-details">
+          <ion-label class="label-name">Venture Website</ion-label>
+          <a href="www.as-infra.com" target="_blank" class="label-links">www.as-infra.com</a>
+        </div>
+
+
+        <div class="div-details">
+          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998"></ion-icon>Facebook
+            Link</ion-label>
+          <a href="www.as-infra.com" target="_blank" class="label-links">www.as-infra.com</a>
+        </div>
+        <div class="div-details">
+          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee"></ion-icon>Twitter
+            Link</ion-label>
+          <a href="www.twitter.com/u/asinfra" target="_blank" class="label-links">www.twitter.com/u/asinfra</a>
+        </div>
+        <div class="div-details">
+          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50"></ion-icon>Instagram
+            Link</ion-label>
+          <a href="www.instagram.com/u/asinfra" target="_blank" class="label-links">www.instagram.com/u/asinfra</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="info-card">
+      <ion-label class="section-title">About Company</ion-label>
+      <div class="div-about-company">
+        <ion-label class="label-company-name">About Ashok Constructions</ion-label>
+        <span class="company-desc">
+          A business venture is an entrepreneurial undertaking because it has an element of risk and reward. The
+          founder, entrepreneur or investor can expose their resources to the venture's risk to pursue rewards. For
+          example, they can risk their money, time and labour to undertake its activities.
+        </span>
+        <div class="div-company-info">
+          <div class="div-info-flex">
+            <ion-label class="label-info">Company Name</ion-label>
+            <span class="span-info">Ashok Constructions</span>
+          </div>
+          <div class="div-info-flex">
+            <ion-label class="label-info">Company Website</ion-label>
+            <a class="span-info" href="www.as-infra.com" target="_blank">
+              www.as-infra.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info-card">
+      <ion-label class="section-title">Company Social Media Links</ion-label>
+      <div class="div-company-links">
+        <a class="company-link">
+          <ion-icon name="home"></ion-icon>
+          www.as-infra.venturecom
+        </a>
+        <a class="company-link">
+          <ion-img src="https://cdn-icons-png.flaticon.com/128/174/174855.png"></ion-img>
+          www.as-infra.instagram.com
+        </a>
+        <a class="company-link">
+          <ion-img src="https://cdn-icons-png.flaticon.com/128/3670/3670124.png"></ion-img>
+          www.as-infra.facebook.com
+        </a>
+        <a class="company-link">
+          <ion-img src="assets/img/twitter.png"></ion-img>
+          www.as-infra.twitter.com
+        </a>
+      </div>
+    </div> -->
   </div>
 </ion-content>

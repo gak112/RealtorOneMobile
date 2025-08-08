@@ -1,17 +1,24 @@
 <ion-header>
   <ion-toolbar>
     <div class="div-header-main">
-      <div class="div-f">
-        <!-- <ion-img  [src]="'assets/img/onlylogo.png'"></ion-img> -->
-        <ion-label (click)="openLocation()">Realtor One</ion-label>
+      <div class="div-f" (click)="openLocation()">
+        <span class="span-location">Location</span>
+        <div class="div-location-flex">
+          <ion-img src="https://cdn-icons-png.flaticon.com/128/14035/14035451.png" class="icon-location"></ion-img>
+          <ion-label class="label-location">Hyderabad, Jubilee Hills</ion-label>
+          <ion-icon name="chevron-down-outline" class="icon-chevron-down"></ion-icon>
+        </div>
       </div>
-      <div class="div-notifi" *ngIf="user">
+      <div class="div-notifi">
         <div class="div-notifications" (click)="manageAlerts()">
           <ion-icon name="notifications-outline"></ion-icon>
           <ion-label class="order-count">10</ion-label>
         </div>
       </div>
     </div>
+  </ion-toolbar>
+  <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
+    <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -54,21 +61,13 @@
       </div>
       <div style="width: 430px;height: 203px;" class="div-banners">
         <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
-          [centeredSlides]="true" class="mySwiper" *ngIf="banners$ | async as banners" [pagination]="{clickable: true}"
-          [navigation]="true">
-          <swiper-slide *ngFor="let banner of banners">
-            <ion-img class="slide" (click)="bannersview(banner)" [src]="banner.banner"></ion-img>
+          [centeredSlides]="true" class="mySwiper" [navigation]="true">
+          <swiper-slide>
+            <ion-img class="slide" (click)="bannersview()"
+              [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
           </swiper-slide>
         </swiper-container>
         <!-- <ion-skeleton-text [animated]="true" style="width: 430px;height: 177px; "></ion-skeleton-text> -->
-
-        <swiper-container [spaceBetween]="30" [autoplay]="{delay: 2000,disableOnInteraction: false}"
-          [centeredSlides]="true" class="mySwiper">
-          <swiper-slide *ngFor="let banner of banners">
-            <ion-img class="slide" (click)="bannersview(banner)" [src]="banner.banner"></ion-img>
-          </swiper-slide>
-        </swiper-container>
-
       </div>
 
 

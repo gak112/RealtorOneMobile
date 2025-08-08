@@ -1,12 +1,24 @@
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  inject,
   input,
   OnInit,
 } from '@angular/core';
-import { IonIcon, IonLabel, IonImg } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonLabel,
+  IonImg,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heartOutline } from 'ionicons/icons';
+import { PostfullviewComponent } from '../../pages/postfullview/postfullview.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
+import { PropertyFullViewComponent } from '../../pages/property-full-view/property-full-view.component';
 
 @Component({
   selector: 'app-realestate-card',
@@ -17,6 +29,17 @@ import { heartOutline } from 'ionicons/icons';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RealestateCardComponent implements OnInit {
+  private modalController = inject(ModalController);
+
+  async openPropertyDetails() {
+    const modal = await this.modalController.create({
+      component: PropertyFullViewComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+
+    await modal.present();
+  }
   property = input.required<IProperty>();
   constructor() {
     addIcons({

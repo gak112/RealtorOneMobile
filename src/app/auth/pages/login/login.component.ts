@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule, NavController } from '@ionic/angular';
-import { IonButton, IonContent, IonIcon, IonImg, IonInput, IonLabel, IonSpinner, ModalController } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonInput,
+  IonLabel,
+  IonSpinner,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { Subscription, interval, takeWhile } from 'rxjs';
 // import { AuthService } from 'src/app/services/auth.service';
 // import { SMSService } from 'src/app/services/sms.service';
@@ -18,14 +27,22 @@ import { register } from 'swiper/element';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone:true,
-  imports:[IonContent,IonButton,IonIcon,IonImg,IonLabel,IonInput,FormsModule,NgIf,IonSpinner,RegisterComponent],
-  providers:[ModalController],
+  standalone: true,
+  imports: [
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonImg,
+    IonLabel,
+    IonInput,
+    FormsModule,
+    NgIf,
+    IonSpinner,
+    RegisterComponent,
+  ],
+  providers: [ModalController],
 })
-
 export class LoginComponent implements OnInit {
-
-
   phone: string = '';
   loading = false;
   showPassword = false;
@@ -42,7 +59,7 @@ export class LoginComponent implements OnInit {
   otp!: string;
   gotOTP!: number;
   selectedCountry: any;
-  currentUser:any;
+  currentUser: any;
 
   constructor(
     // private afs: AngularFirestore,
@@ -50,13 +67,13 @@ export class LoginComponent implements OnInit {
     private nav: NavController,
     private toast: ToastService,
     // private sms: SMSService,
-    private modalController: ModalController,
+    private modalController: ModalController
   ) {
-    addIcons({chevronBackOutline,reloadOutline})
+    addIcons({ chevronBackOutline, reloadOutline });
   }
 
   ngOnInit(): void {
-return
+    return;
   }
 
   setLogin(event: any) {
@@ -78,10 +95,7 @@ return
     const email = `${this.phone}@phone.com`;
     const password: string = this.currentUser.secureData;
 
-
     // this.auth.login(email, password).then(async (sucess: any) => {
-
-
 
     //   const user: any = await firstValueFrom(this.afs.doc(`users/${sucess.user.uid}`).valueChanges());
     //   const isActive = (user.data() as any).active;
@@ -104,39 +118,26 @@ return
     //   this.toast.showError(err.message);
     //   this.loading = false;
     // });
-
   }
 
-
   setOTP(): void {
-
     const otp = parseInt(this.otp);
 
-
-
     this.gotOTP = this.loginOTP;
-    console.log(this.gotOTP, this.loginOTP)
+    console.log(this.gotOTP, this.loginOTP);
 
     if (this.otp.length === 4) {
-
       if (this.otp.toString() == this.gotOTP.toString()) {
         // this.register();
 
         // login logic
 
-
         const secureData = this.currentUser.secureData;
         const phone = this.phone + '@phone.com';
-
-
 
         // this.auth.login(phone, secureData).then(async (sucess: any) => {
         //   this.nav.navigateRoot('/tabs/home');
         // });
-
-
-
-
       } else {
         this.toast.showMessage('Please Enter Valid OTP');
       }
@@ -146,8 +147,6 @@ return
   }
 
   verify() {
-
-
     if (this.loading) {
       return;
     }
@@ -160,7 +159,6 @@ return
     }
 
     // this.auth.verifyPhone(this.phone + '@phone.com').then(async (data: any) => {
-
 
     //   // const user: any = await firstValueFrom((this.afs.doc(`users/${data.user.uid}`).valueChanges()));
 
@@ -180,7 +178,6 @@ return
 
     //     this.toast.showError('Phone Number Not Registered, Please Register');
 
-
     //     this.action = 'register';
     //     this.validPhone = false;
 
@@ -199,8 +196,6 @@ return
     //   this.toast.showError(err.message);
     //   this.loading = false;
     // })
-
-
   }
 
   start(data: any) {
@@ -208,7 +203,7 @@ return
     this.startInterval();
   }
 
-  sendOTP(data: { phone: string; }): void {
+  sendOTP(data: { phone: string }): void {
     if (this.count >= 3) {
       this.toast.showError('3 Attempts Completed');
       return;
@@ -219,14 +214,11 @@ return
     // this.otp = '0123';
     console.log(this.otp);
     //this.sms.processOTPSMS(this.otp, data.phone);
-
-
   }
-
 
   startInterval(): void {
     this.subscription = interval(1000)
-      .pipe(takeWhile((value : any) => value <= 60))
+      .pipe(takeWhile((value: any) => value <= 60))
       .subscribe((val: number) => {
         if (val >= 60) {
           this.resendButton = true;
@@ -240,7 +232,5 @@ return
     this.start(this.currentUser);
   }
 
-  // number to word 
-
-
+  // number to word
 }

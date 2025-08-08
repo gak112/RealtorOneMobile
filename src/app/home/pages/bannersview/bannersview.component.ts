@@ -1,22 +1,40 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSearchbar, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
+  ModalController
+} from '@ionic/angular/standalone';
 import { ProductfilterComponent } from 'src/app/search/pages/productfilter/productfilter.component';
 // import { AuthService } from 'src/app/services/auth.service';
-import { BannerProductComponent } from '../../components/banner-product/banner-product.component';
-import {  NgFor } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { BannerProductComponent } from '../../components/banner-product/banner-product.component';
 
 @Component({
   selector: 'app-bannersview',
   templateUrl: './bannersview.component.html',
   styleUrls: ['./bannersview.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonButton,IonSearchbar,IonContent,BannerProductComponent,NgFor],
-  providers:[ModalController],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonIcon,
+    IonTitle,
+    IonButton,
+    IonSearchbar,
+    IonContent,
+    BannerProductComponent,
+  ],
+  providers: [ModalController],
 })
 export class BannersviewComponent implements OnInit {
+  private modalController = inject(ModalController);
 
   @Input() banner: any;
   hit: any;
@@ -28,18 +46,18 @@ export class BannersviewComponent implements OnInit {
   // };
   // filterObj;
   user: any;
-  constructor(private modalController: ModalController, /*private afs: AngularFirestore,
+  constructor(/*private afs: AngularFirestore,
     private auth: AuthService*/) {
     addIcons({ chevronBackOutline });
   }
 
   ngOnInit(): void {
-    return
+    return;
     // this.auth.user$.subscribe(user => this.user = user);
     // this.afs.doc(`users/${sucess.user.uid}`).valueChanges().subscribe((data: any) => {
 
     // });
-    // this.filterObj = null;  
+    // this.filterObj = null;
     // this.banner.properties.forEach((id, index) => {
     //   if(index === 0) {
     //     this.filterObj = `objectID:${id}`;
@@ -60,5 +78,4 @@ export class BannersviewComponent implements OnInit {
   dismiss() {
     this.modalController.dismiss();
   }
-
 }
