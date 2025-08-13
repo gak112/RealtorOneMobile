@@ -12,11 +12,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- <div *ngFor="let property of banner.properties">
-    <app-banner-product [hit]="property" [user]="user"></app-banner-product>
-  </div>   -->
-
-  <app-banner-product></app-banner-product>
-
-
+  @for(property of properties(); track property.id) {
+  <app-banner-product [property]="property"></app-banner-product>
+  }
 </ion-content>

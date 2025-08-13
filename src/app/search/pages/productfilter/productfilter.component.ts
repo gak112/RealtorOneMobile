@@ -16,6 +16,7 @@ import { chevronBackOutline } from 'ionicons/icons';
 export class ProductfilterComponent implements OnInit {
 
   @Input() facetObject: any;
+fObject: any;
 
   constructor(private modalController: ModalController) {
     addIcons({ chevronBackOutline })
