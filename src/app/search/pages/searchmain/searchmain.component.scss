@@ -2,6 +2,10 @@ ion-toolbar {
   --min-height: 44px;
 }
 
+ion-content {
+  --background: var(--content-background);
+}
+
 ion-searchbar {
   padding: 10px;
   height: 65px;

@@ -63,6 +63,12 @@ import {
 import { PropertyviewsComponent } from '../propertyviews/propertyviews.component';
 import { DeleteaccountComponent } from '../deleteaccount/deleteaccount.component';
 import { ThemeService } from 'src/app/services/theme.service';
+import { AmenitiesComponent } from '../../components/amenities/amenities.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
+import { AmenitiesListsComponent } from '../amenities-lists/amenities-lists.component';
 
 @Component({
   selector: 'app-moremain',
@@ -227,6 +233,15 @@ export class MoremainComponent implements OnInit {
   async goToAgentProfile() {
     const modal = await this.modalController.create({
       component: AgentprofileComponent,
+  });
+    return await modal.present();
+  }
+
+  async openAmenities() {
+    const modal = await this.modalController.create({
+      component: AmenitiesListsComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
     });
     return await modal.present();
   }

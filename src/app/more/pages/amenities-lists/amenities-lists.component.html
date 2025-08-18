@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <div class="div-toolbarflex">
+      <ion-title>
+        Amenities List
+      </ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="" style="padding-bottom: 80px;">
+    @for (amenity of amenities(); track amenity.id) {
+    <app-amenities-card [amenity]="amenity"></app-amenities-card>
+    }
+  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" color="primary" (click)="addAmenities()"
+    style="margin-bottom: 16px;">
+    <ion-fab-button fill="clear">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

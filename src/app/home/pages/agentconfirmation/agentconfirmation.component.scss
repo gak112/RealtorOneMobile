@@ -4,7 +4,7 @@ ion-title {
 }
 
 .div-main {
-  padding: 10px;
+  padding: 16px;
 }
 
 .div-description {
@@ -17,7 +17,7 @@ ion-title {
   top: 0;
 
   .div-label {
-    padding-bottom: 10px;
+    padding: 16px;
 
     .title {
       --padding-bottom: 16px;
@@ -50,7 +50,6 @@ ion-title {
   word-break: break-word;
   line-height: 1.5;
   color: var(--color-black);
-  padding-left: 10px;
 
   span {
     color: #34353a;

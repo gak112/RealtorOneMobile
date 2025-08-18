@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { collection } from 'firebase/firestore';
+// import { collection } from 'firebase/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { IonContent, IonFooter, IonLabel, ModalController, IonIcon, IonListHeader, IonItem, IonList,
    IonToggle, IonToolbar, IonTitle, IonImg, IonHeader, IonButton, IonInput } from "@ionic/angular/standalone";

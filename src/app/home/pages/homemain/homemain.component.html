@@ -59,12 +59,14 @@
         <ion-label>Trending</ion-label>
         <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
       </div>
-      <div style="width: 430px;height: 203px;" class="div-banners">
+      <div class="div-banners">
         <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
           [centeredSlides]="true" class="mySwiper" [navigation]="true">
           <swiper-slide>
+           <div class="">
             <ion-img class="slide" (click)="bannersview()"
-              [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
+            [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
+           </div>
           </swiper-slide>
         </swiper-container>
         <!-- <ion-skeleton-text [animated]="true" style="width: 430px;height: 177px; "></ion-skeleton-text> -->

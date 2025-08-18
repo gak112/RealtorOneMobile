@@ -755,17 +755,17 @@ ion-toast {
   -webkit-padding: 0 12px !important;
 }
 
-.error {
+.div-error {
   display: flex;
   align-items: center;
   margin-top: 5px;
 
-  ion-icon {
+  .icon-info {
     color: red;
     font-size: 16px;
     margin-right: 5px;
   }
-  .note-file {
+  .name-error {
     margin: 0;
     font-size: 12px;
     font-weight: 500;

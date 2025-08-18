@@ -1,14 +1,21 @@
 import {
   Component,
-  ElementRef,
-  inject,
-  Input,
   OnInit,
-  ViewChild,
+  effect,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
+import {
+  IonBadge,
   IonButton,
   IonContent,
   IonFooter,
@@ -26,621 +33,405 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import firebase from 'firebase/compat/app';
 import { addIcons } from 'ionicons';
 import {
   add,
-  caretDownOutline,
   cloudUploadOutline,
   trashOutline,
-  videocamOutline,
+  caretDownOutline,
 } from 'ionicons/icons';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
-import { IRequest } from 'src/app/models/request.model';
+
+// AngularFire **compat** (v6 API)
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
-import { ToastService } from 'src/app/services/toast.service';
-import { BillingComponent } from '../billing/billing.component';
+import {
+  forwardEnterAnimation,
+  backwardEnterAnimation,
+} from 'src/app/services/animation';
 import { LocationComponent } from '../location/location.component';
-import { NotificationComponent } from '../notification/notification.component';
+import { finalize } from 'rxjs/operators';
+
+// If you actually use these modals, keep imports; otherwise you can remove.
+// import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
+// import { LocationComponent } from '../location/location.component';
+// import { forwardEnterAnimation, backwardEnterAnimation } from 'src/app/services/animation';
+
+type SaveError = { code?: string; message: string };
 
 @Component({
   selector: 'app-postentry',
-  templateUrl: './postentry.component.html',
-  styleUrls: ['./postentry.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
+    ReactiveFormsModule,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
+    IonButton,
+    IonLabel,
     IonInput,
-    FormsModule,
     IonSelect,
     IonSelectOption,
-    IonLabel,
-    IonButton,
+    IonTextarea,
     IonIcon,
+    IonImg,
     IonSegment,
     IonSegmentButton,
-    UcWidgetModule,
-    IonImg,
     IonFooter,
-    IonTextarea,
+    IonBadge,
   ],
-  providers: [ModalController],
+  templateUrl: './postentry.component.html',
+  styleUrls: ['./postentry.component.scss'],
 })
 export class PostentryComponent implements OnInit {
+  // Signals as inputs (don’t interpolate in template; always call as fn)
+  readonly actionType = input<'residential' | 'commercial' | 'plots' | 'lands'>(
+    'residential'
+  );
+  readonly action = input<'rent' | 'sale'>('rent');
+
+  // Local UI state
+  ageOfPropertyAction = signal<'underconstruction' | 'noofyears'>(
+    'underconstruction'
+  );
+  loading = signal(false);
+  saveError = signal<SaveError | null>(null);
+
+  // Upload previews/state
+  imageUrls = signal<string[]>([]);
+
+  private fb = inject(FormBuilder);
+  private afs = inject(AngularFirestore); // compat
+  private storage = inject(AngularFireStorage); // compat
   private modalController = inject(ModalController);
 
-  @Input() action: any;
-  @Input() actionType!: string;
-  @ViewChild('uc') ucare!: UcWidgetComponent;
-  @ViewChild('places') places!: ElementRef<HTMLInputElement>;
+  floors = [
+    '1st Floor',
+    '2nd Floor',
+    '3rd Floor',
+    '4th Floor',
+    '5th Floor',
+    '6th Floor',
+    '7th Floor',
+    '8th Floor',
+    '9th Floor',
+    '10th Floor',
+    '+10 Floor',
+  ];
 
-  ageOfPropertyAction = 'underconstruction';
-  paymentAction = 'singlePlan';
-  pincode: string | any;
-  selectedLocation: any;
-  point: any = new firebase.firestore.GeoPoint(32.5522, 34.556656);
-  locationSystemType: any;
-  locationType: any;
-  lat!: number; // =37.0902;
-  lng!: number; //=95.7129  ;
-  location: string | any;
-  source: any = {
-    type: 'geojson',
-    data: {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [0, 0],
-          },
-        },
-      ],
-    },
+  // Simple numeric validators
+  private gtZero = (c: AbstractControl): ValidationErrors | null => {
+    const n = Number(c.value);
+    return isNaN(n) || n <= 0 ? { gtZero: true } : null;
   };
-  user: any;
-  plus_code: any;
-  area: any;
-  city: string | any;
-  district: string | any;
-  state: string | any;
-  country: string | any;
-  locations: ILocation[] = [];
-  loading = false;
+  private gteZero = (c: AbstractControl): ValidationErrors | null => {
+    const v = c.value;
+    if (v === null || v === '' || v === undefined) return { required: true };
+    const n = Number(v);
+    return isNaN(n) || n < 0 ? { gteZero: true } : null;
+  };
 
-  paymentProcessing = false;
-  request!: IRequest;
-  price: any;
+  postEntryForm = this.fb.group({
+    title: this.fb.control('', {
+      validators: [Validators.required, Validators.minLength(3)],
+      nonNullable: true,
+    }),
 
-  constructor(
-    private nav: NavController,
-    private toast: ToastService /*private afs: AngularFirestore, 
-        private auth: AuthService*/
-  ) {
-    addIcons({ add, videocamOutline, trashOutline, caretDownOutline, cloudUploadOutline });
+    houseType: this.fb.control<string | null>(null),
+    bhkType: this.fb.control<string | null>(null),
+    floor: this.fb.control<string | null>(null),
+
+    propertySize: this.fb.control<number | null>(null, {
+      validators: [this.gtZero],
+    }),
+    totalPropertyUnits: this.fb.control<string | null>(null, {
+      validators: [Validators.required],
+    }),
+
+    propertySizeBuildUp: this.fb.control<number | null>(null, {
+      validators: [this.gtZero],
+    }),
+    propertyUnits: this.fb.control<string | null>(null, {
+      validators: [Validators.required],
+    }),
+
+    northFacing: this.fb.control<string | null>(null),
+    northSize: this.fb.control<number | null>(null),
+    southFacing: this.fb.control<string | null>(null),
+    southSize: this.fb.control<number | null>(null),
+    eastFacing: this.fb.control<string | null>(null),
+    eastSize: this.fb.control<number | null>(null),
+    westFacing: this.fb.control<string | null>(null),
+    westSize: this.fb.control<number | null>(null),
+    units: this.fb.control<string>('Ft', { nonNullable: true }),
+
+    toilets: this.fb.control<number | null>(0, { validators: [this.gteZero] }),
+    poojaRoom: this.fb.control<number | null>(0, {
+      validators: [this.gteZero],
+    }),
+    livingDining: this.fb.control<number | null>(0, {
+      validators: [this.gteZero],
+    }),
+    kitchen: this.fb.control<number | null>(0, { validators: [this.gteZero] }),
+
+    noOfYears: this.fb.control<number | null>(null),
+
+    rent: this.fb.control<number | null>(null),
+    rentUnits: this.fb.control<string | null>(null),
+    costOfProperty: this.fb.control<number | null>(null),
+
+    addressOfProperty: this.fb.control<string | null>(null),
+    description: this.fb.control<string | null>(null),
+
+    // uploads
+    logo: this.fb.control<string>('', { nonNullable: true }),
+    images: this.fb.control<string[]>([], { nonNullable: true }),
+    amenities: this.fb.control<string[]>([], { nonNullable: true }),
+  });
+
+  ctrl = (k: keyof typeof this.postEntryForm.controls) =>
+    this.postEntryForm.controls[k] as AbstractControl;
+
+  constructor() {
+    addIcons({ add, cloudUploadOutline, trashOutline, caretDownOutline });
+
+    // Reactive validation depending on signals
+    effect(() => {
+      // Residential-only required fields
+      const isRes = this.actionType() === 'residential';
+      this.setRequired(this.ctrl('houseType'), isRes);
+      this.setRequired(this.ctrl('bhkType'), isRes);
+      this.setRequired(this.ctrl('floor'), isRes);
+
+      // Age-of-property: require noOfYears when needed
+      const needYears = this.ageOfPropertyAction() === 'noofyears';
+      this.ctrl('noOfYears').setValidators(needYears ? [this.gteZero] : []);
+      this.ctrl('noOfYears').updateValueAndValidity({ emitEvent: false });
+
+      // Rent vs Sale
+      if (this.action() === 'rent') {
+        this.ctrl('rent').setValidators([this.gtZero]);
+        this.ctrl('rentUnits').setValidators([Validators.required]);
+        this.ctrl('costOfProperty').clearValidators();
+      } else {
+        this.ctrl('rent').clearValidators();
+        this.ctrl('rentUnits').clearValidators();
+        this.ctrl('costOfProperty').setValidators([this.gtZero]);
+      }
+      this.ctrl('rent').updateValueAndValidity({ emitEvent: false });
+      this.ctrl('rentUnits').updateValueAndValidity({ emitEvent: false });
+      this.ctrl('costOfProperty').updateValueAndValidity({ emitEvent: false });
+    });
   }
 
-  ngOnInit(): void {
-    //   this.auth.user$.subscribe(user => {
-    //     this.user = user;
+  ngOnInit(): void {}
 
-    // });
+  private setRequired(control: AbstractControl, required: boolean) {
+    if (required) control.setValidators([Validators.required]);
+    else control.clearValidators();
+    control.updateValueAndValidity({ emitEvent: false });
+  }
 
-    this.intializeRequests();
+  // Segment change handler for age-of-property
+  ageOfPropertyChanged(e: CustomEvent) {
+    const val = (e as any)?.detail?.value as 'underconstruction' | 'noofyears';
+    if (val) this.ageOfPropertyAction.set(val);
+  }
+
+  // ---------------------------
+  // Uploads (Images multiple)
+  // ---------------------------
+
+  imgsBusy = signal(false);
+  imgsPct = signal<number>(0); // average % for a batch
+
+  selectVentureImages(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    if (files.length === 0) return;
+
+    this.imgsBusy.set(true);
+    let completed = 0;
+    const total = files.length;
+
+    files.forEach((file) => {
+      const path = `posts/${Date.now()}_${Math.random()
+        .toString(36)
+        .slice(2)}_${file.name}`;
+      const task = this.storage.upload(path, file);
+      const ref = this.storage.ref(path);
+
+      task.percentageChanges().subscribe((p) => {
+        // simple average
+        const current = Math.round(p ?? 0);
+        // not exact average, but lightweight: show latest file pct
+        this.imgsPct.set(current);
+      });
+
+      task
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            ref.getDownloadURL().subscribe((url) => {
+              const imgs = [...this.postEntryForm.controls.images.value, url];
+              this.postEntryForm.controls.images.setValue(imgs);
+              completed += 1;
+              if (completed === total) {
+                this.imgsBusy.set(false);
+                this.imgsPct.set(100);
+                setTimeout(() => this.imgsPct.set(0), 600);
+              }
+            });
+          })
+        )
+        .subscribe();
+    });
+  }
+
+  deleteImageByUrl(url: string) {
+    const imgs = this.postEntryForm.controls.images.value.filter(
+      (u) => u !== url
+    );
+    this.postEntryForm.controls.images.setValue(imgs);
+    this.storage.refFromURL(url).delete();
+  }
+
+  // ---------------------------
+  // Submit to Firestore (compat)
+  // ---------------------------
+  async submit() {
+    console.log(this.postEntryForm.value);
+    this.saveError.set(null);
+    this.postEntryForm.updateValueAndValidity();
+    if (this.postEntryForm.invalid) {
+      this.postEntryForm.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+
+    try {
+      const v = this.postEntryForm.getRawValue();
+
+      const payload = {
+        title: (v.title ?? '').trim(),
+
+        houseType: v.houseType ?? '',
+        bhkType: v.bhkType ?? '',
+        floor: v.floor ?? '',
+
+        propertySize: v.propertySize ?? null,
+        totalPropertyUnits: v.totalPropertyUnits ?? '',
+        propertySizeBuildUp: v.propertySizeBuildUp ?? null,
+        propertyUnits: v.propertyUnits ?? '',
+
+        northFacing: v.northFacing ?? '',
+        northSize: v.northSize ?? null,
+        southFacing: v.southFacing ?? '',
+        southSize: v.southSize ?? null,
+        eastFacing: v.eastFacing ?? '',
+        eastSize: v.eastSize ?? null,
+        westFacing: v.westFacing ?? '',
+        westSize: v.westSize ?? null,
+        units: v.units ?? 'Ft',
+
+        toilets: v.toilets ?? 0,
+        poojaRoom: v.poojaRoom ?? 0,
+        livingDining: v.livingDining ?? 0,
+        kitchen: v.kitchen ?? 0,
+
+        ageOfPropertyAction: this.ageOfPropertyAction(),
+        noOfYears:
+          this.ageOfPropertyAction() === 'noofyears' ? v.noOfYears ?? 0 : null,
+
+        action: this.action(),
+        actionType: this.actionType(),
+
+        rent: this.action() === 'rent' ? v.rent ?? null : null,
+        rentUnits: this.action() === 'rent' ? v.rentUnits ?? '' : '',
+        costOfProperty:
+          this.action() === 'sale' ? v.costOfProperty ?? null : null,
+
+        addressOfProperty: v.addressOfProperty ?? '',
+        description: v.description ?? '',
+
+        images:
+          (v.images && v.images.length ? v.images : this.imageUrls()) ?? [],
+        amenities: v.amenities ?? [],
+
+        // compact-ish metadata
+        createdAt: new Date(),
+        status: 'pending',
+        sortDate: Date.now(),
+      };
+
+      await this.afs.collection('requests').add(payload);
+
+      // Reset form & UI
+      this.postEntryForm.reset({
+        title: '',
+        houseType: null,
+        bhkType: null,
+        floor: null,
+        propertySize: null,
+        totalPropertyUnits: null,
+        propertySizeBuildUp: null,
+        propertyUnits: null,
+        northFacing: null,
+        northSize: null,
+        southFacing: null,
+        southSize: null,
+        eastFacing: null,
+        eastSize: null,
+        westFacing: null,
+        westSize: null,
+        units: 'Ft',
+        toilets: 0,
+        poojaRoom: 0,
+        livingDining: 0,
+        kitchen: 0,
+        noOfYears: null,
+        rent: null,
+        rentUnits: null,
+        costOfProperty: null,
+        addressOfProperty: null,
+        description: null,
+        logo: '',
+        images: [],
+        amenities: [],
+      });
+      this.imageUrls.set([]);
+    } catch (err: any) {
+      this.saveError.set({
+        message: err?.message ?? 'Failed to save the request',
+      });
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   dismiss() {
     this.modalController.dismiss();
   }
 
-  segmentChanged(val: { detail: { value: any } }): void {
-    this.action = val.detail.value;
-  }
-
-  subSegmentChanged(val: { detail: { value: any } }): void {
-    this.actionType = val.detail.value;
-  }
-
-  ageOfPropertyChanged(val: any): void {
-    this.ageOfPropertyAction = val.detail.value;
-  }
-
-  async billing() {
+  // Stubs for your existing modals (uncomment if you have them wired)
+  async amenitiesList() {
     const modal = await this.modalController.create({
-      component: BillingComponent,
-      componentProps: { request: this.request, user: this.user },
+      component: AmenitiesComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
     });
-    return await modal.present();
-  }
-
-  async openNotification() {
-    const modal = await this.modalController.create({
-      component: NotificationComponent,
-      cssClass: 'modal-settings',
-    });
-    return await modal.present();
+    await modal.present();
   }
 
   async openLocation() {
     const modal = await this.modalController.create({
-      // component: LocationnewComponent,
       component: LocationComponent,
-    });
-    return await modal.present();
-  }
-
-  async amenitiesList() {
-    const modal = await this.modalController.create({
-      component: AmenitiesComponent,
-      componentProps: { selectedAmenities: this.request.amenities },
-      initialBreakpoint: 1,
-      breakpoints: [1],
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
     });
     await modal.present();
-
-    const { data } = await modal.onWillDismiss();
-
-    if (data) {
-      data.forEach((amenity: any) => {
-        this.request.amenities.push(amenity.amenity);
-      });
-    }
   }
-
-  paymentChanged(val: { detail: { value: string } }): void {
-    this.paymentAction = val.detail.value;
-  }
-
-  public handleAddressChange(address: Address): void {
-    // Do some stuff
-
-    this.pincode = null;
-
-    this.lat = address.geometry.location.lat();
-    this.lng = address.geometry.location.lng();
-
-    this.source.data.features[0].geometry.coordinates = [this.lng, this.lat];
-
-    this.location = {
-      locationName: address.address_components[0].short_name,
-      address: address.formatted_address + ' - ' + this.pincode,
-      lat: this.lat,
-      lng: this.lng,
-    };
-
-    this.manageAddress(address);
-  }
-
-  clearLocation(): void {
-    this.location = '';
-    this.city = '';
-    this.district = '';
-    this.state = '';
-    this.country = '';
-    this.pincode = '';
-  }
-
-  setLocation() {
-    this.locations.push({
-      location: this.location,
-      country: this.country,
-      state: this.state,
-      district: this.district,
-      city: this.city,
-      pincode: this.pincode,
-      locationSystemType: this.locationSystemType,
-      locationType: this.locationType,
-      geoPoint: this.point,
-    });
-
-    this.location = null;
-    this.country = null;
-    this.state = null;
-    this.district = null;
-    this.city = null;
-    this.pincode = null;
-    this.locationSystemType = null;
-    this.locationType = null;
-    this.point = null;
-
-    this.places.nativeElement.value = '';
-    this.places.nativeElement.focus();
-  }
-
-  manageAddress(address: Address) {
-    const addressComponents = address.address_components;
-
-    addressComponents.forEach(
-      (addressComponent: { types: any[]; long_name: any }) => {
-        switch (addressComponent.types[0]) {
-          case 'country':
-            this.country = addressComponent.long_name;
-            break;
-          case 'administrative_area_level_1':
-            this.state = addressComponent.long_name;
-            break;
-          case 'administrative_area_level_2':
-            this.district = addressComponent.long_name;
-            break;
-          case 'locality':
-            this.city = addressComponent.long_name;
-            break;
-          case 'route':
-            this.area = addressComponent.long_name;
-            break;
-          case 'political':
-            this.area = addressComponent.long_name;
-            break;
-          case 'plus_code':
-            this.plus_code = addressComponent.long_name;
-            break;
-          case 'postal_code':
-            this.pincode = addressComponent.long_name;
-            break;
-        }
-      }
-    );
-
-    this.location = {
-      locationName: address.address_components[0].short_name,
-      address:
-        address.formatted_address + (this.pincode ? ' - ' + this.pincode : ''),
-      lat: this.lat,
-      lng: this.lng,
-    };
-
-    // "plus_code"
-    // "political"
-    // "locality"
-    // "administrative_area_level_2"
-    // "administrative_area_level_1"
-    // "country"
-    // "postal_code"
-  }
-
-  onComplete(event: { count: number; cdnUrl: string }): void {
-    this.ucare.reset();
-    this.ucare.clearUploads();
-
-    if (event.count) {
-      for (let i = 0; i < event.count; i++) {
-        this.request.resources.push({
-          resourceName: '',
-          resourceUrl: event.cdnUrl + '/nth/' + i + '/',
-          resourceType: 'image',
-        });
-      }
-    } else {
-      this.request.resources.push({
-        resourceName: '',
-        resourceUrl: event.cdnUrl,
-        resourceType: 'image',
-      });
-    }
-
-    if (2 - this.request.resources.length === 1) {
-      this.ucare.multiple = false;
-    }
-  }
-
-  removeImage(index: number) {
-    this.request.resources.splice(index, 1);
-    if (this.request.resources.length === 0) {
-      this.ucare.multiple = true;
-    } else if (2 - this.request.resources.length === 1) {
-      this.ucare.multiple = false;
-    }
-  }
-
-  submit() {
-    if (this.loading) {
-      return;
-    }
-    this.loading = true;
-
-    if (this.request.title) {
-      if (this.request.title.trim() === '') {
-        this.toast.showError('Please Enter Title');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Title');
-      this.loading = false;
-      return;
-    }
-
-    if (this.actionType === 'Residential') {
-      if (this.request.houseType) {
-        if (this.request.houseType.trim() === '') {
-          this.toast.showError('Please Enter House Type');
-          this.loading = false;
-          return;
-        }
-      } else {
-        this.toast.showError('Please Enter House Type');
-        this.loading = false;
-        return;
-      }
-
-      if (this.request.bhkType) {
-        if (this.request.bhkType.trim() === '') {
-          this.toast.showError('Please Enter BHK Type');
-          this.loading = false;
-          return;
-        }
-      } else {
-        this.toast.showError('Please Enter BHK Type');
-        this.loading = false;
-        return;
-      }
-    }
-
-    if (this.request.propertySize) {
-      if (this.request.propertySize === 0) {
-        this.toast.showError('Please Enter Property Size');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Property Size');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.totalPropertyUnits) {
-      if (this.request.totalPropertyUnits.trim() === '') {
-        this.toast.showError('Please Select Total Property Units');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Select Total Property Units');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.propertySizeBuildUp) {
-      if (this.request.propertySizeBuildUp === 0) {
-        this.toast.showError('Please Enter PropertySize BuildUp');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter PropertySize BuildUp');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.propertyUnits) {
-      if (this.request.propertyUnits.trim() === '') {
-        this.toast.showError('Please Select Property Units');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Select Property Units');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.toilets) {
-      if (this.request.toilets === 0) {
-        this.toast.showError('Please Enter Toilets');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Toilets');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.poojaRoom) {
-      if (this.request.poojaRoom === 0) {
-        this.toast.showError('Please Enter Pooja Room');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Pooja Room');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.livingDining) {
-      if (this.request.livingDining === 0) {
-        this.toast.showError('Please Enter Living Dining');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Living Dining');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.kitchen) {
-      if (this.request.kitchen === 0) {
-        this.toast.showError('Please Enter Kitchen');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Kitchen');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.floor) {
-      if (this.request.floor.trim() === '') {
-        this.toast.showError('Please Select Floor');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Select Floor');
-      this.loading = false;
-      return;
-    }
-
-    if (this.request.costOfProperty) {
-      if (this.request.costOfProperty === 0) {
-        this.toast.showError('Please Enter Cost Of Property');
-        this.loading = false;
-        return;
-      }
-    } else {
-      this.toast.showError('Please Enter Cost Of Property');
-      this.loading = false;
-      return;
-    }
-
-    // if (this.paymentProcessing) {
-    //   return;
-    // }
-
-    this.request = {
-      title: this.request.title || '',
-      houseType: this.request.houseType || '',
-      bhkType: this.request.bhkType || '',
-      toilets: this.request.toilets || 0,
-      poojaRoom: this.request.poojaRoom || 0,
-      livingDining: this.request.livingDining || 0,
-      kitchen: this.request.kitchen || 0,
-      propertySizeBuildUp: this.request.propertySizeBuildUp || 0,
-      northFacing: this.request.northFacing || '',
-      northSize: this.request.northSize || 0,
-      units: this.request.units || '',
-      propertyUnits: this.request.propertyUnits || '',
-      totalPropertyUnits: this.request.totalPropertyUnits || '',
-      southFacing: this.request.southFacing || '',
-      southSize: this.request.southSize || 0,
-      eastFacing: this.request.eastFacing || '',
-      eastSize: this.request.eastSize || 0,
-      westFacing: this.request.westFacing || '',
-      westSize: this.request.westSize || 0,
-      propertySize: this.request.propertySize,
-      amenities: this.request.amenities || [],
-      floor: this.request.floor || '',
-      noOfYears: this.request.noOfYears || 0,
-      // ownership: this.request.ownership|| '',
-      rent: this.request.rent || 0,
-      rentUnits: this.request.rentUnits || '',
-      costOfProperty: this.request.costOfProperty || 0,
-      addressOfProperty: this.location || '',
-      description: this.request.description || '',
-      resources: this.request.resources || [],
-      videoResources: this.request.videoResources || [],
-      action: this.action || '',
-      actionType: this.actionType || '',
-      ageOfPropertyAction: this.ageOfPropertyAction || '',
-      paymentAction: this.paymentAction || '',
-      uid: this.user.uid || '',
-      planCost: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp() || '',
-      createdBy: this.user.uid || '',
-      status: 'pending',
-      displayDate: new Date().toDateString(),
-      sortTime: null,
-      sortDate: +new Date(),
-      sortDate2: new Date(),
-    };
-
-    // const batch = this.afs.firestore.batch();
-
-    // const requestRef = this.afs.firestore.collection(`requests`).doc();
-    // batch.set(requestRef, Object.assign(this.request));
-
-    // const userDashboardRef = this.afs.firestore.collection(`dashboard`).doc('1');
-    // batch.update(userDashboardRef, Object.assign({properties: firebase.firestore.FieldValue.increment(1)}));
-
-    // batch.commit().then(() => {
-    //   this.toast.showMessage('Saved Successfully', 1000);
-    //   this.intializeRequests();
-    //   this.goRoot();
-    //   this.loading = false;
-    //   this.modalController.dismiss();
-
-    // }).catch(err => {
-    //   this.loading = false;
-    // });
-  }
-
-  intializeRequests() {
-    this.request = {
-      title: '',
-      houseType: '',
-      bhkType: '',
-      toilets: null,
-      poojaRoom: null,
-      livingDining: null,
-      kitchen: null,
-      propertySizeBuildUp: null,
-      northFacing: '',
-      northSize: null,
-      units: '',
-      propertyUnits: '',
-      amenities: [],
-      totalPropertyUnits: '',
-      southFacing: '',
-      southSize: null,
-      eastFacing: '',
-      eastSize: null,
-      westFacing: '',
-      westSize: null,
-      propertySize: null,
-      floor: '',
-      noOfYears: null,
-      // ownership: '',
-      rent: null,
-      rentUnits: '',
-      costOfProperty: null,
-      addressOfProperty: '',
-      description: '',
-      resources: [],
-      videoResources: [],
-      action: '',
-      actionType: '',
-      ageOfPropertyAction: '',
-      paymentAction: '',
-      planCost: null,
-      uid: '',
-      createdAt: '',
-      createdBy: '',
-      sortDate: '',
-      sortDate2: '',
-      displayDate: '',
-      sortTime: '',
-      status: 'pending',
-    };
-  }
-
-  // goRoot() {
-  //   this.navM.popToRoot();
-  // }
-}
-
-export interface ILocation {
-  location: string;
-  country: string;
-  state: string;
-  district: string;
-  city: string;
-  pincode: string;
-  locationSystemType: string;
-  locationType: string;
-  geoPoint: any;
-}
-
-export interface IOrder {
-  amount: number;
-  currency: string;
-  receipt: string;
-  id: string;
 }

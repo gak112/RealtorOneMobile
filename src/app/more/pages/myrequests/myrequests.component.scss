@@ -3,6 +3,10 @@ ion-title {
   padding-left: 40px;
 }
 
+ion-content {
+  --background: var(--content-background);
+}
+
 .div-title-flex {
   display: flex;
   align-items: center;

@@ -1,7 +1,3 @@
-ion-toolbar {
-  --background: var(--content-background-white);
-}
-
 ion-title {
   text-align: left;
   padding-left: 40px;
@@ -13,6 +9,7 @@ ion-title {
   gap: 16px;
   margin-bottom: var(--margin-16);
 }
+
 ion-button {
   --border-radius: 8px;
   text-transform: inherit;
@@ -44,15 +41,9 @@ ion-button {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  padding: 16px;
-  border-bottom: var(--border-ddd);
-  line-height: 1.5;
-  background: var(--background-main);
   text-align: left;
   flex-grow: 1;
-  border-top-left-radius: var(--border-radius-4);
-  border-bottom-left-radius: var(--border-radius-4);
-  color: var(--color-white);
+  color: var(--color-black);
 }
 
 .div-spec-keys-values {

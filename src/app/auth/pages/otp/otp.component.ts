@@ -3,11 +3,20 @@ import { IUser } from '../../models/user.model';
 import { ToastService } from 'src/app/services/toast.service';
 // import { SMSService } from 'src/app/services/sms.service';
 // import { EncrDecrService } from 'src/app/services/EncrDecr.service';
-import { IonButton, IonContent, IonIcon, IonImg, IonInput, IonLabel, ModalController, NavController } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonInput,
+  IonLabel,
+  ModalController,
+  NavController,
+} from '@ionic/angular/standalone';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 // import { AuthService } from 'src/app/services/auth.service';
 import { interval, map, takeWhile } from 'rxjs';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule, NgIf } from '@angular/common';
 import * as randomize from 'randomatic';
@@ -18,8 +27,17 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './otp.component.html',
   styleUrls: ['./otp.component.scss'],
   standalone: true,
-  imports: [IonContent,IonImg,IonLabel,IonInput,FormsModule,IonIcon,IonButton,NgIf],
-  providers:[ModalController],
+  imports: [
+    IonContent,
+    IonImg,
+    IonLabel,
+    IonInput,
+    FormsModule,
+    IonIcon,
+    IonButton,
+    NgIf,
+  ],
+  providers: [ModalController],
 })
 export class OtpComponent implements OnInit {
   @Input() user!: IUser;
@@ -31,29 +49,26 @@ export class OtpComponent implements OnInit {
   subscription: any;
   resendButton = false;
 
-
-
   coordinates: any;
   markerPositions: any;
 
   address: any;
 
-  constructor(private toast: ToastService,
+  constructor(
+    private toast: ToastService,
     /*private sms: SMSService,
     private ende: EncrDecrService,*/
-    private modalController: ModalController, private nav: NavController,
-    /*private auth: AuthService, private afs: AngularFirestore*/) { }
+    private modalController: ModalController,
+    private nav: NavController
+  ) /*private auth: AuthService, private afs: AngularFirestore*/ {}
   ngOnInit(): void {
-
     this.start();
-
   }
 
   start() {
     this.sendOTP();
     this.startInterval();
   }
-
 
   sendOTP(): void {
     if (this.count >= 3) {
@@ -64,7 +79,6 @@ export class OtpComponent implements OnInit {
     this.count += 1;
     this.otp = randomize('0', 4);
     console.log(this.otp);
-
   }
 
   startInterval(): void {
@@ -78,9 +92,7 @@ export class OtpComponent implements OnInit {
       });
   }
 
-
   setOTP(): void {
-
     if (this.otp.length === 4) {
       console.log(this.otp);
       if (this.otp.toString() === this.gotOTP.toString()) {
@@ -94,8 +106,6 @@ export class OtpComponent implements OnInit {
   }
 
   async register(): Promise<void> {
-
-
     if (this.loading === true) {
       return;
     }
@@ -123,18 +133,14 @@ export class OtpComponent implements OnInit {
     // }
   }
 
-
   async addUser(user: any): Promise<any> {
-
     // user.secureData = await this.ende.set('112411919112', user.secureData);
-
     // return this.auth
     //   .register(user.loginEmail, user.secureData)
     //   .then(async (success) => {
     //     user.uid = success.user.uid;
     //    // user.address = this.address;
     //     // user.geoPoints = {lat: this.coordinates.coords.latitude, lng: this.coordinates.coords.longitude};
-
     //     const batch = this.afs.firestore.batch();
     //     const userRef = this.afs.firestore.collection('users').doc(user.uid);
     //     const dashboardRef = this.afs.firestore.collection('dashboard').doc('1');
@@ -160,11 +166,7 @@ export class OtpComponent implements OnInit {
     this.start();
   }
 
-
   dismiss() {
     this.modalController.dismiss();
   }
-
-
-
 }

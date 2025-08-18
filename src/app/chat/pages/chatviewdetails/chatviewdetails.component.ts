@@ -1,23 +1,13 @@
-import { DatePipe, Location } from '@angular/common';
 import {
   Component,
-  computed,
   HostBinding,
   inject,
-  Injectable,
-  input,
   Pipe,
   PipeTransform,
   signal,
-  viewChild,
+  viewChild
 } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { serverTimestamp } from '@angular/fire/firestore';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { Keyboard } from '@capacitor/keyboard';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
   IonButton,
   IonContent,
@@ -31,11 +21,9 @@ import {
   IonSkeletonText,
   IonTextarea,
   IonToolbar,
-  ModalController,
-  Platform,
-  ToastController,
+  ModalController
 } from '@ionic/angular/standalone';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 import { addIcons } from 'ionicons';
 import {
   add,
@@ -59,22 +47,9 @@ import {
   videocamOutline,
   warningOutline,
 } from 'ionicons/icons';
-import {
-  combineLatest,
-  filter,
-  firstValueFrom,
-  map,
-  Observable,
-  of,
-  shareReplay,
-  switchMap,
-} from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { ChatenterboxComponent } from '../../components/chatenterbox/chatenterbox.component';
 import { LeftMessageComponent } from '../../components/left-message/left-message.component';
 import { RightMessageComponent } from '../../components/right-message/right-message.component';
-import { Capacitor } from '@capacitor/core';
-import { CameraSource } from '@capacitor/camera';
 
 @Pipe({ name: 'isSameDay', standalone: true })
 export class IsSameDayPipe implements PipeTransform {

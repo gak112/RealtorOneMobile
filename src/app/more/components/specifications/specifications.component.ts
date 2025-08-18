@@ -1,149 +1,182 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonTextarea, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
+import { Component, Input, computed, inject, signal } from '@angular/core';
 import {
-  ISpecificationDetails,
-  ISpecifications,
-} from 'src/app/models/ventures.modal';
-import { ToastService } from 'src/app/services/toast.service';
+  ReactiveFormsModule,
+  NonNullableFormBuilder,
+  Validators,
+  FormArray,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonLabel,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
+
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { serverTimestamp } from '@angular/fire/firestore';
+
+type ItemFG = FormGroup<{
+  key: FormControl<string>;
+  value: FormControl<string>;
+}>;
+
+type SectionFG = FormGroup<{
+  title: FormControl<string>;
+  items: FormArray<ItemFG>;
+  newItem: FormGroup<{
+    key: FormControl<string>;
+    value: FormControl<string>;
+  }>;
+}>;
 
 @Component({
   selector: 'app-specifications',
-  templateUrl: './specifications.component.html',
-  styleUrls: ['./specifications.component.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonIcon,
-    IonTitle,
+    ReactiveFormsModule,
     IonContent,
     IonInput,
-    IonButton,
-    FormsModule,
-    IonLabel,
     IonTextarea,
-    IonFooter
-],
-  providers: [ModalController],
+    IonButton,
+    IonIcon,
+    IonLabel,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonFooter,
+  ],
+  templateUrl: './specifications.component.html',
+  styleUrls: ['./specifications.component.scss'],
 })
-export class SpecificationsComponent implements OnInit {
-  @Input() specifications: ISpecifications[] = [];
-  @Input() user: any;
-  title: string | any;
-  loading = false;
-  asp = -1;
+export class SpecificationsComponent {
+  private fb = inject(NonNullableFormBuilder);
+  private afs = inject(AngularFirestore);
+  private modal = inject(ModalController);
 
-  specificationDetails: ISpecificationDetails =
-    this.initiateSpecificationDetails();
+  /** Firestore collection path */
+  @Input() path = 'ventureSpecifications';
+  /** Optional user info; only uid used if present */
+  @Input() user: { uid?: string } | null = null;
 
-  constructor(
-    private modalController: ModalController,
-    private toast: ToastService
-  ) {}
+  // top input to add a new section title
+  newTitle = this.fb.control('', [
+    Validators.required,
+    Validators.minLength(3),
+  ]);
 
-  ngOnInit(): void {
-    if (this.specifications === undefined) {
-      this.specifications = [];
-    }
+  // main form with sections
+  specificationsForm = this.fb.group({
+    sections: this.fb.array<SectionFG>([]),
+  });
+
+  // UI state with signals
+  activeIndex = signal<number>(-1);
+  submitting = signal(false);
+  canSubmit = computed(() => this.sections.length > 0 && !this.submitting());
+
+  // convenience getters
+  get sections(): FormArray<SectionFG> {
+    return this.specificationsForm.controls.sections;
+  }
+  sectionAt = (i: number) => this.sections.at(i);
+
+  private makeItem(key = '', value = ''): ItemFG {
+    return this.fb.group({
+      key: this.fb.control(key, [Validators.required]),
+      value: this.fb.control(value, [Validators.required]),
+    });
   }
 
-  initiateSpecification() {
-    return {
-      title: null,
-      specifications: [],
-    };
-  }
-  initiateSpecificationDetails(): ISpecificationDetails {
-    return {
-      key: null,
-      value: null,
-    };
+  private makeSection(title: string): SectionFG {
+    return this.fb.group({
+      title: this.fb.control(title, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      items: this.fb.array<ItemFG>([]),
+      newItem: this.fb.group({
+        key: this.fb.control('', [Validators.required]),
+        value: this.fb.control('', [Validators.required]),
+      }),
+    });
   }
 
-  save(): void {
-    if (this.loading === true) {
+  addSection(): void {
+    const t = this.newTitle.value.trim();
+    if (!t) return;
+    this.sections.push(this.makeSection(t));
+    this.activeIndex.set(this.sections.length - 1);
+    this.newTitle.reset('');
+  }
+
+  addItem(sectionIndex: number): void {
+    const sec = this.sectionAt(sectionIndex);
+    const ni = sec.controls.newItem;
+    if (ni.invalid) {
+      ni.markAllAsTouched();
       return;
     }
-
-    this.loading = true;
-
-    this.specifications[this.asp].specifications.push(
-      this.specificationDetails
+    sec.controls.items.push(
+      this.makeItem(ni.controls.key.value, ni.controls.value.value)
     );
-
-    this.specificationDetails = this.initiateSpecificationDetails();
-
-    this.loading = false;
+    ni.reset({ key: '', value: '' });
   }
-  add() {
-    if (this.loading === true) {
-      return;
-    }
 
-    if (this.title === undefined || this.title.trim() === '') {
-      this.toast.showMessage('Please Enter Specfication Title');
-      return;
-    }
+  removeItem(sectionIndex: number, itemIndex: number): void {
+    this.sectionAt(sectionIndex).controls.items.removeAt(itemIndex);
+  }
 
-    this.asp = this.specifications.length - 1;
-    this.asp += 1;
+  removeSection(index: number): void {
+    this.sections.removeAt(index);
+    const len = this.sections.length;
+    if (len === 0) this.activeIndex.set(-1);
+    else if (this.activeIndex() >= len) this.activeIndex.set(len - 1);
+  }
 
-    // this.specifications[this.asp] = {
-    //   title: this.title,
-    //   specifications: []
-    // };
+  
 
-    this.specifications.push({
-      title: this.title,
-      specifications: [],
+  async submit(): Promise<void> {
+    console.log(1);
+    this.submitting.set(true);
+
+    const payload = this.sections.controls.map((sec) => ({
+      title: sec.controls.title.value,
+      specifications: sec.controls.items.controls.map((it) => ({
+        key: it.controls.key.value,
+        value: it.controls.value.value,
+      })),
+    }));
+
+    console.log(2);
+
+    await this.afs.collection(this.path).add({
+      userId: this.user?.uid ?? null,
+      sections: payload,
+      createdAt: serverTimestamp(),
     });
 
-    this.title = null;
-
-    // this.specifications.push({
-    //   title: this.title,
-    //   specifications: [this.initiateSpecificationDetails()]
-    // });
+    this.specificationsForm.setControl(
+      'sections',
+      this.fb.array<SectionFG>([])
+    );
+    this.activeIndex.set(-1);
+    this.submitting.set(false);
   }
 
-  keyChanged(event: any, i: number) {
-    this.specifications[this.asp].specifications[i].key =
-      event.srcElement.innerText;
-  }
-
-  valueChanged(event: any, i: number) {
-    this.specifications[this.asp].specifications[i].value =
-      event.srcElement.innerText;
-  }
-
-  deleteSpecification(i: number) {
-    this.specifications[this.asp].specifications.splice(i, 1);
-  }
-
-  deleteMainSpecification(i: number) {
-    this.specifications.splice(i, 1);
-
-    if (this.specifications.length === 0) {
-      this.asp = -1;
-    }
-  }
-
-  delete() {
-    // this.specifications[this.asp] = this.initiateSpecification();
-    //  this.specificationDetails= this.initiateSpecificationDetails();
-
-    this.specifications.splice(this.asp, 1);
-
-    this.asp -= 1;
-
-    if (this.specifications.length === 0) {
-      this.specifications = [];
-      this.asp = -1;
-    }
-  }
+  // track helpers
+  trackSection = (i: number) => i;
+  trackItem = (i: number) => i;
 
   dismiss() {
-    this.modalController.dismiss(this.specifications);
+    this.modal.dismiss();
   }
 }

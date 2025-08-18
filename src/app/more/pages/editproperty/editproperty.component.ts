@@ -1,13 +1,14 @@
 import {  NgIf, NgFor } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
 import { IRequest } from 'src/app/models/request.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
 import { IonBadge, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonLabel, IonSegment, IonSegmentButton, IonSelectOption, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { GeoPoint, serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-editproperty',
@@ -32,7 +33,7 @@ export class EditpropertyComponent  implements OnInit {
   paymentAction = 'singlePlan';
   pincode!: string | any;
   selectedLocation: any;
-  point: any = new firebase.firestore.GeoPoint(32.5522, 34.556656);
+  point: any = new GeoPoint(32.5522, 34.556656);
   locationSystemType: any;
   locationType: any;
   lat!: number;// =37.0902;
@@ -117,7 +118,7 @@ export class EditpropertyComponent  implements OnInit {
       paymentAction: this.hit.paymentAction,
       uid: this.hit.uid,
       planCost: null,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       createdBy: this.hit.uid,
       status: this.hit.status,
       displayDate: this.hit.displayDate,
@@ -343,7 +344,7 @@ export class EditpropertyComponent  implements OnInit {
       paymentAction: this.paymentAction,
       uid: this.user.uid,
       planCost: null,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       createdBy: this.user.uid,
       status: 'active',
       displayDate: new Date().toDateString(),

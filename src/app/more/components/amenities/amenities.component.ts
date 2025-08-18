@@ -10,8 +10,18 @@ import {
   IonToolbar,
   ModalController,
   IonIcon,
+  IonFab,
+  IonFabButton,
 } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
+import { AddAmenitiesComponent } from '../../pages/add-amenities/add-amenities.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
+import { addIcons } from 'ionicons';
+import { add, chevronBackOutline } from 'ionicons/icons';
+import { AmenitiesCardComponent } from "../amenities-card/amenities-card.component";
 
 @Component({
   selector: 'app-amenities',
@@ -28,7 +38,10 @@ import { Subscription } from 'rxjs';
     IonLabel,
     IonCheckbox,
     IonIcon,
-  ],
+    IonFab,
+    IonFabButton,
+    AmenitiesCardComponent
+],
   providers: [ModalController],
 })
 export class AmenitiesComponent implements OnInit {
@@ -42,30 +55,14 @@ export class AmenitiesComponent implements OnInit {
   amenities;
   subscription: Subscription;
 
-  constructor(/*private afs: AngularFirestore,*/) {}
-
-  ngOnInit() {
-    if (this.selectedAmenities === undefined) {
-      this.selectedAmenities = [];
-    }
-    // this.subscription = this.afs.collection('amenities').valueChanges({ idField: 'id' }).subscribe((amenities) => {
-
-    //   this.amenities = amenities;
-
-    //   this.amenities.forEach((amenity, i) => {
-
-    //     this.selectedAmenities.forEach((selectedAmenity) => {
-
-    //       if (amenity.amenity === selectedAmenity) {
-    //         this.amenities[i].selected = true;
-    //       }
-
-    //     });
-
-    //   });
-
-    // });
+  constructor() {
+    addIcons({
+      chevronBackOutline,
+      add,
+    });
   }
+
+  ngOnInit() {}
 
   selectedChange(event, index) {
     if (event.detail.checked) {
@@ -78,6 +75,15 @@ export class AmenitiesComponent implements OnInit {
   addItems() {
     const amenities = this.amenities.filter((amenity) => amenity.selected);
     this.modalController.dismiss(amenities);
+  }
+
+  async addAmenities() {
+    const modal = await this.modalController.create({
+      component: AddAmenitiesComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface

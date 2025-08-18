@@ -2,44 +2,30 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   IonButton,
-  IonIcon,
   IonImg,
   IonInput,
   IonLabel,
   ModalController,
   NavController,
-  IonContent,
 } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { IUser } from '../../models/user.model';
-import firebase from 'firebase/compat/app';
-import { OtpComponent } from '../otp/otp.component';
-import { map } from 'rxjs';
-import { IonicModule } from '@ionic/angular';
-import { CommonModule, NgIf } from '@angular/common';
+// import firebase from 'firebase/compat/app';
+import { serverTimestamp } from '@angular/fire/firestore';
 import {
   FormBuilder,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { OtpComponent } from '../otp/otp.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [
-    IonImg,
-    IonLabel,
-    ReactiveFormsModule,
-    IonInput,
-    NgIf,
-    IonButton,
-    IonIcon,
-    IonContent,
-  ],
+  imports: [IonImg, IonLabel, ReactiveFormsModule, IonInput, IonButton],
   providers: [ModalController],
 })
 export class RegisterComponent implements OnInit {
@@ -105,7 +91,7 @@ export class RegisterComponent implements OnInit {
     user.email = this.registerForm.controls['email'].value;
     user.loginEmail = user.phone + '@phone.com';
     user.secureData = this.registerForm.controls['secureData'].value;
-    user.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    user.createdAt = serverTimestamp();
 
     const userExist = await this.checkUserExist(user);
 

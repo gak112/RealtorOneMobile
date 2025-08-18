@@ -53,6 +53,7 @@ export class RequestsubmenuComponent implements OnInit {
       leaveAnimation: backwardEnterAnimation,
       componentProps: {
         action: type,
+        actionType: this.action,
       },
     });
     await modal.present();

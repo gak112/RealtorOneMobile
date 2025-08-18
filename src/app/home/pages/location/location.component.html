@@ -1,17 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-arrow"></ion-icon>
+    <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-close"></ion-icon>
     <ion-title>Enter your area</ion-title>
   </ion-toolbar>
-  <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;padding: 0;">
-    <ion-searchbar
-      search-icon="search" 
-      animated="true" 
-      show-clear-button="focus" 
-      clear-icon="close"
-      debounce="800" 
-      placeholder="Enter Saienclave, Reddy colony ..."
-      (ionInput)="onSearchChange($event)">
+  <ion-toolbar
+    style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;padding: 0;">
+    <ion-searchbar search-icon="search" animated="true" show-clear-button="focus" clear-icon="close" debounce="800"
+      placeholder="Enter Saienclave, Reddy colony ..." (ionInput)="onSearchChange($event)">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -20,20 +15,21 @@
     <div class="div-location-icon">
       <ion-icon slot="start" name="location"></ion-icon>
       <ion-label>Use my current location</ion-label>
-      <ion-icon slot="end" name="chevron-forward-outline" style="color: var(--color-999);margin: 0;font-size: 20px;"></ion-icon>
+      <ion-icon slot="end" name="chevron-forward-outline"
+        style="color: var(--color-999);margin: 0;font-size: 20px;"></ion-icon>
     </div>
     <app-livelocation></app-livelocation>
     <ion-label class="label-title">
       Search Results
     </ion-label>
-    <ion-list *ngIf="places && places.length > 0">
-      <ion-item *ngFor="let place of places">
+    <ion-list>
+      <ion-item>
         <ion-icon name="location-outline" slot="start"></ion-icon>
         <ion-label>
-          {{ place?.title }}
+          Hyderabad
           <span>
-            {{ place?.address }}
-          </span>        
+            Road NO 12, Bnajara hills, Hyderabad
+          </span>
         </ion-label>
       </ion-item>
     </ion-list>
