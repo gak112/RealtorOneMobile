@@ -1,93 +1,164 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  inject,
+  signal,
+  computed,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  collection,
+  collectionData,
+  orderBy,
+  query,
+} from '@angular/fire/firestore';
 import {
   IonButton,
   IonCheckbox,
   IonContent,
   IonHeader,
+  IonIcon,
   IonImg,
   IonLabel,
   IonTitle,
   IonToolbar,
   ModalController,
-  IonIcon,
-  IonFab,
-  IonFabButton,
+  IonSearchbar,
 } from '@ionic/angular/standalone';
-import { Subscription } from 'rxjs';
-import { AddAmenitiesComponent } from '../../pages/add-amenities/add-amenities.component';
-import {
-  backwardEnterAnimation,
-  forwardEnterAnimation,
-} from 'src/app/services/animation';
 import { addIcons } from 'ionicons';
-import { add, chevronBackOutline } from 'ionicons/icons';
-import { AmenitiesCardComponent } from "../amenities-card/amenities-card.component";
+import { chevronBackOutline } from 'ionicons/icons';
+import { IAmenitiesList } from '../amenities-card/amenities-card.component';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+type Amenity = {
+  id: string;
+  name: string;
+  selected: boolean;
+};
 
 @Component({
   selector: 'app-amenities',
+  standalone: true,
   templateUrl: './amenities.component.html',
   styleUrls: ['./amenities.component.scss'],
-  standalone: true,
   imports: [
+    IonSearchbar,
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonButton,
     IonContent,
     IonImg,
     IonLabel,
     IonCheckbox,
     IonIcon,
-    IonFab,
-    IonFabButton,
-    AmenitiesCardComponent
-],
+    IonButton,
+  ],
   providers: [ModalController],
 })
 export class AmenitiesComponent implements OnInit {
-  private modalController = inject(ModalController);
-
-  dismiss() {
-    this.modalController.dismiss();
-  }
+  private modal = inject(ModalController);
+  private afs = inject(AngularFirestore);
 
   @Input() selectedAmenities: string[] = [];
-  amenities;
-  subscription: Subscription;
+
+  // Local signal state
+  amenities = signal<Amenity[]>([
+    {
+      id: 'pool',
+      name: 'Swimming Pool',
+
+      selected: false,
+    },
+    {
+      id: 'gym',
+      name: 'Gym',
+
+      selected: false,
+    },
+    {
+      id: 'parking',
+      name: 'Parking',
+
+      selected: false,
+    },
+    {
+      id: 'garden',
+      name: 'Garden',
+
+      selected: false,
+    },
+    {
+      id: 'clubhouse',
+      name: 'Club House',
+
+      selected: false,
+    },
+    {
+      id: 'playarea',
+      name: 'Kids Play Area',
+
+      selected: false,
+    },
+    {
+      id: 'security',
+      name: '24/7 Security',
+
+      selected: false,
+    },
+    {
+      id: 'power',
+      name: 'Power Backup',
+
+      selected: false,
+    },
+    {
+      id: 'lift',
+      name: 'Lift',
+
+      selected: false,
+    },
+    {
+      id: 'wifi',
+      name: 'Wi-Fi',
+
+      selected: false,
+    },
+  ]);
+
+  selectedCount = computed(
+    () => this.amenities().filter((a) => a.selected).length
+  );
 
   constructor() {
-    addIcons({
-      chevronBackOutline,
-      add,
-    });
+    addIcons({ chevronBackOutline });
   }
 
-  ngOnInit() {}
-
-  selectedChange(event, index) {
-    if (event.detail.checked) {
-      this.amenities[index].selected = true;
-    } else {
-      this.amenities[index].selected = false;
+  ngOnInit(): void {
+    if (this.selectedAmenities?.length) {
+      const set = new Set(this.selectedAmenities.map((s) => s.toLowerCase()));
+      this.amenities.update((list) =>
+        list.map((a) => ({ ...a, selected: set.has(a.name.toLowerCase()) }))
+      );
     }
   }
 
-  addItems() {
-    const amenities = this.amenities.filter((amenity) => amenity.selected);
-    this.modalController.dismiss(amenities);
+  dismiss() {
+    this.modal.dismiss();
   }
 
-  async addAmenities() {
-    const modal = await this.modalController.create({
-      component: AddAmenitiesComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
+  toggle(index: number, checked: boolean) {
+    this.amenities.update((list) => {
+      const copy = [...list];
+      copy[index] = { ...copy[index], selected: checked };
+      return copy;
     });
-    await modal.present();
   }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  addItems() {
+    const selectedNames = this.amenities()
+      .filter((a) => a.selected)
+      .map((a) => a.name);
+    this.modal.dismiss(selectedNames);
   }
 }

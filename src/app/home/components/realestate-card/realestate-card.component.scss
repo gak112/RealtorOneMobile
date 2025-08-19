@@ -66,18 +66,22 @@
   top: 16px;
   right: 16px;
   z-index: 1;
-  background: var(--content-background-white);
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: var(--box-shadow-2);
+  gap: 16px;
+  flex-direction: column;
 
   ion-icon {
     font-size: 24px;
     color: var(--color-skyblue);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--box-shadow-2);
+    background: var(--content-background-white);
+    border: var(--border);
   }
 }
 

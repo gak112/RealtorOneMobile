@@ -1,34 +1,27 @@
 <ion-header>
   <ion-toolbar>
     <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
-    <div class="div-toolbarflex">
-      <ion-title>
-        Amenities
-      </ion-title>
+    <div class="div-toolbarflex" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+      <ion-title>Amenities</ion-title>
       <ion-button color="warning" size="small" (click)="addItems()" slot="end">
-        Add
+        Add ({{ selectedCount() }})
       </ion-button>
     </div>
   </ion-toolbar>
+  <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
+    <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="div-amenities">
-    @for(amenity of [0,1,2,3,4,5,6,7,8,9,10]; track amenity) {
+  <div class="div-amenities" style="padding:12px;">
+    @for (a of amenities(); track a.id; let i = $index) {
     <div class="div-amenity">
       <div class="div-title">
-        <div class="div-img">
-          <ion-img [src]="'assets/img/onlylogo.png'"></ion-img>
-        </div>
-        <ion-label>Swimming Pool</ion-label>
+        <ion-label>{{ a.name }}</ion-label>
       </div>
-      <ion-checkbox color="primary" slot="start"></ion-checkbox>
+      <ion-checkbox color="primary" [checked]="a.selected" (ionChange)="toggle(i, $event.detail.checked)">
+      </ion-checkbox>
     </div>
     }
   </div>
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" color="primary" (click)="addAmenities()">
-    <ion-fab-button fill="clear">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

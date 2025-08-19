@@ -72,7 +72,8 @@ ion-content {
   ion-img {
     height: 100px;
     width: 100px;
-    object-fit: contain;
+    object-fit: cover;
+    overflow: hidden;
     border: var(--border);
     border-radius: 10px;
   }

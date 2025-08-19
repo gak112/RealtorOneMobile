@@ -20,11 +20,11 @@ ion-content {
   .div-amenity {
     background: var(--content-background-white);
     border: var(--border);
-    padding: 5px;
+    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 100px;
+    border-radius: 16px;
 
     ion-checkbox {
       margin-right: 10px;
@@ -33,22 +33,6 @@ ion-content {
     .div-title {
       display: flex;
       align-items: center;
-
-      .div-img {
-        height: 55px;
-        width: 55px;
-        border-radius: 50%;
-        margin-right: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--content-background);
-
-        ion-img {
-          height: 35px;
-          width: 35px;
-        }
-      }
 
       ion-label {
         font-size: 13px;

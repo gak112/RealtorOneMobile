@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  computed,
   EventEmitter,
-  inject,
+  Input,
   Output,
+  OnInit,
+  inject,
   signal,
+  computed,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -27,11 +29,23 @@ import {
   chevronBackOutline,
   cloudUploadOutline,
   trashOutline,
+  informationCircle,
 } from 'ionicons/icons';
 
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { addDoc, collection } from '@angular/fire/firestore';
+// ---- Firebase MODULAR imports
+import {
+  Firestore,
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+} from '@angular/fire/firestore';
+import {
+  Storage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from '@angular/fire/storage';
 
 type Uploaded = {
   name: string;
@@ -39,6 +53,14 @@ type Uploaded = {
   size: number;
   path: string;
   url: string;
+};
+
+type Amenity = {
+  amenityName: string;
+  description?: string;
+  logo?: Uploaded | null;
+  createdAt: number;
+  updatedAt?: number;
 };
 
 @Component({
@@ -62,103 +84,211 @@ type Uploaded = {
   templateUrl: './add-amenities.component.html',
   styleUrls: ['./add-amenities.component.scss'],
 })
-export class AddAmenitiesComponent {
+export class AddAmenitiesComponent implements OnInit {
+  async submitV2($event: SubmitEvent) {
+    $event.preventDefault();
+    console.log('submitV2');
+
+    if (this.loading() || this.uploading()) return;
+
+    // const formValid =
+    //   this.amenityForm.valid &&
+    //   (this.isEdit() ? !!this.logoURL() : !!(this.logoFile() && this.logoURL()));
+    // if (!formValid) return;
+
+    this.loading.set(true);
+
+    const { amenityName, description } = this.amenityForm.getRawValue();
+
+    let uploadedLogo: Uploaded | null = null;
+    // if (this.logoFile()) {
+    //   const f = this.logoFile()!;
+    //   uploadedLogo = await this.uploadOne(`amenities/${Date.now()}_${f.name}`, f);
+    // }
+
+    if (!this.isEdit()) {
+      // CREATE
+      const payload: Amenity = {
+        amenityName,
+        description,
+        logo: uploadedLogo,
+        createdAt: Date.now(),
+      };
+      const col = collection(this.db, 'amenities');
+      const ref = await addDoc(col, payload);
+      this.saved.emit({ id: ref.id });
+    } else {
+      // UPDATE
+      const update: Partial<Amenity> = {
+        amenityName,
+        description,
+        updatedAt: Date.now(),
+      };
+      if (uploadedLogo) update.logo = uploadedLogo;
+
+      const ref = doc(this.db, 'amenities', this.docId!);
+      await updateDoc(ref, update);
+      this.saved.emit({ id: this.docId! });
+    }
+
+    if (this.logoURL()?.startsWith('blob:'))
+      URL.revokeObjectURL(this.logoURL()!);
+    this.amenityForm.reset();
+    this.logoFile.set(null);
+    this.logoURL.set(null);
+    this.loading.set(false);
+
+    console.log('submitted');
+    this.modal.dismiss();
+  }
+
   private fb = inject(FormBuilder);
-  private afs = inject(AngularFirestore);
-  private storage = inject(AngularFireStorage);
+  private db = inject(Firestore); // <-- modular Firestore
+  // private storage = inject(Storage);   // <-- modular Storage
   private modal = inject(ModalController);
 
   constructor() {
-    addIcons({ chevronBackOutline, cloudUploadOutline, trashOutline });
+    addIcons({
+      chevronBackOutline,
+      cloudUploadOutline,
+      trashOutline,
+      informationCircle,
+    });
   }
 
-  @Output() saved = new EventEmitter<void>();
+  @Input() docId?: string; // if present => Edit mode
+  @Input() initial?: Partial<Amenity>; // prefilled values for Edit
+  @Output() saved = new EventEmitter<{ id: string }>();
 
+  // Form
   amenityForm = this.fb.nonNullable.group({
     amenityName: ['', [Validators.required, Validators.minLength(3)]],
     description: [''],
-    
   });
 
-  // Logo (single)
+  // State + Signals
   private logoFile = signal<File | null>(null);
   logoURL = signal<string | null>(null);
+  loading = signal(false);
+  uploading = signal(false);
+  isEdit = computed<boolean>(() => !!this.docId);
 
   private readonly maxBytes = 2 * 1024 * 1024; // 2MB
   private readonly allowed = new Set(['image/jpeg', 'image/png', 'image/jpg']);
 
-  isValid = computed(
-    () =>
-      this.amenityForm.valid &&
-      this.logoFile() !== null &&
-      this.logoURL() !== null
-  );
+  ngOnInit() {
+    if (this.initial) {
+      const { amenityName, description } = this.initial;
+      this.amenityForm.patchValue({
+        amenityName: amenityName ?? '',
+        description: description ?? '',
+      });
+      if (this.initial.logo?.url) {
+        this.logoURL.set(this.initial.logo.url);
+      }
+    }
+  }
 
-  // --- Drag helpers
+  // Drag helpers
   onDragOver(e: DragEvent) {
     e.preventDefault();
   }
 
-  // --- Logo
+  // Logo handlers
   onLogoChange(e: Event) {
     const input = e.target as HTMLInputElement;
-    if (!input.files || !input.files[0]) return;
-    const f = input.files[0];
-    if (!this.allowed.has(f.type) || f.size > this.maxBytes) return;
-    if (this.logoURL()) URL.revokeObjectURL(this.logoURL()!);
+    const f = input.files?.[0];
+    if (!f) return;
+    if (!this.allowed.has(f.type) || f.size > this.maxBytes) {
+      input.value = '';
+      return;
+    }
+    if (this.logoURL()?.startsWith('blob:'))
+      URL.revokeObjectURL(this.logoURL()!);
     this.logoFile.set(f);
     this.logoURL.set(URL.createObjectURL(f));
     input.value = '';
   }
+
   onDropLogo(e: DragEvent) {
     e.preventDefault();
     const f = e.dataTransfer?.files?.[0];
     if (!f || !this.allowed.has(f.type) || f.size > this.maxBytes) return;
-    if (this.logoURL()) URL.revokeObjectURL(this.logoURL()!);
+    if (this.logoURL()?.startsWith('blob:'))
+      URL.revokeObjectURL(this.logoURL()!);
     this.logoFile.set(f);
     this.logoURL.set(URL.createObjectURL(f));
   }
+
   removeLogo() {
-    if (this.logoURL()) URL.revokeObjectURL(this.logoURL()!);
+    if (this.logoURL()?.startsWith('blob:'))
+      URL.revokeObjectURL(this.logoURL()!);
     this.logoFile.set(null);
     this.logoURL.set(null);
   }
 
-  // --- Upload helpers (modular Storage returns Promises)
-  private async uploadOne(path: string, file: File): Promise<Uploaded> {
-    const ref = this.storage.ref(path);
-    const snap = await ref.put(file);
-    const url = await snap.ref.getDownloadURL();
-    return { name: file.name, type: file.type, size: file.size, path, url };
+  // Upload (modular)
+  private async uploadOne(path: string, file: File) {
+    // this.uploading.set(true);
+    // const storageRef = ref(this.storage, path);
+    // await uploadBytes(storageRef, file, { contentType: file.type });
+    // const url = await getDownloadURL(storageRef);
+    // this.uploading.set(false);
+    // return { name: file.name, type: file.type, size: file.size, path, url };
   }
 
+  // Submit
   async submit() {
-    console.log(this.amenityForm.value, this.logoFile());
-    console.log(this.isValid());
-    if (!this.isValid()) return;
+    if (this.loading() || this.uploading()) return;
+
+    const formValid =
+      this.amenityForm.valid &&
+      (this.isEdit()
+        ? !!this.logoURL()
+        : !!(this.logoFile() && this.logoURL()));
+    if (!formValid) return;
+
+    this.loading.set(true);
 
     const { amenityName, description } = this.amenityForm.getRawValue();
 
-    // Upload logo
-    const logo = this.logoFile()!;
-    const logoUploaded = await this.uploadOne(
-      `amenities/${Date.now()}_logo_${logo.name}`,
-      logo
-    );
+    let uploadedLogo: Uploaded | null = null;
+    // if (this.logoFile()) {
+    //   const f = this.logoFile()!;
+    //   uploadedLogo = await this.uploadOne(`amenities/${Date.now()}_${f.name}`, f);
+    // }
 
-    // Save Firestore doc with real URLs
-    await addDoc(collection(this.afs.firestore as any, 'amenities'), {
-      amenityName,
-      description,
-      logo: logoUploaded, // { name, type, size, path, url }
-      createdAt: Date.now(),
-    });
+    if (!this.isEdit()) {
+      // CREATE
+      const payload: Amenity = {
+        amenityName,
+        description,
+        logo: uploadedLogo,
+        createdAt: Date.now(),
+      };
+      const col = collection(this.db, 'amenities');
+      const ref = await addDoc(col, payload);
+      this.saved.emit({ id: ref.id });
+    } else {
+      // UPDATE
+      const update: Partial<Amenity> = {
+        amenityName,
+        description,
+        updatedAt: Date.now(),
+      };
+      if (uploadedLogo) update.logo = uploadedLogo;
 
-    // Clean up previews and form
-    if (this.logoURL()) URL.revokeObjectURL(this.logoURL()!);
+      const ref = doc(this.db, 'amenities', this.docId!);
+      await updateDoc(ref, update);
+      this.saved.emit({ id: this.docId! });
+    }
+
+    if (this.logoURL()?.startsWith('blob:'))
+      URL.revokeObjectURL(this.logoURL()!);
     this.amenityForm.reset();
     this.logoFile.set(null);
     this.logoURL.set(null);
+    this.loading.set(false);
   }
 
   dismiss() {

@@ -49,7 +49,6 @@ export class AmenitiesListsComponent implements OnInit {
   private modalController = inject(ModalController);
   private afs = inject(AngularFirestore);
 
-
   // Live collection stream -> signal
   private col = collection(this.afs.firestore as any, 'amenities');
   private q = query(this.col, orderBy('createdAt'));
@@ -59,7 +58,6 @@ export class AmenitiesListsComponent implements OnInit {
   amenities = toSignal(this.amenities$, { initialValue: [] });
 
   count = computed(() => this.amenities().length);
-
 
   constructor() {
     addIcons({ chevronBackOutline, add });
@@ -79,67 +77,4 @@ export class AmenitiesListsComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  amenitiesList: IAmenitiesList[] = [
-    {
-      id: 1,
-      amenityName: 'Swimming Pool',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-    {
-      id: 2,
-      amenityName: 'Gym',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-    {
-      id: 3,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 4,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 5,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 6,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 7,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 8,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-
-    {
-      id: 9,
-      amenityName: 'Parking',
-      image: 'assets/img/onlylogo.png',
-      createdAt: new Date().getTime(),
-    },
-  ];
 }

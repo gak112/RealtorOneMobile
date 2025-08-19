@@ -99,8 +99,7 @@
     <div class="div-dataimg2">
       <div class="div-uploading" style="width: auto;">
         <ion-icon name="trash-outline" (click)="clearLogo()"></ion-icon>
-        <ion-img [src]="ventureForm.controls.logo.value || 'assets/img/onlylogo.png'"
-          style="object-fit: contain;"></ion-img>
+        <ion-img [src]="ventureForm.controls.logo.value" style="object-fit: contain;"></ion-img>
       </div>
     </div>
     }
@@ -122,35 +121,31 @@
 
     <!-- Venture Images preview -->
     @if(ventureForm.controls.ventureImages.value.length > 0) {
-      <div class="div-venture-images">
-        @for (image of ventureForm.controls.ventureImages.value; track $index) {
-        <div class="div-uploading">
-          <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)"></ion-icon>
-          <ion-img [src]="image"></ion-img>
-        </div>
-        }
+    <div class="div-venture-images">
+      @for (image of ventureForm.controls.ventureImages.value; track $index) {
+      <div class="div-uploading">
+        <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)"></ion-icon>
+        <ion-img [src]="image"></ion-img>
       </div>
       }
+    </div>
+    }
 
     <!-- Amenities -->
     <div class="div-formgroup flex">
       <ion-label class="label-heading">Amenities</ion-label>
-      <ion-button size="small" color="warning" (click)="amenitiesList()">
+      <ion-button size="small" color="warning" (click)="openAmenities()">
         <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
         Add
       </ion-button>
     </div>
     <div class="div-amenities">
-      @if ((ventureForm.controls.amenities.value?.length ?? 0) === 0) {
-      <h4 class="text-slate-500">No amenities added</h4>
-      } @else {
-      @for (a of ventureForm.controls.amenities.value; track $index) {
-      <h4 class="inline-block mr-2 mb-2 px-3 py-1 rounded-xl bg-slate-100">{{ a }}</h4>
-      }
-      }
-      @if (isInvalid('amenities')) {
-      <div class="text-rose-600 text-xs mt-1">Add at least one amenity.</div>
-      }
+        @for (a of amenities(); track a; let i = $index) {
+        <span class="badge-amenity">
+          {{ a }}
+          <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
+        </span>
+        }
     </div>
 
     <!-- Directors -->
@@ -228,21 +223,25 @@
     <!-- Upload Brochure -->
     <div class="div-upload">
       <ion-label class="upload-label">Upload Brochure</ion-label>
-      <div class="div-add">
+      <div class="div-add" (click)="brochureFileInput.click()">
         <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
         <ion-label class="label-add">Upload a file or drag and drop</ion-label>
         <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+        <input #brochureFileInput type="file" accept="image/*" hidden (change)="selectBrochure($event)" />
       </div>
+      @if (brochurePct() !== null) {
+      <div style="font-size: 12px; color: var(--green); font-weight: 500;">Uploading: {{ brochurePct() }}%</div>
+      }
     </div>
 
-    <!-- Brochure preview -->
+    @if(ventureForm.controls.brochure.value.length > 0) {
     <div class="div-dataimg2">
       <div class="div-uploading" style="width: auto;">
-        <ion-icon name="trash-outline" (click)="ventureForm.controls.brochure.setValue('')"></ion-icon>
-        <ion-img [src]="ventureForm.controls.brochure.value || 'assets/img/onlylogo.png'"
-          style="object-fit: contain;"></ion-img>
+        <ion-icon name="trash-outline" (click)="clearBrochure()"></ion-icon>
+        <ion-img [src]="ventureForm.controls.brochure.value" style="object-fit: contain;"></ion-img>
       </div>
     </div>
+    }
 
     <!-- Land Area + Units -->
     <div>
@@ -329,7 +328,9 @@
         Add
       </ion-button>
     </div>
-    <app-specview></app-specview>
+    @if(hasSpecs()) {
+    <app-specview [specifications]="specifications()"></app-specview>
+    }
 
     <!-- Type tabs -->
     <div class="div-input-grid">

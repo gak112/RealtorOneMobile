@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -32,13 +32,17 @@ import {
   caretDownOutline,
   caretUpOutline,
   chevronBackOutline,
+  close,
   cloudUploadOutline,
   informationCircle,
   trashOutline,
 } from 'ionicons/icons';
 
 import { UcWidgetModule } from 'ngx-uploadcare-widget';
-import { SpecificationsComponent } from 'src/app/more/components/specifications/specifications.component';
+import {
+  SpecificationsComponent,
+  SpecSection,
+} from 'src/app/more/components/specifications/specifications.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
@@ -134,6 +138,7 @@ export class VenturecreationComponent implements OnInit {
   logoPct = signal<number | null>(null); // 0..100
   imgsBusy = signal(false);
   imgsPct = signal<number>(0); // average % for a batch
+  brochurePct = signal<number | null>(null);
 
   constructor() {
     addIcons({
@@ -144,6 +149,7 @@ export class VenturecreationComponent implements OnInit {
       caretUpOutline,
       cloudUploadOutline,
       chevronBackOutline,
+      close,
     });
   }
 
@@ -305,6 +311,39 @@ export class VenturecreationComponent implements OnInit {
     }
   }
 
+  selectBrochure(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const path = `posts/${Date.now()}_${file.name}`;
+    const task = this.storage.upload(path, file);
+    const ref = this.storage.ref(path);
+
+    task
+      .percentageChanges()
+      .subscribe((p) => this.brochurePct.set(Math.round(p ?? 0)));
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          ref.getDownloadURL().subscribe((url) => {
+            this.ventureForm.controls.brochure.setValue(url);
+            this.brochurePct.set(null);
+          });
+        })
+      )
+      .subscribe();
+  }
+
+  clearBrochure() {
+    const url = this.ventureForm.controls.brochure.value;
+    if (url) {
+      this.storage.refFromURL(url).delete();
+      this.ventureForm.controls.brochure.setValue('');
+    }
+  }
+
   selectVentureImages(e: Event) {
     const input = e.target as HTMLInputElement;
     const files = input.files ? Array.from(input.files) : [];
@@ -359,27 +398,99 @@ export class VenturecreationComponent implements OnInit {
     this.storage.refFromURL(url).delete();
   }
 
-  async amenitiesList() {
+  // async amenitiesList() {
+  //   const modal = await this.modalController.create({
+  //     component: AmenitiesComponent,
+  //     enterAnimation: forwardEnterAnimation,
+  //     leaveAnimation: backwardEnterAnimation,
+  //   });
+  //   await modal.present();
+  //   const { data, role } = await modal.onDidDismiss<string[]>();
+  //   if (role === 'ok' && Array.isArray(data)) {
+  //     this.ventureForm.controls.amenities.setValue(data);
+  //     this.ventureForm.controls.amenities.markAsDirty();
+  //   }
+  // }
+
+  // Save selected amenities here (names only to keep it simple)
+  amenities = signal<string[]>([]);
+
+  // Optional: chip view
+  hasAmenities = computed(() => this.amenities().length > 0);
+
+  async openAmenities() {
     const modal = await this.modalController.create({
       component: AmenitiesComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
+      componentProps: {
+        selectedAmenities: this.amenities(),
+      },
+      // presentInPopover: false, // optional
     });
     await modal.present();
-    const { data, role } = await modal.onDidDismiss<string[]>();
-    if (role === 'ok' && Array.isArray(data)) {
-      this.ventureForm.controls.amenities.setValue(data);
-      this.ventureForm.controls.amenities.markAsDirty();
+
+    const { data } = await modal.onWillDismiss<string[]>();
+    if (data) {
+      // Overwrite with the selection returned from the picker
+      this.amenities.set(data);
     }
   }
+
+  // Example: consume amenities when saving venture
+  saveVenture() {
+    const payload = {
+      // ... other venture fields ...
+      amenities: this.amenities(),
+    };
+    console.log('Venture payload:', payload);
+    // Save to Firestore / API here
+  }
+
+  removeAmenity(index: number) {
+    const list = [...this.amenities()];
+    list.splice(index, 1);
+    this.amenities.set(list);
+  }
+
+  // async openSpecifications() {
+  //   const modal = await this.modalController.create({
+  //     component: SpecificationsComponent,
+  //     enterAnimation: forwardEnterAnimation,
+  //     leaveAnimation: backwardEnterAnimation,
+  //   });
+  //   await modal.present();
+  // }
+
+  // The Venture page holds the specs in a signal
+  specifications = signal<SpecSection[]>([]);
+
+  hasSpecs = computed(() => this.specifications().length > 0);
 
   async openSpecifications() {
     const modal = await this.modalController.create({
       component: SpecificationsComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
+      componentProps: {
+        // Pass existing specs for editing if needed
+        sections: this.specifications(),
+      },
+      canDismiss: true,
+      showBackdrop: true,
     });
     await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'submit' && data?.sections) {
+      // Save returned specs to the Venture page list (signal)
+      this.specifications.set(data.sections as SpecSection[]);
+    }
+  }
+
+  // optional: clear
+  clearSpecs() {
+    this.specifications.set([]);
   }
 
   // -------- Submit (Firestore compat) --------

@@ -6,7 +6,7 @@ import {
   IonIcon,
   IonButton,
 } from '@ionic/angular/standalone';
-import { SpecificationsComponent } from '../specifications/specifications.component';
+import { SpecificationsComponent, SpecSection } from '../specifications/specifications.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
@@ -21,7 +21,7 @@ import {
   providers: [ModalController],
 })
 export class SpecviewComponent implements OnInit {
-  @Input() specifications: any;
+  @Input() specifications: SpecSection[] = [];
   @Input() user: any;
   constructor(private modalController: ModalController) {}
 

@@ -12,7 +12,7 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { heartOutline } from 'ionicons/icons';
+import { arrowRedoOutline, heartOutline } from 'ionicons/icons';
 import { PostfullviewComponent } from '../../pages/postfullview/postfullview.component';
 import {
   backwardEnterAnimation,
@@ -44,6 +44,7 @@ export class RealestateCardComponent implements OnInit {
   constructor() {
     addIcons({
       heartOutline,
+      arrowRedoOutline,
     });
   }
 

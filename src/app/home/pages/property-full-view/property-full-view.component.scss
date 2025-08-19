@@ -20,7 +20,7 @@ ion-title {
 
 .back-icon {
   font-size: 20px;
-  color: var(--color-black);
+  color: #000;
   padding: 6px;
   border-radius: 50%;
   background: #fff9;
@@ -280,6 +280,7 @@ ion-title {
 ion-footer {
   padding: 10px;
   border-top: var(--border-ddd);
+  background: var(--content-background-white);
 
   .div-mobile {
     .div-mobile-icon {

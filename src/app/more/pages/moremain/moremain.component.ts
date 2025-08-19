@@ -76,28 +76,25 @@ import { AmenitiesListsComponent } from '../amenities-lists/amenities-lists.comp
   styleUrls: ['./moremain.component.scss'],
   standalone: true,
   imports: [
-    IonSkeletonText,
-    IonHeader,
-    IonToolbar,
-    IonButton,
-    IonTitle,
     IonContent,
     IonList,
     IonImg,
     IonIcon,
     IonLabel,
     NgIf,
-    AsyncPipe,
-    IonProgressBar,
     IonItem,
     IonToggle,
     IonListHeader,
-    IonFooter,
-    DecimalPipe,
-  ],
+    IonFooter
+],
   providers: [ModalController],
 })
 export class MoremainComponent implements OnInit {
+  async tempLogin() {
+    await this.auth.tempLogin();
+    console.log('tempLogin');
+    
+  }
   private themeService = inject(ThemeService);
 
   userLogos: any;
@@ -233,7 +230,7 @@ export class MoremainComponent implements OnInit {
   async goToAgentProfile() {
     const modal = await this.modalController.create({
       component: AgentprofileComponent,
-  });
+    });
     return await modal.present();
   }
 

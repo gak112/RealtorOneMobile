@@ -1,4 +1,11 @@
-import { Component, Input, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  Input,
+  inject,
+  signal,
+  computed,
+  OnInit,
+} from '@angular/core';
 import {
   ReactiveFormsModule,
   NonNullableFormBuilder,
@@ -20,10 +27,13 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { serverTimestamp } from '@angular/fire/firestore';
+// Types for the data the parent will store
+export type SpecKV = { key: string; value: string };
+export type SpecSection = { title: string; specifications: SpecKV[] };
 
+// Internal form types
 type ItemFG = FormGroup<{
   key: FormControl<string>;
   value: FormControl<string>;
@@ -42,6 +52,7 @@ type SectionFG = FormGroup<{
   selector: 'app-specifications',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     IonContent,
     IonInput,
@@ -57,15 +68,12 @@ type SectionFG = FormGroup<{
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-export class SpecificationsComponent {
+export class SpecificationsComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
-  private afs = inject(AngularFirestore);
   private modal = inject(ModalController);
 
-  /** Firestore collection path */
-  @Input() path = 'ventureSpecifications';
-  /** Optional user info; only uid used if present */
-  @Input() user: { uid?: string } | null = null;
+  // Optional incoming sections (for editing)
+  @Input() sections: SpecSection[] = [];
 
   // top input to add a new section title
   newTitle = this.fb.control('', [
@@ -78,16 +86,32 @@ export class SpecificationsComponent {
     sections: this.fb.array<SectionFG>([]),
   });
 
-  // UI state with signals
+  // UI state
   activeIndex = signal<number>(-1);
   submitting = signal(false);
-  canSubmit = computed(() => this.sections.length > 0 && !this.submitting());
+  canSubmit = computed(
+    () => this.sectionsArray.length > 0 && !this.submitting()
+  );
 
   // convenience getters
-  get sections(): FormArray<SectionFG> {
+  get sectionsArray(): FormArray<SectionFG> {
     return this.specificationsForm.controls.sections;
   }
-  sectionAt = (i: number) => this.sections.at(i);
+  sectionAt = (i: number) => this.sectionsArray.at(i);
+
+  ngOnInit(): void {
+    // Seed existing sections (edit flow)
+    if (this.sections && this.sections.length) {
+      for (const sec of this.sections) {
+        const s = this.makeSection(sec.title);
+        for (const kv of sec.specifications) {
+          s.controls.items.push(this.makeItem(kv.key, kv.value));
+        }
+        this.sectionsArray.push(s);
+      }
+      this.activeIndex.set(this.sectionsArray.length ? 0 : -1);
+    }
+  }
 
   private makeItem(key = '', value = ''): ItemFG {
     return this.fb.group({
@@ -113,18 +137,15 @@ export class SpecificationsComponent {
   addSection(): void {
     const t = this.newTitle.value.trim();
     if (!t) return;
-    this.sections.push(this.makeSection(t));
-    this.activeIndex.set(this.sections.length - 1);
+    this.sectionsArray.push(this.makeSection(t));
+    this.activeIndex.set(this.sectionsArray.length - 1);
     this.newTitle.reset('');
   }
 
   addItem(sectionIndex: number): void {
     const sec = this.sectionAt(sectionIndex);
     const ni = sec.controls.newItem;
-    if (ni.invalid) {
-      ni.markAllAsTouched();
-      return;
-    }
+    if (ni.invalid) return;
     sec.controls.items.push(
       this.makeItem(ni.controls.key.value, ni.controls.value.value)
     );
@@ -136,19 +157,16 @@ export class SpecificationsComponent {
   }
 
   removeSection(index: number): void {
-    this.sections.removeAt(index);
-    const len = this.sections.length;
+    this.sectionsArray.removeAt(index);
+    const len = this.sectionsArray.length;
     if (len === 0) this.activeIndex.set(-1);
     else if (this.activeIndex() >= len) this.activeIndex.set(len - 1);
   }
 
-  
-
   async submit(): Promise<void> {
-    console.log(1);
     this.submitting.set(true);
 
-    const payload = this.sections.controls.map((sec) => ({
+    const payload: SpecSection[] = this.sectionsArray.controls.map((sec) => ({
       title: sec.controls.title.value,
       specifications: sec.controls.items.controls.map((it) => ({
         key: it.controls.key.value,
@@ -156,27 +174,15 @@ export class SpecificationsComponent {
       })),
     }));
 
-    console.log(2);
-
-    await this.afs.collection(this.path).add({
-      userId: this.user?.uid ?? null,
-      sections: payload,
-      createdAt: serverTimestamp(),
-    });
-
-    this.specificationsForm.setControl(
-      'sections',
-      this.fb.array<SectionFG>([])
-    );
-    this.activeIndex.set(-1);
+    // Return to parent & close
+    await this.modal.dismiss({ sections: payload }, 'submit');
     this.submitting.set(false);
   }
 
-  // track helpers
+  dismiss() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
   trackSection = (i: number) => i;
   trackItem = (i: number) => i;
-
-  dismiss() {
-    this.modal.dismiss();
-  }
 }

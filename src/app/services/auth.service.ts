@@ -2,8 +2,8 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Injectable } from '@angular/core';
+import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
 import { firstValueFrom, Observable, of } from 'rxjs';
 // import firebase from 'firebase/compat/app';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  private auth = inject(Auth);
   // user$!: Observable<any>;
   // currentuid: any;
   // constructor(
@@ -208,4 +209,12 @@ export class AuthService {
   //     return false;
   //   }
   // }
+
+  tempLogin() {
+    return signInWithEmailAndPassword(this.auth, 'sankar@arhasri.com', 'AjayKumar1#');
+  }
+
+  logout() {
+    return signOut(this.auth);
+  }
 }

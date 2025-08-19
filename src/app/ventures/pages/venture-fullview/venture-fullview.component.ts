@@ -20,8 +20,10 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  arrowRedoOutline,
   chevronBackOutline,
   globe,
+  heartOutline,
   home,
   locationOutline,
   logoFacebook,
@@ -37,8 +39,9 @@ import {
   forwardEnterAnimation,
 } from 'src/app/services/animation';
 import { register } from 'swiper/element';
-import { VenturefloordetailsComponent } from '../venturefloordetails/venturefloordetails.component';
 import { HouseFactsFeaturesComponent } from '../../components/house-facts-features/house-facts-features.component';
+import { VenturefloordetailsComponent } from '../venturefloordetails/venturefloordetails.component';
+import { HomeAllPhotosComponent } from 'src/app/home/pages/home-all-photos/home-all-photos.component';
 register();
 
 @Component({
@@ -56,7 +59,7 @@ register();
     IonLabel,
     AmentitycardComponent,
     IonButton,
-    HouseFactsFeaturesComponent
+    HouseFactsFeaturesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ModalController],
@@ -75,6 +78,8 @@ export class VentureFullviewComponent implements OnInit {
       logoInstagram,
       globe,
       home,
+      heartOutline,
+      arrowRedoOutline,
     });
   }
 
@@ -116,4 +121,13 @@ export class VentureFullviewComponent implements OnInit {
         'https://thumbs.dreamstime.com/b/underground-parking-cars-white-colors-30872672.jpg',
     },
   ]);
+
+  async openAllPhotos() {
+    const modal = await this.modalController.create({
+      component: HomeAllPhotosComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
+  }
 }
