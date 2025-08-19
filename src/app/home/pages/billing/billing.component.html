@@ -8,16 +8,16 @@
 <ion-content>
   <div class="div-main">
     <div class="div-cartcard" >
-      <div class="div-images-display" *ngIf="request.resources.length > 0">
-        <div class="div-img-sub" *ngFor="let resource of request.resources; let i = index">
-            <ion-img [src]="resource.resourceUrl"></ion-img>
+      <div class="div-images-display">
+        <div class="div-img-sub">
+            <ion-img [src]="'https://www.nobroker.in/blog/wp-content/uploads/2021/04/Duplex-House-1.jpg'"></ion-img>
         </div>
     </div>
     <div class="div-add-text">
           <div class="div-useradd" style="margin-bottom:10px">
-              <ion-label style="text-transform: uppercase;">{{request.action}} - {{request.bhkType}}</ion-label>
-              <span>{{request.actionType}}</span>
-              <span *ngIf="request.addressOfProperty.address">{{request.addressOfProperty.address}}</span>
+              <ion-label style="text-transform: uppercase;">Sale - 3BHK</ion-label>
+              <span>Residential</span>
+              <span>Hyderabad, Jubilee Hills</span>
           </div>
       </div>
     </div>
@@ -26,9 +26,15 @@
     <div class="div-bill" style="margin-top: 0;">
         <div class="div-icon-name" >
             <ion-label class="label">Subcription Plan</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">Single post / 1 Month</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">Single post / 1 Month</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">20 posts / 1 Month</ion-label>
+            @if(request.paymentAction === 'singlePlan') {
+            <ion-label class="label-title1">Single post / 1 Month</ion-label>
+            }
+            @if(request.paymentAction === 'basicPlan') {
+            <ion-label class="label-title1">Single post / 1 Month</ion-label>
+            }
+            @if(request.paymentAction === 'bulkPlan') {
+            <ion-label class="label-title1">20 posts / 1 Month</ion-label>
+            }
         </div>
         <!-- <div class="div-icon-name" >
             <ion-label class="label">Discount</ion-label>
@@ -36,16 +42,28 @@
         </div> -->
         <div class="div-icon-name" >
             <ion-label class="label">Price</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">₹199.00</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">₹599.00</ion-label>
-            <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">₹1499.00</ion-label>
+            @if(request.paymentAction === 'singlePlan') {
+            <ion-label class="label-title1">₹199.00</ion-label>
+            }
+            @if(request.paymentAction === 'basicPlan') {
+            <ion-label class="label-title1">₹599.00</ion-label>
+            }
+            @if(request.paymentAction === 'bulkPlan') {
+            <ion-label class="label-title1">₹1499.00</ion-label>
+            }
         </div>
 
         <div class="div-icon-name final" >
           <ion-label class="label">Total</ion-label>
-          <ion-label class="label-title1" *ngIf="request.paymentAction === 'singlePlan'">₹199.00</ion-label>
-          <ion-label class="label-title1" *ngIf="request.paymentAction === 'basicPlan'">₹599.00</ion-label>
-          <ion-label class="label-title1" *ngIf="request.paymentAction === 'bulkPlan'">₹1499.00</ion-label>
+          @if(request.paymentAction === 'singlePlan') {
+          <ion-label class="label-title1">₹199.00</ion-label>
+          }
+          @if(request.paymentAction === 'basicPlan') {
+          <ion-label class="label-title1">₹599.00</ion-label>
+          }
+          @if(request.paymentAction === 'bulkPlan') {
+          <ion-label class="label-title1">₹1499.00</ion-label>
+          }
       </div>
     </div>
 

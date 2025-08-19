@@ -109,6 +109,27 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+      <div class="div-icon-name" (click)="goToAgentProfile()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>Agent Profile</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="goToBilling()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>Billing</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
+      <div class="div-icon-name" (click)="goToVillaConfigure()">
+        <div class="div-icon-sub">
+          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-label>Villa Configure</ion-label>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+      </div>
       <div class="div-icon-name" (click)="goToMyRequests()">
         <div class="div-icon-sub">
           <ion-icon name="git-compare-outline" class="icon-title"></ion-icon>
@@ -285,39 +306,16 @@
       </div>
 
     </div> -->
-
     <!-- Account Privacy end-->
-
   </ion-list>
-
-
   <div class="div-company">
     <label class="name">
-      <span> SBP </span>
-      Consulting Private Limited
+      <span> Arhasri </span>
+      Technologies Private Limited
     </label>
     <p
-      style="font-size:14px; font-family: 'gak'!important;color: var(--color-black); font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%); letter-spacing: 1px;">
+      style="font-size:16px; font-family: 'gak'!important;color: var(--color-black); font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%); letter-spacing: 1px;">
       Developed by GAK</p>
     <ion-img src="assets/img/mwl.png" style="height: 50px; width: 100%" />
   </div>
-
 </ion-content>
-
-
-
-
-<ion-footer style="display: none;">
-  <div class="div-company" style="width: 100%;height: 113px;padding: 10px 10px 30px;">
-
-    <span class="name">SBP Consulting Pvt ltd</span>
-    <p class="from">Powered by</p>
-
-    <!-- <ion-skeleton-text [animated]="true" style="width: 284px;height: 18px;margin: auto; "></ion-skeleton-text> -->
-    <!-- <ion-skeleton-text [animated]="true" -->
-    <!-- style="width: 80px;height: 20px;margin:auto;margin-top: 5px;"></ion-skeleton-text> -->
-    <p
-      style="font-size:14px; font-family: 'gak'!important;color: white; font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%);">
-      Developed by GAK</p>
-  </div>
-</ion-footer>

@@ -1,63 +1,106 @@
 import {
   Component,
-  OnInit,
+  ChangeDetectionStrategy,
+  computed,
   effect,
   inject,
-  input,
   signal,
+  OnInit,
+  Input,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
-  FormBuilder,
   Validators,
-  AbstractControl,
-  ValidationErrors,
+  FormControl,
+  NonNullableFormBuilder,
 } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  IonBadge,
-  IonButton,
-  IonContent,
-  IonFooter,
   IonHeader,
+  IonToolbar,
   IonIcon,
-  IonImg,
+  IonTitle,
+  IonContent,
   IonInput,
+  IonSelect,
+  IonSelectOption,
   IonLabel,
   IonSegment,
   IonSegmentButton,
-  IonSelect,
-  IonSelectOption,
   IonTextarea,
-  IonTitle,
-  IonToolbar,
+  IonButton,
+  IonCheckbox,
+  IonFooter,
+  IonImg,
+  IonBadge,
+} from '@ionic/angular/standalone';
+import {
   ModalController,
+  NavController,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  add,
+  chevronBackOutline,
   cloudUploadOutline,
   trashOutline,
+  add,
   caretDownOutline,
+  caretUpOutline,
 } from 'ionicons/icons';
-
-// AngularFire **compat** (v6 API)
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Geolocation } from '@capacitor/geolocation';
+import { CommonModule } from '@angular/common';
+// import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
 import {
-  forwardEnterAnimation,
   backwardEnterAnimation,
+  forwardEnterAnimation,
 } from 'src/app/services/animation';
-import { LocationComponent } from '../location/location.component';
-import { finalize } from 'rxjs/operators';
 
-// If you actually use these modals, keep imports; otherwise you can remove.
-// import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
-// import { LocationComponent } from '../location/location.component';
-// import { forwardEnterAnimation, backwardEnterAnimation } from 'src/app/services/animation';
+type HouseType =
+  | 'Apartment'
+  | 'Individual House/Villa'
+  | 'Gated Community Villa';
+type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
+type Units = 'Sq Feet' | 'Sq Yard' | 'Sq Mtr' | 'Acre';
+type RentUnits = 'Monthly' | 'Yearly';
+type AgeAction = 'underconstruction' | 'noofyears';
 
-type SaveError = { code?: string; message: string };
+type PostEntryForm = {
+  title: FormControl<string>;
+  houseType: FormControl<HouseType | ''>;
+  houseCondition: FormControl<'Old Houses' | 'New Houses' | null>;
+  rooms: FormControl<number | null>;
+  bhkType: FormControl<BHKType | null>;
+  totalPropertyUnits: FormControl<Units | null>;
+  propertySize: FormControl<number | null>;
+  propertySizeBuildUp: FormControl<number | null>;
+  northFacing: FormControl<string | null>;
+  northSize: FormControl<number | null>;
+  southFacing: FormControl<string | null>;
+  southSize: FormControl<number | null>;
+  eastFacing: FormControl<string | null>;
+  eastSize: FormControl<number | null>;
+  westFacing: FormControl<string | null>;
+  westSize: FormControl<number | null>;
+  toilets: FormControl<number | null>;
+  poojaRoom: FormControl<number | null>;
+  livingDining: FormControl<number | null>;
+  kitchen: FormControl<number | null>;
+  floor: FormControl<string | null>;
+  amenities: FormControl<string[]>;
+  noOfYears: FormControl<number | null>;
+  rent: FormControl<number | null>;
+  rentUnits: FormControl<RentUnits | null>;
+  costOfProperty: FormControl<number | null>;
+  addressOfProperty: FormControl<string | null>;
+  lat: FormControl<number | null>;
+  lng: FormControl<number | null>;
+  description: FormControl<string | null>;
+  negotiable: FormControl<boolean>;
+  images: FormControl<string[]>;
+};
 
 @Component({
   selector: 'app-postentry',
@@ -85,78 +128,66 @@ type SaveError = { code?: string; message: string };
   templateUrl: './postentry.component.html',
   styleUrls: ['./postentry.component.scss'],
 })
-export class PostentryComponent implements OnInit {
-  // Signals as inputs (don’t interpolate in template; always call as fn)
-  readonly actionType = input<'residential' | 'commercial' | 'plots' | 'lands'>(
-    'residential'
-  );
-  readonly action = input<'rent' | 'sale'>('rent');
+export class PostentryComponent {
+  // DI
+  private fb = inject(NonNullableFormBuilder);
+  private modalCtrl = inject(ModalController);
+  private nav = inject(NavController);
+  private toastCtrl = inject(ToastController);
+  // private http = inject(HttpClient);
 
-  // Local UI state
-  ageOfPropertyAction = signal<'underconstruction' | 'noofyears'>(
-    'underconstruction'
-  );
-  loading = signal(false);
-  saveError = signal<SaveError | null>(null);
-
-  // Upload previews/state
-  imageUrls = signal<string[]>([]);
-
-  private fb = inject(FormBuilder);
-  private afs = inject(AngularFirestore); // compat
-  private storage = inject(AngularFireStorage); // compat
-  private modalController = inject(ModalController);
-
-  floors = [
-    '1st Floor',
-    '2nd Floor',
-    '3rd Floor',
-    '4th Floor',
-    '5th Floor',
-    '6th Floor',
-    '7th Floor',
-    '8th Floor',
-    '9th Floor',
-    '10th Floor',
-    '+10 Floor',
+  // constants
+  private static readonly FLOORS = [
+    'Ground',
+    ...Array.from({ length: 40 }, (_, i) => `${i + 1}`),
   ];
-
-  // Simple numeric validators
-  private gtZero = (c: AbstractControl): ValidationErrors | null => {
-    const n = Number(c.value);
-    return isNaN(n) || n <= 0 ? { gtZero: true } : null;
+  private static readonly MAX_FILES = 12;
+  private static readonly MAX_SIZE_BYTES = 6 * 1024 * 1024;
+  private static readonly ACCEPTED_TYPES = new Set([
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/jpg',
+  ]);
+  private static readonly UNIT_SHORT: Record<Units, string> = {
+    'Sq Feet': 'Sq Ft',
+    'Sq Yard': 'Sq Yd',
+    'Sq Mtr': 'Sq m',
+    Acre: 'Acre',
   };
-  private gteZero = (c: AbstractControl): ValidationErrors | null => {
-    const v = c.value;
-    if (v === null || v === '' || v === undefined) return { required: true };
-    const n = Number(v);
-    return isNaN(n) || n < 0 ? { gteZero: true } : null;
-  };
 
-  postEntryForm = this.fb.group({
+  // UI state (signals)
+  readonly ageOfPropertyAction = signal<AgeAction>('underconstruction');
+  readonly imgsBusy = signal(false);
+  readonly imgsPct = signal(0);
+  readonly loading = signal(false);
+  readonly pageError = signal<string | null>(null);
+
+  @Input() action: any;
+  @Input() actionType: any;
+
+  // reactive form
+  postEntryForm = this.fb.group<PostEntryForm>({
     title: this.fb.control('', {
       validators: [Validators.required, Validators.minLength(3)],
-      nonNullable: true,
     }),
-
-    houseType: this.fb.control<string | null>(null),
-    bhkType: this.fb.control<string | null>(null),
-    floor: this.fb.control<string | null>(null),
-
+    houseType: this.fb.control<HouseType | ''>('', {
+      validators: [Validators.required],
+    }),
+    houseCondition: this.fb.control<'Old Houses' | 'New Houses' | null>(null),
+    rooms: this.fb.control<number | null>(null),
+    bhkType: this.fb.control<BHKType | null>(null, {
+      validators: [Validators.required],
+    }),
+    totalPropertyUnits: this.fb.control<Units | null>(null, {
+      validators: [Validators.required],
+    }),
     propertySize: this.fb.control<number | null>(null, {
-      validators: [this.gtZero],
+      validators: [Validators.min(1)],
     }),
-    totalPropertyUnits: this.fb.control<string | null>(null, {
-      validators: [Validators.required],
-    }),
-
     propertySizeBuildUp: this.fb.control<number | null>(null, {
-      validators: [this.gtZero],
+      validators: [Validators.min(1)],
     }),
-    propertyUnits: this.fb.control<string | null>(null, {
-      validators: [Validators.required],
-    }),
-
     northFacing: this.fb.control<string | null>(null),
     northSize: this.fb.control<number | null>(null),
     southFacing: this.fb.control<string | null>(null),
@@ -165,260 +196,156 @@ export class PostentryComponent implements OnInit {
     eastSize: this.fb.control<number | null>(null),
     westFacing: this.fb.control<string | null>(null),
     westSize: this.fb.control<number | null>(null),
-    units: this.fb.control<string>('Ft', { nonNullable: true }),
-
-    toilets: this.fb.control<number | null>(0, { validators: [this.gteZero] }),
-    poojaRoom: this.fb.control<number | null>(0, {
-      validators: [this.gteZero],
+    toilets: this.fb.control<number | null>(null),
+    poojaRoom: this.fb.control<number | null>(null),
+    livingDining: this.fb.control<number | null>(null),
+    kitchen: this.fb.control<number | null>(null),
+    floor: this.fb.control<string | null>(null, {
+      validators: [Validators.required],
     }),
-    livingDining: this.fb.control<number | null>(0, {
-      validators: [this.gteZero],
+    amenities: this.fb.control<string[]>([]),
+    noOfYears: this.fb.control<number | null>(
+      { value: null, disabled: true },
+      { validators: [Validators.min(0)] }
+    ),
+    rent: this.fb.control<number | null>(null, {
+      validators: [Validators.min(1)],
     }),
-    kitchen: this.fb.control<number | null>(0, { validators: [this.gteZero] }),
-
-    noOfYears: this.fb.control<number | null>(null),
-
-    rent: this.fb.control<number | null>(null),
-    rentUnits: this.fb.control<string | null>(null),
-    costOfProperty: this.fb.control<number | null>(null),
-
+    rentUnits: this.fb.control<RentUnits | null>(null),
+    costOfProperty: this.fb.control<number | null>(null, {
+      validators: [Validators.min(1)],
+    }),
     addressOfProperty: this.fb.control<string | null>(null),
+    lat: this.fb.control<number | null>(null),
+    lng: this.fb.control<number | null>(null),
     description: this.fb.control<string | null>(null),
-
-    // uploads
-    logo: this.fb.control<string>('', { nonNullable: true }),
-    images: this.fb.control<string[]>([], { nonNullable: true }),
-    amenities: this.fb.control<string[]>([], { nonNullable: true }),
+    negotiable: this.fb.control(true),
+    images: this.fb.control<string[]>([]),
   });
 
-  ctrl = (k: keyof typeof this.postEntryForm.controls) =>
-    this.postEntryForm.controls[k] as AbstractControl;
+  // signalized controls (perf: avoid reading whole form in template)
+  private sel<T>(name: keyof PostEntryForm) {
+    const c = this.postEntryForm.controls[name];
+    return toSignal(c.valueChanges as Observable<T>, {
+      initialValue: c.value as T,
+    });
+  }
+  readonly amenities$ = this.sel<string[]>('amenities');
+  readonly images$ = this.sel<string[]>('images');
+  readonly units$ = this.sel<Units | null>('totalPropertyUnits');
+
+  // derived signals
+  readonly formValid = computed(() => this.postEntryForm.valid);
+  readonly canSubmit = computed(() => this.formValid() && !this.loading());
+  readonly floors = PostentryComponent.FLOORS;
+  readonly unitShort = computed(() => {
+    const u = this.units$();
+    return u ? PostentryComponent.UNIT_SHORT[u] : 'Sq Ft';
+  });
 
   constructor() {
-    addIcons({ add, cloudUploadOutline, trashOutline, caretDownOutline });
+    addIcons({
+      chevronBackOutline,
+      cloudUploadOutline,
+      trashOutline,
+      add,
+      caretDownOutline,
+      caretUpOutline,
+    });
 
-    // Reactive validation depending on signals
+    // enable/disable "noOfYears" based on segment
     effect(() => {
-      // Residential-only required fields
-      const isRes = this.actionType() === 'residential';
-      this.setRequired(this.ctrl('houseType'), isRes);
-      this.setRequired(this.ctrl('bhkType'), isRes);
-      this.setRequired(this.ctrl('floor'), isRes);
-
-      // Age-of-property: require noOfYears when needed
-      const needYears = this.ageOfPropertyAction() === 'noofyears';
-      this.ctrl('noOfYears').setValidators(needYears ? [this.gteZero] : []);
-      this.ctrl('noOfYears').updateValueAndValidity({ emitEvent: false });
-
-      // Rent vs Sale
-      if (this.action() === 'rent') {
-        this.ctrl('rent').setValidators([this.gtZero]);
-        this.ctrl('rentUnits').setValidators([Validators.required]);
-        this.ctrl('costOfProperty').clearValidators();
-      } else {
-        this.ctrl('rent').clearValidators();
-        this.ctrl('rentUnits').clearValidators();
-        this.ctrl('costOfProperty').setValidators([this.gtZero]);
+      const ctrl = this.postEntryForm.controls.noOfYears;
+      if (this.ageOfPropertyAction() === 'underconstruction') {
+        if (ctrl.enabled) ctrl.disable({ emitEvent: false });
+        if (ctrl.value !== null) ctrl.setValue(null, { emitEvent: false });
+      } else if (ctrl.disabled) {
+        ctrl.enable({ emitEvent: false });
       }
-      this.ctrl('rent').updateValueAndValidity({ emitEvent: false });
-      this.ctrl('rentUnits').updateValueAndValidity({ emitEvent: false });
-      this.ctrl('costOfProperty').updateValueAndValidity({ emitEvent: false });
+    });
+
+    // rent → require rentUnits
+    effect(() => {
+      const rent = this.postEntryForm.controls.rent.value ?? 0;
+      const unitsCtrl = this.postEntryForm.controls.rentUnits;
+      if (rent > 0) {
+        unitsCtrl.addValidators([Validators.required]);
+      } else {
+        unitsCtrl.clearValidators();
+        if (unitsCtrl.value !== null)
+          unitsCtrl.setValue(null, { emitEvent: false });
+      }
+      unitsCtrl.updateValueAndValidity({ emitEvent: false });
     });
   }
 
-  ngOnInit(): void {}
+  // helper for template
+  ctrl = (name: keyof PostEntryForm) => this.postEntryForm.controls[name];
 
-  private setRequired(control: AbstractControl, required: boolean) {
-    if (required) control.setValidators([Validators.required]);
-    else control.clearValidators();
-    control.updateValueAndValidity({ emitEvent: false });
-  }
-
-  // Segment change handler for age-of-property
-  ageOfPropertyChanged(e: CustomEvent) {
-    const val = (e as any)?.detail?.value as 'underconstruction' | 'noofyears';
-    if (val) this.ageOfPropertyAction.set(val);
-  }
-
-  // ---------------------------
-  // Uploads (Images multiple)
-  // ---------------------------
-
-  imgsBusy = signal(false);
-  imgsPct = signal<number>(0); // average % for a batch
-
-  selectVentureImages(e: Event) {
-    const input = e.target as HTMLInputElement;
-    const files = input.files ? Array.from(input.files) : [];
-    if (files.length === 0) return;
-
-    this.imgsBusy.set(true);
-    let completed = 0;
-    const total = files.length;
-
-    files.forEach((file) => {
-      const path = `posts/${Date.now()}_${Math.random()
-        .toString(36)
-        .slice(2)}_${file.name}`;
-      const task = this.storage.upload(path, file);
-      const ref = this.storage.ref(path);
-
-      task.percentageChanges().subscribe((p) => {
-        // simple average
-        const current = Math.round(p ?? 0);
-        // not exact average, but lightweight: show latest file pct
-        this.imgsPct.set(current);
-      });
-
-      task
-        .snapshotChanges()
-        .pipe(
-          finalize(() => {
-            ref.getDownloadURL().subscribe((url) => {
-              const imgs = [...this.postEntryForm.controls.images.value, url];
-              this.postEntryForm.controls.images.setValue(imgs);
-              completed += 1;
-              if (completed === total) {
-                this.imgsBusy.set(false);
-                this.imgsPct.set(100);
-                setTimeout(() => this.imgsPct.set(0), 600);
-              }
-            });
-          })
-        )
-        .subscribe();
+  // helpers
+  private async toast(
+    message: string,
+    color: 'danger' | 'warning' | 'success' | 'medium' = 'warning'
+  ) {
+    const t = await this.toastCtrl.create({
+      message,
+      duration: 2400,
+      position: 'top',
+      color,
     });
+    await t.present();
   }
 
-  deleteImageByUrl(url: string) {
-    const imgs = this.postEntryForm.controls.images.value.filter(
-      (u) => u !== url
-    );
-    this.postEntryForm.controls.images.setValue(imgs);
-    this.storage.refFromURL(url).delete();
+  private focusFirstInvalid() {
+    const el = document.querySelector('form .ng-invalid') as HTMLElement | null;
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el?.focus?.();
   }
 
-  // ---------------------------
-  // Submit to Firestore (compat)
-  // ---------------------------
-  async submit() {
-    console.log(this.postEntryForm.value);
-    this.saveError.set(null);
-    this.postEntryForm.updateValueAndValidity();
-    if (this.postEntryForm.invalid) {
-      this.postEntryForm.markAllAsTouched();
-      return;
-    }
-
-    this.loading.set(true);
-
-    try {
-      const v = this.postEntryForm.getRawValue();
-
-      const payload = {
-        title: (v.title ?? '').trim(),
-
-        houseType: v.houseType ?? '',
-        bhkType: v.bhkType ?? '',
-        floor: v.floor ?? '',
-
-        propertySize: v.propertySize ?? null,
-        totalPropertyUnits: v.totalPropertyUnits ?? '',
-        propertySizeBuildUp: v.propertySizeBuildUp ?? null,
-        propertyUnits: v.propertyUnits ?? '',
-
-        northFacing: v.northFacing ?? '',
-        northSize: v.northSize ?? null,
-        southFacing: v.southFacing ?? '',
-        southSize: v.southSize ?? null,
-        eastFacing: v.eastFacing ?? '',
-        eastSize: v.eastSize ?? null,
-        westFacing: v.westFacing ?? '',
-        westSize: v.westSize ?? null,
-        units: v.units ?? 'Ft',
-
-        toilets: v.toilets ?? 0,
-        poojaRoom: v.poojaRoom ?? 0,
-        livingDining: v.livingDining ?? 0,
-        kitchen: v.kitchen ?? 0,
-
-        ageOfPropertyAction: this.ageOfPropertyAction(),
-        noOfYears:
-          this.ageOfPropertyAction() === 'noofyears' ? v.noOfYears ?? 0 : null,
-
-        action: this.action(),
-        actionType: this.actionType(),
-
-        rent: this.action() === 'rent' ? v.rent ?? null : null,
-        rentUnits: this.action() === 'rent' ? v.rentUnits ?? '' : '',
-        costOfProperty:
-          this.action() === 'sale' ? v.costOfProperty ?? null : null,
-
-        addressOfProperty: v.addressOfProperty ?? '',
-        description: v.description ?? '',
-
-        images:
-          (v.images && v.images.length ? v.images : this.imageUrls()) ?? [],
-        amenities: v.amenities ?? [],
-
-        // compact-ish metadata
-        createdAt: new Date(),
-        status: 'pending',
-        sortDate: Date.now(),
-      };
-
-      await this.afs.collection('requests').add(payload);
-
-      // Reset form & UI
-      this.postEntryForm.reset({
-        title: '',
-        houseType: null,
-        bhkType: null,
-        floor: null,
-        propertySize: null,
-        totalPropertyUnits: null,
-        propertySizeBuildUp: null,
-        propertyUnits: null,
-        northFacing: null,
-        northSize: null,
-        southFacing: null,
-        southSize: null,
-        eastFacing: null,
-        eastSize: null,
-        westFacing: null,
-        westSize: null,
-        units: 'Ft',
-        toilets: 0,
-        poojaRoom: 0,
-        livingDining: 0,
-        kitchen: 0,
-        noOfYears: null,
-        rent: null,
-        rentUnits: null,
-        costOfProperty: null,
-        addressOfProperty: null,
-        description: null,
-        logo: '',
-        images: [],
-        amenities: [],
-      });
-      this.imageUrls.set([]);
-    } catch (err: any) {
-      this.saveError.set({
-        message: err?.message ?? 'Failed to save the request',
-      });
-    } finally {
-      this.loading.set(false);
-    }
+  private mapHttpError(err: unknown): string {
+    const any = err as any;
+    const status = any?.status ?? 0;
+    const msg = any?.error?.message || any?.message;
+    if (status === 0) return 'Network error. Check your connection.';
+    if (status === 400) return msg || 'Bad request. Please review the form.';
+    if (status === 401) return 'Unauthorized. Please sign in again.';
+    if (status === 403) return 'Forbidden.';
+    if (status === 404) return 'Service not found.';
+    if (status === 413) return 'Payload too large.';
+    if (status === 422) return msg || 'Validation failed.';
+    if (status >= 500) return 'Server error. Try again later.';
+    return msg || `Unexpected error (${status}).`;
   }
 
+  // events
   dismiss() {
-    this.modalController.dismiss();
+    this.modalCtrl
+      .getTop()
+      .then((m) => (m ? m.dismiss() : this.nav.back()) as void);
   }
 
-  // Stubs for your existing modals (uncomment if you have them wired)
+  // async amenitiesList() {
+  //   const modal = await this.modalCtrl.create({
+  //     component: AmenitiesComponent,
+  //     enterAnimation: forwardEnterAnimation,
+  //     leaveAnimation: backwardEnterAnimation,
+  //     componentProps: { selected: [...(this.amenities$() || [])] },
+  //     canDismiss: true,
+  //     presentingElement: (await this.modalCtrl.getTop()) ?? undefined,
+  //   });
+  //   await modal.present();
+  //   const { data, role } = await modal.onWillDismiss<string[]>();
+  //   if (role === 'confirm' && Array.isArray(data)) {
+  //     this.ctrl('amenities').setValue(data as never);
+  //     this.toast(
+  //       `Added ${data.length} amenit${data.length === 1 ? 'y' : 'ies'}`,
+  //       'success'
+  //     );
+  //   }
+  // }
+
   async amenitiesList() {
-    const modal = await this.modalController.create({
+    const modal = await this.modalCtrl.create({
       component: AmenitiesComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
@@ -426,12 +353,112 @@ export class PostentryComponent implements OnInit {
     await modal.present();
   }
 
+  ageOfPropertyChanged(ev: CustomEvent) {
+    this.ageOfPropertyAction.set((ev.detail as any).value as AgeAction);
+  }
+
   async openLocation() {
-    const modal = await this.modalController.create({
-      component: LocationComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
-    });
-    await modal.present();
+    try {
+      const perm = await Geolocation.requestPermissions();
+      if (perm.location === 'denied')
+        return this.toast('Location permission denied.', 'danger');
+      const { coords } = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      });
+      const { latitude, longitude } = coords;
+      this.postEntryForm.patchValue(
+        {
+          lat: latitude,
+          lng: longitude,
+          addressOfProperty: `Lat: ${latitude.toFixed(
+            6
+          )}, Lng: ${longitude.toFixed(6)}`,
+        },
+        { emitEvent: false }
+      );
+      this.toast('Location captured', 'success');
+    } catch {
+      this.toast('Unable to get location.', 'danger');
+    }
+  }
+
+  //  async selectVentureImages(evt: Event) {
+  //    const input = evt.target as HTMLInputElement;
+  //    const files = Array.from(input.files ?? []);
+  //    if (!files.length) return;
+
+  //    const current = (this.images$() || []).slice(0);
+  //    if (current.length + files.length > PostentryComponent.MAX_FILES) {
+  //      this.toast(`Max ${PostentryComponent.MAX_FILES} images.`, 'danger');
+  //      input.value = '';
+  //      return;
+  //    }
+
+  //    this.imgsBusy.set(true);
+  //    this.pageError.set(null);
+
+  //    try {
+  //      let accepted = 0;
+  //      const next = current;
+
+  //      for (let i = 0; i < files.length; i++) {
+  //        const f = files[i];
+  //        if (!PostentryComponent.ACCEPTED_TYPES.has(f.type)) { this.toast(`${f.name}: unsupported type.`, 'danger'); continue; }
+  //        if (f.size > PostentryComponent.MAX_SIZE_BYTES) { this.toast(`${f.name}: too large (>6MB).`, 'danger'); continue; }
+
+  //        const url = URL.createObjectURL(f);
+  //        if ('createImageBitmap' in window) { try { await createImageBitmap(f); } catch {} }
+  //        next.push(url);
+  //        accepted++;
+  //        this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
+  //        await new Promise(r => setTimeout(r, 8));
+  //      }
+
+  //      this.ctrl('images').setValue(next);
+  //      if (accepted) this.toast(`Added ${accepted} image${accepted === 1 ? '' : 's'}`, 'success');
+  //    } catch {
+  //      this.pageError.set('Failed to add images.');
+  //      this.toast('Failed to add images.', 'danger');
+  //    } finally {
+  //      this.imgsBusy.set(false);
+  //      this.imgsPct.set(0);
+  //      input.value = '';
+  //    }
+  //  }
+
+  //  deleteImageByUrl(url: string) {
+  //    try { URL.revokeObjectURL(url); } catch {}
+  //    const filtered = (this.images$() || []).filter(u => u !== url);
+  //    this.ctrl('images').setValue(filtered);
+  //  }
+
+  async submit() {
+    this.pageError.set(null);
+    this.postEntryForm.markAllAsTouched();
+    if (!this.formValid()) {
+      this.toast('Please fix the highlighted fields.', 'danger');
+      this.focusFirstInvalid();
+      return;
+    }
+
+    this.loading.set(true);
+    try {
+      const payload = this.postEntryForm.getRawValue();
+      console.log(payload);
+      // TODO: replace with real API call:
+      // await this.http.post('/api/properties', payload).toPromise();
+      await new Promise((r) => setTimeout(r, 350));
+      this.toast('Property saved', 'success');
+      // Optional:
+      // this.postEntryForm.reset({ negotiable: true, images: [] });
+      // this.dismiss();
+    } catch (e) {
+      const msg = this.mapHttpError(e);
+      this.pageError.set(msg);
+      this.toast(msg, 'danger');
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

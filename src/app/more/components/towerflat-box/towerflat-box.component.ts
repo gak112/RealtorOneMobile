@@ -4,11 +4,12 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonButton, IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { FlatconfigureComponent } from '../../pages/flatconfigure/flatconfigure.component';
-import firebase from 'firebase/compat/app';
+// import firebase from 'firebase/compat/app';
 import { firstValueFrom } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { register } from 'swiper/element';
 import {  NgFor } from '@angular/common';
+import { serverTimestamp } from '@angular/fire/firestore';
 register();
 
 @Component({
@@ -115,7 +116,7 @@ export class TowerflatBoxComponent  implements OnInit {
       sortDate2 : new Date(),
       sortTime:  this.copiedData.sortTime,
       configured: true,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
       createdBy: this.user.uid,
       displayDate: new Date().toDateString(),
     }

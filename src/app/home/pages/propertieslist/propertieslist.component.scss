@@ -73,3 +73,37 @@ ion-fab-button {
   height: 36px;
   color: var(--color-black);
 }
+
+ion-searchbar {
+  padding: 0 !important;
+}
+
+
+.div-select-filter {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+
+  ion-button {
+    margin: 0;
+    --border-radius: 4px;
+    text-transform: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    height: 25px;
+    --padding-top: 1px;
+
+    ion-select {
+      --placeholder-opacity: 1;
+      color: var(--color-black);
+    }
+  }
+
+  .icon-filter {
+    font-size: calc(var(--font-size-10) * 2.75);
+    color: var(--color-white);
+  }
+}

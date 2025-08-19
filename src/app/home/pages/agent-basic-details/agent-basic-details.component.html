@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-title>Agent Basic Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
+        placeholder="Enter Full Name"></ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Email" label-placement="floating" fill="outline"
+        placeholder="Enter Email"></ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Phone Number" label-placement="floating" fill="outline"
+        placeholder="Enter Phone Number"></ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-textarea rows="3" type="text" mode="md" label="Address" label-placement="floating" fill="outline"
+        placeholder="Enter Address"></ion-textarea>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="City" label-placement="floating" fill="outline"
+        placeholder="Enter City"></ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="State" label-placement="floating" fill="outline"
+        placeholder="Enter State"></ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Pincode" label-placement="floating" fill="outline"
+        placeholder="Enter Pincode"></ion-input>
+    </div>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-button type="submit" mode="ios" expand="block" color="warning" class="btn-submit">
+    Submit
+  </ion-button>
+</ion-footer>

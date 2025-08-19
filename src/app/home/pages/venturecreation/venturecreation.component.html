@@ -140,12 +140,12 @@
       </ion-button>
     </div>
     <div class="div-amenities">
-        @for (a of amenities(); track a; let i = $index) {
-        <span class="badge-amenity">
-          {{ a }}
-          <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
-        </span>
-        }
+      @for (a of amenities(); track a; let i = $index) {
+      <span class="badge-amenity">
+        {{ a }}
+        <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
+      </span>
+      }
     </div>
 
     <!-- Directors -->
@@ -323,7 +323,7 @@
     <!-- Specifications -->
     <div class="div-formgroup flex">
       <ion-label class="label-heading">Specifications</ion-label>
-      <ion-button size="small" color="warning" (click)="openSpecifications()">
+      <ion-button size="small" color="warning" (click)="openAddSpecifications()">
         <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
         Add
       </ion-button>

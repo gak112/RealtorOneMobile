@@ -462,36 +462,69 @@ export class VenturecreationComponent implements OnInit {
   //   await modal.present();
   // }
 
-  // The Venture page holds the specs in a signal
-  specifications = signal<SpecSection[]>([]);
-
-  hasSpecs = computed(() => this.specifications().length > 0);
-
-  async openSpecifications() {
-    const modal = await this.modalController.create({
-      component: SpecificationsComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
-      componentProps: {
-        // Pass existing specs for editing if needed
-        sections: this.specifications(),
-      },
-      canDismiss: true,
-      showBackdrop: true,
-    });
-    await modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'submit' && data?.sections) {
-      // Save returned specs to the Venture page list (signal)
-      this.specifications.set(data.sections as SpecSection[]);
-    }
-  }
-
-  // optional: clear
-  clearSpecs() {
-    this.specifications.set([]);
-  }
+   // Full specifications list for this venture
+   specifications = signal<SpecSection[]>([]);
+   hasSpecs = computed(() => this.specifications().length > 0);
+ 
+   trackByIndex = (i: number) => i;
+ 
+   /** Add flow: always open a fresh specifications page (no prefilled data) */
+   async openAddSpecifications() {
+     const modal = await this.modalController.create({
+       component: SpecificationsComponent,
+       enterAnimation: forwardEnterAnimation,
+       leaveAnimation: backwardEnterAnimation,
+       componentProps: {
+         mode: 'add',
+         sections: [], // ensure fresh
+       },
+       canDismiss: true,
+       showBackdrop: true,
+     });
+ 
+     await modal.present();
+     const { data, role } = await modal.onWillDismiss();
+ 
+     if (role === 'submit' && data?.sections) {
+       // Append all returned sections
+       const next = [...this.specifications(), ...(data.sections as SpecSection[])];
+       this.specifications.set(next);
+     }
+   }
+ 
+   /** Edit flow: open specifications page with the single section prefilled */
+   async openEditSection(index: number) {
+     const sectionToEdit = this.specifications()[index];
+     const modal = await this.modalController.create({
+       component: SpecificationsComponent,
+       enterAnimation: forwardEnterAnimation,
+       leaveAnimation: backwardEnterAnimation,
+       componentProps: {
+         mode: 'edit',
+         index,
+         sections: [sectionToEdit], // pass only the target section
+       },
+       canDismiss: true,
+       showBackdrop: true,
+     });
+ 
+     await modal.present();
+     const { data, role } = await modal.onWillDismiss();
+ 
+     if (role === 'submit' && data?.sections) {
+       const updated = [...this.specifications()];
+       // replace only that section (first returned section)
+       updated[index] = (data.sections as SpecSection[])[0];
+       this.specifications.set(updated);
+     }
+   }
+ 
+   /** Remove a section card */
+   removeSection(index: number) {
+     const next = [...this.specifications()];
+     next.splice(index, 1);
+     this.specifications.set(next);
+   }
 
   // -------- Submit (Firestore compat) --------
   async submit() {

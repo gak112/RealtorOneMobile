@@ -17,6 +17,11 @@ import {
 } from '@ionic/angular/standalone';
 import { chevronBackOutline } from 'ionicons/icons';
 import { ToastService } from 'src/app/services/toast.service';
+import { AgentBasicDetailsComponent } from '../agent-basic-details/agent-basic-details.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
 @Component({
   selector: 'app-agentconfirmation',
   templateUrl: './agentconfirmation.component.html',
@@ -77,5 +82,14 @@ export class AgentconfirmationComponent implements OnInit {
       this.toast.showError('Select Both & Create as Agent');
       return;
     }
+  }
+
+  async openAgentDetails() {
+    const modal = await this.modalController.create({
+      component: AgentBasicDetailsComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 }

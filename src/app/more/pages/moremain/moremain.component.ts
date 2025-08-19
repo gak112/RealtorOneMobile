@@ -69,6 +69,8 @@ import {
   forwardEnterAnimation,
 } from 'src/app/services/animation';
 import { AmenitiesListsComponent } from '../amenities-lists/amenities-lists.component';
+import { BillingComponent } from 'src/app/home/pages/billing/billing.component';
+import { VillaconfigureComponent } from '../villaconfigure/villaconfigure.component';
 
 @Component({
   selector: 'app-moremain',
@@ -85,15 +87,14 @@ import { AmenitiesListsComponent } from '../amenities-lists/amenities-lists.comp
     IonItem,
     IonToggle,
     IonListHeader,
-    IonFooter
-],
+    IonFooter,
+  ],
   providers: [ModalController],
 })
 export class MoremainComponent implements OnInit {
   async tempLogin() {
     await this.auth.tempLogin();
     console.log('tempLogin');
-    
   }
   private themeService = inject(ThemeService);
 
@@ -230,6 +231,20 @@ export class MoremainComponent implements OnInit {
   async goToAgentProfile() {
     const modal = await this.modalController.create({
       component: AgentprofileComponent,
+    });
+    return await modal.present();
+  }
+
+  async goToBilling() {
+    const modal = await this.modalController.create({
+      component: BillingComponent,
+    });
+    return await modal.present();
+  }
+
+  async goToVillaConfigure() {
+    const modal = await this.modalController.create({
+      component: VillaconfigureComponent,
     });
     return await modal.present();
   }

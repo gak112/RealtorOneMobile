@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController ,IonContent, IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonLabel, IonFooter, IonInput, IonButton } from '@ionic/angular/standalone';
+import { ModalController ,IonContent, IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonLabel, IonFooter, IonInput, IonButton, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-upgradeplan',
   templateUrl: './upgradeplan.component.html',
   styleUrls: ['./upgradeplan.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonLabel,IonFooter,IonInput,IonButton],
+  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonLabel,IonFooter,IonInput,IonButton, IonSelect, IonSelectOption],
   providers:[ModalController],
 })
 export class UpgradeplanComponent  implements OnInit {

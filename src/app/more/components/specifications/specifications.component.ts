@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  inject,
-  signal,
-  computed,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnInit, computed, inject } from '@angular/core';
 import {
   ReactiveFormsModule,
   NonNullableFormBuilder,
@@ -29,11 +22,11 @@ import {
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 
-// Types for the data the parent will store
+/** Public types used by parent */
 export type SpecKV = { key: string; value: string };
 export type SpecSection = { title: string; specifications: SpecKV[] };
 
-// Internal form types
+/** Internal form types */
 type ItemFG = FormGroup<{
   key: FormControl<string>;
   value: FormControl<string>;
@@ -72,7 +65,16 @@ export class SpecificationsComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private modal = inject(ModalController);
 
-  // Optional incoming sections (for editing)
+  /** Mode:
+   *  - 'add'  -> open fresh (ignore incoming)
+   *  - 'edit' -> prefill with given `sections` (usually one) and return only that edited one
+   */
+  @Input() mode: 'add' | 'edit' = 'add';
+  @Input() index?: number;
+
+  /** When mode === 'edit', parent passes one section in this array.
+   *  When mode === 'add', parent passes [] to force a fresh form.
+   */
   @Input() sections: SpecSection[] = [];
 
   // top input to add a new section title
@@ -87,11 +89,8 @@ export class SpecificationsComponent implements OnInit {
   });
 
   // UI state
-  activeIndex = signal<number>(-1);
-  submitting = signal(false);
-  canSubmit = computed(
-    () => this.sectionsArray.length > 0 && !this.submitting()
-  );
+  submitting = false;
+  canSubmit = computed(() => this.sectionsArray.length > 0 && !this.submitting);
 
   // convenience getters
   get sectionsArray(): FormArray<SectionFG> {
@@ -100,8 +99,8 @@ export class SpecificationsComponent implements OnInit {
   sectionAt = (i: number) => this.sectionsArray.at(i);
 
   ngOnInit(): void {
-    // Seed existing sections (edit flow)
-    if (this.sections && this.sections.length) {
+    if (this.mode === 'edit' && this.sections && this.sections.length) {
+      // Prefill with provided section(s)
       for (const sec of this.sections) {
         const s = this.makeSection(sec.title);
         for (const kv of sec.specifications) {
@@ -109,10 +108,13 @@ export class SpecificationsComponent implements OnInit {
         }
         this.sectionsArray.push(s);
       }
-      this.activeIndex.set(this.sectionsArray.length ? 0 : -1);
+    } else {
+      // Fresh (no prefill)
+      this.sectionsArray.clear();
     }
   }
 
+  /* Builders */
   private makeItem(key = '', value = ''): ItemFG {
     return this.fb.group({
       key: this.fb.control(key, [Validators.required]),
@@ -134,18 +136,24 @@ export class SpecificationsComponent implements OnInit {
     });
   }
 
+  /* Section ops */
   addSection(): void {
-    const t = this.newTitle.value.trim();
+    const t = (this.newTitle.value ?? '').trim();
     if (!t) return;
     this.sectionsArray.push(this.makeSection(t));
-    this.activeIndex.set(this.sectionsArray.length - 1);
     this.newTitle.reset('');
   }
 
+  removeSection(index: number): void {
+    this.sectionsArray.removeAt(index);
+  }
+
+  /* Item ops */
   addItem(sectionIndex: number): void {
     const sec = this.sectionAt(sectionIndex);
     const ni = sec.controls.newItem;
     if (ni.invalid) return;
+
     sec.controls.items.push(
       this.makeItem(ni.controls.key.value, ni.controls.value.value)
     );
@@ -156,15 +164,9 @@ export class SpecificationsComponent implements OnInit {
     this.sectionAt(sectionIndex).controls.items.removeAt(itemIndex);
   }
 
-  removeSection(index: number): void {
-    this.sectionsArray.removeAt(index);
-    const len = this.sectionsArray.length;
-    if (len === 0) this.activeIndex.set(-1);
-    else if (this.activeIndex() >= len) this.activeIndex.set(len - 1);
-  }
-
+  /* Submit / Dismiss */
   async submit(): Promise<void> {
-    this.submitting.set(true);
+    this.submitting = true;
 
     const payload: SpecSection[] = this.sectionsArray.controls.map((sec) => ({
       title: sec.controls.title.value,
@@ -174,12 +176,18 @@ export class SpecificationsComponent implements OnInit {
       })),
     }));
 
-    // Return to parent & close
-    await this.modal.dismiss({ sections: payload }, 'submit');
-    this.submitting.set(false);
+    await this.modal.dismiss(
+      { sections: payload, mode: this.mode, index: this.index },
+      'submit'
+    );
+
+    // Reset if the modal is re-used by framework
+    this.submitting = false;
+    this.newTitle.reset('');
+    this.sectionsArray.clear();
   }
 
-  dismiss() {
+  dismiss(): void {
     this.modal.dismiss(null, 'cancel');
   }
 

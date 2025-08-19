@@ -21,22 +21,6 @@
   border: var(--border-ddd);
 }
 
-.ion-label-main {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  padding: 16px;
-  border-bottom: var(--border-ddd);
-  line-height: 1.5;
-  background: var(--background-main);
-  text-align: left;
-  flex-grow: 1;
-  border-top-left-radius: var(--border-radius-4);
-  border-bottom-left-radius: var(--border-radius-4);
-  color: var(--color-white);
-}
-
 .div-spec-keys-values {
   display: flex;
   align-items: center;
@@ -68,4 +52,42 @@
       border-right: var(--border-ddd);
     }
   }
+}
+
+.div-title-delete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  position: relative;
+  background: var(--background-main);
+
+  .spec-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--color-white);
+  }
+}
+
+.spec-delete {
+  background: var(--content-background-white);
+  border-radius: 6px;
+  padding: 4px;
+  font-size: 18px;
+
+  &:nth-child(1) {
+    color: var(--color-skyblue);
+  }
+
+  &:nth-child(2) {
+    color: var(--red);
+  }
+}
+
+.div-btn-delete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

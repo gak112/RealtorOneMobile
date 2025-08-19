@@ -1,9 +1,35 @@
+@if(specifications.length > 0) {
 <div class="div-edit">
   <ion-label class="ion-label-heading">Specifications</ion-label>
-  <!-- <div class="div-btn" (click)="openSpecifications()">
-    <ion-button size="small" color="warning">View details</ion-button>
-  </div> -->
 </div>
+<div>
+  @for (sec of specifications; track sec.title; let i = $index) {
+  <div class="div-specification-display">
+    <div class="div-title-delete">
+      <ion-label class="spec-title">{{ sec.title }}</ion-label>
+      <div class="div-btn-delete">
+        <ion-icon name="create" class="spec-delete" (click)="openEditSection(i)"></ion-icon>
+        <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)"></ion-icon>
+      </div>
+    </div>
+    <div style="padding: 10px;">
+      @for (kv of sec.specifications; track kv.key; let j = $index) {
+      <div class="div-spec-keys-values">
+        <div class="div-specification-sub">
+          <ion-label class="ion-label-title">{{ kv.key }}</ion-label>
+          <ion-label class="ion-label-title">{{ kv.value }}</ion-label>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>
+}
+
+
+
+
 <!-- <div class="div-specification-display">
   <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">Kitchen
     Rooms</ion-label>
@@ -18,27 +44,3 @@
     }
   </div>
 </div> -->
-@if(specifications.length > 0) {
-<div class="space-y-3" style="display:grid; gap:12px;">
-  @for (sec of specifications; track sec.title; let i = $index) {
-  <div class="div-specification-display" style="border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
-    <div class="div-title-delete"
-      style="padding:10px 12px; background:#f7f7f8; display:flex; align-items:center; justify-content:space-between;">
-      <ion-label class="ion-label-main" style="font-weight:600; font-size:14px;">{{ sec.title }}</ion-label>
-    </div>
-
-    <div style="padding: 10px;">
-      @for (kv of sec.specifications; track kv.key; let j = $index) {
-      <div class="div-spec-keys-values"
-        style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border:1px solid #eee; border-radius:10px; margin-bottom:8px;">
-        <div class="div-specification-sub" style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; width:100%;">
-          <ion-label class="ion-label-title" style="font-weight:500;">{{ kv.key }}</ion-label>
-          <ion-label class="ion-label-title" style="text-align:right;">{{ kv.value }}</ion-label>
-        </div>
-      </div>
-      }
-    </div>
-  </div>
-  }
-</div>
-}

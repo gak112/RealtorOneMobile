@@ -388,7 +388,8 @@ ion-textarea {
 }
 
 ion-select::part(label) {
-  line-height: 19px;
+  line-height: 15px !important;
+  color: var(--color-777) !important;
 }
 
 .swal2-container {
