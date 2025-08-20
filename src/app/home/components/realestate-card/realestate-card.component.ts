@@ -70,3 +70,5 @@ export interface IPropertyImage {
   id: string;
   image: string;
 }
+
+

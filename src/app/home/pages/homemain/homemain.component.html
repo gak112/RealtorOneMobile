@@ -121,8 +121,8 @@
     </div>
     <div class="div vendors">
       <!-- <app-product-box></app-product-box> -->
-      @for(property of properties(); track property.id) {
-      <app-realestate-card [property]="property"></app-realestate-card>
+      @for (p of properties(); track p.id) {
+      <app-realestate-card [property]="p"></app-realestate-card>
       }
     </div>
     <!-- <ion-fab  horizontal="end" vertical="bottom" slot="fixed" style="position: fixed;" (click)="openFormEntry()">
