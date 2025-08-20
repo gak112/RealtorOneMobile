@@ -112,6 +112,27 @@ ion-label {
   }
 }
 
+.div-amenities {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  .badge-amenity {
+    font-size: 12px;
+    background: var(--background-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    font-weight: 600;
+    border-radius: 6px;
+    letter-spacing: 0.25px;
+    color: var(--color-white);
+  }
+}
+
 .div-formgroup {
   margin-bottom: 16px;
   position: relative;
@@ -268,40 +289,42 @@ ion-label {
   width: 100%;
 }
 
-.div-images-display {
+.div-venture-images {
   display: flex;
   align-items: center;
-  padding: 16px;
-  background: var(--content-background);
-  border-radius: 10px;
-  margin-top: 16px;
-  overflow-x: scroll;
-  border: var(--border);
+  overflow-x: auto;
+  gap: 16px;
+}
 
-  :not(:last-child) {
-    margin-right: 16px;
+.div-uploading {
+  height: 200px;
+  width: 200px;
+  min-width: 200px;
+  position: relative;
+  background: var(--content-background-white);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: var(--border);
+  overflow: hidden;
+
+  ion-img {
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
   }
 
-  .div-img-sub {
-    height: 150px;
-    min-width: 150px;
-    background: #000;
+  ion-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    background: red;
+    font-weight: 600;
     border-radius: 4px;
-    position: relative;
-
-    ion-icon {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      color: red;
-      font-size: 24px;
-    }
-
-    ion-img {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
-    }
+    padding: 5px;
+    color: var(--color-white);
+    cursor: pointer;
   }
 }
 
@@ -497,7 +520,7 @@ ion-label {
   align-items: center;
   justify-content: space-between;
   border: 1px solid #aaa;
-  padding: 16px;
+  padding: 12px;
   border-radius: 10px;
   background: var(--content-background-white);
 

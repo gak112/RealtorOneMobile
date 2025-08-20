@@ -12,7 +12,6 @@ import {
   IonSkeletonText,
   ModalController,
 } from '@ionic/angular/standalone';
-import { EditpropertyComponent } from '../../pages/editproperty/editproperty.component';
 import { PostfullviewComponent } from 'src/app/home/pages/postfullview/postfullview.component';
 import { PostUserHeaderComponent } from 'src/app/search/components/post-user-header/post-user-header.component';
 import { register } from 'swiper/element';
@@ -57,14 +56,6 @@ export class SavedpropertycardComponent implements OnInit {
   async openFullview() {
     const modal = await this.modalController.create({
       component: PostfullviewComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
-    });
-    return await modal.present();
-  }
-  async editProperty(hit: any) {
-    const modal = await this.modalController.create({
-      component: EditpropertyComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });

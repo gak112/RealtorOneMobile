@@ -242,9 +242,9 @@ export class MoremainComponent implements OnInit {
     return await modal.present();
   }
 
-  async goToVillaConfigure() {
+  async goToSubscription() {
     const modal = await this.modalController.create({
-      component: VillaconfigureComponent,
+      component: SubscriptionsComponent,
     });
     return await modal.present();
   }

@@ -1,3 +1,4 @@
+// src/app/more/components/postentry/postentry.component.ts
 import {
   Component,
   ChangeDetectionStrategy,
@@ -7,6 +8,7 @@ import {
   signal,
   OnInit,
   Input,
+  ViewChild,
 } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -50,18 +52,21 @@ import {
 } from 'ionicons/icons';
 import { Geolocation } from '@capacitor/geolocation';
 import { CommonModule } from '@angular/common';
-// import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
+import { PostPayload, PostsService } from 'src/app/more/services/posts.service';
+import { FirebaseError } from '@angular/fire/app';
+import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
 
 type HouseType =
   | 'Apartment'
   | 'Individual House/Villa'
-  | 'Gated Community Villa';
+  | 'Gated Community Villa'
+  | '';
 type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
 type Units = 'Sq Feet' | 'Sq Yard' | 'Sq Mtr' | 'Acre';
 type RentUnits = 'Monthly' | 'Yearly';
@@ -69,7 +74,7 @@ type AgeAction = 'underconstruction' | 'noofyears';
 
 type PostEntryForm = {
   title: FormControl<string>;
-  houseType: FormControl<HouseType | ''>;
+  houseType: FormControl<HouseType>;
   houseCondition: FormControl<'Old Houses' | 'New Houses' | null>;
   rooms: FormControl<number | null>;
   bhkType: FormControl<BHKType | null>;
@@ -105,6 +110,7 @@ type PostEntryForm = {
 @Component({
   selector: 'app-postentry',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -124,17 +130,25 @@ type PostEntryForm = {
     IonSegmentButton,
     IonFooter,
     IonBadge,
+    IonCheckbox,
+    UcWidgetModule,
   ],
   templateUrl: './postentry.component.html',
   styleUrls: ['./postentry.component.scss'],
 })
-export class PostentryComponent {
+export class PostentryComponent implements OnInit {
   // DI
   private fb = inject(NonNullableFormBuilder);
   private modalCtrl = inject(ModalController);
   private nav = inject(NavController);
   private toastCtrl = inject(ToastController);
-  // private http = inject(HttpClient);
+  private postsService = inject(PostsService);
+
+  // Inputs
+  @Input() saleType: 'sale' | 'rent' = 'sale';
+  @Input() category: 'residential' | 'commercial' | 'plots' | 'lands' =
+    'residential';
+  @Input() editId: string | null = null;
 
   // constants
   private static readonly FLOORS = [
@@ -156,22 +170,19 @@ export class PostentryComponent {
     Acre: 'Acre',
   };
 
-  // UI state (signals)
+  // UI state
   readonly ageOfPropertyAction = signal<AgeAction>('underconstruction');
   readonly imgsBusy = signal(false);
   readonly imgsPct = signal(0);
   readonly loading = signal(false);
   readonly pageError = signal<string | null>(null);
 
-  @Input() action: any;
-  @Input() actionType: any;
-
-  // reactive form
+  // form
   postEntryForm = this.fb.group<PostEntryForm>({
     title: this.fb.control('', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
-    houseType: this.fb.control<HouseType | ''>('', {
+    houseType: this.fb.control<HouseType>('', {
       validators: [Validators.required],
     }),
     houseCondition: this.fb.control<'Old Houses' | 'New Houses' | null>(null),
@@ -219,14 +230,14 @@ export class PostentryComponent {
     lat: this.fb.control<number | null>(null),
     lng: this.fb.control<number | null>(null),
     description: this.fb.control<string | null>(null),
-    negotiable: this.fb.control(true),
+    negotiable: this.fb.control<boolean>(true),
     images: this.fb.control<string[]>([]),
   });
 
-  // signalized controls (perf: avoid reading whole form in template)
+  // signals from controls
   private sel<T>(name: keyof PostEntryForm) {
     const c = this.postEntryForm.controls[name];
-    return toSignal(c.valueChanges as Observable<T>, {
+    return toSignal(c.valueChanges as unknown as Observable<T>, {
       initialValue: c.value as T,
     });
   }
@@ -234,14 +245,19 @@ export class PostentryComponent {
   readonly images$ = this.sel<string[]>('images');
   readonly units$ = this.sel<Units | null>('totalPropertyUnits');
 
-  // derived signals
+  // derived
   readonly formValid = computed(() => this.postEntryForm.valid);
   readonly canSubmit = computed(() => this.formValid() && !this.loading());
   readonly floors = PostentryComponent.FLOORS;
   readonly unitShort = computed(() => {
     const u = this.units$();
     return u ? PostentryComponent.UNIT_SHORT[u] : 'Sq Ft';
+    // template calls unitShort() — signals are callable
   });
+
+  // chip view state (kept but mirrored to form)
+  amenities = signal<string[]>([]);
+  hasAmenities = computed(() => this.amenities().length > 0);
 
   constructor() {
     addIcons({
@@ -253,7 +269,7 @@ export class PostentryComponent {
       caretUpOutline,
     });
 
-    // enable/disable "noOfYears" based on segment
+    // Enable/disable "noOfYears" based on segment
     effect(() => {
       const ctrl = this.postEntryForm.controls.noOfYears;
       if (this.ageOfPropertyAction() === 'underconstruction') {
@@ -262,6 +278,10 @@ export class PostentryComponent {
       } else if (ctrl.disabled) {
         ctrl.enable({ emitEvent: false });
       }
+    });
+
+    effect(() => {
+      this.amenities.set(this.amenities$() ?? []);
     });
 
     // rent → require rentUnits
@@ -282,7 +302,6 @@ export class PostentryComponent {
   // helper for template
   ctrl = (name: keyof PostEntryForm) => this.postEntryForm.controls[name];
 
-  // helpers
   private async toast(
     message: string,
     color: 'danger' | 'warning' | 'success' | 'medium' = 'warning'
@@ -302,55 +321,74 @@ export class PostentryComponent {
     el?.focus?.();
   }
 
-  private mapHttpError(err: unknown): string {
+  private mapError(err: unknown): string {
+    // Proper FirebaseError mapping (prevents every error looking like "Network error")
+    if (err instanceof FirebaseError) {
+      switch (err.code) {
+        case 'permission-denied':
+          return 'Permission denied. Check Firestore security rules for /posts.';
+        case 'unavailable':
+          return 'Service unavailable. You may be offline or Firestore is temporarily unreachable.';
+        case 'deadline-exceeded':
+          return 'Request timed out. Please try again.';
+        case 'failed-precondition':
+          return 'Precondition failed. If you are using emulator/indexes, verify indexes/schemas.';
+        case 'cancelled':
+          return 'Request cancelled. Please retry.';
+        case 'resource-exhausted':
+          return 'Resource exhausted (quota). Check Firestore limits/billing.';
+        case 'unauthenticated':
+          return 'You must be signed in to create or update posts.';
+        case 'not-found':
+          return 'Document not found.';
+        default:
+          return `Firestore error: ${err.code}`;
+      }
+    }
+
     const any = err as any;
     const status = any?.status ?? 0;
     const msg = any?.error?.message || any?.message;
-    if (status === 0) return 'Network error. Check your connection.';
-    if (status === 400) return msg || 'Bad request. Please review the form.';
-    if (status === 401) return 'Unauthorized. Please sign in again.';
-    if (status === 403) return 'Forbidden.';
-    if (status === 404) return 'Service not found.';
+    if (!navigator.onLine)
+      return 'You appear to be offline. Please check your connection.';
+    if (status >= 500) return 'Server error. Try again later.';
     if (status === 413) return 'Payload too large.';
     if (status === 422) return msg || 'Validation failed.';
-    if (status >= 500) return 'Server error. Try again later.';
-    return msg || `Unexpected error (${status}).`;
+    if (status === 404) return 'Service not found.';
+    if (status === 403) return 'Forbidden.';
+    if (status === 401) return 'Unauthorized.';
+    if (status === 400) return msg || 'Bad request.';
+    return msg || 'Unexpected error.';
   }
 
-  // events
   dismiss() {
     this.modalCtrl
       .getTop()
       .then((m) => (m ? m.dismiss() : this.nav.back()) as void);
   }
 
-  // async amenitiesList() {
-  //   const modal = await this.modalCtrl.create({
-  //     component: AmenitiesComponent,
-  //     enterAnimation: forwardEnterAnimation,
-  //     leaveAnimation: backwardEnterAnimation,
-  //     componentProps: { selected: [...(this.amenities$() || [])] },
-  //     canDismiss: true,
-  //     presentingElement: (await this.modalCtrl.getTop()) ?? undefined,
-  //   });
-  //   await modal.present();
-  //   const { data, role } = await modal.onWillDismiss<string[]>();
-  //   if (role === 'confirm' && Array.isArray(data)) {
-  //     this.ctrl('amenities').setValue(data as never);
-  //     this.toast(
-  //       `Added ${data.length} amenit${data.length === 1 ? 'y' : 'ies'}`,
-  //       'success'
-  //     );
-  //   }
-  // }
-
-  async amenitiesList() {
+  async openAmenities() {
     const modal = await this.modalCtrl.create({
       component: AmenitiesComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
+      componentProps: { selectedAmenities: this.amenities() },
     });
     await modal.present();
+
+    const { data } = await modal.onWillDismiss<string[]>();
+    if (Array.isArray(data)) {
+      this.amenities.set(data);
+      // 🔁 keep form control in sync for submit()
+      this.ctrl('amenities').setValue([...data] as never);
+    }
+  }
+
+  removeAmenity(index: number) {
+    const list = [...this.amenities()];
+    list.splice(index, 1);
+    this.amenities.set(list);
+    this.ctrl('amenities').setValue(list as never);
   }
 
   ageOfPropertyChanged(ev: CustomEvent) {
@@ -383,82 +421,192 @@ export class PostentryComponent {
     }
   }
 
-  //  async selectVentureImages(evt: Event) {
-  //    const input = evt.target as HTMLInputElement;
-  //    const files = Array.from(input.files ?? []);
-  //    if (!files.length) return;
+  // async selectVentureImages(evt: Event) {
+  //   const input = evt.target as HTMLInputElement;
+  //   const files = Array.from(input.files ?? []);
+  //   if (!files.length) return;
 
-  //    const current = (this.images$() || []).slice(0);
-  //    if (current.length + files.length > PostentryComponent.MAX_FILES) {
-  //      this.toast(`Max ${PostentryComponent.MAX_FILES} images.`, 'danger');
-  //      input.value = '';
-  //      return;
-  //    }
+  //   const current = (this.images$() || []).slice(0);
+  //   if (current.length + files.length > PostentryComponent.MAX_FILES) {
+  //     this.toast(`Max ${PostentryComponent.MAX_FILES} images.`, 'danger');
+  //     input.value = '';
+  //     return;
+  //   }
 
-  //    this.imgsBusy.set(true);
-  //    this.pageError.set(null);
+  //   this.imgsBusy.set(true);
+  //   this.pageError.set(null);
 
-  //    try {
-  //      let accepted = 0;
-  //      const next = current;
+  //   try {
+  //     let accepted = 0;
+  //     const next = current;
 
-  //      for (let i = 0; i < files.length; i++) {
-  //        const f = files[i];
-  //        if (!PostentryComponent.ACCEPTED_TYPES.has(f.type)) { this.toast(`${f.name}: unsupported type.`, 'danger'); continue; }
-  //        if (f.size > PostentryComponent.MAX_SIZE_BYTES) { this.toast(`${f.name}: too large (>6MB).`, 'danger'); continue; }
+  //     for (let i = 0; i < files.length; i++) {
+  //       const f = files[i];
+  //       if (!PostentryComponent.ACCEPTED_TYPES.has(f.type)) {
+  //         this.toast(`${f.name}: unsupported type.`, 'danger');
+  //         continue;
+  //       }
+  //       if (f.size > PostentryComponent.MAX_SIZE_BYTES) {
+  //         this.toast(`${f.name}: too large (>6MB).`, 'danger');
+  //         continue;
+  //       }
 
-  //        const url = URL.createObjectURL(f);
-  //        if ('createImageBitmap' in window) { try { await createImageBitmap(f); } catch {} }
-  //        next.push(url);
-  //        accepted++;
-  //        this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
-  //        await new Promise(r => setTimeout(r, 8));
-  //      }
+  //       const url = URL.createObjectURL(f);
+  //       if ('createImageBitmap' in window) {
+  //         try {
+  //           await createImageBitmap(f);
+  //         } catch {}
+  //       }
+  //       next.push(url);
+  //       accepted++;
+  //       this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
+  //       await new Promise((r) => setTimeout(r, 8));
+  //     }
 
-  //      this.ctrl('images').setValue(next);
-  //      if (accepted) this.toast(`Added ${accepted} image${accepted === 1 ? '' : 's'}`, 'success');
-  //    } catch {
-  //      this.pageError.set('Failed to add images.');
-  //      this.toast('Failed to add images.', 'danger');
-  //    } finally {
-  //      this.imgsBusy.set(false);
-  //      this.imgsPct.set(0);
-  //      input.value = '';
-  //    }
-  //  }
+  //     this.ctrl('images').setValue(next as never);
+  //     if (accepted)
+  //       this.toast(
+  //         `Added ${accepted} image${accepted === 1 ? '' : 's'}`,
+  //         'success'
+  //       );
+  //   } catch (e) {
+  //     this.pageError.set(this.mapError(e));
+  //     this.toast(this.pageError()!, 'danger');
+  //   } finally {
+  //     this.imgsBusy.set(false);
+  //     this.imgsPct.set(0);
+  //     input.value = '';
+  //   }
+  // }
 
-  //  deleteImageByUrl(url: string) {
-  //    try { URL.revokeObjectURL(url); } catch {}
-  //    const filtered = (this.images$() || []).filter(u => u !== url);
-  //    this.ctrl('images').setValue(filtered);
-  //  }
+  // deleteImageByUrl(url: string) {
+  //   try {
+  //     URL.revokeObjectURL(url);
+  //   } catch {}
+  //   const filtered = (this.images$() || []).filter((u) => u !== url);
+  //   this.ctrl('images').setValue(filtered as never);
+  // }
+
+  @ViewChild('kyc') kyc: UcWidgetComponent;
+  images = [];
+  @Input() edit;
+
+  onComplete(event): void {
+    if (event.count === 10) {
+      this.showError('Images Exceed., please upload images upto 10');
+      return;
+    }
+    this.kyc.reset();
+    this.kyc.clearUploads();
+
+    if (event.count) {
+      for (let i = 0; i < event.count; i++) {
+        this.images.push(event.cdnUrl + '/nth/' + i + '/');
+      }
+    } else {
+      this.images.push(event.cdnUrl);
+    }
+    this.postEntryForm.patchValue(
+      { images: this.images },
+      { emitEvent: false }
+    );
+
+    if (2 - this.images.length === 1) {
+      this.kyc.multiple = false;
+    }
+  }
+
+  removeImg(i) {
+    this.images.splice(i, 1);
+    this.postEntryForm.patchValue(
+      { images: this.images },
+      { emitEvent: false }
+    );
+  }
 
   async submit() {
     this.pageError.set(null);
     this.postEntryForm.markAllAsTouched();
-    if (!this.formValid()) {
+
+    if (!this.postEntryForm.valid) {
       this.toast('Please fix the highlighted fields.', 'danger');
       this.focusFirstInvalid();
       return;
     }
 
+    if (!navigator.onLine) {
+      const msg = 'You appear to be offline. Please check your connection.';
+      this.pageError.set(msg);
+      this.toast(msg, 'danger');
+      return;
+    }
+
     this.loading.set(true);
     try {
-      const payload = this.postEntryForm.getRawValue();
-      console.log(payload);
-      // TODO: replace with real API call:
-      // await this.http.post('/api/properties', payload).toPromise();
-      await new Promise((r) => setTimeout(r, 350));
-      this.toast('Property saved', 'success');
-      // Optional:
-      // this.postEntryForm.reset({ negotiable: true, images: [] });
-      // this.dismiss();
+      const raw = this.postEntryForm.getRawValue();
+
+      // Build strict payload
+      const payload: PostPayload = {
+        ...raw,
+        // ensure arrays are not undefined
+        amenities: raw.amenities ?? [],
+        images: raw.images ?? [],
+        saleType: this.saleType,
+        category: this.category,
+      } as PostPayload;
+
+      if (this.editId) {
+        await this.postsService.update(this.editId, payload);
+        await this.toast('Property updated', 'success');
+      } else {
+        await this.postsService.create(payload);
+        await this.toast('Property saved', 'success');
+      }
+
+      // Reset to sensible defaults
+      this.postEntryForm.reset({} as Partial<PostEntryForm> as any, {
+        emitEvent: false,
+      });
+      this.amenities.set([]);
     } catch (e) {
-      const msg = this.mapHttpError(e);
+      const msg = this.mapError(e);
       this.pageError.set(msg);
       this.toast(msg, 'danger');
     } finally {
       this.loading.set(false);
     }
+  }
+
+  async ngOnInit() {
+    // keep amenities chip view in sync if user edits existing doc
+
+    if (this.editId) {
+      try {
+        this.loading.set(true);
+        const doc = await this.postsService.getById(this.editId);
+        if (doc) {
+          this.postEntryForm.patchValue(doc as any, { emitEvent: false });
+          this.amenities.set((doc as any).amenities ?? []);
+        } else {
+          this.pageError.set('Post not found.');
+        }
+      } catch (e) {
+        this.pageError.set(this.mapError(e));
+      } finally {
+        this.loading.set(false);
+      }
+    }
+  }
+  private toastr = inject(ToastController);
+
+  async showError(msg: any) {
+    const toast = await this.toastr.create({
+      message: msg,
+      position: 'top',
+      color: 'danger',
+      duration: 2000,
+    });
+    (await this.toastr.getTop())?.dismiss();
+    await toast.present();
   }
 }

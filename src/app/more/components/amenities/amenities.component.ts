@@ -1,18 +1,15 @@
+// src/app/components/amenities/amenities.component.ts
 import {
   Component,
   Input,
   OnInit,
-  inject,
+  ChangeDetectionStrategy,
   signal,
   computed,
+  effect,
+  inject,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  collection,
-  collectionData,
-  orderBy,
-  query,
-} from '@angular/fire/firestore';
+import { CommonModule } from '@angular/common';
 import {
   IonButton,
   IonCheckbox,
@@ -28,21 +25,20 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
-import { IAmenitiesList } from '../amenities-card/amenities-card.component';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { toSignal } from '@angular/core/rxjs-interop';
 
-type Amenity = {
-  id: string;
-  name: string;
-  selected: boolean;
-};
+import { AmenitiesService, AmenityDoc } from '../../services/amenities.service';
+
+type AmenityVM = AmenityDoc & { selected: boolean };
 
 @Component({
   selector: 'app-amenities',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './amenities.component.html',
   styleUrls: ['./amenities.component.scss'],
   imports: [
+    CommonModule,
     IonSearchbar,
     IonHeader,
     IonToolbar,
@@ -57,108 +53,85 @@ type Amenity = {
   providers: [ModalController],
 })
 export class AmenitiesComponent implements OnInit {
-  private modal = inject(ModalController);
-  private afs = inject(AngularFirestore);
+  private modalCtrl = inject(ModalController);
+  private amenitiesSvc = inject(AmenitiesService);
 
+  /** Names or IDs to preselect */
   @Input() selectedAmenities: string[] = [];
 
-  // Local signal state
-  amenities = signal<Amenity[]>([
-    {
-      id: 'pool',
-      name: 'Swimming Pool',
+  // UI
+  loading = signal(true);
+  pageError = signal<string | null>(null);
 
-      selected: false,
-    },
-    {
-      id: 'gym',
-      name: 'Gym',
+  // Writable list (source of truth for UI)
+  private amenities = signal<AmenityVM[]>([]);
 
-      selected: false,
-    },
-    {
-      id: 'parking',
-      name: 'Parking',
+  // Search term
+  private q = signal('');
 
-      selected: false,
-    },
-    {
-      id: 'garden',
-      name: 'Garden',
+  // Firestore → signal (read-only)
+  private amenitiesDocs = toSignal(this.amenitiesSvc.streamAmenities(), {
+    initialValue: [] as AmenityDoc[],
+  });
 
-      selected: false,
-    },
-    {
-      id: 'clubhouse',
-      name: 'Club House',
+  // Filtered view for template
+  view = computed(() => {
+    const term = this.q().toLowerCase();
+    const list = this.amenities();
+    return term ? list.filter(a => a.amenityName.toLowerCase().includes(term)) : list;
+  });
 
-      selected: false,
-    },
-    {
-      id: 'playarea',
-      name: 'Kids Play Area',
-
-      selected: false,
-    },
-    {
-      id: 'security',
-      name: '24/7 Security',
-
-      selected: false,
-    },
-    {
-      id: 'power',
-      name: 'Power Backup',
-
-      selected: false,
-    },
-    {
-      id: 'lift',
-      name: 'Lift',
-
-      selected: false,
-    },
-    {
-      id: 'wifi',
-      name: 'Wi-Fi',
-
-      selected: false,
-    },
-  ]);
-
-  selectedCount = computed(
-    () => this.amenities().filter((a) => a.selected).length
-  );
+  // Live selected count
+  selectedCount = computed(() => this.amenities().filter(a => a.selected).length);
 
   constructor() {
     addIcons({ chevronBackOutline });
+
+    // Merge Firestore docs with preselected values
+    effect(
+      () => {
+        const docs = this.amenitiesDocs();
+        const pre = new Set((this.selectedAmenities ?? []).map(s => s.trim().toLowerCase()));
+
+        const next = docs.map(d => {
+          const byName = pre.has(d.amenityName?.toLowerCase() ?? '');
+          const byId = pre.has(d.id?.toLowerCase() ?? '');
+          return { ...d, selected: byName || byId };
+        });
+
+        this.amenities.set(next);
+        this.loading.set(false);
+      },
+      { allowSignalWrites: true }
+    );
   }
 
-  ngOnInit(): void {
-    if (this.selectedAmenities?.length) {
-      const set = new Set(this.selectedAmenities.map((s) => s.toLowerCase()));
-      this.amenities.update((list) =>
-        list.map((a) => ({ ...a, selected: set.has(a.name.toLowerCase()) }))
-      );
-    }
-  }
+  ngOnInit(): void {}
 
   dismiss() {
-    this.modal.dismiss();
+    this.modalCtrl.dismiss();
   }
 
-  toggle(index: number, checked: boolean) {
-    this.amenities.update((list) => {
-      const copy = [...list];
-      copy[index] = { ...copy[index], selected: checked };
-      return copy;
-    });
+  onSearch(ev: CustomEvent) {
+    const val = ((ev.detail as any)?.value ?? '').toString().trim();
+    this.q.set(val);
+  }
+
+  toggle(filteredIndex: number, checked: boolean) {
+    const current = this.view();
+    const target = current?.[filteredIndex];
+    if (!target) return;
+
+    const id = target.id;
+    this.amenities.update(list =>
+      list.map(a => (a.id === id ? { ...a, selected: checked } : a))
+    );
   }
 
   addItems() {
-    const selectedNames = this.amenities()
-      .filter((a) => a.selected)
-      .map((a) => a.name);
-    this.modal.dismiss(selectedNames);
+    const result = this.amenities()
+      .filter(a => a.selected)
+      .map(a => a.amenityName); // swap to a.id if you prefer
+    this.modalCtrl.dismiss(result);
   }
 }

@@ -1,78 +1,29 @@
-
-
-ion-header {
-    background: var(--white);
-
-    ion-toolbar {
-        --min-height: 60px;
-        --background: #fff;
-        --border-width: 0;
-        display: flex;
-        align-items: center;
-
-        ion-icon {
-            margin-right: 16px;
-            font-size: 22px;
-            color: #000;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        ion-back-button {
-            letter-spacing: 0.5px;
-            --color: #34353a;
-        }
-
-        ion-title {
-            --color: #000;
-            padding: 0 15px !important;
-            text-align: justify !important;
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: none;
-            display: block;
-            position: relative !important;
-            left: 0;
-            overflow: visible !important;
-            margin-left: 16px;
-        }
-    }
-}
-
-:host-context(.ios) {
-
-    ion-toolbar {
-        --padding-top: 20px;
-    
-        ion-label {
-            margin-top: 10px;
-        }
-    
-        ion-title {
-            padding-bottom: 10px;
-        }
-    }
-}
-
 .div-search-position {
-    width: 100%;
-    position: fixed;
-    background: #fff;
-    padding: 10px;
-    z-index: 9;
-    min-height: 60px;
-    margin-top: -1px;
-    // border-bottom: 1px solid #eee;
+  width: 100%;
+  position: fixed;
+  background: #fff;
+  padding: 10px;
+  z-index: 9;
+  min-height: 60px;
+  margin-top: -1px;
+  // border-bottom: 1px solid #eee;
 
-    ion-icon {
-        padding-left: 10px;
-        font-size: calc(var(--font-size-10) * 3);
-        color: black;
-    }
+  ion-icon {
+    padding-left: 10px;
+    font-size: calc(var(--font-size-10) * 3);
+    color: black;
+  }
 }
 
 .div-padding {
-    padding-top: 62px;
+  padding-top: 62px;
+}
+
+ion-title {
+  padding-left: 40px;
+  text-align: left;
+}
+
+ion-content {
+  --background: var(--content-background);
 }

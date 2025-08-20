@@ -1,5 +1,4 @@
 <div class="property-card">
-  <!-- Property Image Section -->
   <div class="property-image-section">
     <swiper-container [zoom]="true" [slidesPerView]="1" loop="true" autoplay-delay="2000"
       autoplay-disable-on-interaction="false" class="mySwiper">
@@ -12,29 +11,23 @@
     <div class="image-overlay"></div>
     <div class="property-status-badge">{{ property().type }}</div>
   </div>
-  <!-- Property Information Container -->
   <div class="info-container">
-    <!--herat icon-->
     <div class="heart-icon">
       <ion-icon name="heart-outline"></ion-icon>
       <ion-icon name="arrow-redo-outline"></ion-icon>
     </div>
-    <!-- Main Information Section -->
     <div class="main-info-section" (click)="openPropertyDetails()">
-      <!-- Location Section -->
       <div class="location-section">
         <ion-label class="location-code">{{ property().locationCode }}</ion-label>
         <ion-label class="location-full">{{ property().location }}</ion-label>
         <ion-label class="price-info">₹{{ property().price }}/sqft</ion-label>
       </div>
-      <!-- Property Details Section -->
       <div class="property-details">
         <ion-label class="property-type">{{ property().propertyType }}</ion-label>
         <ion-label class="property-size">{{ property().propertySize }}, {{ property().propertySqft }} sqft</ion-label>
         <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
       </div>
     </div>
-    <!-- Divider with Home Icon -->
     <div class="divider-section">
       <div class="divider-icon">
         <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -53,7 +46,6 @@
         </svg>
       </div>
     </div>
-    <!-- Footer Information -->
     <div class="footer-info">
       <div class="footer-item">
         <ion-label class="footer-label">Agent</ion-label>

@@ -33,7 +33,8 @@ import { PostentryComponent } from '../postentry/postentry.component';
 export class RequestsubmenuComponent implements OnInit {
   private modalController = inject(ModalController);
 
-  @Input() action: any;
+  @Input() saleType: 'sale' | 'rent' = 'sale';
+  @Input() category: 'residential' | 'commercial' | 'plots' | 'lands' = 'residential';
   propertyComponent = PostentryComponent;
 
   constructor() {
@@ -46,14 +47,14 @@ export class RequestsubmenuComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  async openPostEntry(type: string) {
+  async openPostEntry(type: 'residential' | 'commercial' | 'plots' | 'lands') {
     const modal = await this.modalController.create({
       component: PostentryComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
       componentProps: {
-        action: type,
-        actionType: this.action,
+        saleType: this.saleType,
+        category: type,
       },
     });
     await modal.present();
@@ -62,8 +63,4 @@ export class RequestsubmenuComponent implements OnInit {
   ngOnInit() {
     return;
   }
-
-  // goForward(type: any) {
-  //   this.nav.push(this.propertyComponent, { actionType: type, action: this.action });
-  // }
 }

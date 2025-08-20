@@ -5,9 +5,9 @@
   </ion-toolbar>
 
   @if (pageError()) {
-    <div style="background:#fee2e2;color:#7f1d1d;padding:8px 12px;font-size:13px;">
-      {{ pageError() }}
-    </div>
+  <div style="background:#fee2e2;color:#7f1d1d;padding:8px 12px;font-size:13px;">
+    {{ pageError() }}
+  </div>
   }
 </ion-header>
 
@@ -20,9 +20,11 @@
           placeholder="Enter Title" autocomplete="off" autocapitalize="sentences" formControlName="title">
         </ion-input>
         @if (ctrl('title').touched && ctrl('title').invalid) {
-          <small class="text-rose-600">Title is required (min 3 chars)</small>
+        <small class="text-rose-600">Title is required (min 3 chars)</small>
         }
       </div>
+
+      @if (category === 'residential') {
 
       <!-- House Type -->
       <div class="div-formgroup">
@@ -33,7 +35,7 @@
           <ion-select-option value="Gated Community Villa">Gated Community Villa</ion-select-option>
         </ion-select>
         @if (ctrl('houseType').touched && ctrl('houseType').invalid) {
-          <small class="text-rose-600">House Type is required</small>
+        <small class="text-rose-600">House Type is required</small>
         }
       </div>
 
@@ -46,12 +48,14 @@
         </ion-select>
       </div>
 
+
       <!-- Rooms -->
       <div class="div-formgroup">
         <ion-input type="number" inputmode="numeric" mode="md" label="Rooms" label-placement="floating" fill="outline"
           placeholder="Enter Rooms" style="margin-right:16px; position:relative;" formControlName="rooms">
         </ion-input>
       </div>
+
 
       <!-- BHK -->
       <div class="div-formgroup">
@@ -65,49 +69,63 @@
           <ion-select-option value="+5BHK">+5BHK</ion-select-option>
         </ion-select>
         @if (ctrl('bhkType').touched && ctrl('bhkType').invalid) {
-          <small class="text-rose-600">BHK Type is required</small>
+        <small class="text-rose-600">BHK Type is required</small>
         }
       </div>
+      <!-- Counts -->
+      <div class="div-formgroup">
+        <div class="div-grid">
+          <ion-input type="number" inputmode="numeric" mode="md" label="Toilets" label-placement="floating"
+            fill="outline" formControlName="toilets"></ion-input>
+          <ion-input type="number" inputmode="numeric" mode="md" label="Pooja Room" label-placement="floating"
+            fill="outline" formControlName="poojaRoom"></ion-input>
+          <ion-input type="number" inputmode="numeric" mode="md" label="Living/Dining" label-placement="floating"
+            fill="outline" formControlName="livingDining"></ion-input>
+          <ion-input type="number" inputmode="numeric" mode="md" label="Kitchen" label-placement="floating"
+            fill="outline" formControlName="kitchen"></ion-input>
+        </div>
+      </div>
+      }
 
       <!-- Units -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Units" label-placement="floating" fill="outline"
           formControlName="totalPropertyUnits">
-          <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+          <ion-select-option value="Sq Feet" defaultSelected>Sq Feet</ion-select-option>
           <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
           <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
           <ion-select-option value="Acre">Acre</ion-select-option>
         </ion-select>
         @if (ctrl('totalPropertyUnits').touched && ctrl('totalPropertyUnits').invalid) {
-          <small class="text-rose-600">Choose units</small>
+        <small class="text-rose-600">Choose units</small>
         }
       </div>
 
       <!-- Total size -->
-      <div class="div-formgroup" style="position: relative;">
-        <ion-input type="number" inputmode="numeric" mode="md" label="Size of the property" label-placement="floating" fill="outline"
-          placeholder="Enter size of the property" style="margin-right:16px; position:relative;"
+      <div class="div-formgroup" style="position: relative; display: flex; align-items: center;">
+        <ion-input type="number" inputmode="numeric" mode="md" label="Size of the property" label-placement="floating"
+          fill="outline" placeholder="Enter size of the property" style="margin-right:16px; position:relative;"
           formControlName="propertySize">
         </ion-input>
-        <div class="div-label-units">
+        <div class="div-label">
           <ion-label>{{ unitShort() }}</ion-label>
         </div>
         @if (ctrl('propertySize').touched && ctrl('propertySize').invalid) {
-          <small class="text-rose-600">Enter a property size &gt; 0</small>
+        <small class="text-rose-600">Enter a property size &gt; 0</small>
         }
       </div>
 
       <!-- Build-up size -->
-      <div class="div-formgroup" style="position: relative;">
-        <ion-input type="number" inputmode="numeric" mode="md" label="Property size (Build up)" label-placement="floating" fill="outline"
-          placeholder="Enter Property size (Build up)" style="margin-right:16px; position:relative;"
-          formControlName="propertySizeBuildUp">
+      <div class="div-formgroup" style="position: relative; display: flex; align-items: center;">
+        <ion-input type="number" inputmode="numeric" mode="md" label="Property size (Build up)"
+          label-placement="floating" fill="outline" placeholder="Enter Property size (Build up)"
+          style="margin-right:16px; position:relative;" formControlName="propertySizeBuildUp">
         </ion-input>
-        <div class="div-label-units">
+        <div class="div-label">
           <ion-label>{{ unitShort() }}</ion-label>
         </div>
         @if (ctrl('propertySizeBuildUp').touched && ctrl('propertySizeBuildUp').invalid) {
-          <small class="text-rose-600">Enter build-up size &gt; 0</small>
+        <small class="text-rose-600">Enter build-up size &gt; 0</small>
         }
       </div>
 
@@ -163,74 +181,66 @@
         </div>
       </div>
 
-      <!-- Counts -->
-      <div class="div-formgroup">
-        <div class="div-grid">
-          <ion-input type="number" inputmode="numeric" mode="md" label="Toilets" label-placement="floating" fill="outline"
-            formControlName="toilets"></ion-input>
-          <ion-input type="number" inputmode="numeric" mode="md" label="Pooja Room" label-placement="floating" fill="outline"
-            formControlName="poojaRoom"></ion-input>
-          <ion-input type="number" inputmode="numeric" mode="md" label="Living/Dining" label-placement="floating" fill="outline"
-            formControlName="livingDining"></ion-input>
-          <ion-input type="number" inputmode="numeric" mode="md" label="Kitchen" label-placement="floating" fill="outline"
-            formControlName="kitchen"></ion-input>
-        </div>
-      </div>
 
+      @if (category === 'residential' || category === 'commercial') {
       <!-- Floor -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Select Floor" label-placement="floating" fill="outline" formControlName="floor">
           @for (f of floors; track f) {
-            <ion-select-option [value]="f">{{ f }}</ion-select-option>
+          <ion-select-option [value]="f">{{ f }}</ion-select-option>
           }
         </ion-select>
         @if (ctrl('floor').touched && ctrl('floor').invalid) {
-          <small class="text-rose-600">Floor is required</small>
+        <small class="text-rose-600">Floor is required</small>
         }
       </div>
+      }
 
+      @if (category === 'residential') {
       <!-- Amenities -->
       <div class="div-formgroup flex" style="align-items:center;gap:8px;">
         <ion-label style="margin:0;font-size:16px;">Amenities</ion-label>
-        <ion-button size="small" (click)="amenitiesList()">
+        <ion-button size="small" color="warning" (click)="openAmenities()">
           <ion-icon slot="start" name="add"></ion-icon> Add
         </ion-button>
       </div>
       <div class="div-amenities">
-        <h4>Amenities</h4>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          @for (a of amenities$(); track a) {
-            <ion-badge color="tertiary">{{ a }}</ion-badge>
-          }
-         
-        </div>
+        @for (a of amenities(); track a; let i = $index) {
+        <span class="badge-amenity">
+          {{ a }}
+          <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
+        </span>
+        }
       </div>
+      }
 
       <!-- Age of Property -->
       <div class="div-formgroup">
         <ion-label>Age of Property</ion-label>
         <div class="div-property-segment">
-          <ion-segment color="primary" mode="ios" [value]="ageOfPropertyAction()" (ionChange)="ageOfPropertyChanged($event)">
+          <ion-segment color="primary" mode="ios" [value]="ageOfPropertyAction()"
+            (ionChange)="ageOfPropertyChanged($event)">
             <ion-segment-button value="underconstruction"><ion-label>Under Construction</ion-label></ion-segment-button>
             <ion-segment-button value="noofyears"><ion-label>No Of Years</ion-label></ion-segment-button>
           </ion-segment>
           @if (ageOfPropertyAction() === 'noofyears') {
-            <div style="margin-top:16px;">
-              <ion-input type="number" inputmode="numeric" mode="md" label="No of years" label-placement="floating" fill="outline"
-                placeholder="Enter no of years" formControlName="noOfYears"></ion-input>
-              @if (ctrl('noOfYears').touched && ctrl('noOfYears').invalid) {
-                <small class="text-rose-600">Please enter a valid number (≥ 0)</small>
-              }
-            </div>
+          <div style="margin-top:16px;">
+            <ion-input type="number" inputmode="numeric" mode="md" label="No of years" label-placement="floating"
+              fill="outline" placeholder="Enter no of years" formControlName="noOfYears"></ion-input>
+            @if (ctrl('noOfYears').touched && ctrl('noOfYears').invalid) {
+            <small class="text-rose-600">Please enter a valid number (≥ 0)</small>
+            }
+          </div>
           }
         </div>
       </div>
-
+      @if (saleType === 'rent') {
       <!-- Rent / Sale -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;">
-          <ion-input type="number" inputmode="numeric" mode="md" label="Rent Amount" label-placement="floating" fill="outline"
-            placeholder="Enter Rent Amount" style="margin-right:16px;" formControlName="rent"></ion-input>
+          <ion-input type="number" inputmode="numeric" mode="md" label="Rent Amount" label-placement="floating"
+            fill="outline" placeholder="Enter Rent Amount" style="margin-right:16px;"
+            formControlName="rent"></ion-input>
           <ion-select toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
             label-placement="floating" fill="outline" style="width:150px;" formControlName="rentUnits">
             <ion-select-option value="Monthly">Monthly</ion-select-option>
@@ -238,40 +248,39 @@
           </ion-select>
         </div>
         @if (ctrl('rent').touched && ctrl('rent').invalid) {
-          <small class="text-rose-600">Enter rent &gt; 0</small>
+        <small class="text-rose-600">Enter rent &gt; 0</small>
         }
         @if (ctrl('rentUnits').touched && ctrl('rentUnits').invalid) {
-          <small class="text-rose-600">Choose units</small>
+        <small class="text-rose-600">Choose units</small>
         }
       </div>
-
+      }
       <!-- Cost -->
       <div class="div-formgroup">
-        <ion-input type="number" inputmode="numeric" mode="md" label="Cost of Property (₹)" label-placement="floating" fill="outline"
-          placeholder="Enter Cost of Property" formControlName="costOfProperty"></ion-input>
+        <ion-input type="number" inputmode="numeric" mode="md" label="Cost of Property (₹)" label-placement="floating"
+          fill="outline" placeholder="Enter Cost of Property" formControlName="costOfProperty"></ion-input>
         @if (ctrl('costOfProperty').touched && ctrl('costOfProperty').invalid) {
-          <small class="text-rose-600">Enter cost &gt; 0</small>
+        <small class="text-rose-600">Enter cost &gt; 0</small>
         }
       </div>
-
       <!-- Address -->
       <div class="div-formgroup">
-        <div class="div-flex" style="display:flex;align-items:center;gap:8px;">
+        <!-- <div class="div-flex" style="display:flex;align-items:center;gap:8px;">
           <ion-label>Enter Address of Property</ion-label>
-          <ion-button fill="outline" color="tertiary" (click)="openLocation()">Locate me</ion-button>
-        </div>
-        <div class="div-formgroup">
+          <ion-button fill="outline" color="tertiary" >Locate me</ion-button>
+        </div> -->
+        <div class="div-formgroup" (click)="openLocation()">
           <ion-textarea mode="md" label="Address" label-placement="floating" fill="outline"
             placeholder="Type or auto-fill address" rows="3" style="height:auto;"
             formControlName="addressOfProperty"></ion-textarea>
         </div>
       </div>
-
       <!-- Description -->
       <div class="div-formgroup">
         <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
           placeholder="Enter Description" rows="5" style="height:auto;" formControlName="description"></ion-textarea>
       </div>
+
 
       <!-- Negotiable -->
       <div class="div-negotiable">
@@ -279,42 +288,81 @@
         <ion-checkbox checked="true" mode="md" formControlName="negotiable"></ion-checkbox>
       </div>
 
+
       <!-- Upload Images -->
       <!-- <div class="div-upload">
         <ion-label class="upload-label">Upload images</ion-label>
-        <div class="div-add" (click)="imagesFileInput.click()">
+        <div class="div-add" (onChange)="onUcChange($event)">
           <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
           <ion-label class="label-add">Upload files</ion-label>
           <span class="label-span">.jpg, .jpeg, .png</span>
           <input #imagesFileInput type="file" accept="image/*" multiple hidden (change)="selectVentureImages($event)" />
         </div>
-        @if (imgsBusy()) {
-          <div style="font-size: 12px; color: var(--green); font-weight: 500;">
-            Uploading images… {{ imgsPct() }}%
-          </div>
-        }
+        <div class="text-center p-8 border-2 border-dashed border-gray-200 rounded-lg bg-slate-50">
+          <ngx-uploadcare-widget #uc [tabs]="'file'" (on-upload-complete)="onComplete($event)" data-crop="300:300"
+            public-key="75efde342f2df35f3190">
+          </ngx-uploadcare-widget>
+        </div>
       </div> -->
+
+
 
       <!-- Images preview -->
       <!-- @if (images$().length > 0) {
-        <div class="div-venture-images">
-          @for (image of images$(); track $index) {
-            <div class="div-uploading">
-              <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)"></ion-icon>
-              <ion-img [src]="image" loading="lazy"></ion-img>
+      <div class="div-venture-images">
+        @for (image of images$(); track $index) {
+        <div class="div-uploading">
+          <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)"></ion-icon>
+          <ion-img [src]="image" loading="lazy"></ion-img>
+        </div>
+        }
+      </div>
+      } -->
+
+
+      <div class="div-formgroup">
+        <div class="div-input-sub">
+          <ngx-uploadcare-widget #kyc (on-upload-complete)="onComplete($event)" [multiple]="true" [multiple-min]="1"
+            [multiple-max]="10" [tabs]="'file'" [crop]="true" [preview-step]="true" [clearable]="true"
+            data-crop="300:300" [images-only]=true public-key="75efde342f2df35f3190"
+            accept="image/png, image/jpeg, image/jpg">
+          </ngx-uploadcare-widget>
+        </div>
+        @if (images.length > 0) {
+        <div class="div-images1">
+          @for (image of images; track $index) {
+          <div class="div-images-sub">
+            @if (!edit) {
+            <div class="div-icons">
+              <ion-icon name="trash" (click)="removeImg($index)"></ion-icon>
             </div>
+            }
+            <ion-img [src]="image"></ion-img>
+          </div>
           }
         </div>
-      } -->
+        }
+      </div>
 
     </div>
   </form>
 </ion-content>
 
 <ion-footer>
-  <ion-button class="ion-button-settings" mode="ios" expand="block" color="warning"
-    [disabled]="loading()" (click)="submit()">
+  <ion-button class="ion-button-settings" mode="ios" expand="block" color="warning" [disabled]="loading()"
+    (click)="submit()">
     @if (loading()) { <span class="spinner-border spinner-border-sm" style="margin-right:6px;"></span> }
     Submit
   </ion-button>
 </ion-footer>
+
+
+
+<!-- <ngx-uploadcare-widget class="post-entry-btn" [multiple]="true" [multiple-max]="3" data-crop="300:300"
+  [images-only]=true public-key="563d1afa2618816d4d42">
+</ngx-uploadcare-widget> -->
+
+
+<!-- <ngx-uploadcare-widget class="post-entry-btn" [public-key]="'563d1afa2618816d4d42'" [multiple]="true" [multiple-max]="3"
+  [images-only]=true [crop]="'300:300'" [tabs]="'file url camera dropbox gdrive'">
+</ngx-uploadcare-widget> -->

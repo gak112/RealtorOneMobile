@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <div class="div-toolbarflex" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
@@ -22,6 +22,47 @@
       <ion-checkbox color="primary" [checked]="a.selected" (ionChange)="toggle(i, $event.detail.checked)">
       </ion-checkbox>
     </div>
+    }
+  </div>
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <div class="div-toolbarflex" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+      <ion-title>Amenities</ion-title>
+      <ion-button color="warning" size="small" (click)="addItems()" slot="end">
+        Add ({{ selectedCount() }})
+      </ion-button>
+    </div>
+  </ion-toolbar>
+
+  <ion-toolbar style="--padding-start:0;--padding-end:0;--min-height:55px;--padding-top:0;--padding-bottom:0;">
+    <ion-searchbar [debounce]="500" placeholder="Search" style="padding-top:10px;" (ionInput)="onSearch($event)"></ion-searchbar>
+  </ion-toolbar>
+
+  @if (pageError()) {
+    <div style="background:#fee2e2;color:#7f1d1d;padding:8px 12px;font-size:13px;">
+      {{ pageError() }}
+    </div>
+  }
+</ion-header>
+
+<ion-content>
+  <div class="div-amenities" style="padding:12px;">
+    @for (a of view(); track a.id; let i = $index) {
+      <div class="div-amenity">
+        <div class="div-title">
+          <ion-label>{{ a.amenityName }}</ion-label>
+        </div>
+        <ion-checkbox
+          color="primary"
+          [checked]="a.selected"
+          (ionChange)="toggle(i, $event.detail.checked)">
+        </ion-checkbox>
+      </div>
+    } @empty {
+      <div style="padding:12px;color:var(--ion-color-medium);">No amenities found.</div>
     }
   </div>
 </ion-content>

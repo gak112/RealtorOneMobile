@@ -1,19 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { ModalController ,IonContent, IonLabel, IonIcon, IonImg, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+import { Component, inject, OnInit } from '@angular/core';
+
+import {
+  ModalController,
+  IonContent,
+  IonLabel,
+  IonIcon,
+  IonImg,
+  IonSegment,
+  IonSegmentButton,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+} from '@ionic/angular/standalone';
 import { TransactionsComponent } from '../../components/transactions/transactions.component';
-import { CommonModule, NgIf } from '@angular/common';
 import { RenewalpropertiesComponent } from '../../components/renewalproperties/renewalproperties.component';
+import { addIcons } from 'ionicons';
+import {
+  callOutline,
+  chevronBackOutline,
+  locationOutline,
+  mailOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-agentprofile',
   templateUrl: './agentprofile.component.html',
   styleUrls: ['./agentprofile.component.scss'],
-  standalone:true,
-  imports:[IonContent,IonLabel,IonIcon,IonImg,IonSegment,IonSegmentButton,NgIf,TransactionsComponent,RenewalpropertiesComponent],
-  providers:[ModalController],
+  standalone: true,
+  imports: [
+    IonContent,
+    IonLabel,
+    IonIcon,
+    IonImg,
+    IonSegment,
+    IonSegmentButton,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    TransactionsComponent,
+    RenewalpropertiesComponent,
+  ],
+  providers: [ModalController],
 })
-export class AgentprofileComponent  implements OnInit {
+export class AgentprofileComponent implements OnInit {
+  private modalController = inject(ModalController);
 
   showFilter;
 
@@ -24,10 +54,17 @@ export class AgentprofileComponent  implements OnInit {
 
   segmentAction = 'ReferredCustomers';
 
-  constructor(private modalController: ModalController) { }
+  constructor() {
+    addIcons({
+      chevronBackOutline,
+      locationOutline,
+      mailOutline,
+      callOutline,
+    });
+  }
 
-  ngOnInit(): void { 
-    return
+  ngOnInit(): void {
+    return;
   }
 
   dismiss() {
@@ -37,5 +74,4 @@ export class AgentprofileComponent  implements OnInit {
   segmentChanged(val): void {
     this.segmentAction = val.detail.value;
   }
-
 }

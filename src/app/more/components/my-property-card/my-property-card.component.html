@@ -20,7 +20,7 @@
     </div>
     @if(isMenuOpen()) {
     <ul class="dd-menu">
-      <li><ion-icon name="create"></ion-icon>Edit</li>
+      <li (click)="editProperty()"><ion-icon name="create"></ion-icon>Edit</li>
       <li><ion-icon name="trash"></ion-icon>Delete</li>
     </ul>
     }

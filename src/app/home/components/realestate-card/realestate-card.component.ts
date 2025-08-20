@@ -7,13 +7,12 @@ import {
 } from '@angular/core';
 import {
   IonIcon,
-  IonLabel,
   IonImg,
+  IonLabel,
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowRedoOutline, heartOutline } from 'ionicons/icons';
-import { PostfullviewComponent } from '../../pages/postfullview/postfullview.component';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,

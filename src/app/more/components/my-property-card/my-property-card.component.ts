@@ -1,18 +1,24 @@
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  inject,
   input,
   OnInit,
   signal,
 } from '@angular/core';
-import { IonIcon, IonLabel, IonImg } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
 import {
-  create,
-  ellipsisVertical,
-  heartOutline,
-  trash,
-} from 'ionicons/icons';
+  IonIcon,
+  IonLabel,
+  IonImg,
+  ModalController,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { create, ellipsisVertical, heartOutline, trash } from 'ionicons/icons';
+import { PostentryComponent } from 'src/app/home/pages/postentry/postentry.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
 
 @Component({
   selector: 'app-my-property-card',
@@ -23,6 +29,7 @@ import {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MyPropertyCardComponent implements OnInit {
+  private modalController = inject(ModalController);
   property = input.required<IPropertyDetails>();
   constructor() {
     addIcons({
@@ -39,6 +46,15 @@ export class MyPropertyCardComponent implements OnInit {
 
   openMenu() {
     this.isMenuOpen.set(!this.isMenuOpen());
+  }
+
+  async editProperty() {
+    const modal = await this.modalController.create({
+      component: PostentryComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 }
 

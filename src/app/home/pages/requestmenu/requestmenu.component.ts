@@ -27,7 +27,7 @@ import { RequestsubmenuComponent } from '../requestsubmenu/requestsubmenu.compon
 export class RequestmenuComponent implements OnInit {
   private modalController = inject(ModalController);
 
-  action = 'sale';
+  saleType: 'sale' | 'rent' = 'sale';
   propertyComponent = RequestsubmenuComponent;
 
   constructor() {
@@ -48,7 +48,7 @@ export class RequestmenuComponent implements OnInit {
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
       componentProps: {
-        action: type,
+        saleType: type,
       },
     });
     await modal.present();

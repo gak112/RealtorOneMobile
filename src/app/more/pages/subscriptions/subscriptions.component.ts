@@ -1,174 +1,168 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule } from '@ionic/angular';
-import { ModalController ,IonContent, IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonImg, IonSegment, IonSegmentButton, IonLabel, IonButton } from '@ionic/angular/standalone';
+import {
+  ModalController,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonIcon,
+  IonTitle,
+  IonImg,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonButton,
+} from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { CoupondetailsComponent } from '../coupondetails/coupondetails.component';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
   styleUrls: ['./subscriptions.component.scss'],
-  standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonImg,IonSegment,IonSegmentButton,IonLabel,IonButton,],
-  providers:[ModalController],
+  standalone: true,
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonImg,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonButton,
+  ],
+  providers: [ModalController],
 })
-export class SubscriptionsComponent  implements OnInit {
+export class SubscriptionsComponent implements OnInit {
+  private modalController = inject(ModalController);
 
   language;
   user;
   finalPaymentProcessing = false;
 
-  sProperties = [10,30,100,200,500,1000, '1000+'];
-  months = [3,6, 12];
+  sProperties = [10, 30, 100, 200, 500, 1000, '1000+'];
+  months = [3, 6, 12];
 
   basicAmount = 499;
-  vAmount =0;
+  vAmount = 0;
 
   vProperties;
   vMonths;
-  constructor(private modalController: ModalController, private auth: AuthService,
-      private afs: AngularFirestore, ) { }
+  constructor(private auth: AuthService, private afs: AngularFirestore) {
+    addIcons({ chevronBackOutline });
+  }
 
   ngOnInit(): void {
     return;
-      // this.auth.user$.subscribe(user => {
-      //     this.user = user;
-      //   });
-   }
-
-  dismiss() {
-   this.modalController.dismiss();
+    // this.auth.user$.subscribe(user => {
+    //     this.user = user;
+    //   });
   }
 
+  dismiss() {
+    this.modalController.dismiss();
+  }
 
   async couponDetails() {
-
-      const modal = await this.modalController.create({
-        component: CoupondetailsComponent
-      });
-      await modal.present();
+    const modal = await this.modalController.create({
+      component: CoupondetailsComponent,
+    });
+    await modal.present();
   }
 
   async successPage() {
-
     // const modal = await this.modalController.create({
     //   component: SuccessPageComponent
     // });
     // await modal.present();
-}
+  }
 
-changeProperties(event) {
+  changeProperties(event) {
+    this.vProperties = event.detail.value;
 
+    this.calculateAmounts();
+  }
 
-  this.vProperties = event.detail.value;
-  
+  changePropertiesM(event: any) {
+    this.vMonths = event.detail.value;
 
+    this.calculateAmounts();
+  }
 
-  this.calculateAmounts(); 
+  calculateAmounts() {
+    let amount = 0;
+    let percentage = 0;
+    let monthsCount = 1;
 
+    switch (this.vProperties) {
+      case '10':
+        switch (this.vMonths) {
+          case 'monthly':
+            percentage = 0;
+            monthsCount = 1;
+            amount = 399;
+            break;
+          case 'half':
+            percentage = 10;
+            monthsCount = 6;
+            amount = 399;
+            break;
+          case 'yearly':
+            percentage = 20;
+            monthsCount = 12;
+            amount = 399;
+            break;
+        }
 
-
-
-
-}
-
-changePropertiesM(event: any) {
-
-  
-  this.vMonths = event.detail.value;
-
-  
-
-
-this.calculateAmounts(); 
-
-
-}
-
-calculateAmounts() {
-
-  let amount = 0;
-  let percentage = 0;
-  let monthsCount = 1;
-
-  switch (this.vProperties)  {
-
-
-
-    case '10':
-
-
-    switch (this.vMonths) { 
-
-      case 'monthly':
-        percentage = 0;
-        monthsCount = 1;
-        amount = 399;
         break;
-      case 'half':
-        percentage = 10;
-        monthsCount = 6;
-        amount = 399;
+      case '50':
+        switch (this.vMonths) {
+          case 'monthly':
+            percentage = 0;
+            monthsCount = 1;
+            amount = 299;
+            break;
+          case 'half':
+            percentage = 10;
+            monthsCount = 6;
+            amount = 299;
+            break;
+          case 'yearly':
+            percentage = 20;
+            monthsCount = 12;
+            amount = 299;
+            break;
+        }
         break;
-      case 'yearly':
-        percentage = 20;
-        monthsCount = 12;
-        amount = 399;
+      case '100':
+        switch (this.vMonths) {
+          case 'monthly':
+            percentage = 0;
+            monthsCount = 1;
+            amount = 199;
+            break;
+          case 'half':
+            percentage = 10;
+            monthsCount = 6;
+            amount = 199;
+            break;
+          case 'yearly':
+            percentage = 20;
+            monthsCount = 12;
+            amount = 199;
+            break;
+        }
         break;
-
-    }
-
-      
-
-      
-    break;
-    case '50':
-      switch (this.vMonths) { 
-
-        case 'monthly':
-          percentage = 0;
-          monthsCount = 1;
-          amount = 299;
-          break;
-        case 'half':
-          percentage = 10;
-          monthsCount = 6;
-          amount = 299;
-          break;
-        case 'yearly':
-          percentage = 20;
-          monthsCount = 12;
-          amount = 299;
-          break;
-
-      }
-    break;
-    case '100':
-      switch (this.vMonths) { 
-
-        case 'monthly':
-          percentage = 0;
-          monthsCount = 1;
-          amount = 199;
-          break;
-        case 'half':
-          percentage = 10;
-          monthsCount = 6;
-          amount = 199;
-          break;
-        case 'yearly':
-          percentage = 20;
-          monthsCount = 12;
-          amount = 199;
-          break;
-
-      }
-    break;
 
       case '500':
-        switch (this.vMonths) { 
-
+        switch (this.vMonths) {
           case 'monthly':
             percentage = 0;
             monthsCount = 1;
@@ -184,43 +178,39 @@ calculateAmounts() {
             monthsCount = 12;
             amount = 99;
             break;
-  
         }
         break;
+    }
+
+    this.vAmount = Math.floor(
+      this.vProperties * (monthsCount * (amount - (amount * percentage) / 100))
+    );
   }
 
-  this.vAmount = Math.floor(this.vProperties * (monthsCount * ( amount - (amount * percentage / 100))));
+  changeBasicMonths(event: any) {
+    const months = event.detail.value;
 
-}
+    let percentage = 0;
+    let monthsCount = 1;
 
-changeBasicMonths(event: any) {
-  const months = event.detail.value;
-  
+    switch (months) {
+      case 'monthly':
+        percentage = 0;
+        monthsCount = 1;
 
-  let percentage = 0;
-  let monthsCount = 1;
+        break;
+      case 'half':
+        percentage = 10;
+        monthsCount = 6;
+        break;
+      case 'yearly':
+        percentage = 20;
+        monthsCount = 12;
+        break;
+    }
 
-  switch (months) {
-
-    case 'monthly':
-      percentage = 0;
-      monthsCount = 1;
-      
-    break;
-    case 'half':
-      percentage = 10;
-      monthsCount = 6;
-    break;
-    case 'yearly':
-      percentage = 20;
-      monthsCount = 12;
-    break;
-
+    this.basicAmount = Math.floor(
+      monthsCount * (499 - (499 * percentage) / 100)
+    );
   }
-
-  this.basicAmount = Math.floor(monthsCount * ( 499 - (499 * percentage / 100)));
-
-
-}
-
 }

@@ -63,10 +63,10 @@
         <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
           [centeredSlides]="true" class="mySwiper" [navigation]="true">
           <swiper-slide>
-           <div class="">
-            <ion-img class="slide" (click)="bannersview()"
-            [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
-           </div>
+            <div class="">
+              <ion-img class="slide" (click)="bannersview()"
+                [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
+            </div>
           </swiper-slide>
         </swiper-container>
         <!-- <ion-skeleton-text [animated]="true" style="width: 430px;height: 177px; "></ion-skeleton-text> -->
@@ -149,8 +149,8 @@
       </ion-fab-button>
       <ion-fab-list side="top">
         <ion-fab-button style="--background: darkslateblue;
-        --color: white;">
-          <ion-icon name="home" (click)="openRequestForm()"></ion-icon>
+        --color: white;" (click)="openRequestForm()">
+          <ion-icon name="home"></ion-icon>
         </ion-fab-button>
         <!-- <ion-fab-button style="--background: darkslateblue; --color: white">
           <ion-icon name="business" (click)="openVentureCreation()"></ion-icon>

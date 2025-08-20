@@ -1,10 +1,11 @@
-<!-- <ion-header>
+<ion-header>
   <ion-toolbar>
+    <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-close"></ion-icon>
     <ion-title>
-      Terms & Conditions
+      Agent Profile
     </ion-title>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
 <ion-content>
   <div class="div-profile-main">
     <div class="div-img">
@@ -14,7 +15,6 @@
       <div class="div-refer" style="right: 30px;left: inherit;">
         <ion-label><span>Amount</span>₹2875</ion-label>
       </div>
-      <ion-icon class="ion-icon-settings" name="chevron-back-outline" (click)="dismiss()"></ion-icon>
       <ion-img class="img-left" src="assets/img/shape1.png"></ion-img>
       <ion-img class="img-right" src="assets/img/shape2.png"></ion-img>
       <ion-label class="label-agent-name">Agent Profile</ion-label>
@@ -31,7 +31,7 @@
         <ion-label>Balemla, Suryapet, Telangana-508213</ion-label>
       </div>
       <div class="div-location">
-        <ion-icon name="mail-outline"></ion-icon>        
+        <ion-icon name="mail-outline"></ion-icon>
         <ion-label>example&#64;gmail.com</ion-label>
       </div>
       <div class="div-location">
@@ -40,18 +40,21 @@
       </div>
     </div>
   </div>
-  <ion-segment value="ReferredCustomers" mode="ios" (ionChange)="segmentChanged($event)">
-    <ion-segment-button value="ReferredCustomers">
-      <ion-label>Referred Customers</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="Properties">
-      <ion-label>Renewal&nbsp;Properties</ion-label>
-    </ion-segment-button>
-    <!-- <ion-segment-button value="ReferredCustomers">
+  <div class="" style="margin: 16px;">
+    <ion-segment value="ReferredCustomers" mode="ios" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="ReferredCustomers">
+        <ion-label>Referred Customers</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Properties">
+        <ion-label>Renewal&nbsp;Properties</ion-label>
+      </ion-segment-button>
+      <!-- <ion-segment-button value="ReferredCustomers">
       <ion-label>Referred&nbsp;Customers</ion-label>
     </ion-segment-button> -->
-  </ion-segment>
-  <div *ngIf="segmentAction === 'ReferredCustomers'">
+    </ion-segment>
+  </div>
+  @if(segmentAction === 'ReferredCustomers') {
+  <div>
     <app-transactions></app-transactions>
     <!-- <ais-instantsearch [config]="config">
       <ais-configure [searchParameters]="{ hitsPerPage: 10   }">
@@ -126,7 +129,9 @@
       </div>
     </ais-instantsearch> -->
   </div>
-  <div *ngIf="segmentAction === 'Properties'">
+  }
+  @if(segmentAction === 'Properties') {
+  <div>
     <app-renewalproperties></app-renewalproperties>
     <!-- <ais-instantsearch [config]="config">
       <ais-configure [searchParameters]="{ hitsPerPage: 10   }">
@@ -197,6 +202,7 @@
       </div>
     </ais-instantsearch> -->
   </div>
+  }
   <!-- <div *ngIf="segmentAction === 'ReferredCustomers'" style="padding: 16px;padding-top: 0;">
     <ais-instantsearch [config]="config">
       <ais-configure [searchParameters]="{ hitsPerPage: 10   }">
