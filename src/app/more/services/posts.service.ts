@@ -20,7 +20,7 @@ import {
   limit,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { PostRequest } from 'src/app/models/request.model';
+import { PostRequestForm } from 'src/app/models/request.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
@@ -39,7 +39,7 @@ export class PostsService {
     return snap.exists() ? { id: snap.id, ...snap.data() } : null;
   }
 
-  async create(payload: PostRequest) {
+  async create(payload: PostRequestForm) {
     const now = serverTimestamp();
     const ref = await addDoc(this.colRef(), {
       ...payload,
@@ -55,7 +55,7 @@ export class PostsService {
     return ref.id;
   }
 
-  async update(id: string, patch: Partial<PostRequest>) {
+  async update(id: string, patch: Partial<PostRequestForm>) {
     const now = serverTimestamp();
     await updateDoc(doc(this.afs, 'posts', id), {
       ...patch,
@@ -76,17 +76,16 @@ export class PostsService {
   //   return id;
   // }
 
-
-   async deleteSoft(id: string, deletedBy?: string) {
-    const now = serverTimestamp();
-    await updateDoc(doc(this.afs, 'posts', id), {
-      isDeleted: true,
-      deletedAt: now,
-      deletedBy: deletedBy ?? null,
-      updatedAt: now,
-    });
-    return id;
-  }
+  // async deleteSoft(id: string, deletedBy?: string) {
+  //   const now = serverTimestamp();
+  //   await updateDoc(doc(this.afs, 'posts', id), {
+  //     isDeleted: true,
+  //     deletedAt: now,
+  //     deletedBy: deletedBy ?? null,
+  //     updatedAt: now,
+  //   });
+  //   return id;
+  // }
 
   /** If you ever need a hard delete, uncomment and use carefully */
   // async deleteHard(id: string) {
@@ -104,8 +103,20 @@ export class PostsService {
     );
   }
 
+  /** Hard delete (physically removes the doc). */
   async deleteHard(id: string) {
-    await deleteDoc(doc(this.afs, 'posts', id));
-    return id;
+    const ref = doc(this.afs, 'posts', id);
+    await deleteDoc(ref);
+  }
+
+  /** Soft delete (kept in DB, filtered via isDeleted==false). */
+  async deleteSoft(id: string, deletedBy?: string | null) {
+    const ref = doc(this.afs, 'posts', id);
+    await updateDoc(ref, {
+      isDeleted: true,
+      deletedBy: deletedBy ?? null,
+      deletedAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
   }
 }

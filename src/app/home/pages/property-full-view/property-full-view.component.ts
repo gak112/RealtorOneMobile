@@ -13,6 +13,8 @@ import {
   IonIcon,
   IonTitle,
   IonImg,
+  IonLabel,
+  IonButton,
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -21,7 +23,9 @@ import {
   chevronBackOutline,
   imagesOutline,
   locationOutline,
+  createOutline,
 } from 'ionicons/icons';
+
 import {
   AmentitycardComponent,
   IAmentity,
@@ -48,65 +52,58 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { PostRequest } from 'src/app/models/request.model'; // your interface
+import { PostentryComponent } from '../postentry/postentry.component';
+import { PostRequestForm } from 'src/app/models/request.model';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 
 type PropertyVM = {
   id: string;
 
   // Banner
-  saleType: string; // "Sale" / "Rent" (pretty)
+  saleType: string; // "Sale" | "Rent"
   saleTypeKey: 'sale' | 'rent';
-  category: string; // "Residential" / "Commercial" etc.
-  costOfProperty: string; // "₹1,20,00,000" for sale
-  rentPrice: string; // "₹45,000/Monthly" for rent
+  category: string;
+  priceOfSale: number;
+  priceOfRent: number;
+  priceOfRentType: string;
 
   // Header / title
   propertyTitle: string;
-  location: string; // addressOfProperty or "—"
+  addressOfProperty: string;
 
-  // Images
+  // Images (URLs)
   images: string[];
 
   // House details
   houseType: string;
   bhkType: string;
-  bedrooms: string;
-  bathrooms: string;
   poojaRoom: string;
   dining: string;
   kitchen: string;
   floor: string;
   furnishingType: string;
 
-  // Sizes
-  totalSize: string; // "4000 Sqft"
-  buildUpSize: string; // "1200 Sqft"
-  yearBuilt: string; // derived from noOfYears
-  houseFacing: string;
-  ageOfProperty: string; // "10 Years" / "New" / "Under Construction"
+  // Sizes (numbers and units kept separate)
+  propertySize: string; // e.g. "4,000" or "—"
+  totalPropertyUnits: string; // e.g. "Sqft"
+  propertySizeBuiltup: string; // e.g. "1,200" or "—"
+  sizeBuiltupUnits: string; // e.g. "Sqft"
+  ageOfProperty: string;
 
-  // ... existing fields ...
-
-  // Units used for sizes (derived from totalPropertyUnits)
-  unitsShort: string;
-
-  // Dimensions (split: text + value + unit)
+  // Facing
+  facingUnits: string; // e.g. "Ft", "Sqft"
   northFacing: string;
   northSizeValue: string;
-  northSizeUnit: string;
   southFacing: string;
   southSizeValue: string;
-  southSizeUnit: string;
   eastFacing: string;
   eastSizeValue: string;
-  eastSizeUnit: string;
   westFacing: string;
   westSizeValue: string;
-  westSizeUnit: string;
-  // Footer / misc (if stored)
+
+  // Footer
   agentName: string;
   propertyId: string;
-  listingType: string;
   propertyStatus: string;
 
   // Description / amenities
@@ -126,7 +123,11 @@ type PropertyVM = {
     IonIcon,
     IonTitle,
     IonImg,
+    IonLabel,
+    IonButton,
     AmentitycardComponent,
+    DecimalPipe,
+    CurrencyPipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -141,17 +142,23 @@ export class PropertyFullViewComponent implements OnInit {
       locationOutline,
       callOutline,
       imagesOutline,
+      createOutline,
     });
   }
 
   /** ---------------- DATA (Signals) ---------------- */
 
-  // Load :id document; otherwise show the latest by createdAt desc
+  // Live VM: if :id route provided use that doc; else fetch latest by createdAt desc (isDeleted == false)
   private vm$ = this.createVm$();
   readonly vm = toSignal<PropertyVM | null>(this.vm$, { initialValue: null });
 
-  // Helpers for template
-  readonly images = computed(() => this.vm()?.images ?? []);
+  // Images with fallback
+  readonly images = computed(() => {
+    const list = this.vm()?.images ?? [];
+    return list.length ? list : ['assets/img/no-image.png'];
+  });
+
+  // Amenities mapped to component model
   readonly amenities = computed<IAmentity[]>(() => {
     const names = this.vm()?.amenityNames ?? [];
     return names.map((name, i) => ({
@@ -177,6 +184,25 @@ export class PropertyFullViewComponent implements OnInit {
     return modal.present();
   }
 
+  /** Open PostEntry editor prefilled for this doc */
+  async openEdit() {
+    const data = this.vm();
+    if (!data) return;
+
+    const modal = await this.modalController.create({
+      component: PostentryComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+      componentProps: {
+        editId: data.id,
+        saleType: data.saleTypeKey,
+        category: data.category.toLowerCase(),
+      },
+    });
+    await modal.present();
+    await modal.onWillDismiss();
+  }
+
   ngOnInit() {}
 
   /** ---------------- Internals ---------------- */
@@ -187,11 +213,13 @@ export class PropertyFullViewComponent implements OnInit {
     if (id) {
       const ref = doc(this.afs, 'posts', id);
       return docData(ref, { idField: 'id' }).pipe(
-        map((d) => (d ? this.mapToVM(d as PostRequest & { id: string }) : null))
+        map((d) =>
+          d ? this.mapToVM(d as PostRequestForm & { id: string }) : null
+        )
       );
     }
 
-    // Latest: filter out deleted, order by createdAt desc
+    // Fallback: latest non-deleted by createdAt desc
     const col = collection(this.afs, 'posts');
     const qLatest = query(
       col,
@@ -200,111 +228,99 @@ export class PropertyFullViewComponent implements OnInit {
       limit(1)
     );
 
-    // If you prefer numeric `sortDate`, switch to:
-    // const qLatest = query(col, where('isDeleted','==',false), orderBy('sortDate','desc'), limit(1));
-
     return collectionData(qLatest, { idField: 'id' }).pipe(
       map((rows) =>
-        rows?.[0] ? this.mapToVM(rows[0] as PostRequest & { id: string }) : null
+        rows?.[0]
+          ? this.mapToVM(rows[0] as PostRequestForm & { id: string })
+          : null
       )
     );
   }
 
-  private mapToVM(d: PostRequest & { id: string }): PropertyVM {
+  private mapToVM(d: PostRequestForm & { id: string }): PropertyVM {
     const id = d.id;
 
-    // Banner pieces
+    // Banner
     const saleTypeKey = (
-      String(d.saleType || 'sale').toLowerCase() === 'rent' ? 'rent' : 'sale'
+      String(d.saleType || 'sale')
+        .trim()
+        .toLowerCase() === 'rent'
+        ? 'rent'
+        : 'sale'
     ) as 'sale' | 'rent';
-    const saleType = capFirst(saleTypeKey); // "Sale"/"Rent"
+    const saleType = capFirst(saleTypeKey);
     const category = capFirst(str(d.category) || 'residential');
 
-    // Price display
-    const saleAmount = pickNumber([d.costOfProperty]);
-    const rentAmount = pickNumber([d.rentPrice]);
-    const costOfProperty = saleAmount > 0 ? `₹${fmt(saleAmount)}` : '₹—';
-    const rentPrice =
-      rentAmount > 0
-        ? `₹${fmt(rentAmount)}${d.rentUnits ? '/' + d.rentUnits : ''}`
-        : '₹—';
+    // Prices
+    const priceOfSale = pickNumber([d.priceOfSale]);
+    const priceOfRent = pickNumber([d.priceOfRent]);
 
     // Images
     const images = Array.isArray(d.images) ? d.images.filter(Boolean) : [];
 
-    // Location / Title
+    // Header
     const propertyTitle = str(d.propertyTitle) || '—';
-    const location = str(d.addressOfProperty) || '—';
+    const addressOfProperty = str(d.addressOfProperty) || '—';
 
     // House details
     const houseType = str(d.houseType) || '—';
     const bhkType = str(d.bhkType) || '—';
-    const bedrooms = str(d.rooms ?? guessBedroomsFromBhk(bhkType)) || '—';
-    const bathrooms = numToStr(d.toilets);
     const poojaRoom = numToStr(d.poojaRoom);
     const dining = numToStr(d.livingDining);
     const kitchen = numToStr(d.kitchen);
     const floor = str(d.floor) || '—';
     const furnishingType = str(d.furnishingType) || '—';
 
-    // Sizes & units
-    const unitsShortStr = unitShort(str(d.totalPropertyUnits) || 'Sq Feet');
-    const totalSize =
-      isNum(d.propertySize) && d.propertySize! > 0
-        ? `${fmt(Number(d.propertySize))} ${unitsShortStr}`
-        : '—';
-    const buildUpSize =
-      isNum(d.propertySizeBuildUp) && d.propertySizeBuildUp! > 0
-        ? `${fmt(Number(d.propertySizeBuildUp))} ${unitsShortStr}`
-        : '—';
+    // ---- Units & Sizes (normalize both field spellings) ----
+    const totalPropertyUnits = unitShort(
+      str(d.totalPropertyUnits || 'Sq Feet')
+    );
+    const sizeBuiltupUnits = unitShort(
+      str((d as any).sizeBuiltupUnits || d.totalPropertyUnits || 'Sq Feet')
+    );
+
+    const propertySizeVal = pickNumber([d.propertySize]);
+    const propertySize = propertySizeVal > 0 ? fmt(propertySizeVal) : '—';
+
+    // Accept both propertySizeBuildUp (camel U) and propertySizeBuiltup (lowercase u)
+    const builtUpRaw =
+      (d as any).propertySizeBuildUp ?? (d as any).propertySizeBuiltup;
+    const propertySizeBuiltupVal = pickNumber([builtUpRaw]);
+    const propertySizeBuiltup =
+      propertySizeBuiltupVal > 0 ? fmt(propertySizeBuiltupVal) : '—';
 
     // Age
-    const ageAction = str(d.ageOfProperty); // "underconstruction" | "noofyears" | etc.
-    const ageYears = isNum(d.noOfYears) ? Number(d.noOfYears) : null;
+    const rawAge = str(d.ageOfProperty);
+    const ageYears = isNum(d.ageOfProperty) ? Number(d.ageOfProperty) : null;
     const ageOfProperty =
-      ageAction === 'underconstruction'
+      rawAge.toLowerCase() === 'underconstruction'
         ? 'Under Construction'
         : ageYears !== null
         ? `${ageYears} Years`
-        : '—';
-    const yearBuilt =
-      ageYears !== null ? `${new Date().getFullYear() - ageYears}` : '—';
+        : rawAge || '—';
 
-    // Dimensions — split facing text and size (value + unit) per direction
+    // Facing (shared units)
+    const facingUnits = unitShort(str((d as any).facingUnits || 'Feet'));
+
     const northFacing = str(d.northFacing) || '—';
     const northSizeValue =
       isNum(d.northSize) && d.northSize! > 0 ? fmt(Number(d.northSize)) : '—';
-    const northSizeUnit = northSizeValue !== '—' ? unitsShortStr : '';
 
     const southFacing = str(d.southFacing) || '—';
     const southSizeValue =
       isNum(d.southSize) && d.southSize! > 0 ? fmt(Number(d.southSize)) : '—';
-    const southSizeUnit = southSizeValue !== '—' ? unitsShortStr : '';
 
     const eastFacing = str(d.eastFacing) || '—';
     const eastSizeValue =
       isNum(d.eastSize) && d.eastSize! > 0 ? fmt(Number(d.eastSize)) : '—';
-    const eastSizeUnit = eastSizeValue !== '—' ? unitsShortStr : '';
 
     const westFacing = str(d.westFacing) || '—';
     const westSizeValue =
       isNum(d.westSize) && d.westSize! > 0 ? fmt(Number(d.westSize)) : '—';
-    const westSizeUnit = westSizeValue !== '—' ? unitsShortStr : '';
 
-    // Facing summary
-    const houseFacing =
-      eastFacing !== '—'
-        ? eastFacing
-        : westFacing !== '—'
-        ? westFacing
-        : northFacing !== '—'
-        ? northFacing
-        : southFacing;
-
-    // Footer / misc (if present)
+    // Footer / misc
     const agentName = str((d as any).agentName) || '—';
     const propertyId = str((d as any).propertyId) || id;
-    const listingType = str((d as any).listingType) || '—';
     const propertyStatus =
       str(d.status ?? (d as any).propertyStatus) || 'Available';
 
@@ -319,48 +335,40 @@ export class PropertyFullViewComponent implements OnInit {
       saleType,
       saleTypeKey,
       category,
-      costOfProperty,
-      rentPrice,
+      priceOfSale: Number(priceOfSale),
+      priceOfRent: Number(priceOfRent),
+      priceOfRentType: String(d.priceOfRentType ?? '—'),
 
       propertyTitle,
-      location,
-
+      addressOfProperty,
       images,
 
       houseType,
       bhkType,
-      bedrooms,
-      bathrooms,
       poojaRoom,
       dining,
       kitchen,
       floor,
       furnishingType,
 
-      totalSize,
-      buildUpSize,
-      yearBuilt,
-      houseFacing,
+      propertySize, // number string only
+      totalPropertyUnits, // unit short
+      propertySizeBuiltup, // number string only
+      sizeBuiltupUnits, // unit short
       ageOfProperty,
 
-      unitsShort: unitsShortStr,
-
+      facingUnits,
       northFacing,
       northSizeValue,
-      northSizeUnit,
       southFacing,
       southSizeValue,
-      southSizeUnit,
       eastFacing,
       eastSizeValue,
-      eastSizeUnit,
       westFacing,
       westSizeValue,
-      westSizeUnit,
 
       agentName,
       propertyId,
-      listingType,
       propertyStatus,
 
       description,
@@ -404,10 +412,6 @@ function unitShort(u: string): string {
     default:
       return u || 'Sqft';
   }
-}
-function guessBedroomsFromBhk(bhk: string): number | '' {
-  const m = /(\d+)/.exec(bhk || '');
-  return m ? Number(m[1]) : '';
 }
 function pickNumber(vals: Array<unknown>): number {
   for (const v of vals) {

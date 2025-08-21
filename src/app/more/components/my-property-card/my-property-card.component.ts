@@ -6,6 +6,7 @@ import {
   input,
   OnInit,
   signal,
+  output,
 } from '@angular/core';
 import {
   IonIcon,
@@ -13,20 +14,17 @@ import {
   IonImg,
   ModalController,
   ToastController,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import {
-  create,
-  ellipsisVertical,
-  trash,
-} from 'ionicons/icons';
-
+import { create, ellipsisVertical, trash } from 'ionicons/icons';
 import { PostentryComponent } from 'src/app/home/pages/postentry/postentry.component';
 import {
   forwardEnterAnimation,
   backwardEnterAnimation,
 } from 'src/app/services/animation';
 import { PostsService } from '../../services/posts.service';
+import { PropertyFullViewComponent } from 'src/app/home/pages/property-full-view/property-full-view.component';
 
 @Component({
   selector: 'app-my-property-card',
@@ -37,11 +35,17 @@ import { PostsService } from '../../services/posts.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MyPropertyCardComponent implements OnInit {
+  // DI
   private modalController = inject(ModalController);
-  private posts = inject(PostsService);
+  private postsService = inject(PostsService);
   private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
 
+  // Inputs / Outputs
   property = input.required<IProperty>();
+  removed = output<string>(); // optional: parent can listen and filter immediately
+
+  // Local UI state (signals)
   isMenuOpen = signal(false);
   busy = signal(false);
 
@@ -49,9 +53,19 @@ export class MyPropertyCardComponent implements OnInit {
     addIcons({ ellipsisVertical, create, trash });
   }
 
+  async openPropertyDetails() {
+    const modal = await this.modalController.create({
+      component: PropertyFullViewComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+
+    await modal.present();
+  }
+
   ngOnInit() {}
 
-  openMenu() {
+  toggleMenu() {
     this.isMenuOpen.set(!this.isMenuOpen());
   }
 
@@ -60,9 +74,7 @@ export class MyPropertyCardComponent implements OnInit {
     const modal = await this.modalController.create({
       component: PostentryComponent,
       componentProps: {
-        editId: p.id,             // hand your existing editor the id
-        actionType: p.saleType,   // if your editor expects
-        action: p.category,       // if your editor expects
+        editId: p.id, // your editor loads the doc by id and patches the form
       },
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
@@ -73,36 +85,65 @@ export class MyPropertyCardComponent implements OnInit {
 
   async deleteProperty() {
     if (this.busy()) return;
+
+    const p = this.property();
+    const alert = await this.alertCtrl.create({
+      header: 'Delete post?',
+      message:
+        'This will permanently remove the post. This action cannot be undone.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: async () => this.doDelete(p.id),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async doDelete(id: string) {
     this.busy.set(true);
     try {
-      await this.posts.deleteSoft(this.property().id);
-      const t = await this.toastCtrl.create({
-        message: 'Property deleted',
-        duration: 1500,
-        color: 'success',
-        position: 'top',
-      });
-      await t.present();
+      // Hard delete — document is removed; all collectionData() streams update automatically
+      await this.postsService.deleteHard(id);
+
+      // Close menu and show toast
+      this.isMenuOpen.set(false);
+      await this.toast('Property deleted', 'success');
+
+      // Optional: let parent remove the card immediately if it keeps a local array
+      this.removed.emit(id);
     } catch (e) {
-      const t = await this.toastCtrl.create({
-        message: 'Delete failed',
-        duration: 1800,
-        color: 'danger',
-        position: 'top',
-      });
-      await t.present();
+      await this.toast('Delete failed. Please try again.', 'danger');
     } finally {
       this.busy.set(false);
-      this.isMenuOpen.set(false);
     }
+  }
+
+  private async toast(
+    message: string,
+    color: 'success' | 'warning' | 'danger' | 'medium' = 'warning'
+  ) {
+    const t = await this.toastCtrl.create({
+      message,
+      duration: 1800,
+      color,
+      position: 'top',
+    });
+    (await this.toastCtrl.getTop())?.dismiss();
+    await t.present();
   }
 }
 
+/** Card view model */
 export interface IProperty {
   id: string;
   propertyTitle: string;
-  salePrice: number;
-  rentPrice: number;
+  priceOfSale: number;
+  priceOfRent: number;
+  priceOfRentType: string;
   location: string;
   houseType: string;
   bhkType: string;
@@ -110,9 +151,9 @@ export interface IProperty {
   propertyImages: IPropertyImage[];
   agentName: string;
   propertyId: string;
-  saleType: string;     // 'sale' | 'rent'
+  saleType: 'sale' | 'rent';
   propertyStatus: string;
-  category: string;     // residential / commercial / plots / lands
+  category: 'residential' | 'commercial' | 'plots' | 'lands';
 }
 
 export interface IPropertyImage {

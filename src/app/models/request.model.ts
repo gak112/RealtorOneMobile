@@ -1,6 +1,6 @@
 import { FieldValue, Timestamp } from '@angular/fire/firestore';
 
-export interface PostRequest {
+export interface PostRequestForm {
   // ------- your form fields -------
   propertyTitle: string;
   houseType:
@@ -11,7 +11,7 @@ export interface PostRequest {
   houseCondition: 'Old Houses' | 'New Houses' | null;
   rooms: number | null;
   bhkType: '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK' | null;
-  totalPropertyUnits:
+  facingUnits:
     | 'Sq Feet'
     | 'Sq Yard'
     | 'Sq Mtr'
@@ -21,7 +21,7 @@ export interface PostRequest {
     | 'Mtr'
     | null;
   furnishingType: 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished' | null;
-  propertyType:
+  commercialType:
     | 'Shop'
     | 'Office'
     | 'Warehouse'
@@ -30,7 +30,7 @@ export interface PostRequest {
     | 'Land'
     | 'Other'
     | null;
-  subType:
+    commercialSubType:
     | 'Shopping Mall'
     | 'Co-Working Space'
     | 'IT Park'
@@ -39,7 +39,9 @@ export interface PostRequest {
     | null;
   securityDeposit: number | null;
   propertySize: number | null;
-  propertySizeBuildUp: number | null;
+  totalPropertyUnits: string | null;
+  propertySizeBuiltup: number | null;
+  sizeBuiltupUnits: string | null;
   northFacing: string | null;
   northSize: number | null;
   southFacing: string | null;
@@ -55,16 +57,16 @@ export interface PostRequest {
   floor: string | null;
   amenities: string[];
   ageOfProperty: string | null;
-  noOfYears: number | null;
-  rentPrice: number | null;
-  rentUnits: 'Monthly' | 'Yearly' | null;
-  costOfProperty: number | null;
+  priceOfSale: number | null;
+  priceOfRent: number | null;
+  priceOfRentType: 'Monthly' | 'Yearly' | null;
   addressOfProperty: string | null;
   lat: number | null;
   lng: number | null;
   description: string | null;
   negotiable: boolean;
   images: string[];
+  videoResources: string[];
   createdAt: Timestamp | FieldValue;
   updatedAt: Timestamp | FieldValue;
   createdBy: string;
@@ -75,8 +77,6 @@ export interface PostRequest {
   deletedAt: Timestamp | FieldValue | null;
   status: string;
   fullSearchText: string[];
-  videoResources: IResources[] | any;
-
   // ------- extras you add on submit -------
   saleType: 'sale' | 'rent';
   category: 'residential' | 'commercial' | 'plots' | 'lands';
@@ -84,8 +84,4 @@ export interface PostRequest {
   // timestamps are set in service
 }
 
-export interface IResources {
-  resourceName: string;
-  resourceUrl: string;
-  resourceType: string;
-}
+

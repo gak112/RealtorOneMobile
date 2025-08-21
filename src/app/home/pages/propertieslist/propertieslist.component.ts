@@ -1,200 +1,176 @@
 import { NgIf } from '@angular/common';
-import { Component, Input, OnInit, signal } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonTitle,
-  IonToolbar,
-  ModalController,
-  IonSearchbar,
-  IonButton,
-} from '@ionic/angular/standalone';
+  Component, OnInit, Input, inject, signal, computed,
+} from '@angular/core';
+import {
+  IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, IonSearchbar, ModalController, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
-import { ProductBoxComponent } from 'src/app/search/components/product-box/product-box.component';
+
 import {
-  IProperty,
-  RealestateCardComponent,
+  collection, collectionData, Firestore, limit, orderBy, query, where,
+} from '@angular/fire/firestore';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+import {
+  IProperty, IPropertyImage, RealestateCardComponent,
 } from '../../components/realestate-card/realestate-card.component';
-import { ProductfilterComponent } from 'src/app/search/pages/productfilter/productfilter.component';
-import {
-  backwardEnterAnimation,
-  forwardEnterAnimation,
-} from 'src/app/services/animation';
+
+type CatKey = 'residential' | 'commercial' | 'plots' | 'lands';
 
 @Component({
   selector: 'app-propertieslist',
+  standalone: true,
   templateUrl: './propertieslist.component.html',
   styleUrls: ['./propertieslist.component.scss'],
-  standalone: true,
-  imports: [
-    IonButton,
-    IonSearchbar,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonIcon,
-    IonTitle,
-    IonContent,
-    NgIf,
-    ProductBoxComponent,
+  imports: [IonButton, 
+    IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonSearchbar, NgIf,
     RealestateCardComponent,
   ],
   providers: [ModalController],
 })
 export class PropertieslistComponent implements OnInit {
-  @Input() actionType: any;
+  /** From opener: "Residential" | "Commercial" | "Plots" | "Lands" (or already lowercase keys) */
+  @Input() actionType!: string;
 
-  constructor(
-    private modalController: ModalController /*private afs: AngularFirestore*/
-  ) {
-    addIcons({ chevronBackOutline });
+  private modalController = inject(ModalController);
+  private afs = inject(Firestore);
+
+  constructor() { addIcons({ chevronBackOutline }); }
+
+  /* ---------------- UI signals ---------------- */
+  readonly headerTitle = signal<string>('Properties');
+  readonly search = signal<string>('');
+  readonly errorMsg = signal<string>('');
+
+  onSearch(ev: CustomEvent) {
+    const target = ev.target as HTMLIonSearchbarElement;
+    this.search.set((target?.value ?? '').toString().trim().toLowerCase());
   }
+  dismiss() { this.modalController.dismiss(); }
+
+  /* ---------------- Category ---------------- */
+  private get category(): CatKey {
+    return toCategoryKey(this.actionType);
+  }
+
+  /* ---------------- Firestore stream ---------------- */
+  /**
+   * Requires a Firestore composite index:
+   * collection: posts, fields: category ASC, createdAt DESC
+   * (Firestore will show a console link once; create it once and you're done.)
+   */
+  private readonly rows$: Observable<PostDoc[]> = (() => {
+    const postsCol = collection(this.afs, 'posts');
+    const qRef = query(
+      postsCol,
+      where('category', '==', this.category),     // equality filter
+      orderBy('createdAt', 'desc'),               // sort newest first
+      limit(500)
+    );
+    return collectionData(qRef, { idField: 'id' }) as Observable<PostDoc[]>;
+  })();
+
+  // live → signal; drop docs with isDeleted === true
+  readonly properties = toSignal<IProperty[]>(
+    this.rows$.pipe(
+      map(docs =>
+        docs
+          .filter(d => !(d as any).isDeleted)
+          .map(this.toProperty)
+      ),
+      catchError(err => {
+        console.error('[properties list] query error:', err);
+        // Most common cause: missing composite index for (category, createdAt)
+        this.errorMsg.set(
+          'Unable to load properties. Please ensure a Firestore index exists for (category, createdAt desc).'
+        );
+        return of([] as IProperty[]);
+      })
+    ),
+   
+  );
+
+  // client-side search
+  readonly propertiesFiltered = computed(() => {
+    const q = this.search();
+    if (!q) return this.properties();
+    return this.properties().filter(p =>
+      (p.propertyTitle + ' ' + p.location).toLowerCase().includes(q)
+    );
+  });
+
+  // first-load indicator
+  readonly loading = computed(() => this.properties().length === 0 && !this.errorMsg());
 
   ngOnInit(): void {
-    return;
-  }
-  dismiss() {
-    this.modalController.dismiss();
+    this.headerTitle.set(capFirst(this.category));
   }
 
-  async showFilters() {
-    const modal = await this.modalController.create({
-      component: ProductfilterComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
-    });
+  /* ---------------- Mapping to card ---------------- */
+  private toProperty = (d: PostDoc): IProperty => {
+    const id = d.id;
 
-    await modal.present();
-  }
+    const imgs: string[] = Array.isArray(d.images) ? d.images.filter(Boolean) : [];
+    const propertyImages: IPropertyImage[] = imgs.map((url, i) => ({
+      id: `${id}-${i}`,
+      image: url,
+    }));
 
-  properties = signal<IProperty[]>([
-    // {
-    //   id: '1',
-    //   title: 'Property 1',
-    //   price: 10000,
-    //   locationCode: 'HYD',
-    //   location: 'Hyderabad, Jubilee Hills',
-    //   propertyType: 'Apartment',
-    //   propertySize: '3BHK',
-    //   propertySqft: '1000',
-    //   propertyImages: [
-    //     {
-    //       id: '1',
-    //       image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-    //     },
-    //     {
-    //       id: '2',
-    //       image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-    //     },
-    //     {
-    //       id: '3',
-    //       image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-    //     },
-    //   ],
-    //   category: 'Under Construction',
-    //   agentName: 'Ajay Kumar',
-    //   propertyId: 'PROP-1023',
-    //   saleType: 'For Sale',
-    //   propertyStatus: 'Premium Location',
-    // },
-    // {
-    //   id: '2',
-    //   title: 'Property 2',
-    //   price: 15000,
-    //   locationCode: 'HYD',
-    //   location: 'Hyderabad, Banjara Hills',
-    //   propertyType: 'Apartment',
-    //   propertySize: '4BHK',
-    //   propertySqft: '3000',
-    //   propertyImages: [
-    //     {
-    //       id: '1',
-    //       image:
-    //         'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-    //     },
-    //     {
-    //       id: '2',
-    //       image:
-    //         'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-    //     },
-    //     {
-    //       id: '3',
-    //       image:
-    //         'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-    //     },
-    //   ],
-    //   category: 'Ready to Move',
-    //   agentName: 'Ashok Kumar',
-    //   propertyId: 'PROP-1024',
-    //   saleType: 'For Sale',
-    //   propertyStatus: 'Premium Location',
-    // },
-    // {
-    //   id: '3',
-    //   title: 'Property 3',
-    //   price: 20000,
-    //   locationCode: 'HYD',
-    //   location: 'Hyderabad, Kukatpally',
-    //   propertyType: 'Villa',
-    //   propertySize: '5BHK',
-    //   propertySqft: '4000',
-    //   propertyImages: [
-    //     {
-    //       id: '1',
-    //       image:
-    //         'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-    //     },
-    //     {
-    //       id: '2',
-    //       image:
-    //         'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-    //     },
-    //     {
-    //       id: '3',
-    //       image:
-    //         'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-    //     },
-    //   ],
-    //   category: 'Ready to Move',
-    //   agentName: 'Rajesh Kumar',
-    //   propertyId: 'PROP-1025',
-    //   saleType: 'For Sale',
-    //   propertyStatus: 'Premium Location',
-    // },
-    // {
-    //   id: '4',
-    //   title: 'Property 4',
-    //   price: 15000,
-    //   location: 'Hyderabad, Kukatpally',
-    //   propertyType: 'Villa',
-    //   propertySize: '5BHK',
-    //   propertySize: '4000',
-    //   propertyImages: [
-    //     {
-    //       id: '1',
-    //       image:
-    //         'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-    //     },
-    //     {
-    //       id: '2',
-    //       image:
-    //         'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-    //     },
-    //     {
-    //       id: '3',
-    //       image:
-    //         'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-    //     },
-    //   ],
-    //   category: 'Ready to Move',
-    //   agentName: 'Abhinav Gunda',
-    //   propertyId: 'PROP-1026',
-    //   saleType: 'For Sale',
-    //   propertyStatus: 'Premium Location',
-    // },
-  ]);
+    return {
+      id,
+      propertyTitle: String(d.propertyTitle ?? '—'),
+      priceOfSale: Number(d.priceOfSale ?? 0),
+      priceOfRent: Number(d.priceOfRent ?? 0),
+      priceOfRentType: String(d.priceOfRentType ?? '—'),
+      location: String(d.addressOfProperty ?? d.location ?? '—'),
+      houseType: String(d.houseType ?? '—'),
+      bhkType: String(d.bhkType ?? '—'),
+      propertySize: String(d.propertySize ?? '—'),
+      propertyImages,
+      category: (String(d.category ?? '-') as string).toLowerCase(),
+      agentName: String(d.agentName ?? '—'),
+      propertyId: String(d.propertyId ?? id),
+      saleType: (String(d.saleType ?? '-') as string).toLowerCase(), // 'sale' | 'rent'
+      propertyStatus: String(d.propertyStatus ?? 'Available'),
+    };
+  };
+}
+
+/* ---------------- Firestore doc shape ---------------- */
+type PostDoc = {
+  id: string;
+  createdAt?: any;              // Firestore Timestamp (set on create)
+  isDeleted?: boolean;
+
+  images?: string[];
+  propertyTitle?: string;
+  saleType?: 'sale' | 'rent';
+  category?: 'residential' | 'commercial' | 'plots' | 'lands';
+  addressOfProperty?: string;
+  location?: string;
+  houseType?: string;
+  bhkType?: string;
+  propertySize?: number | string;
+  agentName?: string;
+  propertyId?: string;
+  propertyStatus?: string;
+  priceOfSale?: number;
+  priceOfRent?: number;
+  priceOfRentType?: string;
+};
+
+/* ---------------- helpers ---------------- */
+function capFirst(s: string) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
+function toCategoryKey(v?: string | null): CatKey {
+  const s = (v ?? '').trim().toLowerCase();
+  if (s.startsWith('res')) return 'residential';
+  if (s.startsWith('com')) return 'commercial';
+  if (s.startsWith('plot')) return 'plots';
+  if (s.startsWith('land')) return 'lands';
+  // already lowercase key?
+  if (['residential','commercial','plots','lands'].includes(s)) return s as CatKey;
+  return 'residential';
 }

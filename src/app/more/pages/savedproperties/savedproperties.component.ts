@@ -1,19 +1,36 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+  OnInit,
+  Input,
+} from '@angular/core';
 import {
   IonContent,
   IonHeader,
-  IonIcon,
+  IonSearchbar,
   IonTitle,
   IonToolbar,
+  IonIcon,
   ModalController,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
 import {
-  ISavedPropertyDetails,
+  Firestore,
+  collection,
+  collectionData,
+  query,
+  orderBy,
+  limit,
+} from '@angular/fire/firestore';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+import {
+  IPropertyCard,
   SavedpropertycardComponent,
 } from '../../components/savedpropertycard/savedpropertycard.component';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-savedproperties',
@@ -21,6 +38,7 @@ import {
   styleUrls: ['./savedproperties.component.scss'],
   standalone: true,
   imports: [
+    IonSearchbar,
     IonHeader,
     IonToolbar,
     IonIcon,
@@ -50,127 +68,77 @@ export class SavedpropertiesComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  savedProperties = signal<ISavedPropertyDetails[]>([
-    {
-      id: '1',
-      price: 10000,
-      locationCode: 'HYD',
-      location: 'Hyderabad, Jubilee Hills',
-      propertyType: 'Apartment',
-      propertySize: '3BHK',
-      propertySqft: '1000',
-      propertyImages: [
-        {
-          id: '1',
-          image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-        },
-        {
-          id: '2',
-          image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-        },
-        {
-          id: '3',
-          image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-        },
-      ],
-      type: 'Under Construction',
-      agentName: 'Ajay Kumar',
-      propertyId: 'PROP-1023',
-      listingType: 'For Sale',
-      propertyStatus: 'Premium Location',
-    },
-    {
-      id: '2',
-      price: 15000,
-      locationCode: 'HYD',
-      location: 'Hyderabad, Banjara Hills',
-      propertyType: 'Apartment',
-      propertySize: '4BHK',
-      propertySqft: '3000',
-      propertyImages: [
-        {
-          id: '1',
-          image:
-            'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-        },
-        {
-          id: '2',
-          image:
-            'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-        },
-        {
-          id: '3',
-          image:
-            'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-        },
-      ],
-      type: 'Ready to Move',
-      agentName: 'Ashok Kumar',
-      propertyId: 'PROP-1024',
-      listingType: 'For Sale',
-      propertyStatus: 'Premium Location',
-    },
-    {
-      id: '3',
-      price: 20000,
-      locationCode: 'HYD',
-      location: 'Hyderabad, Kukatpally',
-      propertyType: 'Villa',
-      propertySize: '5BHK',
-      propertySqft: '4000',
-      propertyImages: [
-        {
-          id: '1',
-          image:
-            'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-        },
-        {
-          id: '2',
-          image:
-            'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-        },
-        {
-          id: '3',
-          image:
-            'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-        },
-      ],
-      type: 'Ready to Move',
-      agentName: 'Rajesh Kumar',
-      propertyId: 'PROP-1025',
-      listingType: 'For Sale',
-      propertyStatus: 'Premium Location',
-    },
-    {
-      id: '4',
-      price: 15000,
-      locationCode: 'HYD',
-      location: 'Hyderabad, Kukatpally',
-      propertyType: 'Villa',
-      propertySize: '5BHK',
-      propertySqft: '4000',
-      propertyImages: [
-        {
-          id: '1',
-          image:
-            'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-        },
-        {
-          id: '2',
-          image:
-            'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-        },
-        {
-          id: '3',
-          image:
-            'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-        },
-      ],
-      type: 'Ready to Move',
-      agentName: 'Abhinav Gunda',
-      propertyId: 'PROP-1026',
-      listingType: 'For Sale',
-      propertyStatus: 'Premium Location',
-    },
-  ]);
+  private afs = inject(Firestore);
+
+  /** Firestore: posts ordered by createdAt desc */
+  private postsCol = collection(this.afs, 'posts');
+  private q = query(this.postsCol, orderBy('createdAt', 'desc'), limit(200));
+
+  private rows = toSignal(collectionData(this.q, { idField: 'id' }), {
+    initialValue: [] as any[],
+  });
+
+  /** Map posts → card model */
+  readonly items = computed<IPropertyCard[]>(() =>
+    this.rows().map((d: any) => this.toCard(d))
+  );
+
+  /** Search */
+  private qText = signal('');
+  onSearch(ev: CustomEvent) {
+    const v = ((ev.detail as any)?.value ?? '').toString().trim();
+    this.qText.set(v.toLowerCase());
+  }
+
+  /** Client-side filter for simplicity */
+  readonly filtered = computed(() => {
+    const q = this.qText();
+    if (!q) return this.items();
+    return this.items().filter(
+      (p) =>
+        (p.propertyTitle ?? '').toLowerCase().includes(q) ||
+        (p.location ?? '').toLowerCase().includes(q)
+    );
+  });
+
+  /** Optional: remove from feed once saved (if you keep redirectOff) */
+  removeFromFeed(id: string) {
+    const cur = this.items();
+    const idx = cur.findIndex((x) => x.id === id);
+    if (idx >= 0) {
+      // Quick local remove (purely UI); Firestore stream will resync anyway
+      const copy = cur.slice();
+      copy.splice(idx, 1);
+      // Can't set computed directly; for a real remove rely on redirect or keep as-is.
+      // If you want local mutable list, keep a signal for the visible list.
+    }
+  }
+
+  private toCard(d: any): IPropertyCard {
+    const id = d.id;
+    const imgs: string[] = Array.isArray(d.images)
+      ? d.images.filter(Boolean)
+      : [];
+    const propertyImages = imgs.map((url: string, i: number) => ({
+      id: `${id}-${i}`,
+      image: url,
+    }));
+
+    return {
+      id,
+      propertyTitle: String(d.propertyTitle ?? '—'),
+      salePrice: Number(d.costOfProperty ?? d.salePrice ?? 0) || 0,
+      rentPrice: Number(d.rentPrice ?? d.rent ?? 0) || 0,
+      location: String(d.addressOfProperty ?? d.location ?? '—'),
+      houseType: String(d.houseType ?? '—'),
+      bhkType: String(d.bhkType ?? '—'),
+      propertySize: String(d.propertySize ?? '—'),
+      propertyImages,
+      agentName: String(d.agentName ?? '—'),
+      propertyId: String(d.propertyId ?? id),
+      saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
+      propertyStatus: String(d.propertyStatus ?? d.status ?? 'Available'),
+      category: String(d.category ?? 'residential'),
+    };
+  }
 }

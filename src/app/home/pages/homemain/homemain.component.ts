@@ -64,6 +64,7 @@ import {
 } from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homemain',
@@ -195,14 +196,14 @@ export class HomemainComponent implements OnInit {
     return await modal.present();
   }
 
-  async productlist(actionType: any) {
+  async productlist(actionType: string) {
     const modal = await this.modalController.create({
       component: PropertieslistComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
-      componentProps: { actionType },
+      componentProps: { actionType }, // "Residential" | "Commercial" | "Plots" | "Lands"
     });
-    return await modal.present();
+    return modal.present();
   }
 
   async openVentureCreation() {
@@ -222,6 +223,7 @@ export class HomemainComponent implements OnInit {
     });
     return await modal.present();
   }
+
 
   private afs = inject(Firestore);
 
@@ -251,10 +253,11 @@ export class HomemainComponent implements OnInit {
     const propertyImages: IPropertyImage[] = imgs.map((url, i) => ({
       id: `${id}-${i}`,
       image: url,
+      video: '',
     }));
 
     // Price preference: price → costOfProperty → rent
-    const rawPrice = d.salePrice ?? d.costOfProperty ?? d.rent ?? 0;
+    const rawPrice = d.priceOfSale ?? d.priceOfRent ?? 0;
     const price = Number(rawPrice) || 0;
 
     // Sizes formatted as strings
@@ -264,8 +267,9 @@ export class HomemainComponent implements OnInit {
     return {
       id,
       propertyTitle: String(d.propertyTitle ?? '—'),
-      salePrice: price,
-      rentPrice: price,
+      priceOfSale: Number(d.priceOfSale ?? 0),
+      priceOfRent: Number(d.priceOfRent ?? 0),
+      priceOfRentType: String(d.priceOfRentType ?? '—'),
       location: String(d.addressOfProperty ?? d.location ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
@@ -295,9 +299,9 @@ type PostDoc = {
   propertyId?: string;
   propertyStatus?: string;
   costOfProperty?: number | string;
-  rent?: number | string;
-  salePrice?: number | string;
-  rentPrice?: number | string;
+  priceOfSale?: number;
+  priceOfRent?: number;
+  priceOfRentType?: string;
 
   createdAt?: any;
   // …any other fields you store

@@ -77,40 +77,29 @@
         <!-- <ion-skeleton-text [animated]="true" style="width: 103px; height: 15px;"></ion-skeleton-text> -->
         <ion-label>Categories</ion-label>
       </div>
-
-
-
       <div class="div-categories-list">
         <div class="div-category" (click)="productlist('Residential')">
           <div class="div-img">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 55px;height: 55px; margin: auto;margin-bottom: 16px;"></ion-skeleton-text> -->
             <ion-img src="assets/img/house2.png" style="background: rgb(12 119 193 / 30%);"></ion-img>
           </div>
-          <!-- <ion-skeleton-text [animated]="true" style="line-height: 14px;border-radius: 0px;"></ion-skeleton-text> -->
           <ion-label>Residential</ion-label>
         </div>
         <div class="div-category" (click)="productlist('Commercial')">
           <div class="div-img">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 55px;height: 55px; margin: auto;margin-bottom: 16px;"></ion-skeleton-text> -->
             <ion-img src="assets/img/residential.png" style="background: rgb(66 221 109 / 30%);"></ion-img>
           </div>
-          <!-- <ion-skeleton-text [animated]="true" style="line-height: 14px;border-radius: 0px;"></ion-skeleton-text> -->
           <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
         </div>
         <div class="div-category" (click)="productlist('plot')">
           <div class="div-img">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 55px;height: 55px; margin: auto;margin-bottom: 16px;"></ion-skeleton-text> -->
             <ion-img src="assets/img/plot.png" style="background: rgb(232 136 44 / 30%);"></ion-img>
           </div>
-          <!-- <ion-skeleton-text [animated]="true" style="line-height: 14px;border-radius: 0px;"></ion-skeleton-text> -->
           <ion-label style="color: #e8882c;">Plots</ion-label>
         </div>
         <div class="div-category" (click)="productlist('Land')">
           <div class="div-img">
-            <!-- <ion-skeleton-text [animated]="true" style="width: 55px;height: 55px; margin: auto;margin-bottom: 16px;"></ion-skeleton-text> -->
             <ion-img src="assets/img/field.png" style="background: rgb(228 49 133 / 30%);"></ion-img>
           </div>
-          <!-- <ion-skeleton-text [animated]="true" style="line-height: 14px;border-radius: 0px;"></ion-skeleton-text> -->
           <ion-label style="color: #e43185;">Lands</ion-label>
         </div>
       </div>
@@ -122,7 +111,7 @@
     <div class="div vendors">
       <!-- <app-product-box></app-product-box> -->
       @for (p of properties(); track p.id) {
-      <app-realestate-card [property]="p" [saleType]="'sale'"></app-realestate-card>
+      <app-realestate-card [property]="p" [saleType]="'sale'" [admin]="{ uid: 'admin' }"></app-realestate-card>
       }
     </div>
     <!-- <ion-fab  horizontal="end" vertical="bottom" slot="fixed" style="position: fixed;" (click)="openFormEntry()">

@@ -5,10 +5,14 @@
       Saved Properties
     </ion-title>
   </ion-toolbar>
+  <ion-toolbar style="--padding-start:0;--padding-end:0;--min-height:55px;--padding-top:0;--padding-bottom:0;">
+    <ion-searchbar [debounce]="500" placeholder="Search" style="padding:0px;"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  @for (property of savedProperties(); track property) {
-  <app-savedpropertycard [property]="property"></app-savedpropertycard>
+  @for (p of filtered(); track p.id) {
+  <app-savedpropertycard [property]="p" [admin]="{ uid: 'admin' }">
+  </app-savedpropertycard>
   }
 </ion-content>

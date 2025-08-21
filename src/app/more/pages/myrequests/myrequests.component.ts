@@ -117,7 +117,7 @@ export class MyrequestsComponent implements OnInit {
     }));
 
     // Price preference: price → costOfProperty → rent
-    const rawPrice = d.salePrice ?? d.costOfProperty ?? d.rent ?? 0;
+    const rawPrice = d.priceOfSale ?? d.priceOfRent ?? 0;
     const price = Number(rawPrice) || 0;
 
     // Sizes formatted as strings
@@ -127,17 +127,22 @@ export class MyrequestsComponent implements OnInit {
     return {
       id,
       propertyTitle: String(d.propertyTitle ?? '—'),
-      salePrice: price,
-      rentPrice: price,
+      priceOfSale: Number(d.priceOfSale ?? 0),
+      priceOfRent: Number(d.priceOfRent ?? 0),
+      priceOfRentType: String(d.priceOfRentType ?? '—'),
       location: String(d.addressOfProperty ?? d.location ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
       propertySize: sizeStr,
       propertyImages,
-      category: String(d.category ?? '-'),
+      category: String(d.category ?? 'residential') as
+        | 'residential'
+        | 'commercial'
+        | 'plots'
+        | 'lands',
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
-      saleType: String(d.saleType ?? '-'),
+      saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
       propertyStatus: String(d.propertyStatus ?? 'Available'),
     };
   };
@@ -157,10 +162,9 @@ type PostDoc = {
   agentName?: string;
   propertyId?: string;
   propertyStatus?: string;
-  costOfProperty?: number | string;
-  rent?: number | string;
-  salePrice?: number | string;
-  rentPrice?: number | string;
+  priceOfSale?: number;
+  priceOfRent?: number;
+  priceOfRentType?: string;
 
   createdAt?: any;
   // …any other fields you store
