@@ -4,7 +4,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonSelect, IonSelectOption, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
-import { IRequest } from 'src/app/models/request.model';
 import { IVentureHouses, IVentureTowerFlats } from 'src/app/models/ventures.modal';
 import { ToastService } from 'src/app/services/toast.service';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
@@ -31,7 +30,6 @@ export class FlatconfigureComponent implements OnInit {
   @Input() pasteAll: any;
   action = 'display';
   loading = false;
-  request!: IRequest;
 
 
   @Output() copied = new EventEmitter();

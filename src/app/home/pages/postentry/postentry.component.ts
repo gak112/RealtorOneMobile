@@ -49,6 +49,7 @@ import {
   add,
   caretDownOutline,
   caretUpOutline,
+  close,
 } from 'ionicons/icons';
 import { Geolocation } from '@capacitor/geolocation';
 import { CommonModule } from '@angular/common';
@@ -58,9 +59,10 @@ import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
-import { PostPayload, PostsService } from 'src/app/more/services/posts.service';
+import { PostsService } from 'src/app/more/services/posts.service';
 import { FirebaseError } from '@angular/fire/app';
 import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
+import { PostRequest } from 'src/app/models/request.model';
 
 type HouseType =
   | 'Apartment'
@@ -68,16 +70,42 @@ type HouseType =
   | 'Gated Community Villa'
   | '';
 type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
-type Units = 'Sq Feet' | 'Sq Yard' | 'Sq Mtr' | 'Acre';
+type Units =
+  | 'Sq Feet'
+  | 'Sq Yard'
+  | 'Sq Mtr'
+  | 'Acre'
+  | 'Feet'
+  | 'Yard'
+  | 'Mtr';
 type RentUnits = 'Monthly' | 'Yearly';
 type AgeAction = 'underconstruction' | 'noofyears';
+type FurnishingType = 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished';
+type PropertyType =
+  | 'Shop'
+  | 'Office'
+  | 'Warehouse'
+  | 'Factory'
+  | 'Showroom'
+  | 'Land'
+  | 'Other';
+type SubType =
+  | 'Shopping Mall'
+  | 'Co-Working Space'
+  | 'IT Park'
+  | 'Showroom'
+  | 'Other';
 
 type PostEntryForm = {
-  title: FormControl<string>;
+  propertyTitle: FormControl<string>;
   houseType: FormControl<HouseType>;
   houseCondition: FormControl<'Old Houses' | 'New Houses' | null>;
   rooms: FormControl<number | null>;
   bhkType: FormControl<BHKType | null>;
+  furnishingType: FormControl<FurnishingType | null>;
+  propertyType: FormControl<PropertyType | null>;
+  subType: FormControl<SubType | null>;
+  securityDeposit: FormControl<number | null>;
   totalPropertyUnits: FormControl<Units | null>;
   propertySize: FormControl<number | null>;
   propertySizeBuildUp: FormControl<number | null>;
@@ -95,8 +123,9 @@ type PostEntryForm = {
   kitchen: FormControl<number | null>;
   floor: FormControl<string | null>;
   amenities: FormControl<string[]>;
+  ageOfProperty: FormControl<string | null>;
   noOfYears: FormControl<number | null>;
-  rent: FormControl<number | null>;
+  rentPrice: FormControl<number | null>;
   rentUnits: FormControl<RentUnits | null>;
   costOfProperty: FormControl<number | null>;
   addressOfProperty: FormControl<string | null>;
@@ -168,6 +197,9 @@ export class PostentryComponent implements OnInit {
     'Sq Yard': 'Sq Yd',
     'Sq Mtr': 'Sq m',
     Acre: 'Acre',
+    Feet: 'Ft',
+    Yard: 'Yd',
+    Mtr: 'Mtr',
   };
 
   // UI state
@@ -179,7 +211,7 @@ export class PostentryComponent implements OnInit {
 
   // form
   postEntryForm = this.fb.group<PostEntryForm>({
-    title: this.fb.control('', {
+    propertyTitle: this.fb.control('', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
     houseType: this.fb.control<HouseType>('', {
@@ -193,6 +225,10 @@ export class PostentryComponent implements OnInit {
     totalPropertyUnits: this.fb.control<Units | null>(null, {
       validators: [Validators.required],
     }),
+    furnishingType: this.fb.control<FurnishingType | null>(null),
+    propertyType: this.fb.control<PropertyType | null>(null),
+    subType: this.fb.control<SubType | null>(null),
+    securityDeposit: this.fb.control<number | null>(null),
     propertySize: this.fb.control<number | null>(null, {
       validators: [Validators.min(1)],
     }),
@@ -215,11 +251,12 @@ export class PostentryComponent implements OnInit {
       validators: [Validators.required],
     }),
     amenities: this.fb.control<string[]>([]),
+    ageOfProperty: this.fb.control<string | null>(null),
     noOfYears: this.fb.control<number | null>(
       { value: null, disabled: true },
       { validators: [Validators.min(0)] }
     ),
-    rent: this.fb.control<number | null>(null, {
+    rentPrice: this.fb.control<number | null>(null, {
       validators: [Validators.min(1)],
     }),
     rentUnits: this.fb.control<RentUnits | null>(null),
@@ -251,7 +288,7 @@ export class PostentryComponent implements OnInit {
   readonly floors = PostentryComponent.FLOORS;
   readonly unitShort = computed(() => {
     const u = this.units$();
-    return u ? PostentryComponent.UNIT_SHORT[u] : 'Sq Ft';
+    return u ? PostentryComponent.UNIT_SHORT[u] : 'Ft';
     // template calls unitShort() — signals are callable
   });
 
@@ -267,6 +304,7 @@ export class PostentryComponent implements OnInit {
       add,
       caretDownOutline,
       caretUpOutline,
+      close,
     });
 
     // Enable/disable "noOfYears" based on segment
@@ -286,7 +324,7 @@ export class PostentryComponent implements OnInit {
 
     // rent → require rentUnits
     effect(() => {
-      const rent = this.postEntryForm.controls.rent.value ?? 0;
+      const rent = this.postEntryForm.controls.rentPrice.value ?? 0;
       const unitsCtrl = this.postEntryForm.controls.rentUnits;
       if (rent > 0) {
         unitsCtrl.addValidators([Validators.required]);
@@ -546,14 +584,14 @@ export class PostentryComponent implements OnInit {
       const raw = this.postEntryForm.getRawValue();
 
       // Build strict payload
-      const payload: PostPayload = {
+      const payload: PostRequest = {
         ...raw,
         // ensure arrays are not undefined
         amenities: raw.amenities ?? [],
         images: raw.images ?? [],
         saleType: this.saleType,
         category: this.category,
-      } as PostPayload;
+      } as PostRequest;
 
       if (this.editId) {
         await this.postsService.update(this.editId, payload);

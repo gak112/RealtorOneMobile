@@ -1,67 +1,62 @@
 <ion-content>
+  @if (vm()) {
   <div class="div-fullview-main">
     <div class="div-images">
       <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+        @for (img of images(); track $index) {
         <swiper-slide>
           <div class="div-img">
-            <ion-img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt=""></ion-img>
+            <ion-img [src]="img || 'assets/img/no-image.png'" alt=""></ion-img>
           </div>
         </swiper-slide>
-        <swiper-slide>
-          <div class="div-img">
-            <ion-img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt=""></ion-img>
-          </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="div-img">
-            <ion-img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt=""></ion-img>
-          </div>
-        </swiper-slide>
+        }
       </swiper-container>
+
       <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+
       <div class="tags">
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <div class="" style="position: relative;" (click)="openAllPhotos()">
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"
-            style="opacity: 0.3;">
-          </ion-img>
-          <span class="tag-count">+10</span>
+        @for (img of images().slice(0, 5); track $index) {
+        <ion-img [src]="img || 'assets/img/no-image.png'" class="tag-img"></ion-img>
+        }
+        @if (images().length > 6) {
+        <div style="position: relative;" (click)="openAllPhotos()">
+          <ion-img [src]="images()[6]" class="tag-img" style="opacity:0.3;"></ion-img>
+          <span class="tag-count">+{{ images().length - 6 }}</span>
         </div>
+        }
       </div>
-      <ion-label class="label-rent-title">Sale</ion-label>
+
+      <ion-label class="label-rent-title">{{ vm()!.saleType }}</ion-label>
     </div>
 
     <div class="div-rent">
-      <ion-label class="label-amount">₹25000/Sqft</ion-label>
-      <ion-label class="label-type">Commercial</ion-label>
+      @if (vm()!.saleTypeKey === 'sale') {
+      <ion-label class="label-amount">{{ vm()!.costOfProperty }}</ion-label>
+      }
+      @if (vm()!.saleTypeKey === 'rent') {
+      <ion-label class="label-amount">{{ vm()!.rentPrice }}</ion-label>
+      }
+      <ion-label class="label-type">{{ vm()!.category }}</ion-label>
     </div>
+
     <div class="div-ventortitle">
       <div class="div-details">
         <div class="div-img-flex">
           <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
-          <ion-label class="label-title"><span>Sai Enclave Apartments</span></ion-label>
+          <ion-label class="label-title"><span>{{ vm()!.propertyTitle }}</span></ion-label>
         </div>
         <div class="div-location-flex">
           <ion-icon name="location-outline"></ion-icon>
-          <ion-label class="label-address">18-1350, Ashok Nagar, Near Sitting Gandhi , Miryalaguda, Nalgonda Dist -
-            508207</ion-label>
+          <ion-label class="label-address">{{ vm()!.location }}</ion-label>
         </div>
       </div>
     </div>
+
     <div class="div-description">
       <ion-label class="label-description">Description</ion-label>
-      <span class="span-description">
-        A business venture is an entrepreneurial undertaking because it has an element of risk and reward. The
-        founder, entrepreneur or investor can expose their resources to the venture's risk to pursue rewards. For
-        example, they can risk their money, time and labour to undertake its activities.
-      </span>
-
+      <span class="span-description">{{ vm()!.description }}</span>
     </div>
+
     <div class="" style="border-bottom: var(--border-7);">
       <div class="div-facts-items">
         <ion-label class="label-property-details">Property details</ion-label>
@@ -70,57 +65,19 @@
         <span class="feature-list-title">House Details</span>
         <div class="feature-list">
           <ul>
-            <li>
-              <ion-label>
-                <span> House&nbsp;Type&nbsp;: </span>
-                Office
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Bhk&nbsp;type&nbsp;: </span>
-                4&nbsp;BHK
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Bedrooms&nbsp;: </span>
-                4
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Bathrooms&nbsp;: </span>
-                3
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Pooja&nbsp;Room&nbsp;: </span>
-                1
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Dining&nbsp;Room&nbsp;: </span>
-                1
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Kitchen&nbsp;: </span>
-                1
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Floor&nbsp;: </span>
-                1
-              </ion-label>
-            </li>
+            <li><ion-label><span> House&nbsp;Type&nbsp;: </span>{{ vm()!.houseType }}</ion-label></li>
+            <li><ion-label><span> Bhk&nbsp;type&nbsp;: </span>{{ vm()!.bhkType }}</ion-label></li>
+            <li><ion-label><span> Bedrooms&nbsp;: </span>{{ vm()!.bedrooms }}</ion-label></li>
+            <li><ion-label><span> Bathrooms&nbsp;: </span>{{ vm()!.bathrooms }}</ion-label></li>
+            <li><ion-label><span> Pooja&nbsp;Room&nbsp;: </span>{{ vm()!.poojaRoom }}</ion-label></li>
+            <li><ion-label><span> Dining&nbsp;Room&nbsp;: </span>{{ vm()!.dining }}</ion-label></li>
+            <li><ion-label><span> Kitchen&nbsp;: </span>{{ vm()!.kitchen }}</ion-label></li>
+            <li><ion-label><span> Floor&nbsp;: </span>{{ vm()!.floor }}</ion-label></li>
+            <li><ion-label><span> Furnishing&nbsp;: </span>{{ vm()!.furnishingType }}</ion-label></li>
           </ul>
         </div>
       </div>
+
       <div class="div-facts-items">
         <ion-label class="label-property-details">Property Size</ion-label>
       </div>
@@ -128,108 +85,101 @@
         <span class="feature-list-title">Total Size of Property</span>
         <div class="feature-list">
           <ul>
-
-            <li>
-              <ion-label>
-                <span> Size of Property&nbsp;: </span>
-                4000 Sqft
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Size of Build Up&nbsp;: </span>
-                100 Acres
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Year Built&nbsp;: </span>
-                2019
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span>House Facing&nbsp;: </span>
-                East Facing
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span>Age of Property&nbsp;: </span>
-                10 Years
-              </ion-label>
-            </li>
+            <li><ion-label><span> Size of Property&nbsp;: </span>{{ vm()!.totalSize }}</ion-label></li>
+            <li><ion-label><span> Size of Build Up&nbsp;: </span>{{ vm()!.buildUpSize }}</ion-label></li>
+            <li><ion-label><span> Age of Property&nbsp;: </span>{{ vm()!.ageOfProperty }}</ion-label></li>
           </ul>
         </div>
       </div>
+
       <div class="div-facts-items">
-        <ion-label class="label-property-details">Dimensions Details</ion-label>
+        <ion-label class="label-property-details">Facing Details</ion-label>
       </div>
+
+      <!-- North -->
       <div class="div-lists">
-        <span class="feature-list-title">Dimensions</span>
+        <span class="feature-list-title">North&nbsp;Facing</span>
         <div class="feature-list">
           <ul>
+            <li><ion-label><span> Facing&nbsp;: </span>{{ vm().northFacing }}</ion-label></li>
             <li>
               <ion-label>
-                <span> North&nbsp;Dimensions&nbsp;: </span>
-                1000 Sqft
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> South&nbsp;Dimensions&nbsp;: </span>
-                1000 Sqft
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> East&nbsp;Dimensions&nbsp;: </span>
-                1000 Sqft
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> West&nbsp;Dimensions&nbsp;: </span>
-                1000 Sqft
+                <span> Size&nbsp;: </span>
+                {{ vm().northSizeValue }}
+                @if (vm().northSizeValue !== '—') { {{ ' ' + vm().northSizeUnit }} }
               </ion-label>
             </li>
           </ul>
         </div>
       </div>
+
+      <!-- South -->
+      <div class="div-lists">
+        <span class="feature-list-title">South&nbsp;Facing</span>
+        <div class="feature-list">
+          <ul>
+            <li><ion-label><span> Facing&nbsp;: </span>{{ vm().southFacing }}</ion-label></li>
+            <li>
+              <ion-label>
+                <span> Size&nbsp;: </span>
+                {{ vm().southSizeValue }}
+                @if (vm().southSizeValue !== '—') { {{ ' ' + vm().southSizeUnit }} }
+              </ion-label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- East -->
+      <div class="div-lists">
+        <span class="feature-list-title">East&nbsp;Facing</span>
+        <div class="feature-list">
+          <ul>
+            <li><ion-label><span> Facing&nbsp;: </span>{{ vm().eastFacing }}</ion-label></li>
+            <li>
+              <ion-label>
+                <span> Size&nbsp;: </span>
+                {{ vm().eastSizeValue }}
+                @if (vm().eastSizeValue !== '—') { {{ ' ' + vm().eastSizeUnit }} }
+              </ion-label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- West -->
+      <div class="div-lists">
+        <span class="feature-list-title">West&nbsp;Facing</span>
+        <div class="feature-list">
+          <ul>
+            <li><ion-label><span> Facing&nbsp;: </span>{{ vm().westFacing }}</ion-label></li>
+            <li>
+              <ion-label>
+                <span> Size&nbsp;: </span>
+                {{ vm().westSizeValue }}
+                @if (vm().westSizeValue !== '—') { {{ ' ' + vm().westSizeUnit }} }
+              </ion-label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
     </div>
+
     <div class="div-description">
       <ion-label class="label-description">Amenities</ion-label>
       <div style="margin-top: 10px;">
-        @for(amentity of amentities(); track amentity) {
-        <app-amentitycard [amentity]="amentity"></app-amentitycard>
+        @for (amenity of amenities(); track amenity.id) {
+        <app-amentitycard [amentity]="amenity"></app-amentitycard>
         }
       </div>
     </div>
   </div>
+  } @else {
+  <!-- tiny loading/empty state (optional) -->
+  <div style="padding:16px;">Loading…</div>
+  }
 </ion-content>
-
-
-<!-- <ion-footer>
-    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
-        <div class="div-mobile-icon" [class.blur]="true">
-            <div>
-                <ion-label>Sai Enclave</ion-label>
-                <ion-label>90XXXXXX90</ion-label>
-            </div>
-
-            <br>
-            <div>
-                <ion-label>Seller Name</ion-label>
-                <ion-label>90XXXXXX90</ion-label>
-            </div><br>
-
-            <a href="tel:property.phone" style="height: 45px;">
-                <ion-icon name="call-outline" [class.bRent]="action === 'rent'"
-                    [class.bSale]="action === 'sale'"></ion-icon>
-            </a>
-        </div>
-    </div>
-</ion-footer> -->
 
 <ion-footer>
   <div class="div-mobile">
@@ -238,7 +188,6 @@
         <ion-label>Bhavani Sankar</ion-label>
         <ion-label>+91 9876543210</ion-label>
       </div>
-
       <a href="tel:property.phone" style="height: 45px;">
         <ion-icon name="call-outline"></ion-icon>
       </a>

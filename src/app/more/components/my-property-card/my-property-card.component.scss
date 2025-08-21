@@ -46,6 +46,7 @@
   font-weight: 600;
   backdrop-filter: blur(10px);
   z-index: 1;
+  text-transform: uppercase;
 }
 
 .info-container {
@@ -123,7 +124,7 @@
 }
 
 .location-code {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--color-black);
   letter-spacing: 1px;

@@ -65,29 +65,6 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
-type PostDoc = {
-  id: string;
-  images?: string[];
-  saleType?: string;
-  addressOfProperty?: string;
-  location?: string;
-  locationCode?: string;
-  houseType?: string;
-  propertyType?: string;
-  propertySize?: number | string;
-  propertySizeBuildUp?: number | string;
-  propertySqft?: string | number;
-  agentName?: string;
-  propertyId?: string;
-  listingType?: string;
-  propertyStatus?: string;
-  costOfProperty?: number | string;
-  rent?: number | string;
-  price?: number | string;
-  createdAt?: any;
-  // …any other fields you store
-};
-
 @Component({
   selector: 'app-homemain',
   templateUrl: './homemain.component.html',
@@ -277,153 +254,51 @@ export class HomemainComponent implements OnInit {
     }));
 
     // Price preference: price → costOfProperty → rent
-    const rawPrice = d.price ?? d.costOfProperty ?? d.rent ?? 0;
+    const rawPrice = d.salePrice ?? d.costOfProperty ?? d.rent ?? 0;
     const price = Number(rawPrice) || 0;
 
     // Sizes formatted as strings
-    const size = d.propertySize ?? d.propertySizeBuildUp ?? '—';
+    const size = d.propertySize ?? '—';
     const sizeStr = String(size);
-    const sqft = d.propertySizeBuildUp ?? d.propertySqft ?? '';
-    const sqftStr = String(sqft);
 
     return {
       id,
-      price,
-      locationCode: String(d.locationCode ?? '—'),
+      propertyTitle: String(d.propertyTitle ?? '—'),
+      salePrice: price,
+      rentPrice: price,
       location: String(d.addressOfProperty ?? d.location ?? '—'),
-      propertyType: String(d.houseType ?? d.propertyType ?? '—'),
+      houseType: String(d.houseType ?? '—'),
+      bhkType: String(d.bhkType ?? '—'),
       propertySize: sizeStr,
-      propertySqft: sqftStr,
       propertyImages,
-      type: String(d.saleType ?? 'sale'),
+      category: String(d.category ?? '-'),
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
-      listingType: String(d.listingType ?? '—'),
+      saleType: String(d.saleType ?? '-'),
       propertyStatus: String(d.propertyStatus ?? 'Available'),
     };
   };
-
-  // properties = signal<IProperty[]>([
-  //   {
-  //     id: '1',
-  //     price: 10000,
-  //     locationCode: 'HYD',
-  //     location: 'Hyderabad, Jubilee Hills',
-  //     propertyType: 'Apartment',
-  //     propertySize: '3BHK',
-  //     propertySqft: '1000',
-  //     propertyImages: [
-  //       {
-  //         id: '1',
-  //         image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-  //       },
-  //       {
-  //         id: '2',
-  //         image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-  //       },
-  //       {
-  //         id: '3',
-  //         image: 'https://ucarecdn.com/6f53822c-c9eb-477f-865f-77a3d4bd5f37/',
-  //       },
-  //     ],
-  //     type: 'Under Construction',
-  //     agentName: 'Ajay Kumar',
-  //     propertyId: 'PROP-1023',
-  //     listingType: 'For Sale',
-  //     propertyStatus: 'Premium Location',
-  //   },
-  //   {
-  //     id: '2',
-  //     price: 15000,
-  //     locationCode: 'HYD',
-  //     location: 'Hyderabad, Banjara Hills',
-  //     propertyType: 'Apartment',
-  //     propertySize: '4BHK',
-  //     propertySqft: '3000',
-  //     propertyImages: [
-  //       {
-  //         id: '1',
-  //         image:
-  //           'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-  //       },
-  //       {
-  //         id: '2',
-  //         image:
-  //           'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-  //       },
-  //       {
-  //         id: '3',
-  //         image:
-  //           'https://i.etsystatic.com/32740471/r/il/7ce17f/3608181963/il_fullxfull.3608181963_3xsy.jpg',
-  //       },
-  //     ],
-  //     type: 'Ready to Move',
-  //     agentName: 'Ashok Kumar',
-  //     propertyId: 'PROP-1024',
-  //     listingType: 'For Sale',
-  //     propertyStatus: 'Premium Location',
-  //   },
-  //   {
-  //     id: '3',
-  //     price: 20000,
-  //     locationCode: 'HYD',
-  //     location: 'Hyderabad, Kukatpally',
-  //     propertyType: 'Villa',
-  //     propertySize: '5BHK',
-  //     propertySqft: '4000',
-  //     propertyImages: [
-  //       {
-  //         id: '1',
-  //         image:
-  //           'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-  //       },
-  //       {
-  //         id: '2',
-  //         image:
-  //           'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-  //       },
-  //       {
-  //         id: '3',
-  //         image:
-  //           'https://i.pinimg.com/736x/c2/25/17/c2251742e11b9ba63a43169f08b3da9b.jpg',
-  //       },
-  //     ],
-  //     type: 'Ready to Move',
-  //     agentName: 'Rajesh Kumar',
-  //     propertyId: 'PROP-1025',
-  //     listingType: 'For Sale',
-  //     propertyStatus: 'Premium Location',
-  //   },
-  //   {
-  //     id: '4',
-  //     price: 15000,
-  //     locationCode: 'HYD',
-  //     location: 'Hyderabad, Kukatpally',
-  //     propertyType: 'Villa',
-  //     propertySize: '5BHK',
-  //     propertySqft: '4000',
-  //     propertyImages: [
-  //       {
-  //         id: '1',
-  //         image:
-  //           'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-  //       },
-  //       {
-  //         id: '2',
-  //         image:
-  //           'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-  //       },
-  //       {
-  //         id: '3',
-  //         image:
-  //           'https://www.favouritehomes.com/wp-content/uploads/2021/12/luxury-villa.jpg',
-  //       },
-  //     ],
-  //     type: 'Ready to Move',
-  //     agentName: 'Abhinav Gunda',
-  //     propertyId: 'PROP-1026',
-  //     listingType: 'For Sale',
-  //     propertyStatus: 'Premium Location',
-  //   },
-  // ]);
 }
+
+type PostDoc = {
+  id: string;
+  images?: string[];
+  propertyTitle?: string;
+  saleType?: string;
+  category?: string;
+  addressOfProperty?: string;
+  location?: string;
+  houseType?: string;
+  bhkType?: string;
+  propertySize?: number | string;
+  agentName?: string;
+  propertyId?: string;
+  propertyStatus?: string;
+  costOfProperty?: number | string;
+  rent?: number | string;
+  salePrice?: number | string;
+  rentPrice?: number | string;
+
+  createdAt?: any;
+  // …any other fields you store
+};

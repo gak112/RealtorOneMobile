@@ -52,23 +52,22 @@ export class RealestateCardComponent implements OnInit {
 
 export interface IProperty {
   id: string;
-  price: number;
-  locationCode: string;
+  propertyTitle: string;
+  salePrice: number;
   location: string;
-  propertyType: string;
+  houseType: string;
+  bhkType: string;
   propertySize: string;
-  propertySqft: string;
   propertyImages: IPropertyImage[];
-  type: string;
   agentName: string;
   propertyId: string;
-  listingType: string;
+  saleType: string;
   propertyStatus: string;
+  category: string;
+  rentPrice: number;
 }
 
 export interface IPropertyImage {
   id: string;
   image: string;
 }
-
-

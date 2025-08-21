@@ -1,77 +1,79 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-close"></ion-icon>
-      <ion-title>
-         Subcriptions
-      </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-close"></ion-icon>
+        <ion-title>
+            Subcriptions
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="div-details">  
-      <div class="div-subscription-card">
-          <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
-          <div class="div-card-sub" (click)="successPage()">
-              <ion-segment value="monthly" (ionChange)="changeBasicMonths($event)">
-                  <ion-segment-button value="monthly" checked>Monthly</ion-segment-button>
-                  <ion-segment-button value="half">6 Months</ion-segment-button>
-                  <ion-segment-button value="yearly">Yearly</ion-segment-button>
-              </ion-segment>
-              <div class="div-flex" style="align-items: center;">
-                  <ion-label class="label-title"><span>Basic</span>Plan</ion-label>
-                  <div style="display: flex;margin-right: 16px;">
-                      <ion-label class="label-actual"><sup>₹</sup>550</ion-label>
-                      <ion-label class="label-discount"><sup>₹</sup>55</ion-label>
-                  </div>
-              </div>
-              <div class="div-flex" style="margin-top: 50px;">
-                  <ion-label class="label-price"><sup>₹</sup>{{basicAmount}}<sub>/Month</sub></ion-label>
-              </div>
-              <div class="div-flex">
-                  <ion-label class="label-apply-coupon" (click)="couponDetails()">Apply Coupon</ion-label>
-                  <ion-button color="dark" size="small">Subscribe</ion-button>
-              </div>
-          </div>
-      </div>
-      <div class="div-subscription-card">
-          <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
+    <div class="div-details">
+        <div class="div-subscription-card">
+            <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
+            <div class="div-card-sub" (click)="successPage()">
+                <ion-segment value="monthly" (ionChange)="changeBasicMonths($event)">
+                    <ion-segment-button value="monthly" checked>Monthly</ion-segment-button>
+                    <ion-segment-button value="quarterly">3 Months</ion-segment-button>
+                    <ion-segment-button value="half">6 Months</ion-segment-button>
+                    <ion-segment-button value="yearly">Yearly</ion-segment-button>
+                </ion-segment>
+                <div class="div-flex" style="align-items: center;">
+                    <ion-label class="label-title"><span>Basic</span>Plan</ion-label>
+                    <div style="display: flex;margin-right: 16px;">
+                        <ion-label class="label-actual"><sup>₹</sup>550</ion-label>
+                        <ion-label class="label-discount"><sup>₹</sup>55</ion-label>
+                    </div>
+                </div>
+                <div class="div-flex" style="margin-top: 50px;">
+                    <ion-label class="label-price"><sup>₹</sup>{{basicAmount}}<sub>/Month</sub></ion-label>
+                </div>
+                <div class="div-flex">
+                    <ion-label class="label-apply-coupon" (click)="couponDetails()">Apply Coupon</ion-label>
+                    <ion-button color="dark" size="small">Subscribe</ion-button>
+                </div>
+            </div>
+        </div>
+        <div class="div-subscription-card">
+            <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
 
-          <div class="div-card-sub" (click)="successPage()">
-              <ion-segment value="monthly" (ionChange)="changePropertiesM($event)">
-                  <ion-segment-button value="monthly" checked>Monthly</ion-segment-button>
-                  <ion-segment-button value="half">6 Months</ion-segment-button>
-                  <ion-segment-button value="yearly">Yearly</ion-segment-button>
-              </ion-segment>
+            <div class="div-card-sub" (click)="successPage()">
+                <ion-segment value="monthly" (ionChange)="changePropertiesM($event)">
+                    <ion-segment-button value="monthly" checked>Monthly</ion-segment-button>
+                    <ion-segment-button value="half">6 Months</ion-segment-button>
+                    <ion-segment-button value="yearly">Yearly</ion-segment-button>
+                </ion-segment>
 
-              <div class="div-width">
-                  <ion-label class="range-title">No of Properties</ion-label>
+                <div class="div-width">
+                    <ion-label class="range-title">No of Properties</ion-label>
 
-                  <ion-segment class="segment-settings" (ionChange)="changeProperties($event)" value="10" scrollable mode="ios">
-                      <ion-segment-button value="10" >10 </ion-segment-button>
-                      <ion-segment-button value="50">50</ion-segment-button>
-                      <ion-segment-button value="100">100</ion-segment-button>
-                      <ion-segment-button value="500">500 </ion-segment-button>
-                      <ion-segment-button value="500 Plus">500 +</ion-segment-button>
-                  </ion-segment>
-                  
-              </div>
-              <div class="div-flex" style="align-items: center;">
-                  <ion-label class="label-title"><span>Venture</span>Plan</ion-label>
-                  <div style="display: flex;margin-right: 16px;">
-                      <ion-label class="label-actual"><sup>₹</sup>550</ion-label>
-                      <ion-label class="label-discount"><sup>₹</sup>55</ion-label>
-                  </div>
-              </div>
-              <div class="div-prices">
-                  <ion-label class="label-price"><sup>₹</sup>{{vAmount}}<sub>/Month</sub></ion-label>
-              </div>
-              <div class="div-flex">
-                  <ion-label class="label-apply-coupon" (click)="couponDetails()">Apply Coupon</ion-label>
-                  <ion-button color="dark" size="small">Subscribe</ion-button>
-              </div>
-          </div>
-      </div>
-      <!-- <div class="div-subscription-card">
+                    <ion-segment class="segment-settings" (ionChange)="changeProperties($event)" value="10" scrollable
+                        mode="ios">
+                        <ion-segment-button value="10">10 </ion-segment-button>
+                        <ion-segment-button value="50">50</ion-segment-button>
+                        <ion-segment-button value="100">100</ion-segment-button>
+                        <ion-segment-button value="500">500 </ion-segment-button>
+                        <ion-segment-button value="500 Plus">500 +</ion-segment-button>
+                    </ion-segment>
+
+                </div>
+                <div class="div-flex" style="align-items: center;">
+                    <ion-label class="label-title"><span>Venture</span>Plan</ion-label>
+                    <div style="display: flex;margin-right: 16px;">
+                        <ion-label class="label-actual"><sup>₹</sup>550</ion-label>
+                        <ion-label class="label-discount"><sup>₹</sup>55</ion-label>
+                    </div>
+                </div>
+                <div class="div-prices">
+                    <ion-label class="label-price"><sup>₹</sup>{{vAmount}}<sub>/Month</sub></ion-label>
+                </div>
+                <div class="div-flex">
+                    <ion-label class="label-apply-coupon" (click)="couponDetails()">Apply Coupon</ion-label>
+                    <ion-button color="dark" size="small">Subscribe</ion-button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="div-subscription-card">
           <div class="div-card-sub enterprise" style="border-bottom-right-radius:0">
               <ion-label class="label-title">Venture Plan</ion-label>
               <ion-label class="label-price"><sup>₹</sup>{{vAmount}}</ion-label>
@@ -101,6 +103,6 @@
           </div>
           <ion-label class="label-apply-coupon" (click)="couponDetails()" style="background: #756ff3;">Apply Coupon</ion-label>
       </div> -->
-     
-  </div>
+
+    </div>
 </ion-content>

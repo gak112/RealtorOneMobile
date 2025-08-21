@@ -16,16 +16,16 @@
     <div class="div-form-main">
       <!-- Title -->
       <div class="div-formgroup">
-        <ion-input type="text" mode="md" label="Title" label-placement="floating" fill="outline"
-          placeholder="Enter Title" autocomplete="off" autocapitalize="sentences" formControlName="title">
+        <ion-input type="text" mode="md" label="Property Title" label-placement="floating" fill="outline"
+          placeholder="Enter Property Title" autocomplete="off" autocapitalize="sentences"
+          formControlName="propertyTitle">
         </ion-input>
-        @if (ctrl('title').touched && ctrl('title').invalid) {
+        @if (ctrl('propertyTitle').touched && ctrl('propertyTitle').invalid) {
         <small class="text-rose-600">Title is required (min 3 chars)</small>
         }
       </div>
 
       @if (category === 'residential') {
-
       <!-- House Type -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Select House Type" label-placement="floating" fill="outline"
@@ -48,15 +48,16 @@
         </ion-select>
       </div>
 
-
+      @if (ctrl('houseCondition').value === 'Old Houses') {
       <!-- Rooms -->
       <div class="div-formgroup">
         <ion-input type="number" inputmode="numeric" mode="md" label="Rooms" label-placement="floating" fill="outline"
           placeholder="Enter Rooms" style="margin-right:16px; position:relative;" formControlName="rooms">
         </ion-input>
       </div>
+      }
 
-
+      @if (ctrl('houseCondition').value === 'New Houses') {
       <!-- BHK -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Select BHK Type" label-placement="floating" fill="outline"
@@ -72,6 +73,7 @@
         <small class="text-rose-600">BHK Type is required</small>
         }
       </div>
+      }
       <!-- Counts -->
       <div class="div-formgroup">
         <div class="div-grid">
@@ -86,15 +88,52 @@
         </div>
       </div>
       }
+      @if (category === 'residential' || category === 'commercial') {
+      <div class="div-formgroup">
+        <ion-select mode="md" label="Select Furnishing Type" label-placement="floating" fill="outline"
+          formControlName="furnishingType">
+          <ion-select-option value="Fully-Furnished">Fully-Furnished</ion-select-option>
+          <ion-select-option value="Semi-Furnished">Semi-Furnished</ion-select-option>
+          <ion-select-option value="Unfurnished">Unfurnished</ion-select-option>
+        </ion-select>
+      </div>
+      }
+      @if (category === 'commercial') {
+      <div class="div-formgroup">
+        <ion-select mode="md" label="Property Type" label-placement="floating" fill="outline"
+          formControlName="propertyType">
+          <ion-select-option value="Shop">Shop</ion-select-option>
+          <ion-select-option value="Office">Office</ion-select-option>
+          <ion-select-option value="Warehouse">Warehouse</ion-select-option>
+          <ion-select-option value="Factory">Factory</ion-select-option>
+          <ion-select-option value="Showroom">Showroom</ion-select-option>
+          <ion-select-option value="Land">Land</ion-select-option>
+          <ion-select-option value="Other">Other</ion-select-option>
+        </ion-select>
+      </div>
+      <div class="div-formgroup">
+        <ion-select mode="md" label="Sub Type" label-placement="floating" fill="outline" formControlName="subType">
+          <ion-select-option value="Shopping Mall">Shopping Mall</ion-select-option>
+          <ion-select-option value="Co-Working Space">Co-Working Space</ion-select-option>
+          <ion-select-option value="Warehouse">IT Park</ion-select-option>
+          <ion-select-option value="Showroom">Showroom</ion-select-option>
+          <ion-select-option value="Other">Other</ion-select-option>
+        </ion-select>
+      </div>
+      }
 
       <!-- Units -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Units" label-placement="floating" fill="outline"
           formControlName="totalPropertyUnits">
-          <ion-select-option value="Sq Feet" defaultSelected>Sq Feet</ion-select-option>
+          <ion-select-option value="Acre">Acre</ion-select-option>
+          <ion-select-option value="Feet">Feet</ion-select-option>
+          <ion-select-option value="Yard">Yard</ion-select-option>
+          <ion-select-option value="Mtr">Mtr</ion-select-option>
+          <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
           <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
           <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
-          <ion-select-option value="Acre">Acre</ion-select-option>
+
         </ion-select>
         @if (ctrl('totalPropertyUnits').touched && ctrl('totalPropertyUnits').invalid) {
         <small class="text-rose-600">Choose units</small>
@@ -128,12 +167,13 @@
         <small class="text-rose-600">Enter build-up size &gt; 0</small>
         }
       </div>
-
+      @if (category === 'plots' || category === 'lands' || category === 'residential' && ctrl('houseType').value ===
+      'Individual House/Villa' || category === 'commercial' && ctrl('subType').value === 'Other') {
       <!-- North -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;">
-          <ion-input type="text" mode="md" label="North Dimensions" label-placement="floating" fill="outline"
-            placeholder="Enter North Dimensions" style="margin-right:16px;" formControlName="northFacing"></ion-input>
+          <ion-input type="text" mode="md" label="North Facing" label-placement="floating" fill="outline"
+            placeholder="Enter North Facing" style="margin-right:16px;" formControlName="northFacing"></ion-input>
           <ion-input type="number" inputmode="numeric" mode="md" label="Size" label-placement="floating" fill="outline"
             placeholder="Enter Size" style="width:150px; margin-right:16px;" formControlName="northSize"></ion-input>
           <div class="div-label">
@@ -145,8 +185,8 @@
       <!-- South -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;">
-          <ion-input type="text" mode="md" label="South Dimensions" label-placement="floating" fill="outline"
-            placeholder="Enter South Dimensions" style="margin-right:16px;" formControlName="southFacing"></ion-input>
+          <ion-input type="text" mode="md" label="South Facing" label-placement="floating" fill="outline"
+            placeholder="Enter South Facing" style="margin-right:16px;" formControlName="southFacing"></ion-input>
           <ion-input type="number" inputmode="numeric" mode="md" label="Size" label-placement="floating" fill="outline"
             placeholder="Enter Size" style="width:150px; margin-right:16px;" formControlName="southSize"></ion-input>
           <div class="div-label">
@@ -158,8 +198,8 @@
       <!-- East -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;">
-          <ion-input type="text" mode="md" label="East Dimensions" label-placement="floating" fill="outline"
-            placeholder="Enter East Dimensions" style="margin-right:16px;" formControlName="eastFacing"></ion-input>
+          <ion-input type="text" mode="md" label="East Facing" label-placement="floating" fill="outline"
+            placeholder="Enter East Facing" style="margin-right:16px;" formControlName="eastFacing"></ion-input>
           <ion-input type="number" inputmode="numeric" mode="md" label="Size" label-placement="floating" fill="outline"
             placeholder="Enter Size" style="width:150px; margin-right:16px;" formControlName="eastSize"></ion-input>
           <div class="div-label">
@@ -171,8 +211,8 @@
       <!-- West -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;">
-          <ion-input type="text" mode="md" label="West Dimensions" label-placement="floating" fill="outline"
-            placeholder="Enter West Dimensions" style="margin-right:16px;" formControlName="westFacing"></ion-input>
+          <ion-input type="text" mode="md" label="West Facing" label-placement="floating" fill="outline"
+            placeholder="Enter West Facing" style="margin-right:16px;" formControlName="westFacing"></ion-input>
           <ion-input type="number" inputmode="numeric" mode="md" label="Size" label-placement="floating" fill="outline"
             placeholder="Enter Size" style="width:150px; margin-right:16px;" formControlName="westSize"></ion-input>
           <div class="div-label">
@@ -180,6 +220,7 @@
           </div>
         </div>
       </div>
+      }
 
 
       @if (category === 'residential' || category === 'commercial') {
@@ -196,7 +237,7 @@
       </div>
       }
 
-      @if (category === 'residential') {
+      @if (category === 'residential' || category === 'commercial') {
       <!-- Amenities -->
       <div class="div-formgroup flex" style="align-items:center;gap:8px;">
         <ion-label style="margin:0;font-size:16px;">Amenities</ion-label>
@@ -204,6 +245,7 @@
           <ion-icon slot="start" name="add"></ion-icon> Add
         </ion-button>
       </div>
+      @if (amenities().length > 0) {
       <div class="div-amenities">
         @for (a of amenities(); track a; let i = $index) {
         <span class="badge-amenity">
@@ -213,9 +255,19 @@
         }
       </div>
       }
+      }
+      @if (category === 'residential' || category === 'commercial') {
+      <div class="div-formgroup">
+        <ion-input type="text" mode="md" label="Age of Property" label-placement="floating" fill="outline"
+          placeholder="Enter Age of Property" formControlName="ageOfProperty"></ion-input>
+        @if (ctrl('ageOfProperty').touched && ctrl('ageOfProperty').invalid) {
+        <small class="text-rose-600">Please enter a valid number (≥ 0)</small>
+        }
+      </div>
+      }
 
       <!-- Age of Property -->
-      <div class="div-formgroup">
+      <!-- <div class="div-formgroup">
         <ion-label>Age of Property</ion-label>
         <div class="div-property-segment">
           <ion-segment color="primary" mode="ios" [value]="ageOfPropertyAction()"
@@ -233,7 +285,7 @@
           </div>
           }
         </div>
-      </div>
+      </div> -->
       @if (saleType === 'rent') {
       <!-- Rent / Sale -->
       <div class="div-formgroup">
@@ -247,7 +299,7 @@
             <ion-select-option value="Yearly">Yearly</ion-select-option>
           </ion-select>
         </div>
-        @if (ctrl('rent').touched && ctrl('rent').invalid) {
+        @if (ctrl('rentPrice').touched && ctrl('rentPrice').invalid) {
         <small class="text-rose-600">Enter rent &gt; 0</small>
         }
         @if (ctrl('rentUnits').touched && ctrl('rentUnits').invalid) {
@@ -255,6 +307,7 @@
         }
       </div>
       }
+      @if(saleType === 'sale'){
       <!-- Cost -->
       <div class="div-formgroup">
         <ion-input type="number" inputmode="numeric" mode="md" label="Cost of Property (₹)" label-placement="floating"
@@ -263,6 +316,13 @@
         <small class="text-rose-600">Enter cost &gt; 0</small>
         }
       </div>
+      }
+      @if (category === 'commercial' && saleType === 'rent') {
+      <div class="div-formgroup">
+        <ion-input type="number" inputmode="numeric" mode="md" label="Security Deposit (₹)" label-placement="floating"
+          fill="outline" placeholder="Enter Security Deposit" formControlName="securityDeposit"></ion-input>
+      </div>
+      }
       <!-- Address -->
       <div class="div-formgroup">
         <!-- <div class="div-flex" style="display:flex;align-items:center;gap:8px;">

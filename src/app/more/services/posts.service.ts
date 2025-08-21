@@ -12,63 +12,15 @@ import {
   FieldValue,
   QueryConstraint,
   orderBy,
+  CollectionReference,
+  DocumentData,
+  setDoc,
+  query,
+  where,
+  limit,
+  deleteDoc,
 } from '@angular/fire/firestore';
-
-export interface PostPayload {
-  // ------- your form fields -------
-  title: string;
-  houseType:
-    | 'Apartment'
-    | 'Individual House/Villa'
-    | 'Gated Community Villa'
-    | '';
-  houseCondition: 'Old Houses' | 'New Houses' | null;
-  rooms: number | null;
-  bhkType: '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK' | null;
-  totalPropertyUnits: 'Sq Feet' | 'Sq Yard' | 'Sq Mtr' | 'Acre' | null;
-  propertySize: number | null;
-  propertySizeBuildUp: number | null;
-  northFacing: string | null;
-  northSize: number | null;
-  southFacing: string | null;
-  southSize: number | null;
-  eastFacing: string | null;
-  eastSize: number | null;
-  westFacing: string | null;
-  westSize: number | null;
-  toilets: number | null;
-  poojaRoom: number | null;
-  livingDining: number | null;
-  kitchen: number | null;
-  floor: string | null;
-  amenities: string[];
-  noOfYears: number | null;
-  rent: number | null;
-  rentUnits: 'Monthly' | 'Yearly' | null;
-  costOfProperty: number | null;
-  addressOfProperty: string | null;
-  lat: number | null;
-  lng: number | null;
-  description: string | null;
-  negotiable: boolean;
-  images: string[];
-  createdAt: Timestamp | FieldValue;
-  updatedAt: Timestamp | FieldValue;
-  createdBy: string;
-  updatedBy: string;
-  sortDate: number;
-  isDeleted: boolean;
-  deletedBy: string | null;
-  deletedAt: Timestamp | FieldValue | null;
-  status: string;
-  fullSearchText: string[];
-
-  // ------- extras you add on submit -------
-  saleType: 'sale' | 'rent';
-  category: 'residential' | 'commercial' | 'plots' | 'lands';
-
-  // timestamps are set in service
-}
+import { PostRequest } from 'src/app/models/request.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
@@ -78,12 +30,16 @@ export class PostsService {
     return collection(this.afs, 'posts');
   }
 
+  // private colRef(): CollectionReference<DocumentData> {
+  //   return collection(this.afs, 'posts');
+  // }
+
   async getById(id: string) {
     const snap = await getDoc(doc(this.afs, 'posts', id));
     return snap.exists() ? { id: snap.id, ...snap.data() } : null;
   }
 
-  async create(payload: PostPayload) {
+  async create(payload: PostRequest) {
     const now = serverTimestamp();
     const ref = await addDoc(this.colRef(), {
       ...payload,
@@ -99,7 +55,7 @@ export class PostsService {
     return ref.id;
   }
 
-  async update(id: string, patch: Partial<PostPayload>) {
+  async update(id: string, patch: Partial<PostRequest>) {
     const now = serverTimestamp();
     await updateDoc(doc(this.afs, 'posts', id), {
       ...patch,
@@ -108,5 +64,48 @@ export class PostsService {
     return id;
   }
 
- 
+  /** Soft delete keeps data for audit and avoids breaking queries */
+  // async deleteSoft(id: string, deletedBy: string | null = null) {
+  //   const now = serverTimestamp();
+  //   await updateDoc(doc(this.afs, 'posts', id), {
+  //     isDeleted: true,
+  //     deletedBy: deletedBy ?? 'system',
+  //     deletedAt: now,
+  //     updatedAt: now,
+  //   });
+  //   return id;
+  // }
+
+
+   async deleteSoft(id: string, deletedBy?: string) {
+    const now = serverTimestamp();
+    await updateDoc(doc(this.afs, 'posts', id), {
+      isDeleted: true,
+      deletedAt: now,
+      deletedBy: deletedBy ?? null,
+      updatedAt: now,
+    });
+    return id;
+  }
+
+  /** If you ever need a hard delete, uncomment and use carefully */
+  // async deleteHard(id: string) {
+  //   await deleteDoc(doc(this.afs, 'posts', id));
+  //   return id;
+  // }
+
+  /** Query helper: not required, but handy */
+  getListQuery({ take = 100 } = {}) {
+    return query(
+      this.colRef(),
+      where('isDeleted', '==', false),
+      orderBy('createdAt', 'desc'),
+      limit(take)
+    );
+  }
+
+  async deleteHard(id: string) {
+    await deleteDoc(doc(this.afs, 'posts', id));
+    return id;
+  }
 }
