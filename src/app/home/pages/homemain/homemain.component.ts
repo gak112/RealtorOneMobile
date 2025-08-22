@@ -297,7 +297,7 @@ export class HomemainComponent implements OnInit {
       addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
-      propertySize: Number(sizeStr),
+      propertySize: Number(d.propertySize ?? 0),
       propertyImages,
       saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
       category: String(d.category ?? 'residential') as
