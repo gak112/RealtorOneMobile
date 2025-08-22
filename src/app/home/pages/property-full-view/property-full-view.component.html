@@ -1,199 +1,185 @@
 <ion-content>
   @if (vm()) {
-  <div class="div-fullview-main">
-    <!-- Top gallery -->
-    <div class="div-images">
-      <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
-        @for (img of images(); track $index) {
-        <swiper-slide>
-          <div class="div-img">
-            <ion-img [src]="img || 'assets/img/no-image.png'" alt=""></ion-img>
+    <div class="div-fullview-main">
+      <!-- Top gallery -->
+      <div class="div-images">
+        <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+          @for (img of images(); track $index) {
+            <swiper-slide>
+              <div class="div-img">
+                <ion-img [src]="img || 'assets/img/no-image.png'" alt=""></ion-img>
+              </div>
+            </swiper-slide>
+          }
+        </swiper-container>
+
+        <!-- Back -->
+        <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+
+        <!-- thumbs / count -->
+        <div class="tags">
+          @for (img of images().slice(0, 5); track $index) {
+            <ion-img [src]="img || 'assets/img/no-image.png'" class="tag-img"></ion-img>
+          }
+          @if (images().length > 6) {
+            <div style="position: relative;" (click)="openAllPhotos()">
+              <ion-img [src]="images()[6]" class="tag-img" style="opacity:0.3;"></ion-img>
+              <span class="tag-count">+{{ images().length - 6 }}</span>
+            </div>
+          }
+        </div>
+
+        <ion-label class="label-rent-title">{{ vm()!.saleType }}</ion-label>
+      </div>
+
+      <!-- Price + category -->
+      <div class="div-rent">
+        @if (vm()!.saleTypeKey === 'sale') {
+          <ion-label class="label-amount">₹{{ vm()!.priceOfSale | number:'1.0-0':'en-IN' }}</ion-label>
+        }
+        @if (vm()!.saleTypeKey === 'rent') {
+          <ion-label class="label-amount">
+            ₹{{ vm()!.priceOfRent | number:'1.0-0':'en-IN' }}
+            @if (vm()!.priceOfRentType && vm()!.priceOfRentType !== '—') {
+              / {{ vm()!.priceOfRentType }}
+            }
+          </ion-label>
+        }
+        <ion-label class="label-type">{{ vm()!.category }}</ion-label>
+      </div>
+
+      <!-- Title + location -->
+      <div class="div-ventortitle">
+        <div class="div-details">
+          <div class="div-img-flex">
+            <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
+            <ion-label class="label-title">{{ vm()!.propertyTitle }}</ion-label>
           </div>
-        </swiper-slide>
-        }
-      </swiper-container>
-
-      <!-- Back -->
-      <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
-
-      <!-- image tags / count -->
-      <div class="tags">
-        @for (img of images().slice(0, 5); track $index) {
-        <ion-img [src]="img || 'assets/img/no-image.png'" class="tag-img"></ion-img>
-        }
-        @if (images().length > 6) {
-        <div style="position: relative;" (click)="openAllPhotos()">
-          <ion-img [src]="images()[6]" class="tag-img" style="opacity:0.3;"></ion-img>
-          <span class="tag-count">+{{ images().length - 6 }}</span>
+          <div class="div-location-flex">
+            <ion-icon name="location-outline"></ion-icon>
+            <ion-label class="label-address">{{ vm()!.addressOfProperty }}</ion-label>
+          </div>
         </div>
-        }
+
+       
       </div>
 
-      <ion-label class="label-rent-title">{{ vm()!.saleType }}</ion-label>
-    </div>
+      <!-- Description -->
+      <div class="div-description">
+        <ion-label class="label-description">Description</ion-label>
+        <span class="span-description">{{ vm()!.description }}</span>
+      </div>
 
-    <!-- Price + category -->
-    <div class="div-rent">
-      @if (vm()!.saleTypeKey === 'sale') {
-      <ion-label class="label-amount">₹{{ vm()!.priceOfSale | number:'1.0-0':'en-IN' }}</ion-label>
-      }
-      @if (vm()!.saleTypeKey === 'rent') {
-      <ion-label class="label-amount">₹{{ vm()!.priceOfRent | number:'1.0-0':'en-IN' }} / {{ vm()!.priceOfRentType
-        }}</ion-label>
-      }
-      <ion-label class="label-type">{{ vm()!.category }}</ion-label>
-    </div>
-
-    <!-- Title + location -->
-    <div class="div-ventortitle">
-      <div class="div-details">
-        <div class="div-img-flex">
-          <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
-          <ion-label class="label-title">{{ vm()!.propertyTitle }}</ion-label>
+      <!-- Property details -->
+      <div style="border-bottom: var(--border-7);">
+        <div class="div-facts-items">
+          <ion-label class="label-property-details">Property details</ion-label>
         </div>
-        <div class="div-location-flex">
-          <ion-icon name="location-outline"></ion-icon>
-          <ion-label class="label-address">{{ vm()!.addressOfProperty }}</ion-label>
+
+        <div class="div-lists">
+          <span class="feature-list-title">House Details</span>
+          <div class="feature-list">
+            <ul>
+              <li><ion-label><span> House&nbsp;Type&nbsp;: </span>{{ vm()!.houseType }}</ion-label></li>
+              <li><ion-label><span> BHK&nbsp;Type&nbsp;: </span>{{ vm()!.bhkType }}</ion-label></li>
+              <li><ion-label><span> Pooja&nbsp;Room&nbsp;: </span>{{ vm()!.poojaRoom }}</ion-label></li>
+              <li><ion-label><span> Dining&nbsp;Room&nbsp;: </span>{{ vm()!.dining }}</ion-label></li>
+              <li><ion-label><span> Kitchen&nbsp;: </span>{{ vm()!.kitchen }}</ion-label></li>
+              <li><ion-label><span> Floor&nbsp;: </span>{{ vm()!.floor }}</ion-label></li>
+              <li><ion-label><span> Furnishing&nbsp;: </span>{{ vm()!.furnishingType }}</ion-label></li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Description -->
-    <div class="div-description">
-      <ion-label class="label-description">Description</ion-label>
-      <span class="span-description">{{ vm()!.description }}</span>
-    </div>
-
-    <!-- Property details -->
-    <div style="border-bottom: var(--border-7);">
-      <div class="div-facts-items">
-        <ion-label class="label-property-details">Property details</ion-label>
-      </div>
-
-      <div class="div-lists">
-        <span class="feature-list-title">House Details</span>
-        <div class="feature-list">
-          <ul>
-            <li><ion-label><span> House&nbsp;Type&nbsp;: </span>{{ vm()!.houseType }}</ion-label></li>
-            <li><ion-label><span> Bhk&nbsp;type&nbsp;: </span>{{ vm()!.bhkType }}</ion-label></li>
-            <li><ion-label><span> Pooja&nbsp;Room&nbsp;: </span>{{ vm()!.poojaRoom }}</ion-label></li>
-            <li><ion-label><span> Dining&nbsp;Room&nbsp;: </span>{{ vm()!.dining }}</ion-label></li>
-            <li><ion-label><span> Kitchen&nbsp;: </span>{{ vm()!.kitchen }}</ion-label></li>
-            <li><ion-label><span> Floor&nbsp;: </span>{{ vm()!.floor }}</ion-label></li>
-            <li><ion-label><span> Furnishing&nbsp;: </span>{{ vm()!.furnishingType }}</ion-label></li>
-          </ul>
+        <!-- Sizes -->
+        <div class="div-facts-items">
+          <ion-label class="label-property-details">Property Size</ion-label>
         </div>
-      </div>
-
-      <!-- Sizes -->
-      <div class="div-facts-items">
-        <ion-label class="label-property-details">Property Size</ion-label>
-      </div>
-      <div class="div-lists">
-        <span class="feature-list-title">Total Size of Property</span>
-        <div class="feature-list">
-          <ul>
-            <li>
-              <ion-label>
-                <span> Size of Property&nbsp;: </span>
-                {{ vm()!.propertySize }}
-                @if (vm()!.propertySize !== '—') { {{ ' ' + vm()!.totalPropertyUnits }} }
-              </ion-label>
-            </li>
-            <li>
-              <ion-label>
-                <span> Size of Built Up&nbsp;: </span>
-                {{ vm()!.propertySizeBuiltup }}
-                @if (vm()!.propertySizeBuiltup !== '—') { {{ ' ' + vm()!.sizeBuiltupUnits }} }
-              </ion-label>
-            </li>
-            <li><ion-label><span> Age of Property&nbsp;: </span>{{ vm()!.ageOfProperty }}</ion-label></li>
-          </ul>
+        <div class="div-lists">
+          <span class="feature-list-title">Total Size of Property</span>
+          <div class="feature-list">
+            <ul>
+              <li>
+                <ion-label>
+                  <span> Size of Property&nbsp;: </span>
+                  {{ vm()!.propertySize }}
+                  @if (vm()!.propertySize !== '—') { {{ ' ' + vm()!.totalPropertyUnits }} }
+                </ion-label>
+              </li>
+              <li>
+                <ion-label>
+                  <span> Size of Built Up&nbsp;: </span>
+                  {{ vm()!.propertySizeBuiltup }}
+                  @if (vm()!.propertySizeBuiltup !== '—') { {{ ' ' + vm()!.sizeBuiltupUnits }} }
+                </ion-label>
+              </li>
+              <li>
+                <ion-label>
+                  <span> Age of Property&nbsp;: </span>{{ vm()!.ageOfProperty }}
+                </ion-label>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <!-- Facing -->
-      <div class="div-facts-items">
-        <ion-label class="label-property-details">Facing Details</ion-label>
-      </div>
+        <!-- Facing -->
+        <div class="div-facts-items">
+          <ion-label class="label-property-details">Facing Details</ion-label>
+        </div>
 
-      <div class="div-lists">
-        <span class="feature-list-title">North&nbsp;Facing</span>
-        <div class="feature-list">
-          <ul>
-            <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.northFacing }}</ion-label></li>
-            <li>
-              <ion-label>
-                <span> Size&nbsp;: </span>
-                {{ vm()!.northSizeValue }}
-                @if (vm()!.northSizeValue !== '—') { {{ ' ' + vm()!.facingUnits }} }
-              </ion-label>
-            </li>
-          </ul>
+        <div class="div-lists">
+          <span class="feature-list-title">North&nbsp;Facing</span>
+          <div class="feature-list">
+            <ul>
+              <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.northFacing }}</ion-label></li>
+              <li><ion-label><span> Size&nbsp;: </span>{{ vm()!.northSizeValue }}</ion-label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="div-lists">
+          <span class="feature-list-title">South&nbsp;Facing</span>
+          <div class="feature-list">
+            <ul>
+              <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.southFacing }}</ion-label></li>
+              <li><ion-label><span> Size&nbsp;: </span>{{ vm()!.southSizeValue }}</ion-label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="div-lists">
+          <span class="feature-list-title">East&nbsp;Facing</span>
+          <div class="feature-list">
+            <ul>
+              <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.eastFacing }}</ion-label></li>
+              <li><ion-label><span> Size&nbsp;: </span>{{ vm()!.eastSizeValue }}</ion-label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="div-lists">
+          <span class="feature-list-title">West&nbsp;Facing</span>
+          <div class="feature-list">
+            <ul>
+              <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.westFacing }}</ion-label></li>
+              <li><ion-label><span> Size&nbsp;: </span>{{ vm()!.westSizeValue }}</ion-label></li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="div-lists">
-        <span class="feature-list-title">South&nbsp;Facing</span>
-        <div class="feature-list">
-          <ul>
-            <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.southFacing }}</ion-label></li>
-            <li>
-              <ion-label>
-                <span> Size&nbsp;: </span>
-                {{ vm()!.southSizeValue }}
-                @if (vm()!.southSizeValue !== '—') { {{ ' ' + vm()!.facingUnits }} }
-              </ion-label>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="div-lists">
-        <span class="feature-list-title">East&nbsp;Facing</span>
-        <div class="feature-list">
-          <ul>
-            <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.eastFacing }}</ion-label></li>
-            <li>
-              <ion-label>
-                <span> Size&nbsp;: </span>
-                {{ vm()!.eastSizeValue }}
-                @if (vm()!.eastSizeValue !== '—') { {{ ' ' + vm()!.facingUnits }} }
-              </ion-label>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="div-lists">
-        <span class="feature-list-title">West&nbsp;Facing</span>
-        <div class="feature-list">
-          <ul>
-            <li><ion-label><span> Facing&nbsp;: </span>{{ vm()!.westFacing }}</ion-label></li>
-            <li>
-              <ion-label>
-                <span> Size&nbsp;: </span>
-                {{ vm()!.westSizeValue }}
-                @if (vm()!.westSizeValue !== '—') { {{ ' ' + vm()!.facingUnits }} }
-              </ion-label>
-            </li>
-          </ul>
+      <!-- Amenities -->
+      <div class="div-description">
+        <ion-label class="label-description">Amenities</ion-label>
+        <div style="margin-top: 10px;">
+          @for (amenity of amenities(); track amenity.id) {
+            <app-amentitycard [amentity]="amenity"></app-amentitycard>
+          }
         </div>
       </div>
     </div>
-
-    <!-- Amenities -->
-    <div class="div-description">
-      <ion-label class="label-description">Amenities</ion-label>
-      <div style="margin-top: 10px;">
-        @for (amenity of amenities(); track amenity.id) {
-        <app-amentitycard [amentity]="amenity"></app-amentitycard>
-        }
-      </div>
-    </div>
-  </div>
   } @else {
-  <div style="padding:16px;">Loading…</div>
+    <div style="padding:16px;">Loading…</div>
   }
 </ion-content>
 

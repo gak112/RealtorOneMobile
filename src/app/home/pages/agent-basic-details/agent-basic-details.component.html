@@ -1,43 +1,85 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
-    <ion-title>Agent Basic Details</ion-title>
+    <ion-icon (click)="dismiss()" name="chevron-back-outline" class="icon-close"></ion-icon>
+    <ion-title>@if (isEdit()) { Edit Agent Basic Details } @else { Agent Basic Details }</ion-title>
   </ion-toolbar>
+
+  @if (pageError()) {
+  <div style="background:#fee2e2;color:#7f1d1d;padding:8px 12px;font-size:13px;">
+    {{ pageError() }}
+  </div>
+  }
 </ion-header>
+
 <ion-content class="ion-padding">
-  <form>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
-        placeholder="Enter Full Name"></ion-input>
+        placeholder="Enter Full Name" formControlName="agentFullName" (ionBlur)="trim('agentFullName')"></ion-input>
+      @if (touchedInvalid('agentFullName')) {
+      <small class="text-rose-600">@if (hasError('agentFullName','required')) { Full name is required } @else { Min 3
+        characters }</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-input type="text" mode="md" label="Email" label-placement="floating" fill="outline"
-        placeholder="Enter Email"></ion-input>
+      <ion-input type="email" mode="md" label="Email" label-placement="floating" fill="outline"
+        placeholder="Enter Email" formControlName="email" (ionBlur)="trim('email')"></ion-input>
+      @if (touchedInvalid('email')) {
+      <small class="text-rose-600">@if (hasError('email','required')) { Email is required } @else { Enter a valid email
+        }</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-input type="text" mode="md" label="Phone Number" label-placement="floating" fill="outline"
-        placeholder="Enter Phone Number"></ion-input>
+      <ion-input type="tel" inputmode="numeric" mode="md" label="Phone Number" label-placement="floating" fill="outline"
+        placeholder="Enter Phone Number" maxlength="10" formControlName="phone"
+        (ionBlur)="digits('phone',10)"></ion-input>
+      @if (touchedInvalid('phone')) {
+      <small class="text-rose-600">Enter a valid 10-digit phone</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-textarea rows="3" type="text" mode="md" label="Address" label-placement="floating" fill="outline"
-        placeholder="Enter Address"></ion-textarea>
+      <ion-textarea rows="3" mode="md" label="Address" label-placement="floating" fill="outline"
+        placeholder="Enter Address" formControlName="address" (ionBlur)="trim('address')"></ion-textarea>
+      @if (touchedInvalid('address')) {
+      <small class="text-rose-600">Address is required (min 5 chars)</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-input type="text" mode="md" label="City" label-placement="floating" fill="outline"
-        placeholder="Enter City"></ion-input>
+      <ion-input type="text" mode="md" label="City" label-placement="floating" fill="outline" placeholder="Enter City"
+        formControlName="city" (ionBlur)="trim('city')"></ion-input>
+      @if (touchedInvalid('city')) {
+      <small class="text-rose-600">City is required</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-input type="text" mode="md" label="State" label-placement="floating" fill="outline"
-        placeholder="Enter State"></ion-input>
+      <ion-input type="text" mode="md" label="State" label-placement="floating" fill="outline" placeholder="Enter State"
+        formControlName="state" (ionBlur)="trim('state')"></ion-input>
+      @if (touchedInvalid('state')) {
+      <small class="text-rose-600">State is required</small>
+      }
     </div>
+
     <div class="div-formgroup">
-      <ion-input type="text" mode="md" label="Pincode" label-placement="floating" fill="outline"
-        placeholder="Enter Pincode"></ion-input>
+      <ion-input type="text" inputmode="numeric" mode="md" label="Pincode" label-placement="floating" fill="outline"
+        placeholder="Enter Pincode" maxlength="6" formControlName="pincode" (ionBlur)="digits('pincode',6)"></ion-input>
+      @if (touchedInvalid('pincode')) {
+      <small class="text-rose-600">Enter a valid 6-digit pincode</small>
+      }
     </div>
+
+    <button type="submit" style="display:none"></button>
   </form>
 </ion-content>
+
 <ion-footer>
-  <ion-button type="submit" mode="ios" expand="block" color="warning" class="btn-submit">
-    Submit
+  <ion-button mode="ios" expand="block" color="warning" class="btn-submit" [disabled]="submitDisabled()"
+    (click)="submit()">
+    @if (loading()) { <span class="spinner-border spinner-border-sm" style="margin-right:6px;"></span> }
+    @if (isEdit()) { Update } @else { Submit }
   </ion-button>
 </ion-footer>

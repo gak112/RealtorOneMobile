@@ -8,6 +8,166 @@
 </ion-header>
 
 <ion-content>
+    <!-- <div class="div-details">
+        <div class="div-subscription-card">
+            <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
+            <div class="div-card-sub" (click)="successPage()">
+                <div class="div-flex" style="align-items: center;">
+                    <ion-label class="label-title"><span>Basic</span>Plan</ion-label>
+                    <div style="display: flex;margin-right: 16px;">
+                        <ion-label class="label-actual"><sup>₹</sup>550</ion-label>
+                        <ion-label class="label-discount"><sup>₹</sup>55</ion-label>
+                    </div>
+                </div>
+                <div class="div-flex" style="margin-top: 30px;">
+                    <ion-label class="label-price"><sup>₹</sup>{{basicAmount}}<sub>/Month</sub></ion-label>
+                </div>
+                <div class="div-flex">
+                    <ion-label class="label-apply-coupon" (click)="couponDetails()">Apply Coupon</ion-label>
+                    <ion-button color="dark" size="small">Subscribe</ion-button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <ion-card class="pricing-card">
+        <div class="leaf">
+            <ion-img src="assets/img/leaf-1.png"></ion-img>
+        </div>
+        <div class="div-pricing-card-sub" style=" background: linear-gradient(160deg, #ffb5b6 25%, #ff88a4 90%);">
+            <div class="tier">Basic</div>
+            <div class="price-row">
+                <span class="price">₹550</span>
+                <span class="period">/Month</span>
+            </div>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span>PLAN</span>
+                <div class="divider-line"></div>
+            </div>
+            <ul class="features">
+                <li>10 Properties</li>
+                <li>1000+ Properties</li>
+                <li>1000+ Properties</li>
+            </ul>
+            <button class="cta" (click)="paymentsAddressPage()">
+                Subscribe
+            </button>
+        </div>
+    </ion-card>
+    <ion-card class="pricing-card">
+        <div class="leaf">
+            <ion-img src="assets/img/leaf-1.png"></ion-img>
+        </div>
+        <div class="div-pricing-card-sub" style=" background: linear-gradient(160deg, #96f0d9 25%, #48bfdd 90%);">
+            <div class="tier">Premium</div>
+            <div class="price-row">
+                <span class="price">₹1550</span>
+                <span class="period">/3&nbsp;Months</span>
+            </div>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span>PLAN</span>
+                <div class="divider-line"></div>
+            </div>
+            <ul class="features">
+                <li>10 Properties</li>
+                <li>1000+ Properties</li>
+                <li>1000+ Properties</li>
+            </ul>
+            <button class="cta" (click)="paymentsAddressPage()">
+                Subscribe
+            </button>
+        </div>
+    </ion-card>
+    <ion-card class="pricing-card">
+        <div class="leaf">
+            <ion-img src="assets/img/leaf-1.png"></ion-img>
+        </div>
+        <div class="div-pricing-card-sub" style=" background: linear-gradient(207deg, #dc95fd 26%, #6067f3 93%);">
+            <div class="tier">Standard</div>
+            <div class="price-row">
+                <span class="price">₹2550</span>
+                <span class="period">/6&nbsp;Months</span>
+            </div>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span>PLAN</span>
+                <div class="divider-line"></div>
+            </div>
+            <ul class="features">
+                <li>10 Properties</li>
+                <li>1000+ Properties</li>
+                <li>1000+ Properties</li>
+            </ul>
+            <button class="cta" (click)="paymentsAddressPage()">
+                Subscribe
+            </button>
+        </div>
+    </ion-card>
+    <ion-card class="pricing-card">
+        <div class="leaf">
+            <ion-img src="assets/img/leaf-1.png"></ion-img>
+        </div>
+        <div class="div-pricing-card-sub" style=" background: linear-gradient(160deg, #fdc27c 25%, #fc9979 90%);">
+            <div class="tier">Enterprise</div>
+            <div class="price-row">
+                <span class="price">₹5550</span>
+                <span class="period">/1&nbsp;Year</span>
+            </div>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span>PLAN</span>
+                <div class="divider-line"></div>
+            </div>
+            <ul class="features">
+                <li>10 Properties</li>
+                <li>1000+ Properties</li>
+                <li>1000+ Properties</li>
+            </ul>
+            <button class="cta" (click)="paymentsAddressPage()">
+                Subscribe
+            </button>
+        </div>
+    </ion-card>
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <ion-header>
+    <ion-toolbar>
+        <ion-icon name="chevron-back-outline" (click)="dismiss()" class="icon-close"></ion-icon>
+        <ion-title>
+            Subcriptions
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
     <div class="div-details">
         <div class="div-subscription-card">
             <ion-img src="assets/img/houses.png" class="img-settings"></ion-img>
@@ -73,36 +233,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="div-subscription-card">
-          <div class="div-card-sub enterprise" style="border-bottom-right-radius:0">
-              <ion-label class="label-title">Venture Plan</ion-label>
-              <ion-label class="label-price"><sup>₹</sup>{{vAmount}}</ion-label>
-              <div class="div-width">
-                  <ion-label class="range-title">No of Properties</ion-label>
-
-                  <ion-segment (ionChange)="changeProperties($event)" scrollable mode="ios">
-                      <ion-segment-button value="10" >10 </ion-segment-button>
-                      <ion-segment-button value="50">50</ion-segment-button>
-                      <ion-segment-button value="100">100</ion-segment-button>
-                      <ion-segment-button value="500">500 </ion-segment-button>
-                      <ion-segment-button value="500 Plus">500 Plus</ion-segment-button>
-                  </ion-segment>
-                  
-              </div>
-              <div class="div-width">
-                  <ion-label class="range-title">No of Months</ion-label>
-                  <ion-segment (ionChange)="changePropertiesM($event)">
-                      <ion-segment-button value="monthly" checked color="white">Monthly</ion-segment-button>
-                      <ion-segment-button value="half">6 Months</ion-segment-button>
-                      <ion-segment-button value="yearly">Yearly</ion-segment-button>
-                  </ion-segment>
-                  
-              </div>
-              
-              <ion-label class="label-buy" >Subscribe</ion-label>
-          </div>
-          <ion-label class="label-apply-coupon" (click)="couponDetails()" style="background: #756ff3;">Apply Coupon</ion-label>
-      </div> -->
 
     </div>
-</ion-content>
+</ion-content> -->

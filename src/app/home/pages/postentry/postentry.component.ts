@@ -103,7 +103,7 @@ type PostEntryForm = {
   // sizes
   totalPropertyUnits: FormControl<Units | null>;
   propertySize: FormControl<number | null>;
-  propertySizeBuildUp: FormControl<number | null>;
+  propertySizeBuiltup: FormControl<number | null>;
   sizeBuiltupUnits: FormControl<Units | null>;
 
   // facing (shared units)
@@ -187,9 +187,9 @@ export class PostentryComponent implements OnInit {
 
   // signals for SaleType/Category
   readonly saleTypeSig = signal<'sale' | 'rent'>(this.saleType);
-  readonly categorySig = signal<'residential' | 'commercial' | 'plots' | 'lands'>(
-    this.category
-  );
+  readonly categorySig = signal<
+    'residential' | 'commercial' | 'plots' | 'lands'
+  >(this.category);
 
   // UI state
   readonly loading = signal(false);
@@ -203,7 +203,10 @@ export class PostentryComponent implements OnInit {
   readonly actionLabel = computed(() => (this.isEdit() ? 'Update' : 'Submit'));
 
   // floors
-  readonly floors = ['Ground', ...Array.from({ length: 40 }, (_, i) => `${i + 1}`)];
+  readonly floors = [
+    'Ground',
+    ...Array.from({ length: 40 }, (_, i) => `${i + 1}`),
+  ];
 
   // form
   postEntryForm = this.fb.group<PostEntryForm>({
@@ -221,7 +224,7 @@ export class PostentryComponent implements OnInit {
 
     totalPropertyUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
     propertySize: this.fb.control<number | null>(null),
-    propertySizeBuildUp: this.fb.control<number | null>(null),
+    propertySizeBuiltup: this.fb.control<number | null>(null),
     sizeBuiltupUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
 
     facingUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
@@ -358,7 +361,11 @@ export class PostentryComponent implements OnInit {
   }
   categoryChanged(ev: CustomEvent) {
     this.categorySig.set(
-      (ev.detail as any)?.value as 'residential' | 'commercial' | 'plots' | 'lands'
+      (ev.detail as any)?.value as
+        | 'residential'
+        | 'commercial'
+        | 'plots'
+        | 'lands'
     );
   }
 
@@ -401,7 +408,9 @@ export class PostentryComponent implements OnInit {
         {
           lat: latitude,
           lng: longitude,
-          addressOfProperty: `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}`,
+          addressOfProperty: `Lat: ${latitude.toFixed(
+            6
+          )}, Lng: ${longitude.toFixed(6)}`,
         },
         { emitEvent: false }
       );
@@ -430,14 +439,21 @@ export class PostentryComponent implements OnInit {
     } else if (event?.cdnUrl) {
       this.images.push(event.cdnUrl);
     }
-    this.postEntryForm.patchValue({ images: this.images }, { emitEvent: false });
+    this.postEntryForm.patchValue(
+      { images: this.images },
+      { emitEvent: false }
+    );
 
-    if (2 - this.images.length === 1 && this.kyc) (this.kyc as any).multiple = false;
+    if (2 - this.images.length === 1 && this.kyc)
+      (this.kyc as any).multiple = false;
   }
 
   removeImg(i: number) {
     this.images.splice(i, 1);
-    this.postEntryForm.patchValue({ images: this.images }, { emitEvent: false });
+    this.postEntryForm.patchValue(
+      { images: this.images },
+      { emitEvent: false }
+    );
   }
 
   async submit() {
@@ -496,7 +512,10 @@ export class PostentryComponent implements OnInit {
           // normalize/migrate legacy fields → current form shape
           const normalized = this.normalizeDocForForm(doc as any);
 
-          const existingSaleType = (normalized as any).saleType as 'sale' | 'rent' | undefined;
+          const existingSaleType = (normalized as any).saleType as
+            | 'sale'
+            | 'rent'
+            | undefined;
           const existingCategory = (normalized as any).category as
             | 'residential'
             | 'commercial'
@@ -549,7 +568,7 @@ export class PostentryComponent implements OnInit {
 
         totalPropertyUnits: DEFAULT_UNITS,
         propertySize: null,
-        propertySizeBuildUp: null,
+        propertySizeBuiltup: null,
         sizeBuiltupUnits: DEFAULT_UNITS,
 
         facingUnits: DEFAULT_UNITS,
@@ -607,13 +626,16 @@ export class PostentryComponent implements OnInit {
     const out: any = { ...doc };
 
     // Case normalization: some data may have 'propertySizeBuiltup'
-    if (out.propertySizeBuiltup != null && out.propertySizeBuildUp == null) {
-      out.propertySizeBuildUp = out.propertySizeBuiltup;
+    if (out.propertySizeBuiltup != null && out.propertySizeBuiltup == null) {
+      out.propertySizeBuiltup = out.propertySizeBuiltup;
     }
 
     // Default units if missing
     out.totalPropertyUnits = (out.totalPropertyUnits as Units) || DEFAULT_UNITS;
-    out.sizeBuiltupUnits = (out.sizeBuiltupUnits as Units) || out.totalPropertyUnits || DEFAULT_UNITS;
+    out.sizeBuiltupUnits =
+      (out.sizeBuiltupUnits as Units) ||
+      out.totalPropertyUnits ||
+      DEFAULT_UNITS;
 
     // If the doc has per-side unit fields, pick one to seed facingUnits; else keep what's present or default
     const candidateFacingUnit =
@@ -627,7 +649,9 @@ export class PostentryComponent implements OnInit {
 
     // Clean images / amenities
     out.images = Array.isArray(out.images) ? out.images.filter(Boolean) : [];
-    out.amenities = Array.isArray(out.amenities) ? out.amenities.filter(Boolean) : [];
+    out.amenities = Array.isArray(out.amenities)
+      ? out.amenities.filter(Boolean)
+      : [];
 
     return out;
   }

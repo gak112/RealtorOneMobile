@@ -1,95 +1,140 @@
-import { Component, inject, OnInit } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FormsModule } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
-import { addIcons } from 'ionicons';
-// import { AuthService } from 'src/app/services/auth.service';
+import { Component, Input, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
-  IonButton,
-  IonCheckbox,
-  IonContent,
-  IonFooter,
-  IonHeader,
-  IonIcon,
-  IonLabel,
-  IonTitle,
-  IonToolbar,
+  IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonCheckbox,
+  IonLabel, IonFooter, IonButton, ToastController, ModalController, AlertController
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
-import { ToastService } from 'src/app/services/toast.service';
+
 import { AgentBasicDetailsComponent } from '../agent-basic-details/agent-basic-details.component';
-import {
-  backwardEnterAnimation,
-  forwardEnterAnimation,
-} from 'src/app/services/animation';
+import { forwardEnterAnimation, backwardEnterAnimation } from 'src/app/services/animation';
+import { AgentService } from 'src/app/more/services/agent.service';
+
 @Component({
   selector: 'app-agentconfirmation',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './agentconfirmation.component.html',
   styleUrls: ['./agentconfirmation.component.scss'],
-  standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonIcon,
-    IonTitle,
-    IonContent,
-    IonCheckbox,
-    FormsModule,
-    IonLabel,
-    IonFooter,
-    IonButton,
+    CommonModule,
+    IonHeader, IonToolbar, IonIcon, IonTitle, IonContent,
+    IonCheckbox, IonLabel, IonFooter, IonButton
   ],
-  providers: [ModalController],
 })
-export class AgentconfirmationComponent implements OnInit {
-  private modalController = inject(ModalController);
+export class AgentconfirmationComponent {
+  @Input() uid: string | null = null;
 
-  user: any;
-  agentVerified = false;
-  conditionsVerified = false;
-  agent = false;
-  constructor(
-    private toast: ToastService /*private auth: AuthService,
-    private afs: AngularFirestore*/
-  ) {
+  // Services
+  private modalCtrl = inject(ModalController);
+  private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
+  private svc = inject(AgentService);
+
+  // UI state (signals)
+  accepted = signal(false);
+  loading  = signal(false);
+  pageError = signal<string | null>(null);
+
+  constructor() {
     addIcons({ chevronBackOutline });
   }
 
-  ngOnInit(): void {
-    return;
-    // this.auth.user$.subscribe(user => this.user = user);
+  // Utilities
+  private async toast(msg: string, color: 'success'|'warning'|'danger'|'medium'='medium') {
+    const t = await this.toastCtrl.create({ message: msg, duration: 2200, color, position: 'top' });
+    await t.present();
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  async dismiss(role: 'cancel'|'agent-created'|'agent-left' = 'cancel') {
+    try {
+      const top = await this.modalCtrl.getTop();
+      if (top) await top.dismiss(null, role);
+    } catch {}
   }
 
-  agentConfirmation() {
-    if (this.agentVerified && this.conditionsVerified) {
-      this.agent = true;
-      // this.afs.doc(`users/${this.user.uid}`).update({
-      //   agentVerified:this.agentVerified,
-      //   conditionsVerified:this.conditionsVerified,
-      //   agent: this.agent
-      // }
-      // ).then(
-      //   () =>  {
-      //     this.toast.showMessage('Status Updated');
-      //     this.modalController.dismiss();
-      //   }
-      //   );
-    } else {
-      this.toast.showError('Select Both & Create as Agent');
+  openPolicies() {
+    // Replace with your real T&C page
+    window.open('https://example.com/policies', '_blank');
+  }
+
+  /** Accept → record T&C + open Agent Basic Details modal */
+  async agentConfirmation() {
+    if (!this.accepted()) {
+      await this.toast('Please accept the Terms & Conditions to continue.', 'warning');
       return;
+    }
+    if (!this.uid) {
+      this.pageError.set('Missing user id (uid).');
+      await this.toast('Missing user id (uid).', 'danger');
+      return;
+    }
+
+    this.loading.set(true);
+    this.pageError.set(null);
+    try {
+      // Record acceptance (adjust version/tag as you wish)
+      await this.svc.recordTerms(this.uid, 'v1');
+
+      // Open the Agent Basic Details as a modal on top
+      const details = await this.modalCtrl.create({
+        component: AgentBasicDetailsComponent,
+        componentProps: { uid: this.uid },
+        enterAnimation: forwardEnterAnimation,
+        leaveAnimation: backwardEnterAnimation,
+        canDismiss: true,
+      });
+
+      await details.present();
+      const { role } = await details.onWillDismiss();
+
+      if (role === 'agent-created') {
+        await this.toast('Agent created successfully.', 'success');
+        await this.dismiss('agent-created'); // close this confirmation modal too
+      }
+    } catch (e: any) {
+      this.pageError.set(e?.message || 'Failed to proceed.');
+      await this.toast(this.pageError()!, 'danger');
+    } finally {
+      this.loading.set(false);
     }
   }
 
-  async openAgentDetails() {
-    const modal = await this.modalController.create({
-      component: AgentBasicDetailsComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
+  /** Leave Agent → revert user to normal */
+  async leaveAgent() {
+    if (!this.uid) {
+      await this.toast('Missing user id (uid).', 'danger');
+      return;
+    }
+
+    const alert = await this.alertCtrl.create({
+      header: 'Leave Agent?',
+      message: 'You will be reverted to a normal user. This action can be re-applied later by becoming an agent again.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Leave',
+          role: 'confirm',
+          handler: () => true,
+        }
+      ]
     });
-    await modal.present();
+    await alert.present();
+    const r = await alert.onWillDismiss();
+    if (r.role !== 'confirm') return;
+
+    this.loading.set(true);
+    this.pageError.set(null);
+    try {
+      await this.svc.leaveAgent(this.uid); // <-- implement in AgentService
+      await this.toast('You have left the Agent program.', 'success');
+      await this.dismiss('agent-left'); // close modal, parent can refresh UI
+    } catch (e: any) {
+      this.pageError.set(e?.message || 'Failed to leave agent.');
+      await this.toast(this.pageError()!, 'danger');
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

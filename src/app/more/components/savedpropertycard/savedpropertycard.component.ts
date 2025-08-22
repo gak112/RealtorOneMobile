@@ -33,7 +33,7 @@ import { Router } from '@angular/router';
   standalone: true,
   templateUrl: './savedpropertycard.component.html',
   styleUrls: ['./savedpropertycard.component.scss'],
-  imports: [NgIf, IonSkeletonText, IonLabel, IonImg],
+  imports: [IonSkeletonText, IonLabel, IonImg],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SavedpropertycardComponent {

@@ -31,31 +31,23 @@
           <div class="div-agent-c">
             <div class="div-confirmation">
               <div>
-                <!-- <ion-skeleton-text [animated]="true" style="width: 187px;height: 13px;line-height: 20px;margin: 0px 0px 16px;"></ion-skeleton-text> -->
                 <ion-label class="agent-title">Want to become Agent?</ion-label>
-                <div class="div-yesno" style="width: 187px;height: 25px;">
-                  <!-- <ion-skeleton-text [animated]="true" style="width: 46px;height: 25px;border-radius: 4px;"></ion-skeleton-text>
-                  <ion-skeleton-text [animated]="true" style="width: 84px;height: 18px;"></ion-skeleton-text> -->
+                <div class="div-yesno" style="height: 25px;">
                   <ion-button size="small" color="tertiary" fill="outline" (click)="openAgentConfirmation()">
                     Yes
                   </ion-button>
-                  <ion-button size="small" color="danger">No</ion-button>
-                  <ion-label (click)="openHowITWorks()" class="howit">How It Works?</ion-label>
+                  <ion-button size="small" color="danger" (click)="no()">No</ion-button>
+                  <!-- <ion-label (click)="openHowITWorks()" class="howit">How It Works?</ion-label> -->
                 </div>
               </div>
             </div>
-
-            <!-- <ion-skeleton-text [animated]="true" style="width: 70px;height: 70px; border-radius: 100px;"></ion-skeleton-text> -->
-            <!-- <ion-skeleton-text [animated]="true" style="width: 50px;height: 50px;"></ion-skeleton-text> -->
             <ion-img src="assets/img/agent.png"></ion-img>
-
           </div>
         </div>
         }
       </div>
       }
       <div style="margin: 16px; height: 20px;" class="div-heading">
-        <!-- <ion-skeleton-text [animated]="true" style="width: 83px;height: 15px;"></ion-skeleton-text> -->
         <ion-label>Trending</ion-label>
         <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
       </div>
@@ -69,12 +61,10 @@
             </div>
           </swiper-slide>
         </swiper-container>
-        <!-- <ion-skeleton-text [animated]="true" style="width: 430px;height: 177px; "></ion-skeleton-text> -->
       </div>
 
 
       <div class="div-heading" style="margin: 16px;">
-        <!-- <ion-skeleton-text [animated]="true" style="width: 103px; height: 15px;"></ion-skeleton-text> -->
         <ion-label>Categories</ion-label>
       </div>
       <div class="div-categories-list">
@@ -114,11 +104,6 @@
       <app-realestate-card [property]="p" [saleType]="'sale'" [admin]="{ uid: 'admin' }"></app-realestate-card>
       }
     </div>
-    <!-- <ion-fab  horizontal="end" vertical="bottom" slot="fixed" style="position: fixed;" (click)="openFormEntry()">
-      <ion-fab-button color="tertiary">
-        <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1"  x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><g xmlns="http://www.w3.org/2000/svg"><path d="m443.143 378.714h-34.429v-34.428h-30v34.428h-34.428v30h34.428v34.429h30v-34.429h34.429z" fill="#ffffff" data-original="#000000" style="" class=""/><path d="m137.714 174.636h167.715v30h-167.715z" fill="#ffffff" data-original="#000000" style="" class=""/><path d="m408.714 276.376v-60.247l34.429 20.657v-103.843l-221.572-132.943-53.857 32.314v-32.314h-98.857v91.628l-68.857 41.315v103.843l34.429-20.657v227.015h251.837c18.754 40.606 59.861 68.856 107.448 68.856 65.223 0 118.286-53.062 118.286-118.286 0-60.142-45.118-109.945-103.286-117.338zm-309.857-246.376h38.856v20.314l-38.856 23.314zm-68.857 119.928 191.571-114.943 191.571 114.943v33.872l-191.571-114.943-191.571 114.943zm34.429 48.2 157.143-94.286 157.143 94.286v78.247c-28.998 3.686-54.747 17.917-73.285 38.709v-74.084h-167.716v172.143h-73.285zm211 215.015h-107.715v-142.143h107.715zm118.285 68.857c-48.681 0-88.285-39.605-88.285-88.286s39.604-88.286 88.285-88.286c48.682 0 88.286 39.605 88.286 88.286s-39.604 88.286-88.286 88.286z" fill="#ffffff" data-original="#000000" style="" class=""/></g></g></svg>
-      </ion-fab-button>
-    </ion-fab> -->
     <ion-fab slot="fixed" style="position: fixed;" vertical="bottom" horizontal="end">
       <ion-fab-button>
         <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" xmlns:xlink="http://www.w3.org/1999/xlink"

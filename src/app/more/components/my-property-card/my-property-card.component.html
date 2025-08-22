@@ -32,20 +32,39 @@
       <!-- Location Section -->
       <div class="location-section">
         <ion-label class="location-code">{{ property().propertyTitle }}</ion-label>
-        <ion-label class="location-full">{{ property().location }}</ion-label>
+        <ion-label class="location-full">{{ property().addressOfProperty }}</ion-label>
 
         <!-- Choose price line depending on saleType -->
         @if (property().saleType === 'sale') {
         <ion-label class="price-info">₹{{ property().priceOfSale }}</ion-label>
-        } @else {
+        } @else if (property().saleType === 'rent') {
         <ion-label class="price-info">₹{{ property().priceOfRent }} / {{ property().priceOfRentType }}</ion-label>
         }
       </div>
 
       <!-- Property Details Section -->
       <div class="property-details">
+        @if(property().category === 'residential'){
         <ion-label class="property-type">{{ property().houseType }}</ion-label>
-        <ion-label class="property-size">{{ property().bhkType }}, {{ property().propertySize }} sqft</ion-label>
+        }
+        @if(property().category === 'commercial'){
+        <ion-label class="property-type">{{ property().commercialType }}</ion-label>
+        }
+        @if(property().category === 'residential'){
+        <ion-label class="property-size">
+          {{ property().bhkType }}, {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+        </ion-label>
+        }
+        @if(property().category === 'commercial'){
+        <ion-label class="property-size">
+          {{ property().floor }} floor, {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+        </ion-label>
+        }
+        @if(property().category === 'plots' || property().category === 'Lands'){
+        <ion-label class="property-size">
+          {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+        </ion-label>
+        }
         <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
       </div>
     </div>

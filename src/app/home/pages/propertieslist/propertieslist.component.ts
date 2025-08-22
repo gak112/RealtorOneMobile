@@ -1,22 +1,45 @@
-import { NgIf } from '@angular/common';
 import {
-  Component, OnInit, Input, inject, signal, computed,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
 } from '@angular/core';
 import {
-  IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, IonSearchbar, ModalController, IonButton } from '@ionic/angular/standalone';
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonSearchbar,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+} from '@ionic/angular/standalone';
+import { ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
-
 import {
-  collection, collectionData, Firestore, limit, orderBy, query, where,
+  Firestore,
+  collection,
+  collectionData,
+  limit,
+  orderBy,
+  query,
+  where,
+  Query as FsQuery,
 } from '@angular/fire/firestore';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { RealestateCardComponent } from '../../components/realestate-card/realestate-card.component';
+import { IProperty, IPropertyImage } from 'src/app/models/property.model';
 import {
-  IProperty, IPropertyImage, RealestateCardComponent,
-} from '../../components/realestate-card/realestate-card.component';
+  ProductfilterComponent,
+  Filters,
+} from 'src/app/search/pages/productfilter/productfilter.component';
 
 type CatKey = 'residential' | 'commercial' | 'plots' | 'lands';
 
@@ -25,132 +48,222 @@ type CatKey = 'residential' | 'commercial' | 'plots' | 'lands';
   standalone: true,
   templateUrl: './propertieslist.component.html',
   styleUrls: ['./propertieslist.component.scss'],
-  imports: [IonButton, 
-    IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonSearchbar, NgIf,
+  imports: [
+    IonInfiniteScrollContent,
+    IonInfiniteScroll,
+    IonSearchbar,
+    IonButton,
+    IonHeader,
+    IonToolbar,
+    IonIcon,
+    IonTitle,
+    IonContent,
     RealestateCardComponent,
   ],
-  providers: [ModalController],
 })
-export class PropertieslistComponent implements OnInit {
-  /** From opener: "Residential" | "Commercial" | "Plots" | "Lands" (or already lowercase keys) */
-  @Input() actionType!: string;
+export class PropertieslistComponent {
+  // ✅ default so the component can construct before componentProps land
+  actionType = input<string>('Residential');
 
   private modalController = inject(ModalController);
   private afs = inject(Firestore);
 
-  constructor() { addIcons({ chevronBackOutline }); }
-
-  /* ---------------- UI signals ---------------- */
-  readonly headerTitle = signal<string>('Properties');
-  readonly search = signal<string>('');
-  readonly errorMsg = signal<string>('');
-
-  onSearch(ev: CustomEvent) {
-    const target = ev.target as HTMLIonSearchbarElement;
-    this.search.set((target?.value ?? '').toString().trim().toLowerCase());
-  }
-  dismiss() { this.modalController.dismiss(); }
-
-  /* ---------------- Category ---------------- */
-  private get category(): CatKey {
-    return toCategoryKey(this.actionType);
+  constructor() {
+    addIcons({ chevronBackOutline });
   }
 
-  /* ---------------- Firestore stream ---------------- */
-  /**
-   * Requires a Firestore composite index:
-   * collection: posts, fields: category ASC, createdAt DESC
-   * (Firestore will show a console link once; create it once and you're done.)
-   */
-  private readonly rows$: Observable<PostDoc[]> = (() => {
-    const postsCol = collection(this.afs, 'posts');
-    const qRef = query(
-      postsCol,
-      where('category', '==', this.category),     // equality filter
-      orderBy('createdAt', 'desc'),               // sort newest first
-      limit(500)
-    );
-    return collectionData(qRef, { idField: 'id' }) as Observable<PostDoc[]>;
-  })();
+  dismiss() {
+    this.modalController.dismiss();
+  }
 
-  // live → signal; drop docs with isDeleted === true
-  readonly properties = toSignal<IProperty[]>(
-    this.rows$.pipe(
-      map(docs =>
-        docs
-          .filter(d => !(d as any).isDeleted)
-          .map(this.toProperty)
-      ),
-      catchError(err => {
-        console.error('[properties list] query error:', err);
-        // Most common cause: missing composite index for (category, createdAt)
-        this.errorMsg.set(
-          'Unable to load properties. Please ensure a Firestore index exists for (category, createdAt desc).'
-        );
-        return of([] as IProperty[]);
-      })
-    ),
-   
-  );
+  readonly header = computed(() => this.actionType());
 
-  // client-side search
-  readonly propertiesFiltered = computed(() => {
-    const q = this.search();
-    if (!q) return this.properties();
-    return this.properties().filter(p =>
-      (p.propertyTitle + ' ' + p.location).toLowerCase().includes(q)
-    );
+  /** Normalize to DB keys */
+  private readonly category = computed<CatKey>(() => {
+    const v = (this.actionType() ?? '').trim().toLowerCase();
+    if (v.startsWith('res')) return 'residential';
+    if (v.startsWith('com')) return 'commercial';
+    if (v.startsWith('plot')) return 'plots';
+    if (v.startsWith('land')) return 'lands';
+    return (
+      ['residential', 'commercial', 'plots', 'lands'].includes(v)
+        ? v
+        : 'residential'
+    ) as CatKey;
   });
 
-  // first-load indicator
-  readonly loading = computed(() => this.properties().length === 0 && !this.errorMsg());
+  /* ---------------- Filters & Search ---------------- */
+  readonly filters = signal<Filters>({ category: this.category() });
 
-  ngOnInit(): void {
-    this.headerTitle.set(capFirst(this.category));
+  // ✅ pin filters.category whenever input changes (fixes “always residential”)
+  private pinCategory = effect(() => {
+    this.filters.update((f) => ({ ...f, category: this.category() }));
+  });
+
+  readonly filterCount = computed(() => {
+    const f = this.filters();
+    let n = 0;
+    if (f.saleType) n++;
+    if (f.priceMin != null) n++;
+    if (f.priceMax != null) n++;
+    if (f.houseType?.length) n++;
+    if (f.bhkType?.length) n++;
+    return n;
+  });
+
+  readonly search = signal<string>('');
+  onSearch(ev: Event) {
+    const val = (ev as CustomEvent).detail?.value ?? '';
+    this.search.set(String(val).trim());
   }
 
-  /* ---------------- Mapping to card ---------------- */
+  /* ---------------- Firestore (server-side category) ---------------- */
+  private baseCol = collection(this.afs, 'posts');
+
+  private serverRows$: Observable<PostDoc[]> = toObservable(this.filters).pipe(
+    switchMap((f) => {
+      const parts: any[] = [
+        where('isDeleted', '==', false),
+        where('category', '==', f.category ?? this.category()),
+      ];
+      if (f.saleType) parts.push(where('saleType', '==', f.saleType));
+      if (f.saleType === 'sale') {
+        if (f.priceMin != null)
+          parts.push(where('priceOfSale', '>=', f.priceMin));
+        if (f.priceMax != null)
+          parts.push(where('priceOfSale', '<=', f.priceMax));
+      } else if (f.saleType === 'rent') {
+        if (f.priceMin != null)
+          parts.push(where('priceOfRent', '>=', f.priceMin));
+        if (f.priceMax != null)
+          parts.push(where('priceOfRent', '<=', f.priceMax));
+      }
+      const qRef: FsQuery = query(
+        this.baseCol,
+        ...parts,
+        orderBy('createdAt', 'desc'),
+        limit(200)
+      );
+      return collectionData(qRef, { idField: 'id' }) as Observable<PostDoc[]>;
+    }),
+    catchError((err) => {
+      console.error('[properties list] server query failed', err);
+      return of([] as PostDoc[]);
+    })
+  );
+
   private toProperty = (d: PostDoc): IProperty => {
     const id = d.id;
-
-    const imgs: string[] = Array.isArray(d.images) ? d.images.filter(Boolean) : [];
+    const imgs = Array.isArray(d.images) ? d.images.filter(Boolean) : [];
     const propertyImages: IPropertyImage[] = imgs.map((url, i) => ({
       id: `${id}-${i}`,
       image: url,
     }));
-
     return {
       id,
       propertyTitle: String(d.propertyTitle ?? '—'),
       priceOfSale: Number(d.priceOfSale ?? 0),
       priceOfRent: Number(d.priceOfRent ?? 0),
       priceOfRentType: String(d.priceOfRentType ?? '—'),
-      location: String(d.addressOfProperty ?? d.location ?? '—'),
+      addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
-      propertySize: String(d.propertySize ?? '—'),
+      propertySize: Number(d.propertySize ?? 0),
       propertyImages,
-      category: (String(d.category ?? '-') as string).toLowerCase(),
+      saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
+      category: String(d.category ?? this.category()) as CatKey,
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
-      saleType: (String(d.saleType ?? '-') as string).toLowerCase(), // 'sale' | 'rent'
+      commercialType: String(d.commercialType ?? '—'),
+      floor: String(d.floor ?? '—'),
       propertyStatus: String(d.propertyStatus ?? 'Available'),
-    };
+      createdAt: d.createdAt,
+      updatedAt: d.updatedAt,
+    } as unknown as IProperty;
   };
+
+  readonly rows = toSignal(
+    this.serverRows$.pipe(map((docs) => docs.map(this.toProperty))),
+    { initialValue: [] }
+  );
+
+  /* ---------------- Client search ---------------- */
+  readonly filtered = computed(() => {
+    const list = this.rows();
+    const f = this.filters();
+    const termRaw = this.search().trim();
+    const term = termRaw.toLowerCase();
+
+    const numStr = termRaw.replace(/[^\d.]/g, '');
+    const hasPriceTerm = /\d/.test(numStr);
+    const priceQuery = hasPriceTerm ? Number(numStr) : NaN;
+
+    return list.filter((p) => {
+      if (term) {
+        const blob = `${p.propertyTitle} ${p.addressOfProperty}`.toLowerCase();
+        const textMatch = blob.includes(term);
+        let priceMatch = true;
+        if (hasPriceTerm && !isNaN(priceQuery)) {
+          const saleStr = String(p.priceOfSale ?? '');
+          const rentStr = String(p.priceOfRent ?? '');
+          priceMatch =
+            Number(p.priceOfSale) === priceQuery ||
+            Number(p.priceOfRent) === priceQuery ||
+            saleStr.includes(numStr) ||
+            rentStr.includes(numStr);
+        }
+        if (!(textMatch || (hasPriceTerm && priceMatch))) return false;
+      }
+
+      if (!f.saleType && (f.priceMin != null || f.priceMax != null)) {
+        const chosen =
+          p.saleType === 'sale'
+            ? Number(p.priceOfSale || 0)
+            : Number(p.priceOfRent || 0);
+        if (f.priceMin != null && chosen < f.priceMin) return false;
+        if (f.priceMax != null && chosen > f.priceMax) return false;
+      }
+      if (f.houseType?.length && !f.houseType.includes(p.houseType))
+        return false;
+      if (f.bhkType?.length && !f.bhkType.includes(p.bhkType)) return false;
+      return true;
+    });
+  });
+
+  async openFilters() {
+    const modal = await this.modalController.create({
+      component: ProductfilterComponent,
+      componentProps: { initial: this.filters() }, // includes current category
+    });
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss<Filters>();
+    if (role === 'apply' && data) {
+      this.filters.set({ ...data, category: this.category() }); // keep category pinned
+    } else if (role === 'clear') {
+      this.clearFilters();
+    }
+  }
+
+  clearFilters() {
+    this.filters.set({ category: this.category() });
+    this.search.set('');
+  }
+
+  onIonInfinite(ev: Event) {
+    (ev as any).target?.complete();
+  }
+
+  trackById = (_: number, item: IProperty) => item.id;
 }
 
-/* ---------------- Firestore doc shape ---------------- */
+/* ------------ Firestore doc shape ------------ */
 type PostDoc = {
   id: string;
-  createdAt?: any;              // Firestore Timestamp (set on create)
-  isDeleted?: boolean;
-
   images?: string[];
   propertyTitle?: string;
-  saleType?: 'sale' | 'rent';
-  category?: 'residential' | 'commercial' | 'plots' | 'lands';
+  saleType?: 'sale' | 'rent' | string;
+  category?: string;
   addressOfProperty?: string;
-  location?: string;
   houseType?: string;
   bhkType?: string;
   propertySize?: number | string;
@@ -160,17 +273,9 @@ type PostDoc = {
   priceOfSale?: number;
   priceOfRent?: number;
   priceOfRentType?: string;
+  commercialType?: string;
+  floor?: string;
+  isDeleted?: boolean;
+  createdAt?: any;
+  updatedAt?: any;
 };
-
-/* ---------------- helpers ---------------- */
-function capFirst(s: string) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
-function toCategoryKey(v?: string | null): CatKey {
-  const s = (v ?? '').trim().toLowerCase();
-  if (s.startsWith('res')) return 'residential';
-  if (s.startsWith('com')) return 'commercial';
-  if (s.startsWith('plot')) return 'plots';
-  if (s.startsWith('land')) return 'lands';
-  // already lowercase key?
-  if (['residential','commercial','plots','lands'].includes(s)) return s as CatKey;
-  return 'residential';
-}

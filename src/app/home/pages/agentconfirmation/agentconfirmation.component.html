@@ -4,26 +4,14 @@
         <ion-title>
             Agent
         </ion-title>
-        <!-- <ion-button size="small" color="danger" class="leave">Leave Agent</ion-button> -->
+        <ion-button size="small" color="danger" class="leave" (click)="leaveAgent()">Leave Agent</ion-button>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <div class="div-main">
-        <div class="div-description">
-
-            <div class="div-select" style="margin-bottom: 10px;">
-                <ion-checkbox slot="start"></ion-checkbox>
-                <ion-label class="description" style="margin-left: 10px;">
-                    I Want to become agent in RealtorOne
-                </ion-label>
-            </div>
-            <div class="div-select">
-                <ion-checkbox slot="start"></ion-checkbox>
-                <ion-label class="description" style="margin-left: 10px;">
-                    I agree to the Terms & Conditions
-                </ion-label>
-            </div>
+        <div class="">
+            
         </div>
         <div class="div-label">
             <ion-label class="description">
@@ -891,8 +879,16 @@
     </div>
 </ion-content>
 <ion-footer>
+    <div class="div-terms">
+        <ion-checkbox mode="md" [checked]="accepted()" (ionChange)="accepted.set($event.detail.checked)"></ion-checkbox>
+        <ion-label class="description">
+            I want to become an agent in Realtor One, I agree with
+            <a (click)="openPolicies()">Terms &amp; Conditions</a>
+        </ion-label>
+    </div>
     <div class="div-button">
-        <ion-button expand="block" color="warning" mode="ios" (click)="openAgentDetails()">
-            Submit </ion-button>
+        <ion-button expand="block" color="warning" mode="ios" (click)="agentConfirmation()" [disabled]="loading()">
+            Accept
+        </ion-button>
     </div>
 </ion-footer>

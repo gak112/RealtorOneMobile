@@ -58,9 +58,6 @@ ion-title {
   }
 }
 
-ion-header {
-  overflow: hidden;
-}
 .leave {
   position: absolute;
   top: 50%;
@@ -94,5 +91,18 @@ ion-button {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  box-shadow: 0 6px 10px -4px #777;
+}
+
+.div-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+a {
+  color: var(--color-skyblue);
+  text-decoration: underline;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }

@@ -42,7 +42,7 @@ export class MyPropertyCardComponent implements OnInit {
   private alertCtrl = inject(AlertController);
 
   // Inputs / Outputs
-  property = input.required<IProperty>();
+  property = input.required<any>();
   removed = output<string>(); // optional: parent can listen and filter immediately
 
   // Local UI state (signals)
@@ -56,6 +56,7 @@ export class MyPropertyCardComponent implements OnInit {
   async openPropertyDetails() {
     const modal = await this.modalController.create({
       component: PropertyFullViewComponent,
+      componentProps: { propertyIn: this.property() },
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });
@@ -141,19 +142,22 @@ export class MyPropertyCardComponent implements OnInit {
 export interface IProperty {
   id: string;
   propertyTitle: string;
-  priceOfSale: number;
-  priceOfRent: number;
-  priceOfRentType: string;
+  priceOfSale: number | null | undefined;
   location: string;
   houseType: string;
   bhkType: string;
-  propertySize: string;
+  propertySize: string | number;
+  totalPropertyUnits: string;
   propertyImages: IPropertyImage[];
   agentName: string;
   propertyId: string;
-  saleType: 'sale' | 'rent';
+  saleType: string; // 'sale' | 'rent' | 'Sale' | 'Rent' (we normalize)
   propertyStatus: string;
-  category: 'residential' | 'commercial' | 'plots' | 'lands';
+  category: string;
+  priceOfRent: number | null | undefined;
+  priceOfRentType: string;
+  commercialType: string;
+  floor: string;
 }
 
 export interface IPropertyImage {

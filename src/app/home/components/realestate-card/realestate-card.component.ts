@@ -1,12 +1,13 @@
 import {
   Component,
+  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
   input,
-  output,
+  OnDestroy,
   OnInit,
+  output,
   signal,
-  computed,
 } from '@angular/core';
 import {
   IonIcon,
@@ -27,14 +28,17 @@ import { register } from 'swiper/element';
 register();
 
 import {
-  Firestore,
-  doc,
-  getDoc,
-  setDoc,
   deleteDoc,
+  doc,
+  DocumentData,
+  DocumentReference,
+  Firestore,
+  onSnapshot,
   serverTimestamp,
+  setDoc,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { IProperty, IPropertyImage } from 'src/app/models/property.model';
 
 @Component({
   selector: 'app-realestate-card',
@@ -44,13 +48,13 @@ import { Router } from '@angular/router';
   imports: [IonIcon, IonLabel, IonImg],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class RealestateCardComponent implements OnInit {
+export class RealestateCardComponent implements OnInit, OnDestroy {
   private modalController = inject(ModalController);
   private afs = inject(Firestore);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
 
-  /** Card input */
+  /** Card input — parent MUST pass this */
   property = input.required<IProperty>();
 
   /** Admin identity (optional). If omitted, 'admin' is used. */
@@ -67,47 +71,48 @@ export class RealestateCardComponent implements OnInit {
   /** UI state */
   private busy = signal(false);
   private _isSaved = signal(false);
-  isSaved = computed(() => this._isSaved());
+  readonly isSaved = computed(() => this._isSaved());
 
-  /** Derived/normalized fields (always safe to render) */
-  // Normalize saleType → 'sale' | 'rent'
+  /** Derived/normalized fields (lazy-safe to call) */
   readonly saleTypeKey = computed<'sale' | 'rent'>(() => {
     const t = (this.property().saleType || '').toString().trim().toLowerCase();
     return t === 'rent' ? 'rent' : 'sale';
   });
 
-  // Guard images (always return at least one)
   readonly images = computed<IPropertyImage[]>(() => {
     const list = Array.isArray(this.property().propertyImages)
       ? this.property().propertyImages.filter(Boolean)
       : [];
-    if (list.length > 0) return list;
-    // fallback
-    return [{ id: 'noimg', image: 'assets/img/no-image.png' }];
+    return list.length
+      ? list
+      : [{ id: 'noimg', image: 'assets/img/no-image.png' }];
   });
 
-  // Human readable price text
   readonly priceText = computed(() => {
     const p = this.property();
     const key = this.saleTypeKey();
-
-    // coerce to number safely
     const sale = Number(p.priceOfSale ?? 0);
     const rent = Number(p.priceOfRent ?? 0);
-
-    if (key === 'sale') {
-      return sale > 0 ? `₹${formatIN(sale)}` : '₹—';
-    } else {
-      return rent > 0 ? `₹${formatIN(rent)} / Monthly` : '₹— / Monthly';
-    }
+    if (key === 'sale') return sale > 0 ? `₹${formatIN(sale)}` : '₹—';
+    return rent > 0 ? `₹${formatIN(rent)}` : '₹—';
   });
+
+  private unsubscribeSaved?: () => void;
 
   constructor() {
     addIcons({ heartOutline, heart, arrowRedoOutline });
   }
 
   ngOnInit() {
-    this.refreshSavedState();
+    // Inputs are bound now — safe to reference property()
+    const ref = this.savedRef();
+    this.unsubscribeSaved = onSnapshot(ref, (snap) => {
+      this._isSaved.set(snap.exists());
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeSaved?.();
   }
 
   private adminUid(): string {
@@ -117,10 +122,18 @@ export class RealestateCardComponent implements OnInit {
     return 'admin';
   }
 
+  private savedRef(): DocumentReference<DocumentData> {
+    const uid = this.adminUid();
+    return doc(
+      this.afs,
+      `admins/${uid}/saved_properties/${this.property().id}`
+    );
+  }
+
   async openPropertyDetails() {
     const modal = await this.modalController.create({
       component: PropertyFullViewComponent,
-      componentProps: { id: this.property().id },
+      componentProps: { propertyIn: this.property() },
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });
@@ -134,18 +147,35 @@ export class RealestateCardComponent implements OnInit {
     this.busy.set(true);
 
     try {
-      const uid = this.adminUid();
-      const id = this.property().id;
+      const ref = this.savedRef();
+      const p = this.property();
 
-      if (this._isSaved()) {
-        await this.unsave(uid, id);
-        this._isSaved.set(false);
-        this.unsaved.emit(id);
+      if (this.isSaved()) {
+        await deleteDoc(ref);
+        this.unsaved.emit(p.id);
         await this.toast('Removed from saved', 'medium');
       } else {
-        await this.save(uid, this.property());
-        this._isSaved.set(true);
-        this.saved.emit(id);
+        await setDoc(ref, {
+          id: p.id,
+          propertyTitle: p.propertyTitle ?? '',
+          addressOfProperty: p.addressOfProperty ?? '',
+          saleType: this.saleTypeKey(),
+          category: p.category ?? '',
+          priceOfSale: Number(p.priceOfSale ?? 0),
+          priceOfRent: Number(p.priceOfRent ?? 0),
+          priceOfRentType: p.priceOfRentType ?? '',
+          houseType: p.houseType ?? '',
+          bhkType: p.bhkType ?? '',
+          commercialType: p.commercialType ?? '',
+          floor: p.floor ?? '',
+          propertySize: p.propertySize ?? '',
+          propertyStatus: p.propertyStatus ?? '',
+          agentName: p.agentName ?? '',
+          propertyId: p.propertyId ?? '',
+          propertyImages: p.propertyImages ?? [],
+          createdAt: serverTimestamp(),
+        });
+        this.saved.emit(p.id);
 
         if (this.redirectOnSave()) {
           await this.router.navigate(['/saved-properties']);
@@ -158,40 +188,6 @@ export class RealestateCardComponent implements OnInit {
     } finally {
       this.busy.set(false);
     }
-  }
-
-  private async refreshSavedState() {
-    const uid = this.adminUid();
-    const ref = doc(this.afs, `admins/${uid}/saved_properties/${this.property().id}`);
-    const snap = await getDoc(ref);
-    this._isSaved.set(snap.exists());
-  }
-
-  private async save(uid: string, p: IProperty) {
-    const ref = doc(this.afs, `admins/${uid}/saved_properties/${p.id}`);
-    await setDoc(ref, {
-      id: p.id,
-      propertyTitle: p.propertyTitle ?? '',
-      location: p.location ?? '',
-      saleType: this.saleTypeKey(), // normalized
-      category: p.category ?? '',
-      priceOfSale: Number(p.priceOfSale ?? 0),
-      priceOfRent: Number(p.priceOfRent ?? 0),
-      priceOfRentType: p.priceOfRentType ?? '',
-      houseType: p.houseType ?? '',
-      bhkType: p.bhkType ?? '',
-      propertySize: p.propertySize ?? '',
-      propertyStatus: p.propertyStatus ?? '',
-      agentName: p.agentName ?? '',
-      propertyId: p.propertyId ?? '',
-      propertyImages: p.propertyImages ?? [],
-      createdAt: serverTimestamp(),
-    });
-  }
-
-  private async unsave(uid: string, propertyId: string) {
-    const ref = doc(this.afs, `admins/${uid}/saved_properties/${propertyId}`);
-    await deleteDoc(ref);
   }
 
   private async toast(
@@ -211,27 +207,4 @@ export class RealestateCardComponent implements OnInit {
 /** Helpers */
 function formatIN(n: number) {
   return Number(n).toLocaleString('en-IN');
-}
-
-export interface IProperty {
-  id: string;
-  propertyTitle: string;
-  priceOfSale: number | null | undefined;
-  location: string;
-  houseType: string;
-  bhkType: string;
-  propertySize: string | number;
-  propertyImages: IPropertyImage[];
-  agentName: string;
-  propertyId: string;
-  saleType: string; // 'sale' | 'rent' | 'Sale' | 'Rent' (we normalize)
-  propertyStatus: string;
-  category: string;
-  priceOfRent: number | null | undefined;
-  priceOfRentType: string;
-}
-
-export interface IPropertyImage {
-  id: string;
-  image: string;
 }

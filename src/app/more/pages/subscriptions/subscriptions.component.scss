@@ -4,270 +4,396 @@ ion-title {
 }
 ion-content {
   --background: var(--content-background);
+  --padding-bottom: 70px;
 }
 
-.div-prices {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin: 60px 0;
-}
+// .div-prices {
+//   display: flex;
+//   align-items: flex-start;
+//   justify-content: space-between;
+//   margin: 60px 0;
+// }
 
-.label-actual {
-  margin-right: 16px;
-  font-size: 20px;
-  font-weight: 400;
-  text-decoration-line: line-through;
-  color: #999;
-  line-height: 1;
+// .label-actual {
+//   margin-right: 16px;
+//   font-size: 20px;
+//   font-weight: 400;
+//   text-decoration-line: line-through;
+//   color: #999;
+//   line-height: 1;
+//   display: block;
+// }
+
+// .label-discount {
+//   font-size: 20px;
+//   font-weight: 600;
+//   color: green;
+//   line-height: 1;
+//   display: block;
+// }
+
+// .div-flex {
+//   display: flex;
+//   align-items: flex-end;
+//   justify-content: space-between;
+//   margin: 16px 0;
+
+//   ion-button {
+//     --border-radius: 100px;
+//     margin: 0;
+//     text-transform: inherit;
+//     font-size: 12px;
+//     font-weight: 500;
+//     letter-spacing: 0.5px;
+//     height: 30px;
+//     margin: -10px;
+
+//     ion-icon {
+//       font-size: 16px;
+//       margin-right: 5px;
+//     }
+//   }
+// }
+
+// .div-subscription-card {
+//   margin: 16px;
+//   border-radius: 20px;
+//   overflow: hidden;
+//   box-shadow: 4px 5px 12px -7px #aaa;
+//   background-color: #fff;
+//   position: relative;
+
+//   .label-apply-coupon {
+//     color: #fff;
+//     display: block;
+//     line-height: 1;
+//     font-size: 10px;
+//     font-weight: 500;
+//     letter-spacing: 1px;
+//     padding: 10px;
+//     background: #0c77c1;
+//     border-radius: 100px;
+//     border: 1px solid rgba(255, 255, 255, 0.35);
+//     margin: -10px;
+//   }
+
+//   .div-card-sub {
+//     padding: 16px;
+//     text-align: center;
+//     background: rgb(94 124 204 / 25%);
+//     border-bottom-right-radius: 75%;
+
+//     .label-title {
+//       display: block;
+//       color: #000;
+//       text-transform: uppercase;
+//       font-weight: 600;
+//       letter-spacing: 0.5px;
+//       font-size: 14px;
+//       line-height: 1;
+
+//       span {
+//         padding: 3px 10px;
+//         background: #000;
+//         color: #fff;
+//         font-size: 12px;
+//         margin-right: 5px;
+//         border-radius: 4px;
+//       }
+//     }
+
+//     .label-price {
+//       display: block;
+//       font-size: 50px;
+//       color: #000;
+//       font-weight: 600;
+//       letter-spacing: 0.5px;
+//       line-height: 1;
+
+//       sup {
+//         font-size: 16px;
+//         font-weight: 500;
+//         top: -25px;
+//         color: #555;
+//       }
+
+//       sub {
+//         font-size: 12px;
+//         font-weight: 500;
+//         bottom: 0rem;
+//         color: #555;
+//       }
+//     }
+
+//     .label-plan {
+//       display: inline-block;
+//       color: #000;
+//       text-transform: uppercase;
+//       font-weight: 600;
+//       letter-spacing: 0.5px;
+//       margin-bottom: 24px;
+//       font-size: 18px;
+//       position: relative;
+
+//       &::before {
+//         content: "";
+//         background-color: #fff;
+//         height: 1px;
+//         width: 50px;
+//         position: absolute;
+//         top: 50%;
+//         transform: translateY(-50%);
+//         left: -75px;
+//       }
+
+//       &::after {
+//         content: "";
+//         background-color: #fff;
+//         height: 1px;
+//         width: 50px;
+//         position: absolute;
+//         top: 50%;
+//         transform: translateY(-50%);
+//         right: -75px;
+//       }
+//     }
+//   }
+// }
+
+// .premium {
+//   background: linear-gradient(
+//     135deg,
+//     rgba(107, 243, 207, 0.75),
+//     #49c2dd
+//   ) !important;
+// }
+
+// .enterprise {
+//   background: linear-gradient(
+//     135deg,
+//     rgba(178, 132, 248, 0.75),
+//     #756ff3
+//   ) !important;
+// }
+
+// .img-settings {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   height: 150px;
+//   opacity: 0.2;
+// }
+
+// ul {
+//   list-style-type: none;
+//   padding: 0;
+//   margin: 0;
+
+//   :not(:last-child) {
+//     margin-bottom: 10px;
+//   }
+
+//   li {
+//     color: #fff;
+//     font-weight: 500;
+//     letter-spacing: 0.5px;
+//     font-size: 14px;
+//   }
+// }
+
+// .label-buy {
+//   display: block;
+//   position: absolute;
+//   bottom: 16px;
+//   right: 16px;
+//   line-height: 1;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   color: #fff;
+//   font-size: 14px;
+//   letter-spacing: 0.5px;
+// }
+
+// .subscribed {
+//   color: #ff82a1 !important;
+//   font-weight: 700 !important;
+// }
+
+// .segment-settings {
+//   ion-segment-button {
+//     min-width: 50px;
+//   }
+// }
+
+// .div-width {
+//   text-align: left;
+//   margin-top: 16px;
+
+//   .range-title {
+//     font-size: 14px;
+//     /* letter-spacing: 1px; */
+//     color: #000;
+//     font-weight: 600;
+//   }
+
+//   .div-range-flex {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     width: 100%;
+
+//     .range-slider {
+//       width: 100%;
+//     }
+
+//     .count {
+//       background: white;
+//       // padding: 0px 6px;
+//       font-size: 16px;
+//       border: 1px solid #eee;
+//       color: #0c77c1;
+//       font-weight: 700;
+//       border-radius: 4px;
+//     }
+//   }
+// }
+
+// ion-range {
+//   --bar-background: #fff;
+//   --bar-background-active: #0c77c1;
+//   --bar-height: 8px;
+//   --bar-border-radius: 8px;
+//   --knob-background: #fff;
+//   --knob-size: 26px;
+//   --pin-background: #fff;
+//   --pin-color: #fff;
+//   padding: 0;
+// }
+
+:host {
   display: block;
 }
 
-.label-discount {
-  font-size: 20px;
-  font-weight: 600;
-  color: green;
-  line-height: 1;
-  display: block;
-}
-
-.div-flex {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin: 40px 0 10px;
-
-  ion-button {
-    --border-radius: 100px;
-    margin: 0;
-    text-transform: inherit;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    height: 30px;
-    margin: -10px;
-
-    ion-icon {
-      font-size: 16px;
-      margin-right: 5px;
-    }
-  }
-}
-
-.div-subscription-card {
-  margin: 16px;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 4px 5px 12px -7px #aaa;
-  background-color: #fff;
+/* Card container */
+.pricing-card {
   position: relative;
-
-  .label-apply-coupon {
-    color: #fff;
-    display: block;
-    line-height: 1;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    padding: 10px;
-    background: #0c77c1;
-    border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    margin: -10px;
-  }
-
-  .div-card-sub {
-    padding: 16px;
-    text-align: center;
-    background: rgb(94 124 204 / 25%);
-    border-bottom-right-radius: 75%;
-
-    .label-title {
-      display: block;
-      color: #000;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      /* margin-bottom: 16px; */
-      font-size: 14px;
-      line-height: 1;
-
-      span {
-        padding: 3px 10px;
-        background: #000;
-        color: #fff;
-        font-size: 12px;
-        margin-right: 5px;
-        border-radius: 4px;
-      }
-    }
-
-    .label-price {
-      display: block;
-      font-size: 50px;
-      color: #000;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      line-height: 1;
-
-      sup {
-        font-size: 16px;
-        font-weight: 500;
-        top: -25px;
-        color: #555;
-      }
-
-      sub {
-        font-size: 12px;
-        font-weight: 500;
-        bottom: 0rem;
-        color: #555;
-      }
-    }
-
-    .label-plan {
-      display: inline-block;
-      color: #000;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 24px;
-      font-size: 18px;
-      position: relative;
-
-      &::before {
-        content: "";
-        background-color: #fff;
-        height: 1px;
-        width: 50px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: -75px;
-      }
-
-      &::after {
-        content: "";
-        background-color: #fff;
-        height: 1px;
-        width: 50px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: -75px;
-      }
-    }
-  }
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  text-align: center;
+  background: var(--content-background-white);
+  margin: 16px;
 }
 
-.premium {
-  background: linear-gradient(
-    135deg,
-    rgba(107, 243, 207, 0.75),
-    #49c2dd
-  ) !important;
+.div-pricing-card-sub {
+  background: linear-gradient(160deg, #96f0d9 25%, #48bfdd 90%);
+  height: 400px;
+  padding: 22px 22px 64px;
+  border-bottom-right-radius: 60%;
 }
 
-.enterprise {
-  background: linear-gradient(
-    135deg,
-    rgba(178, 132, 248, 0.75),
-    #756ff3
-  ) !important;
-}
-
-.img-settings {
+/* Subtle leaf (bg illustration) */
+.leaf {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 150px;
+  left: -84px;
+  bottom: -10px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    ellipse at 40% 60%,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0) 60%
+  );
+  filter: blur(0.2px);
   opacity: 0.2;
+  pointer-events: none;
+  transform: rotate(45deg);
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-
-  :not(:last-child) {
-    margin-bottom: 10px;
-  }
-
-  li {
-    color: #fff;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    font-size: 14px;
-  }
-}
-
-.label-buy {
-  display: block;
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  line-height: 1;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #fff;
+/* Top label */
+.tier {
   font-size: 14px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.12em;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-bottom: 8px;
+  color: var(--color-white);
+  text-transform: uppercase;
 }
 
-.subscribed {
-  color: #ff82a1 !important;
-  font-weight: 700 !important;
+/* Price row */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0 16px;
+}
+.price {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-white);
+}
+.period {
+  font-size: 16px;
+  opacity: 0.95;
+  color: var(--color-white);
+  font-weight: 500;
 }
 
-.segment-settings {
-  ion-segment-button {
-    min-width: 50px;
+/* Divider with PLAN */
+.divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 24px 0 20px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  opacity: 0.95;
+
+  span {
+    color: var(--color-white);
+  }
+
+  .divider-line {
+    height: 2px;
+    width: 34px;
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 
-.div-width {
-  text-align: left;
-  margin-top: 16px;
-
-  .range-title {
-    font-size: 14px;
-    /* letter-spacing: 1px; */
-    color: #000;
-    font-weight: 600;
-  }
-
-  .div-range-flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    .range-slider {
-      width: 100%;
-    }
-
-    .count {
-      background: white;
-      // padding: 0px 6px;
-      font-size: 16px;
-      border: 1px solid #eee;
-      color: #0c77c1;
-      font-weight: 700;
-      border-radius: 4px;
-      // margin-left: 10px;
-    }
-  }
-}
-
-ion-range {
-  --bar-background: #fff;
-  --bar-background-active: #0c77c1;
-  --bar-height: 8px;
-  --bar-border-radius: 8px;
-  --knob-background: #fff;
-  --knob-size: 26px;
-  --pin-background: #fff;
-  --pin-color: #fff;
+/* Features */
+.features {
+  list-style: none;
+  margin: 50px 0 16px;
   padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.features li {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.98;
+  color: var(--color-white);
+}
+
+/* Curved white corner CTA (bottom-right) */
+.cta {
+  position: absolute;
+  right: -3px;
+  bottom: 2px;
+  height: 58px;
+  padding: 0 18px 0 24px;
+  border: 0;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #3a58a0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
 }

@@ -14,11 +14,17 @@ import {
   IonSegmentButton,
   IonLabel,
   IonButton,
+  IonCard,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { CoupondetailsComponent } from '../coupondetails/coupondetails.component';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { PaymentsAddressListComponent } from '../payments-address-list/payments-address-list.component';
+import {
+  backwardEnterAnimation,
+  forwardEnterAnimation,
+} from 'src/app/services/animation';
 
 @Component({
   selector: 'app-subscriptions',
@@ -37,6 +43,7 @@ import { chevronBackOutline } from 'ionicons/icons';
     IonSegmentButton,
     IonLabel,
     IonButton,
+    IonCard,
   ],
   providers: [ModalController],
 })
@@ -82,6 +89,15 @@ export class SubscriptionsComponent implements OnInit {
     //   component: SuccessPageComponent
     // });
     // await modal.present();
+  }
+
+  async paymentsAddressPage() {
+    const modal = await this.modalController.create({
+      component: PaymentsAddressListComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 
   changeProperties(event) {

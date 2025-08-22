@@ -1,104 +1,70 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="arrow-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
-    <ion-title>Filter By</ion-title>
+    <ion-icon name="arrow-back-outline" class="icon-close" (click)="dismiss('cancel')"></ion-icon>
+    <ion-title>Filter – {{ categoryLabel() }}</ion-title>
+    <ion-button size="small" [color]="categoryColor()" class="category-pill">{{ categoryLabel() }}</ion-button>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="saree-filter">
   <div class="filter-container">
     <div class="filter-tabs-left">
-      <div class="tab" [class.active]="activeTab() === 'saleType'" (click)="activeTab.set('saleType')">
-        <ion-label>Sale Type</ion-label>
-      </div>
-      <div class="tab" [class.active]="activeTab() === 'category'" (click)="activeTab.set('category')">
-        <ion-label>Category</ion-label>
-      </div>
-      <div class="tab" [class.active]="activeTab() === 'area'" (click)="activeTab.set('area')">
-        <ion-label>Area</ion-label>
-      </div>
+      <div class="tab" [class.active]="activeTab() === 'saleType'" (click)="activeTab.set('saleType')"><ion-label>Sale
+          Type</ion-label></div>
       <div class="tab" [class.active]="activeTab() === 'price'" (click)="activeTab.set('price')">
-        <ion-label>Price</ion-label>
-      </div>
+        <ion-label>Price</ion-label></div>
       <div class="tab" [class.active]="activeTab() === 'houseType'" (click)="activeTab.set('houseType')">
-        <ion-label>House Type</ion-label>
-      </div>
-      <div class="tab" [class.active]="activeTab() === 'bhkType'" (click)="activeTab.set('bhkType')">
-        <ion-label>BHK Type</ion-label>
-      </div>
+        <ion-label>House Type</ion-label></div>
+      <div class="tab" [class.active]="activeTab() === 'bhkType'" (click)="activeTab.set('bhkType')"><ion-label>BHK
+          Type</ion-label></div>
     </div>
 
     <div class="filter-tabs-right">
-      @if(activeTab() === 'saleType') {
+      @if (activeTab() === 'saleType') {
       <div class="options">
-        <div class="option-box">Sale</div>
-        <div class="option-box">Rent</div>
+        <div class="option-box" [class.active]="saleType()==='sale'" (click)="toggleSale('sale')">Sale</div>
+        <div class="option-box" [class.active]="saleType()==='rent'" (click)="toggleSale('rent')">Rent</div>
       </div>
       }
-      @if(activeTab() === 'category') {
-      <div class="options">
-        <div class="option-box">Residential</div>
-        <div class="option-box">Commercial</div>
-        <div class="option-box">Plots</div>
-        <div class="option-box">Land</div>
+
+      @if (activeTab() === 'price') {
+      <div class="options" style="display:grid;gap:8px">
+        <div class="option-box" style="display:flex;gap:8px;align-items:center">
+          <ion-label>Min</ion-label>
+          <ion-input type="number" placeholder="₹ min" [value]="priceMin() ?? ''"
+            (ionInput)="onMinChange($event)"></ion-input>
+        </div>
+        <div class="option-box" style="display:flex;gap:8px;align-items:center">
+          <ion-label>Max</ion-label>
+          <ion-input type="number" placeholder="₹ max" [value]="priceMax() ?? ''"
+            (ionInput)="onMaxChange($event)"></ion-input>
+        </div>
       </div>
       }
-      @if(activeTab() === 'area') {
+
+      @if (activeTab() === 'houseType') {
       <div class="options">
-        <div class="option-box">Vijayawada</div>
-        <div class="option-box">Guntur</div>
-        <div class="option-box">Nellore</div>
-        <div class="option-box">Hyderabad</div>
-        <div class="option-box">Vizag</div>
-        <div class="option-box">Khammam</div>
-        <div class="option-box">Suryapet</div>
-        <div class="option-box">Nalgonda</div>
-        <div class="option-box">Miryalguda</div>
+        @for (t of houseTypeOptions; track t) {
+        <div class="option-box" [class.active]="houseType().includes(t)" (click)="toggleFrom(houseType, t)">{{ t }}
+        </div>
+        }
       </div>
       }
-      @if(activeTab() === 'price') {
+
+      @if (activeTab() === 'bhkType') {
       <div class="options">
-        <div class="option-box">₹0 - ₹500</div>
-        <div class="option-box">₹501 - ₹1000</div>
-        <div class="option-box">₹1001 - ₹2000</div>
-        <div class="option-box">₹2001 - ₹3000</div>
-        <div class="option-box">₹3001 - ₹4000</div>
-        <div class="option-box">₹4001 - ₹5000</div>
-        <div class="option-box">₹5001 - ₹6000</div>
-        <div class="option-box">₹6001 - ₹7000</div>
-        <div class="option-box">₹7001 - ₹8000</div>
-        <div class="option-box">₹8001 - ₹9000</div>
-        <div class="option-box">₹9001 - ₹10000</div>
-      </div>
-      }
-      @if(activeTab() === 'houseType') {
-      <div class="options">
-        <div class="option-box">Apartment</div>
-        <div class="option-box">Bunglow</div>
-        <div class="option-box">Villa</div>
-        <div class="option-box">Farm House</div>
-      </div>
-      }
-      @if(activeTab() === 'bhkType') {
-      <div class="options">
-        <div class="option-box">1 BHK</div>
-        <div class="option-box">2 BHK</div>
-        <div class="option-box">3 BHK</div>
-        <div class="option-box">4 BHK</div>
-        <div class="option-box">5 BHK</div>
+        @for (b of bhkOptions; track b) {
+        <div class="option-box" [class.active]="bhkType().includes(b)" (click)="toggleFrom(bhkType, b)">{{ b }}</div>
+        }
       </div>
       }
     </div>
   </div>
 </ion-content>
 
-<!-- Bottom Buttons -->
 <ion-footer class="filter-footer">
   <div class="div-buttons">
-    <ion-button fill="clear" class="clear-btn">
-      CLEAR ALL
-    </ion-button>
-    <ion-button fill="clear" class="apply-btn">
-      APPLY
-    </ion-button>
+    <ion-button fill="clear" class="clear-btn" (click)="clearAll()">CLEAR</ion-button>
+    <ion-button fill="solid" class="apply-btn" color="primary" (click)="apply()">APPLY</ion-button>
   </div>
 </ion-footer>

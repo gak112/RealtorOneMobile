@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-title>Payment Address</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form>
+    <div class="div-form-main">
+      <div class="div-formgroup">
+        <ion-input formControlName="fullName" type="text" mode="md" label="Full Name" label-placement="floating"
+          fill="outline" placeholder="Enter Full Name"></ion-input>
+      </div>
+      <div class="div-formgroup">
+        <ion-input formControlName="Location" type="text" mode="md" label="Location" label-placement="floating"
+          fill="outline" placeholder="Enter Location"></ion-input>
+      </div>
+      <!-- <div class="div-formgroup">
+        <ion-label >Location</ion-label>
+        <input ngx-google-places-autocomplete #places  (onAddressChange)="handleAddressChange($event)" type="text" formControlName="location" class="location-input-settings">
+      </div> -->
+      <!-- <div class="div-location-display">
+        <ion-badge color="tertiary">{{user.location}}</ion-badge>
+        <ion-badge color="tertiary">{{user.city}}</ion-badge>
+        <ion-badge color="tertiary">{{user.district}}</ion-badge>
+        <ion-badge color="tertiary">{{user.state}}</ion-badge>
+        <ion-badge color="tertiary">{{user.pincode}}</ion-badge>
+      </div> -->
+      <div style="margin-bottom: 16px;">
+        <ion-textarea formControlName="description" type="text" mode="md" label="Description" label-placement="floating"
+          fill="outline" placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
+      </div>
+      <div class="div-submit">
+
+      </div>
+    </div>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-button color="warning" expand="block" mode="ios">
+    Submit
+  </ion-button>
+</ion-footer>

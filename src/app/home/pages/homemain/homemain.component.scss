@@ -173,7 +173,7 @@ ion-fab-button {
     .div-yesno {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 16px;
 
       ion-button {
         font-size: 12px;

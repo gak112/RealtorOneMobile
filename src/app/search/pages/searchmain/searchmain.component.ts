@@ -11,11 +11,11 @@ import {
 } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import {
-  IProperty,
   RealestateCardComponent,
 } from 'src/app/home/components/realestate-card/realestate-card.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductfilterComponent } from '../productfilter/productfilter.component';
+import { IProperty } from 'src/app/models/property.model';
 
 @Component({
   selector: 'app-searchmain',
