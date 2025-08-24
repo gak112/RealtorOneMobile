@@ -2,8 +2,19 @@
   <div class="div-card1">
     <ion-label>{{ amenity().amenityName }}</ion-label>
   </div>
+
   <div class="div-icons">
-    <ion-icon name="create" (click)="editAmenity()"></ion-icon>
-    <ion-icon name="trash-outline"></ion-icon>
+    <ion-icon
+      name="create"
+      (click)="editAmenity()"
+      aria-label="Edit amenity">
+    </ion-icon>
+
+    <ion-icon
+      name="trash-outline"
+      [class.disabled]="isDeleting()"
+      (click)="confirmDelete()"
+      aria-label="Delete amenity">
+    </ion-icon>
   </div>
 </div>

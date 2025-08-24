@@ -39,6 +39,10 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { IProperty, IPropertyImage } from 'src/app/models/property.model';
+import {
+  SavedDocPayload,
+  SavedService,
+} from 'src/app/more/services/saved.service';
 
 @Component({
   selector: 'app-realestate-card',
@@ -53,9 +57,10 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
   private afs = inject(Firestore);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
+  private savedSvc = inject(SavedService);
 
   /** Card input — parent MUST pass this */
-  property = input.required<IProperty>();
+  property = input<IProperty>();
 
   /** Admin identity (optional). If omitted, 'admin' is used. */
   admin = input<string | { uid: string }>();
@@ -69,9 +74,8 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
   unsaved = output<string>();
 
   /** UI state */
-  private busy = signal(false);
+  busy = signal(false);
   private _isSaved = signal(false);
-  readonly isSaved = computed(() => this._isSaved());
 
   /** Derived/normalized fields (lazy-safe to call) */
   readonly saleTypeKey = computed<'sale' | 'rent'>(() => {
@@ -103,12 +107,28 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
     addIcons({ heartOutline, heart, arrowRedoOutline });
   }
 
+  private _isSavedLookup: () => boolean = () => false;
+
   ngOnInit() {
-    // Inputs are bound now — safe to reference property()
-    const ref = this.savedRef();
-    this.unsubscribeSaved = onSnapshot(ref, (snap) => {
-      this._isSaved.set(snap.exists());
-    });
+    // Now it's safe to read inputs
+    const p = this.property();
+    const uid = this.uid();
+
+    if (p?.id) {
+      // Prepare a reactive lookup for the template
+      this._isSavedLookup = this.savedSvc.isSavedSignal(uid, p.id);
+      // Optionally pre-load state from Firestore (safe to ignore failures)
+      this.savedSvc.ensureLoaded(uid, p.id).catch(() => {});
+    }
+  }
+
+  /** used by template */
+  isSaved() {
+    return this._isSavedLookup();
+  }
+  private uid(): string {
+    const a = this.admin();
+    return typeof a === 'string' ? a || 'admin' : a?.uid || 'admin';
   }
 
   ngOnDestroy() {
@@ -122,14 +142,6 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
     return 'admin';
   }
 
-  private savedRef(): DocumentReference<DocumentData> {
-    const uid = this.adminUid();
-    return doc(
-      this.afs,
-      `admins/${uid}/saved_properties/${this.property().id}`
-    );
-  }
-
   async openPropertyDetails() {
     const modal = await this.modalController.create({
       component: PropertyFullViewComponent,
@@ -141,53 +153,47 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
   }
 
   /** Save/Unsave favorite + notify parent + optional redirect */
-  async toggleFavorite(ev: Event) {
+  async onToggleFavorite(ev: Event) {
     ev.stopPropagation();
     if (this.busy()) return;
     this.busy.set(true);
 
     try {
-      const ref = this.savedRef();
       const p = this.property();
+      if (!p?.id) throw new Error('Property not ready');
+      const action = await this.savedSvc.toggle(this.uid(), toSavedPayload(p));
 
-      if (this.isSaved()) {
-        await deleteDoc(ref);
-        this.unsaved.emit(p.id);
-        await this.toast('Removed from saved', 'medium');
-      } else {
-        await setDoc(ref, {
-          id: p.id,
-          propertyTitle: p.propertyTitle ?? '',
-          addressOfProperty: p.addressOfProperty ?? '',
-          saleType: this.saleTypeKey(),
-          category: p.category ?? '',
-          priceOfSale: Number(p.priceOfSale ?? 0),
-          priceOfRent: Number(p.priceOfRent ?? 0),
-          priceOfRentType: p.priceOfRentType ?? '',
-          houseType: p.houseType ?? '',
-          bhkType: p.bhkType ?? '',
-          commercialType: p.commercialType ?? '',
-          floor: p.floor ?? '',
-          propertySize: p.propertySize ?? '',
-          propertyStatus: p.propertyStatus ?? '',
-          agentName: p.agentName ?? '',
-          propertyId: p.propertyId ?? '',
-          propertyImages: p.propertyImages ?? [],
-          createdAt: serverTimestamp(),
-        });
-        this.saved.emit(p.id);
-
+      if (action === 'saved') {
+        await this.presentToast('Saved to list', 'success');
         if (this.redirectOnSave()) {
-          await this.router.navigate(['/saved-properties']);
-        } else {
-          await this.toast('Saved to favorites', 'success');
+          await this.router.navigateByUrl('/saved-properties', {
+            replaceUrl: false,
+          });
         }
+      } else {
+        await this.presentToast('Removed from saved', 'medium');
       }
-    } catch {
-      await this.toast('Action failed. Please try again.', 'danger');
+    } catch (e: any) {
+      await this.presentToast(
+        e?.message || 'Action failed. Please try again.',
+        'danger'
+      );
     } finally {
       this.busy.set(false);
     }
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'medium' | 'danger' = 'medium'
+  ) {
+    const t = await this.toastCtrl.create({
+      message,
+      duration: 1600,
+      position: 'top',
+      color,
+    });
+    await t.present();
   }
 
   private async toast(
@@ -207,4 +213,14 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
 /** Helpers */
 function formatIN(n: number) {
   return Number(n).toLocaleString('en-IN');
+}
+
+function toSavedPayload(p: IProperty): SavedDocPayload {
+  return {
+    ...p,
+    propertyImages: p.propertyImages.map((image) => ({
+      id: image.id,
+      image: image.image,
+    })),
+  };
 }

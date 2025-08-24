@@ -90,9 +90,8 @@
 
   <div class="info-container">
     <!-- Actions -->
-    <div class="heart-icon">
-      <ion-icon [name]="isSaved() ? 'heart' : 'heart-outline'" (click)="toggleFavorite($event)"></ion-icon>
-      <ion-icon name="arrow-redo-outline"></ion-icon>
+    <div class="heart-icon" [class.disabled]="busy()" (click)="onToggleFavorite($event)">
+      <ion-icon [name]="isSaved() ? 'heart' : 'heart-outline'"></ion-icon>
     </div>
 
     <!-- Main info (click → full view) -->
@@ -126,6 +125,11 @@
           {{ property().floor }} floor, {{ property().propertySize }} sqft
         </ion-label>
         }
+        @if(property().category === 'plots' || property().category === 'lands'){
+        <ion-label class="property-size">
+          {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+        </ion-label>
+        }
         <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
       </div>
     </div>
@@ -154,8 +158,8 @@
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">
-        <ion-label class="footer-label">Property ID</ion-label>
-        <ion-label class="footer-value">{{ property().propertyId }}</ion-label>
+        <ion-label class="footer-label">Furnishing&nbsp;Type</ion-label>
+        <ion-label class="footer-value">{{ property().furnishingType }}</ion-label>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">

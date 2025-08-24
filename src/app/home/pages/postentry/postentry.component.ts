@@ -78,14 +78,8 @@ type CommercialType =
   | 'Warehouse'
   | 'Factory'
   | 'Showroom'
-  | 'Land'
   | 'Other';
-type CommercialSubType =
-  | 'Shopping Mall'
-  | 'Co-Working Space'
-  | 'IT Park'
-  | 'Showroom'
-  | 'Other';
+type CommercialSubType = 'Complex' | 'Individual';
 
 const DEFAULT_UNITS: Units = 'Sq Feet';
 

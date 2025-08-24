@@ -1,42 +1,57 @@
-import {
-  Component,
-  inject,
-  signal,
-  computed,
-  OnInit,
-  Input,
-} from '@angular/core';
-import {
-  IonContent,
-  IonHeader,
-  IonSearchbar,
-  IonTitle,
-  IonToolbar,
-  IonIcon,
-  ModalController,
-} from '@ionic/angular/standalone';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   Firestore,
   collection,
   collectionData,
   query,
   orderBy,
-  limit,
 } from '@angular/fire/firestore';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
 import {
-  IPropertyCard,
-  SavedpropertycardComponent,
-} from '../../components/savedpropertycard/savedpropertycard.component';
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+import { SavedpropertycardComponent } from '../../components/savedpropertycard/savedpropertycard.component';
+import { IProperty } from 'src/app/models/property.model';
+
+/** Saved docs stored under admins/{uid}/saved_properties */
+type SavedDoc = {
+  id: string;
+  propertyTitle?: string;
+  addressOfProperty?: string;
+  saleType?: string; // 'sale' | 'rent' (normalize)
+  category?: string; // 'residential' | 'commercial' | 'plots' | 'lands' (normalize)
+  priceOfSale?: number | string;
+  priceOfRent?: number | string;
+  houseType?: string;
+  bhkType?: string;
+  propertySize?: number | string;
+  propertyStatus?: string;
+  agentName?: string;
+  propertyId?: string;
+  propertyImages?: Array<{ id?: string; image?: string } | string>;
+  images?: string[]; // legacy fallback
+  createdAt?: any;
+  updatedAt?: any;
+  floor?: string;
+  commercialType?: string;
+};
 
 @Component({
   selector: 'app-savedproperties',
+  standalone: true,
   templateUrl: './savedproperties.component.html',
   styleUrls: ['./savedproperties.component.scss'],
-  standalone: true,
   imports: [
     IonSearchbar,
     IonHeader,
@@ -47,98 +62,176 @@ import { chevronBackOutline } from 'ionicons/icons';
     SavedpropertycardComponent,
   ],
 })
-export class SavedpropertiesComponent implements OnInit {
+export class SavedpropertiesComponent {
   private modalController = inject(ModalController);
-  @Input() user: any;
+  private afs = inject(Firestore);
 
   constructor() {
     addIcons({ chevronBackOutline });
   }
 
-  ngOnInit() {
-    return;
-    // this.afs.collection(`savedPropertiesList`,
-    //   ref => ref.where('uid', '==', this.user.uid)).valueChanges().subscribe((data: any) => {
+  /** Back-compat: accept either `[user]` or `[currentUid]` */
+  user = input<any | null>(null); // e.g., { uid: 'abc' }
+  currentUid = input<string | null>(null); // e.g., 'abc'
 
-    //       this.savedProperties = data;
-    // });
-  }
+  /** Effective uid used for the query */
+  readonly uid = computed<string>(() => {
+    const explicit = this.currentUid();
+    if (explicit) return explicit;
+    const u = this.user();
+    if (typeof u === 'string' && u) return u;
+    if (u && typeof u === 'object' && 'uid' in u && u.uid) return String(u.uid);
+    return 'admin';
+  });
+
+  /** UI state */
+  readonly errorMsg = signal<string | null>(null);
+  private prunedIds = signal<Set<string>>(new Set());
+  private qText = signal<string>('');
 
   dismiss() {
     this.modalController.dismiss();
   }
 
-  private afs = inject(Firestore);
-
-  /** Firestore: posts ordered by createdAt desc */
-  private postsCol = collection(this.afs, 'posts');
-  private q = query(this.postsCol, orderBy('createdAt', 'desc'), limit(200));
-
-  private rows = toSignal(collectionData(this.q, { idField: 'id' }), {
-    initialValue: [] as any[],
-  });
-
-  /** Map posts → card model */
-  readonly items = computed<IPropertyCard[]>(() =>
-    this.rows().map((d: any) => this.toCard(d))
+  /** Firestore stream */
+  private savedDocs$ = toObservable(this.uid).pipe(
+    switchMap((uid) => {
+      const col = collection(this.afs, `admins/${uid}/saved_properties`);
+      const qRef = query(col, orderBy('createdAt', 'desc') as any);
+      return collectionData(qRef, { idField: 'id' }) as any;
+    }),
+    catchError((err) => {
+      console.error('[saved-properties] stream error', err);
+      this.errorMsg.set(
+        'Failed to load saved properties. Pull to refresh or try again.'
+      );
+      return of([] as SavedDoc[]);
+    })
   );
 
-  /** Search */
-  private qText = signal('');
-  onSearch(ev: CustomEvent) {
-    const v = ((ev.detail as any)?.value ?? '').toString().trim();
-    this.qText.set(v.toLowerCase());
+  /** Helpers */
+  private toNumber(n: unknown, fallback = 0): number {
+    const x = typeof n === 'string' ? Number(n) : (n as number);
+    return Number.isFinite(x) ? x : fallback;
   }
 
-  /** Client-side filter for simplicity */
-  readonly filtered = computed(() => {
-    const q = this.qText();
-    if (!q) return this.items();
-    return this.items().filter(
-      (p) =>
-        (p.propertyTitle ?? '').toLowerCase().includes(q) ||
-        (p.location ?? '').toLowerCase().includes(q)
-    );
-  });
+  private normalizeSaleType(v?: string): IProperty['saleType'] {
+    const s = (v ?? '').toLowerCase().trim();
+    return (s === 'rent' ? 'rent' : 'sale') as IProperty['saleType'];
+  }
 
-  /** Optional: remove from feed once saved (if you keep redirectOff) */
-  removeFromFeed(id: string) {
-    const cur = this.items();
-    const idx = cur.findIndex((x) => x.id === id);
-    if (idx >= 0) {
-      // Quick local remove (purely UI); Firestore stream will resync anyway
-      const copy = cur.slice();
-      copy.splice(idx, 1);
-      // Can't set computed directly; for a real remove rely on redirect or keep as-is.
-      // If you want local mutable list, keep a signal for the visible list.
+  private normalizeCategory(v?: string): IProperty['category'] {
+    const s = (v ?? '').toLowerCase().trim();
+    if (s.startsWith('com')) return 'commercial';
+    if (s.startsWith('plot')) return 'plots';
+    if (s.startsWith('land')) return 'lands';
+    if (s.startsWith('res')) return 'residential';
+    if (['residential', 'commercial', 'plots', 'lands'].includes(s))
+      return s as IProperty['category'];
+    return 'residential';
+  }
+
+  private toPropertyImages(d: SavedDoc): IProperty['propertyImages'] {
+    const out: IProperty['propertyImages'] = [];
+    if (Array.isArray(d.propertyImages)) {
+      d.propertyImages.forEach((it, i) => {
+        if (typeof it === 'string') {
+          out.push({ id: `${d.id}-${i}`, image: it });
+        } else if (it && typeof it === 'object') {
+          const img = (it as any).image ?? '';
+          if (img)
+            out.push({
+              id: (it as any).id ?? `${d.id}-${i}`,
+              image: String(img),
+            });
+        }
+      });
+    } else if (Array.isArray(d.images)) {
+      d.images
+        .filter(Boolean)
+        .forEach((url, i) =>
+          out.push({ id: `${d.id}-${i}`, image: String(url) })
+        );
     }
+    return out;
   }
 
-  private toCard(d: any): IPropertyCard {
-    const id = d.id;
-    const imgs: string[] = Array.isArray(d.images)
-      ? d.images.filter(Boolean)
-      : [];
-    const propertyImages = imgs.map((url: string, i: number) => ({
-      id: `${id}-${i}`,
-      image: url,
-    }));
-
-    return {
-      id,
+  /** SAFE mapper: SavedDoc -> IProperty (compile-safe) */
+  private toProperty = (d: SavedDoc): IProperty => {
+    const prop: Partial<IProperty> = {
+      id: d.id,
       propertyTitle: String(d.propertyTitle ?? '—'),
-      salePrice: Number(d.costOfProperty ?? d.salePrice ?? 0) || 0,
-      rentPrice: Number(d.rentPrice ?? d.rent ?? 0) || 0,
-      location: String(d.addressOfProperty ?? d.location ?? '—'),
+
+      priceOfSale: this.toNumber(d.priceOfSale),
+      priceOfRent: this.toNumber(d.priceOfRent),
+      priceOfRentType: '—' as IProperty['priceOfRentType'],
+
+      addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
-      propertySize: String(d.propertySize ?? '—'),
-      propertyImages,
+      propertySize: this.toNumber(d.propertySize),
+
+      propertyImages: this.toPropertyImages(d),
+
+      saleType: this.normalizeSaleType(d.saleType),
+      category: this.normalizeCategory(d.category),
+
       agentName: String(d.agentName ?? '—'),
-      propertyId: String(d.propertyId ?? id),
-      saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
-      propertyStatus: String(d.propertyStatus ?? d.status ?? 'Available'),
-      category: String(d.category ?? 'residential'),
+      propertyId: String(d.propertyId ?? d.id),
+      commercialType: String(d.commercialType ?? '—'),
+      floor: String(d.floor ?? '—'),
+      propertyStatus: String(d.propertyStatus ?? 'Available'),
+
+      createdAt: d.createdAt ?? null,
+      updatedAt: d.updatedAt ?? null,
     };
+
+    return prop as IProperty; // <- ✅ Type matches IProperty exactly
+  };
+
+  /** Items signal */
+  private items = toSignal(
+    this.savedDocs$.pipe(map((arr: SavedDoc[]) => arr.map(this.toProperty))),
+    { initialValue: [] as IProperty[] }
+  );
+
+  /** Searchbar handler */
+  onSearch(ev: Event) {
+    const v = (ev as CustomEvent).detail?.value ?? '';
+    this.qText.set(String(v).trim().toLowerCase());
+  }
+
+  /** Filtered + pruned list */
+  readonly filtered = computed<IProperty[]>(() => {
+    const list = this.items();
+    const q = this.qText();
+    const pruned = this.prunedIds();
+
+    if (!q && pruned.size === 0) return list;
+
+    return list
+      .filter((p) => !pruned.has(p.id))
+      .filter((p) => {
+        if (!q) return true;
+        const title = (p.propertyTitle ?? '').toLowerCase();
+        const loc = (p.addressOfProperty ?? '').toLowerCase();
+        const pid = (p.propertyId ?? '').toLowerCase();
+        const priceBlob = `${p.priceOfSale ?? ''} ${p.priceOfRent ?? ''}`;
+        return (
+          title.includes(q) ||
+          loc.includes(q) ||
+          pid.includes(q) ||
+          priceBlob.includes(q)
+        );
+      });
+  });
+
+  trackById = (_: number, p: IProperty) => p.id;
+
+  /** Child emits when unsaved; prune immediately for snappy UX */
+  onRemoved(id: string) {
+    const next = new Set(this.prunedIds());
+    next.add(id);
+    this.prunedIds.set(next);
   }
 }

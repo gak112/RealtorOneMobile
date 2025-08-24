@@ -4,6 +4,7 @@ import {
   computed,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import {
   IonHeader,
@@ -16,8 +17,8 @@ import {
   IonButton,
   ModalController,
 } from '@ionic/angular/standalone';
-
 import { addIcons } from 'ionicons';
+// icons
 import {
   callOutline,
   chevronBackOutline,
@@ -43,7 +44,7 @@ import {
 
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 import {
   AmentitycardComponent,
@@ -60,7 +61,7 @@ import {
 export type PostDoc = {
   id: string;
   saleType?: 'sale' | 'rent' | string;
-  category?: string;
+  category?: 'residential' | 'commercial' | 'plots' | 'lands' | string;
 
   priceOfSale?: number | string;
   priceOfRent?: number | string;
@@ -74,20 +75,20 @@ export type PostDoc = {
   houseType?: string;
   bhkType?: string;
   poojaRoom?: number | string;
-  livingDining?: number | string; // some docs may call this "dining"
-  dining?: number | string; // normalize below
+  livingDining?: number | string;
   kitchen?: number | string;
+  toilets?: number | string;
   floor?: string;
+  commercialType?: string;
+  commercialSubType?: string;
   furnishingType?: string;
 
   propertySize?: number | string;
   totalPropertyUnits?: string;
 
-  /** Some projects saved either `propertySizeBuiltUp` or `propertySizeBuiltup` */
   propertySizeBuiltup?: number | string;
   sizeBuiltupUnits?: string;
 
-  /** Age variants across datasets */
   ageOfProperty?: string | number;
   propertyAge?: string | number;
   age?: string | number;
@@ -114,6 +115,7 @@ export type PostDoc = {
   createdAt?: any; // Firestore Timestamp
 };
 
+/** View model used by the page */
 type PropertyVM = {
   id: string;
   saleType: string;
@@ -131,9 +133,12 @@ type PropertyVM = {
   houseType: string;
   bhkType: string;
   poojaRoom: string;
-  dining: string;
+  livingDining: string;
   kitchen: string;
+  toilets: string;
   floor: string;
+  commercialType: string;
+  commercialSubType: string;
   furnishingType: string;
 
   propertySize: string;
@@ -142,7 +147,7 @@ type PropertyVM = {
   propertySizeBuiltup: string;
   sizeBuiltupUnits: string;
 
-  ageOfProperty: string; // normalized human string
+  ageOfProperty: string;
 
   facingUnits: string;
   northFacing: string;
@@ -190,6 +195,15 @@ export class PropertyFullViewComponent {
   property = input<PostDoc | null>(null);
   propertyIn = input<PostDoc | null>(null);
 
+  /** Optional filters (also read from query params if provided) */
+  saleTypeFilter = input<'sale' | 'rent' | null>(null);
+  categoryFilter = input<
+    'residential' | 'commercial' | 'plots' | 'lands' | null
+  >(null);
+
+  /** Error banner */
+  readonly errorMsg = signal<string | null>(null);
+
   constructor() {
     addIcons({
       chevronBackOutline,
@@ -200,7 +214,36 @@ export class PropertyFullViewComponent {
     });
   }
 
-  /** VM source: input → route id → latest by createdAt (desc) */
+  /** Effective filters: prefer inputs, else route query params */
+  private qpSaleType$ = this.route.queryParamMap.pipe(
+    map((pm) => (pm.get('saleType') ?? '').toLowerCase()),
+    map(
+      (s) =>
+        (s === 'rent' ? 'rent' : s === 'sale' ? 'sale' : null) as
+          | 'sale'
+          | 'rent'
+          | null
+    )
+  );
+
+  private qpCategory$ = this.route.queryParamMap.pipe(
+    map((pm) => (pm.get('category') ?? '').toLowerCase()),
+    map((s) => normalizeCategoryKey(s))
+  );
+
+  private effectiveSaleType = computed<'sale' | 'rent' | null>(() => {
+    const inp = this.saleTypeFilter();
+    return inp ?? null;
+  });
+
+  private effectiveCategory = computed<
+    'residential' | 'commercial' | 'plots' | 'lands' | null
+  >(() => {
+    const inp = this.categoryFilter();
+    return inp ?? null;
+  });
+
+  /** VM source: input → route id → latest by createdAt (desc) with optional filters */
   private vm$ = this.buildVm$();
   readonly vm = toSignal<PropertyVM | null>(this.vm$, { initialValue: null });
 
@@ -236,18 +279,22 @@ export class PropertyFullViewComponent {
   async openEdit() {
     const data = this.vm();
     if (!data) return;
-    const m = await this.modalController.create({
-      component: PostentryComponent,
-      enterAnimation: forwardEnterAnimation,
-      leaveAnimation: backwardEnterAnimation,
-      componentProps: {
-        editId: data.id,
-        saleType: data.saleTypeKey,
-        category: data.category.toLowerCase(),
-      },
-    });
-    await m.present();
-    await m.onWillDismiss(); // docData keeps VM fresh
+    try {
+      const m = await this.modalController.create({
+        component: PostentryComponent,
+        enterAnimation: forwardEnterAnimation,
+        leaveAnimation: backwardEnterAnimation,
+        componentProps: {
+          editId: data.id,
+          saleType: data.saleTypeKey,
+          category: data.category.toLowerCase(),
+        },
+      });
+      await m.present();
+      await m.onWillDismiss(); // docData keeps VM fresh on close
+    } catch (e: any) {
+      this.errorMsg.set(e?.message || 'Unable to open edit view.');
+    }
   }
 
   /** ---------------- VM Builder ---------------- */
@@ -256,32 +303,57 @@ export class PropertyFullViewComponent {
       () => this.property() ?? this.propertyIn()
     );
     const preferInput$ = toObservable(preferInputSig);
+
     const routeId$ = this.route.paramMap.pipe(map((pm) => pm.get('id')));
 
-    // Latest from "postentry" ordered by createdAt desc
-    const latest$ = (() => {
-      const colRef = collection(this.afs, 'postentry');
-      const qLatest = query(
-        colRef,
-        where('isDeleted', '==', false),
-        orderBy('createdAt', 'desc'),
-        limit(1)
-      );
-      return collectionData(qLatest, { idField: 'id' }).pipe(
-        map((rows) => (rows?.[0] ? this.mapToVM(rows[0] as PostDoc) : null))
-      );
-    })();
+    // query-param filtered latest fallback (if no input & no id)
+    const filters$ = combineLatest([
+      toObservable(this.effectiveSaleType).pipe(
+        switchMap((inp) => (inp ? of(inp) : this.qpSaleType$))
+      ),
+      toObservable(this.effectiveCategory).pipe(
+        switchMap((inp) => (inp ? of(inp) : this.qpCategory$))
+      ),
+    ]);
+
+    const filteredLatest$ = filters$.pipe(
+      switchMap(([saleType, category]) => {
+        const colRef = collection(this.afs, 'postentry');
+
+        const parts: any[] = [where('isDeleted', '==', false)];
+        if (saleType) parts.push(where('saleType', '==', saleType));
+        if (category) parts.push(where('category', '==', category));
+
+        // Some docs might not have createdAt; if you see index errors, remove orderBy.
+        const qRef = query(
+          colRef,
+          ...parts,
+          orderBy('createdAt', 'desc') as any,
+          limit(1)
+        );
+        return collectionData(qRef, { idField: 'id' }).pipe(
+          map((rows) => (rows?.[0] ? this.mapToVM(rows[0] as PostDoc) : null))
+        );
+      })
+    );
 
     return combineLatest([preferInput$, routeId$]).pipe(
       switchMap(([docFromParent, rid]) => {
         if (docFromParent) return of(this.mapToVM(docFromParent));
+
         if (rid) {
           const ref = doc(this.afs, 'postentry', rid);
           return docData(ref, { idField: 'id' }).pipe(
             map((d) => (d ? this.mapToVM(d as PostDoc) : null))
           );
         }
-        return latest$;
+
+        return filteredLatest$;
+      }),
+      catchError((err) => {
+        console.error('[property-full-view] VM stream failed', err);
+        this.errorMsg.set('Failed to load property. Please try again.');
+        return of(null);
       })
     );
   }
@@ -297,7 +369,9 @@ export class PropertyFullViewComponent {
     const saleType = capFirst(saleTypeKey);
 
     // category
-    const category = capFirst(str(d.category) || 'Residential');
+    const category = capFirst(
+      normalizeCategoryKey(str(d.category)) || 'residential'
+    );
 
     // prices
     const priceOfSale = num([d.priceOfSale]);
@@ -315,10 +389,13 @@ export class PropertyFullViewComponent {
     const houseType = nonEmpty([d.houseType], '—');
     const bhkType = nonEmpty([d.bhkType], '—');
     const poojaRoom = toDisplayCount(d.poojaRoom);
-    const dining = toDisplayCount(d.dining ?? d.livingDining);
+    const livingDining = toDisplayCount(d.livingDining);
     const kitchen = toDisplayCount(d.kitchen);
+    const toilets = toDisplayCount(d.toilets);
     const floor = nonEmpty([d.floor], '—');
     const furnishingType = nonEmpty([d.furnishingType], '—');
+    const commercialType = nonEmpty([d.commercialType], '—');
+    const commercialSubType = nonEmpty([d.commercialSubType], '—');
 
     // sizes
     const totalPropertyUnits = unitShort(
@@ -329,13 +406,13 @@ export class PropertyFullViewComponent {
     const propertySizeVal = num([d.propertySize]);
     const propertySize = propertySizeVal > 0 ? fmtIN(propertySizeVal) : '—';
 
-    // support both propertySizeBuiltUp & propertySizeBuiltup
+    // built-up (handle variants)
     const builtupRaw = pickFirstDefined(d.propertySizeBuiltup);
     const propertySizeBuiltupVal = num([builtupRaw]);
     const propertySizeBuiltup =
       propertySizeBuiltupVal > 0 ? fmtIN(propertySizeBuiltupVal) : '—';
 
-    // age normalization (ageOfProperty / propertyAge / age)
+    // age normalization
     const ageRaw = pickFirstDefined(d.ageOfProperty, d.propertyAge, d.age);
     const ageOfProperty = ageToDisplay(ageRaw) ?? '—';
 
@@ -368,7 +445,7 @@ export class PropertyFullViewComponent {
       id,
       saleType,
       saleTypeKey,
-      category,
+      category: capFirst(category),
       priceOfSale,
       priceOfRent,
       priceOfRentType,
@@ -378,9 +455,12 @@ export class PropertyFullViewComponent {
       houseType,
       bhkType,
       poojaRoom,
-      dining,
+      livingDining,
       kitchen,
+      toilets,
       floor,
+      commercialType,
+      commercialSubType,
       furnishingType,
       propertySize,
       totalPropertyUnits,
@@ -472,15 +552,26 @@ function ageToDisplay(v: unknown): string | null {
   if (v === null || v === undefined) return null;
   const s = str(v);
   if (!s) return null;
-  // if numeric, show in "X years" style when sensible
   if (isFiniteNum(s)) {
     const n = Number(s);
     if (n <= 0) return '—';
-    if (n === 1) return '1 year';
-    return `${n} years`;
+    return n === 1 ? '1 year' : `${n} years`;
   }
-  return s; // already a nice string like "0-1 year", "New", "5-10 years"
+  return s;
 }
 function capFirst(s: string): string {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+function normalizeCategoryKey(
+  s?: string | null
+): 'residential' | 'commercial' | 'plots' | 'lands' | null {
+  const v = (s ?? '').toLowerCase().trim();
+  if (!v) return null;
+  if (v.startsWith('res')) return 'residential';
+  if (v.startsWith('com')) return 'commercial';
+  if (v.startsWith('plot')) return 'plots';
+  if (v.startsWith('land')) return 'lands';
+  if (['residential', 'commercial', 'plots', 'lands'].includes(v))
+    return v as any;
+  return null;
 }

@@ -23,6 +23,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { register } from 'swiper/element/bundle';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { provideHttpClient } from '@angular/common/http';
 
 register();
 
@@ -32,6 +33,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular({ useSetInputAPI: true }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
 
     importProvidersFrom(
       // ✅ COMPAT init only (do NOT add modular providers like provideFirestore)

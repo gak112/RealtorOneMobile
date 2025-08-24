@@ -1,6 +1,5 @@
 export interface agentDetails {
   id?: string;
-  uid: string;
   agentFullName: string;
   agentCode: string;
   email: string;
@@ -11,6 +10,6 @@ export interface agentDetails {
   pincode: string;
   createdAt: any;
   updatedAt: any;
-  code?: string;     // optional agent code
+  code?: string; // optional agent code
   imageUrl?: string; // optional avatar
-  };
+}

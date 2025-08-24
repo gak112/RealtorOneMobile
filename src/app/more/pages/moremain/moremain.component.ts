@@ -92,10 +92,6 @@ import { VillaconfigureComponent } from '../villaconfigure/villaconfigure.compon
   providers: [ModalController],
 })
 export class MoremainComponent implements OnInit {
-  async tempLogin() {
-    await this.auth.tempLogin();
-    console.log('tempLogin');
-  }
   private themeService = inject(ThemeService);
 
   userLogos: any;

@@ -1,53 +1,65 @@
 <ion-content [scrollY]="false">
-    @if(action === 'login') {
-    <div class="div-bg-dot">
-        <ion-img src="assets/img/dot-bg.jpg"></ion-img>
-    </div>
+    <div class="div-bg-dot"><ion-img src="assets/img/dot-bg.jpg"></ion-img></div>
+  
     <div class="div-login-main">
-        <div class="div-logo-title">
-            <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
-            <div class="div-label">
-                <ion-label class="label-title">Welcome Back!</ion-label>
-                <span class="subtitle">Realtor One</span>
-            </div>
+      <div class="div-logo-title">
+        <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
+        <div class="div-label">
+          <ion-label class="label-title">Welcome Back!</ion-label>
+          <span class="subtitle">Realtor One</span>
         </div>
-        <div class="div-details-main">
-            <div class="div-login-main-title">
-                <ion-label class="label-main-title">Login</ion-label>
-            </div>
-            <div class="div-details">
-                <div class="div-formgroup">
-                    <ion-input type="text" mode="md" label="Mobile No" label-placement="floating" fill="outline"
-                        placeholder="Enter Mobile No"></ion-input>
-                </div>
-
-                <div class="div-buttons" style="margin-top: 24px;">
-                    @if(validPhone) {
-                    <ion-button class="ion-button-settings" expand="block" color="warning" (click)="verify()">
-                        <ion-spinner name="bubbles"></ion-spinner>
-                        <span> Verify </span>
-                    </ion-button>
-                    } @else {
-                    <ion-button class="ion-button-settings" expand="block" color="warning" (click)="opensetOTP()">
-                        <ion-spinner name="bubbles"></ion-spinner>
-                        <span> Sign in </span>
-                    </ion-button>
-                    }
-                </div>
-            </div>
+      </div>
+  
+      <div class="div-details-main">
+        <div class="div-login-main-title">
+          <ion-label class="label-main-title">Login</ion-label>
         </div>
-        <div class="div-h5">
-            <ion-label class="p-register" (click)="action = 'register'">Don't have an account?
-                <span>Register</span>
-            </ion-label>
-            <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>
+  
+        <div class="div-details">
+          <div class="div-formgroup">
+            <ion-input
+              type="text"
+              mode="md"
+              label="Full Name"
+              label-placement="floating"
+              fill="outline"
+              placeholder="Enter Full Name"
+              [value]="fullName()"
+              (ionInput)="onFullNameInput($event)"
+            ></ion-input>
+            @if (fullNameError()) { <div class="error">{{ fullNameError() }}</div> }
+          </div>
+  
+          <div class="div-formgroup">
+            <ion-input
+              type="tel" inputmode="numeric" maxlength="10" mode="md"
+              label="Mobile No" label-placement="floating" fill="outline"
+              placeholder="Enter 10-digit number"
+              [value]="phone()"
+              (ionInput)="onPhoneInput($event)"
+              (keydown.enter)="canContinue() && onContinue()"
+            ></ion-input>
+            @if (phoneError()) { <div class="error">{{ phoneError() }}</div> }
+          </div>
+  
+          <div class="div-buttons">
+            <ion-button
+              class="ion-button-settings"
+              expand="block"
+              color="warning"
+              [disabled]="!canContinue() || loading()"
+              (click)="onContinue()"
+            >
+              @if (loading()) { <ion-spinner name="bubbles"></ion-spinner> }
+              <span> Send OTP </span>
+            </ion-button>
+          </div>
         </div>
+      </div>
+  
+      <div class="div-h5">
+        <ion-label class="p-company-name"><span>By</span> SBP Consulting Private Limited</ion-label>
+      </div>
     </div>
-    }
-
-    @if(action === 'register') {
-    <div class="div-login-main" style="padding: 0;">
-        <app-register [phone]="phone" (setLogin)="setLogin($event)"></app-register>
-    </div>
-    }
-</ion-content>
+  </ion-content>
+  

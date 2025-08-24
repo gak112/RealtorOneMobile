@@ -5,7 +5,7 @@
       autoplay-disable-on-interaction="false" class="mySwiper">
       @for (image of property().propertyImages; track image.id) {
       <swiper-slide>
-        <ion-img [src]="image.image" alt="Property Image" class="property-image"></ion-img>
+        <ion-img [src]="image.image || 'assets/img/no-image.png'" alt="Property Image" class="property-image"></ion-img>
       </swiper-slide>
       }
     </swiper-container>
@@ -13,7 +13,7 @@
     <div class="property-status-badge">{{ property().category }}</div>
 
     <!-- Heart / Favorite -->
-    <div class="heart-icon" (click)="toggleFavorite()">
+    <div class="heart-icon" [class.disabled]="busy()" (click)="onToggleFavorite($event)">
       <ion-icon [name]="isSaved() ? 'heart' : 'heart-outline'"></ion-icon>
     </div>
   </div>
@@ -25,21 +25,33 @@
       <!-- Location Section -->
       <div class="location-section">
         <ion-label class="location-code">{{ property().propertyTitle }}</ion-label>
-        <ion-label class="location-full">{{ property().location }}</ion-label>
+        <ion-label class="location-full">{{ property().addressOfProperty }}</ion-label>
         @if (property().saleType === 'sale') {
-        <ion-label class="price-info">₹{{ property().salePrice }}</ion-label>
+        <ion-label class="price-info">₹{{ property().priceOfSale }}</ion-label>
         }
         @if (property().saleType === 'rent') {
-        <ion-label class="price-info">₹{{ property().rentPrice }} / Monthly</ion-label>
+        <ion-label class="price-info">₹{{ property().priceOfRent }} / Monthly</ion-label>
         }
       </div>
 
       <!-- Property Details Section -->
       <div class="property-details">
+        @if(property().category === 'residential'){
         <ion-label class="property-type">{{ property().houseType }}</ion-label>
+        }
+        @if(property().category === 'commercial'){
+        <ion-label class="property-type">{{ property().commercialType }}</ion-label>
+        }
+        @if(property().category === 'residential'){
         <ion-label class="property-size">
           {{ property().bhkType }}, {{ property().propertySize }} sqft
         </ion-label>
+        }
+        @if(property().category === 'commercial'){
+        <ion-label class="property-size">
+          {{ property().floor }} floor, {{ property().propertySize }} sqft
+        </ion-label>
+        }
         <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
       </div>
     </div>

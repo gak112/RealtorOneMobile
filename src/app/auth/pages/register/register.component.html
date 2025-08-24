@@ -1,41 +1,42 @@
-<div class="div-bg-dot">
-    <ion-img src="assets/img/dot-bg.jpg"></ion-img>
-</div>
+<ion-content>
+    <div class="div-bg-dot">
+        <ion-img src="assets/img/dot-bg.jpg"></ion-img>
+    </div>
+    <div class="div-login-main">
+        <div class="div-logo-title">
+            <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
+            <div class="div-label">
+                <ion-label class="label-title">Welcome Back!</ion-label>
+                <span class="subtitle">Realtor One</span>
+            </div>
+        </div>
+        <div class="div-details-main">
+            <div class="div-login-main-title">
+                <ion-label class="label-main-title">Register</ion-label>
+            </div>
+            <div class="div-details">
+                <form [formGroup]="registerForm">
+                    <div class="div-formgroup">
+                        <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
+                            placeholder="Enter Full Name" formControlName="fullName"></ion-input>
+                    </div>
+                    <div class="div-formgroup">
+                        <ion-input type="text" mode="md" label="Mobile No" label-placement="floating" fill="outline"
+                            placeholder="Enter Mobile No" formControlName="phone"></ion-input>
 
-<div class="div-login-main">
-    <div class="div-logo-title">
-        <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
-        <div class="div-label">
-            <ion-label class="label-title">Welcome Back!</ion-label>
-            <span class="subtitle">Realtor One</span>
+                    </div>
+                    <div class="div-buttons" style="margin-top: 30px;">
+                        <ion-button expand="block" class="ion-button-settings" color="warning" (click)="register()">Sign
+                            Up</ion-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="div-h5">
+            <ion-label class="p-register">Back to
+                <span (click)="setLogin.emit(true)">Login</span>
+            </ion-label>
+            <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>
         </div>
     </div>
-    <div class="div-details-main">
-        <div class="div-login-main-title">
-            <ion-label class="label-main-title">Register</ion-label>
-        </div>
-        <div class="div-details">
-            <form [formGroup]="registerForm">
-                <div class="div-formgroup">
-                    <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
-                        placeholder="Enter Full Name" formControlName="fullName"></ion-input>
-                </div>
-                <div class="div-formgroup">
-                    <ion-input type="text" mode="md" label="Mobile No" label-placement="floating" fill="outline"
-                        placeholder="Enter Mobile No" formControlName="phone"></ion-input>
-
-                </div>
-                <div class="div-buttons" style="margin-top: 30px;">
-                    <ion-button expand="block" class="ion-button-settings" color="warning" (click)="register()">Sign
-                        Up</ion-button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="div-h5">
-        <ion-label class="p-register">Back to
-            <span (click)="setLogin.emit(true)">Login</span>
-        </ion-label>
-        <ion-label class="p-company-name"><span>By</span>SBP Consulting Private Limited</ion-label>
-    </div>
-</div>
+</ion-content>

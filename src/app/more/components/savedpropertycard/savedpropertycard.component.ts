@@ -3,137 +3,157 @@ import {
   Component,
   inject,
   input,
+  output,
   signal,
   computed,
-  output,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 import {
   IonImg,
   IonLabel,
   IonSkeletonText,
+  IonIcon,
   ToastController,
+  ModalController,
 } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
 
+import { SavedDocPayload, SavedService } from '../../services/saved.service';
+import { IProperty } from 'src/app/models/property.model';
+import { PropertyFullViewComponent } from 'src/app/home/pages/property-full-view/property-full-view.component';
 import {
-  Firestore,
-  doc,
-  getDoc,
-  setDoc,
-  deleteDoc,
-  collection,
-  serverTimestamp,
-} from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+  forwardEnterAnimation,
+  backwardEnterAnimation,
+} from 'src/app/services/animation';
 
 @Component({
   selector: 'app-savedpropertycard',
   standalone: true,
   templateUrl: './savedpropertycard.component.html',
   styleUrls: ['./savedpropertycard.component.scss'],
-  imports: [IonSkeletonText, IonLabel, IonImg],
+  imports: [IonSkeletonText, IonLabel, IonImg, IonIcon],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SavedpropertycardComponent {
-  /** Post doc from `posts` collection (postentry data mapped) */
-  property = input.required<IPropertyCard>();
+  /** Full property object (mapped from posts) */
+  property = input.required<IProperty>();
 
-  /** Admin identity (no auth): string uid or { uid } */
+  /** Admin identity (string uid or { uid }) */
   admin = input<string | { uid: string }>('admin');
 
-  /** Optional: navigate to saved list after save */
+  /** Optional: navigate to saved list after saving */
   redirectOnSave = input<boolean>(true);
 
-  /** Outputs so parent feed can react (optional to use) */
-  saved = output<string>(); // propertyId
-  unsaved = output<string>(); // propertyId
+  /** Let parent know what happened */
+  saved = output<string>(); // emits propertyId on save
+  unsaved = output<string>(); // emits propertyId on unsave
+  removed = output<string>(); // for saved-list pages to prune locally
 
-  private afs = inject(Firestore);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
+  private savedSvc = inject(SavedService);
+  private modalController = inject(ModalController);
 
+  /** Prevent rapid double-taps */
   busy = signal(false);
-  private _isSaved = signal(false);
-  isSaved = computed(() => this._isSaved());
+  /** Error banner (non-blocking) */
+  errorMsg = signal<string | null>(null);
+
+  /** Template lookup; initialized in ngOnInit once inputs exist */
+  private _isSavedLookup: () => boolean = () => false;
 
   constructor() {
     addIcons({ heart, heartOutline });
-    // lazy check saved state (no need OnInit decorator)
-    this.refreshSavedState();
   }
 
-  private adminUid(): string {
-    const a = this.admin();
-    if (typeof a === 'string' && a) return a;
-    if (a && typeof a === 'object' && a.uid) return a.uid;
-    return 'admin';
+  ngOnInit() {
+    const p = this.property();
+    const uid = this.uid();
+    if (p?.id) {
+      // reactive lookup used by template
+      this._isSavedLookup = this.savedSvc.isSavedSignal(uid, p.id);
+      // pre-load state (ignore failures)
+      this.savedSvc.ensureLoaded(uid, p.id).catch(() => {});
+    }
   }
 
-  private async refreshSavedState() {
-    const uid = this.adminUid();
-    const ref = doc(
-      this.afs,
-      `admins/${uid}/saved_properties/${this.property().id}`
-    );
-    const snap = await getDoc(ref);
-    this._isSaved.set(snap.exists());
+  /** Used by template: returns current saved state */
+  isSaved() {
+    return this._isSavedLookup();
   }
 
-  // savedpropertycard.component.ts (only the method is shown)
-  async toggleFavorite(ev?: Event) {
-    ev?.stopPropagation();
+  /** Formatted price line (₹ + grouping; rent shows period) */
+  readonly priceLine = computed(() => {
+    const p = this.property();
+    const inr = (n: number | null | undefined) =>
+      `₹${Number(n ?? 0).toLocaleString('en-IN')}`;
+    if (p.saleType === 'sale') return inr(p.priceOfSale);
+    const period = (p.priceOfRentType || '').trim() || 'Monthly';
+    return `${inr(p.priceOfRent)} / ${period}`;
+  });
+
+  /** Toggle save/unsave */
+  async onToggleFavorite(ev: Event) {
+    ev.stopPropagation();
     if (this.busy()) return;
     this.busy.set(true);
+    this.errorMsg.set(null);
 
     try {
-      const uid = this.adminUid();
       const p = this.property();
+      if (!p?.id) throw new Error('Property not ready.');
 
-      if (this._isSaved()) {
-        await deleteDoc(
-          doc(this.afs, `admins/${uid}/saved_properties/${p.id}`)
-        );
-        this._isSaved.set(false);
-        await this.toast('Removed from saved', 'medium');
+      const action = await this.savedSvc.toggle(this.uid(), toSavedPayload(p));
+
+      if (action === 'saved') {
+        this.saved.emit(p.id);
+        await this.presentToast('Saved to list', 'success');
+
+        if (this.redirectOnSave()) {
+          await this.router.navigateByUrl('/saved-properties', {
+            replaceUrl: false,
+          });
+        }
       } else {
-        const ref = doc(this.afs, `admins/${uid}/saved_properties/${p.id}`);
-        await setDoc(ref, {
-          id: p.id,
-          propertyTitle: p.propertyTitle ?? '',
-          location: p.location ?? '',
-          saleType: p.saleType ?? '',
-          category: p.category ?? '',
-          salePrice: p.saleType === 'sale' ? p.salePrice ?? 0 : 0,
-          rentPrice: p.saleType === 'rent' ? p.rentPrice ?? 0 : 0,
-          houseType: p.houseType ?? '',
-          bhkType: p.bhkType ?? '',
-          propertySize: p.propertySize ?? '',
-          propertyStatus: p.propertyStatus ?? '',
-          agentName: p.agentName ?? '',
-          propertyId: p.propertyId ?? '',
-          propertyImages: p.propertyImages ?? [],
-          createdAt: serverTimestamp(),
-        });
-
-        this._isSaved.set(true);
-
-        // ✅ Immediately go to saved list
-        await this.router.navigateByUrl('/saved-properties', {
-          replaceUrl: false,
-        });
+        this.unsaved.emit(p.id);
+        this.removed.emit(p.id);
+        await this.presentToast('Removed from saved', 'medium');
       }
-    } catch {
-      await this.toast('Action failed. Please try again.', 'danger');
+    } catch (e: any) {
+      const msg = e?.message || 'Action failed. Please try again.';
+      this.errorMsg.set(msg);
+      await this.presentToast(msg, 'danger');
     } finally {
       this.busy.set(false);
     }
   }
 
-  private async toast(
+  async openPropertyDetails() {
+    try {
+      const modal = await this.modalController.create({
+        component: PropertyFullViewComponent,
+        componentProps: { propertyIn: this.property() },
+        enterAnimation: forwardEnterAnimation,
+        leaveAnimation: backwardEnterAnimation,
+      });
+      await modal.present();
+    } catch (e: any) {
+      const msg = e?.message || 'Unable to open property details.';
+      this.errorMsg.set(msg);
+      await this.presentToast(msg, 'danger');
+    }
+  }
+
+  /** Helper: parse admin uid input */
+  private uid(): string {
+    const a = this.admin();
+    return typeof a === 'string' ? a || 'admin' : a?.uid || 'admin';
+  }
+
+  private async presentToast(
     message: string,
-    color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
+    color: 'success' | 'medium' | 'danger' = 'medium'
   ) {
     const t = await this.toastCtrl.create({
       message,
@@ -145,20 +165,24 @@ export class SavedpropertycardComponent {
   }
 }
 
-/** Card model (mapped from posts/postentry) */
-export interface IPropertyCard {
-  id: string;
-  propertyTitle: string;
-  salePrice: number;
-  rentPrice: number;
-  location: string; // addressOfProperty or location
-  houseType: string;
-  bhkType: string;
-  propertySize: string | number;
-  propertyImages: { id: string; image: string }[];
-  agentName: string;
-  propertyId: string;
-  saleType: 'sale' | 'rent';
-  propertyStatus: string;
-  category: string;
+/** Build the Firestore payload from your domain model */
+function toSavedPayload(p: IProperty): SavedDocPayload {
+  return {
+    id: p.id,
+    propertyTitle: p.propertyTitle ?? '',
+    addressOfProperty: p.addressOfProperty ?? '',
+    saleType: p.saleType ?? 'sale', // 'sale' | 'rent'
+    category: p.category ?? 'residential', // 'residential' | 'commercial' | 'plots' | 'lands'
+    priceOfSale : Number(p.priceOfSale ?? 0),
+    priceOfRent: Number(p.priceOfRent ?? 0),
+    houseType: p.houseType ?? '',
+    bhkType: p.bhkType ?? '',
+    propertySize: p.propertySize ?? 0,
+    propertyStatus: p.propertyStatus ?? '',
+    agentName: p.agentName ?? '',
+    propertyId: p.propertyId ?? '',
+    propertyImages: Array.isArray(p.propertyImages) ? p.propertyImages : [],
+    floor: p.floor ?? '',
+    commercialType: p.commercialType ?? '',
+  };
 }

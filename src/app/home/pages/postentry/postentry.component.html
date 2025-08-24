@@ -50,6 +50,16 @@
           placeholder="Enter Rooms" formControlName="rooms">
         </ion-input>
       </div>
+      <div class="div-grid">
+        <ion-input type="number" mode="md" label="Toilets" label-placement="floating" fill="outline"
+          placeholder="Enter Toilets" formControlName="toilets"></ion-input>
+        <ion-input type="number" mode="md" label="Pooja Room" label-placement="floating" fill="outline"
+          placeholder="Enter Pooja Room" formControlName="poojaRoom"></ion-input>
+        <ion-input type="number" mode="md" label="Living/Dining" label-placement="floating" fill="outline"
+          placeholder="Enter Living/Dining" formControlName="livingDining"></ion-input>
+        <ion-input type="number" mode="md" label="Kitchen" label-placement="floating" fill="outline"
+          placeholder="Enter Kitchen" formControlName="kitchen"></ion-input>
+      </div>
       }
 
       @if (ctrl('houseCondition').value === 'New Houses') {
@@ -88,18 +98,14 @@
           <ion-select-option value="Warehouse">Warehouse</ion-select-option>
           <ion-select-option value="Factory">Factory</ion-select-option>
           <ion-select-option value="Showroom">Showroom</ion-select-option>
-          <ion-select-option value="Land">Land</ion-select-option>
           <ion-select-option value="Other">Other</ion-select-option>
         </ion-select>
       </div>
       <div class="div-formgroup">
         <ion-select mode="md" label="Commercial Sub Type" label-placement="floating" fill="outline"
           formControlName="commercialSubType">
-          <ion-select-option value="Shopping Mall">Shopping Mall</ion-select-option>
-          <ion-select-option value="Co-Working Space">Co-Working Space</ion-select-option>
-          <ion-select-option value="IT Park">IT Park</ion-select-option>
-          <ion-select-option value="Showroom">Showroom</ion-select-option>
-          <ion-select-option value="Other">Other</ion-select-option>
+          <ion-select-option value="Shopping Mall">Complex</ion-select-option>
+          <ion-select-option value="Individual">Individual</ion-select-option>
         </ion-select>
       </div>
       }

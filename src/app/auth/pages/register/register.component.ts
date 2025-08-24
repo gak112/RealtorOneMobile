@@ -6,8 +6,7 @@ import {
   IonInput,
   IonLabel,
   ModalController,
-  NavController,
-} from '@ionic/angular/standalone';
+  NavController, IonContent } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { IUser } from '../../models/user.model';
 // import firebase from 'firebase/compat/app';
@@ -25,7 +24,7 @@ import { OtpComponent } from '../otp/otp.component';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [IonImg, IonLabel, ReactiveFormsModule, IonInput, IonButton],
+  imports: [IonContent, IonImg, IonLabel, ReactiveFormsModule, IonInput, IonButton],
   providers: [ModalController],
 })
 export class RegisterComponent implements OnInit {
