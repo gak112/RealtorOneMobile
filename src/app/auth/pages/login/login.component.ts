@@ -1,13 +1,19 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import {
-  IonContent, IonInput, IonLabel, IonButton, IonIcon, IonImg, IonSpinner,
+  IonContent,
+  IonInput,
+  IonLabel,
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OtpSessionService } from '../../services/otp-session.service';
 import { OtpService } from '../../services/otp.service';
 import { addIcons } from 'ionicons';
-import { logInOutline } from 'ionicons/icons';
+import { informationCircle, logInOutline } from 'ionicons/icons';
 import { MessageService } from '../../services/message.service';
 
 @Component({
@@ -15,15 +21,24 @@ import { MessageService } from '../../services/message.service';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, IonContent, IonInput, IonLabel, IonButton, IonIcon, IonImg, IonSpinner],
+  imports: [
+    CommonModule,
+    IonContent,
+    IonInput,
+    IonLabel,
+    IonButton,
+    IonIcon,
+    IonImg,
+    IonSpinner,
+  ],
 })
-export class LoginComponent {
+export default class LoginComponent {
   private router = inject(Router);
   private otp = inject(OtpService);
   private otpSession = inject(OtpSessionService);
   #message = inject(MessageService);
 
-  phone = signal('');      // raw phone
+  phone = signal(''); // raw phone
   fullName = signal('');
   loading = signal(false);
 
@@ -35,20 +50,28 @@ export class LoginComponent {
   isValidName = computed(() => this.fullName().trim().length >= 2);
   canContinue = computed(() => this.isValidPhone() && this.isValidName());
 
-  constructor() { addIcons({ logInOutline }); }
+  constructor() {
+    addIcons({ logInOutline, informationCircle });
+  }
 
   onFullNameInput(ev: Event) {
     const v = (ev as CustomEvent).detail?.value ?? '';
     const s = String(v);
     this.fullName.set(s);
-    this.fullNameError.set(s.trim().length >= 2 ? null : 'Please enter your full name.');
+    this.fullNameError.set(
+      s.trim().length >= 2 ? null : 'Please enter your full name.'
+    );
   }
 
   onPhoneInput(ev: Event) {
     const v = (ev as CustomEvent).detail?.value ?? '';
     const s = String(v);
     this.phone.set(s);
-    this.phoneError.set(/^\d{10}$/.test(s.replace(/\D+/g, '')) ? null : 'Enter a valid 10-digit number.');
+    this.phoneError.set(
+      /^\d{10}$/.test(s.replace(/\D+/g, ''))
+        ? null
+        : 'Enter a valid 10-digit number.'
+    );
   }
 
   async onContinue() {

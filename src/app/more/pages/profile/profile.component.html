@@ -1,118 +1,128 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon class="icon-close" name="chevron-back-outline" (click)="dismiss()"></ion-icon>
-    <ion-title>Profile</ion-title>
-    <ion-icon class="icon-camera" name="camera-outline"></ion-icon>
+    <ion-icon class="icon-close" (click)="dismiss()" name="arrow-back-outline"></ion-icon>
+    <ion-title>Your Profile</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div class="div-main">
-    <div class="div-text">
-      <div class="div-details">
-        <ion-label class="name">Bhavani Shankar</ion-label>
-        <ion-label class="type">{{'9398068299'}}</ion-label>
+
+<ion-content class="ion-padding" style="--background: var(--content-background)">
+  <form [formGroup]="profileForm" novalidate>
+    <div class="div-profile-main">
+      <ion-img class="img-icon" src="assets/img/profile2.png"></ion-img>
+
+      <div class="div-profile-main-img">
+        <div class="div-img-settings">
+          <ion-img
+            src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000">
+          </ion-img>
+          <ion-icon name="person-outline" style="height: 50%; width: 50%; color: var(--color-red)"></ion-icon>
+          <ion-icon class="icon-edit" name="create-outline"></ion-icon>
+        </div>
       </div>
 
-    </div>
-    <div class="div-img">
-      <ion-img
-        [src]="'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6c08249-45b1-4852-ac3c-f5e49a7f6d25/d6v0umi-48db83ce-8367-4e06-b71c-103b296794c5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2YzA4MjQ5LTQ1YjEtNDg1Mi1hYzNjLWY1ZTQ5YTdmNmQyNVwvZDZ2MHVtaS00OGRiODNjZS04MzY3LTRlMDYtYjcxYy0xMDNiMjk2Nzk0YzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.HhR535GRJ9MzqUS54LJ2XWtf-Y2v-aOuN4GTD6MC0q4'"></ion-img>
-      <!-- <div class="div-overlay"></div> -->
-    </div>
-  </div>
-  <div class="div-flex">
-    <ion-label class="edit" (click)="openProfileEdit()">Edit</ion-label>
-  </div>
-  <div class="div-card">
-    <div class="div-details-sub">
-      <ion-icon name="mail"></ion-icon>
-      <div class="div-grid">
-        <ion-label class="title">Email</ion-label>
-        <ion-label class="p">{{'sankar.nagarapu@arhari.com'}}</ion-label>
+      <!-- First Name -->
+      <div class="div-formgroup">
+        <ion-input autocomplete="off" mode="md" label="First Name" label-placement="floating" fill="outline" type="text"
+          placeholder="First Name" formControlName="firstName">
+        </ion-input>
+        @if (showError('firstName','required')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> First name is
+          required.</ion-label>
+        }
+        @if (showError('firstName','minlength')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Minimum 3 characters.</ion-label>
+        }
       </div>
-    </div>
-    <div class="div-details-sub">
-      <ion-icon name="call"></ion-icon>
-      <div class="div-grid">
-        <ion-label class="title">Mobile Number</ion-label>
-        <ion-label class="p">{{'9398068299'}}</ion-label>
-      </div>
-    </div>
-    <div class="div-details-sub" style="align-items: flex-start;">
-      <ion-icon name="location"></ion-icon>
-      <div class="div-grid">
-        <ion-label class="title">Location</ion-label>
-        <ion-label class="p">18-1350, Ashok Nagar, Near Sitting Gandhi , Miryalaguda, Nalgonda Dist -
-          508207</ion-label>
-      </div>
-    </div>
-    <div class="div-details-sub" style="align-items: flex-start;">
-      <ion-icon name="text"></ion-icon>
-      <div class="div-grid">
-        <ion-label class="title">Description</ion-label>
-        <ion-label class="p">{{'Description'}}</ion-label>
-      </div>
-    </div>
-  </div>
 
+      <!-- Last Name -->
+      <div class="div-formgroup">
+        <ion-input autocomplete="off" mode="md" label="Last Name" label-placement="floating" fill="outline" type="text"
+          placeholder="Last Name" formControlName="lastName">
+        </ion-input>
+        @if (showError('lastName','required')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Last name is required.</ion-label>
+        }
+        @if (showError('lastName','minlength')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Minimum 3 characters.</ion-label>
+        }
+      </div>
 
-  @if(false) {
-  <div class="div-main" style="display: none">
-    <div class="div-text">
-      <div class="div-details"
-        style="--background:rgb(59, 67, 172);display:flex;flex-direction:column;align-items:center;">
-        <ion-skeleton-text [animated]="true" style="height:27px;width:80%;"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="height:24px;width:60%;"></ion-skeleton-text>
+      <!-- Mobile -->
+      <div class="div-formgroup">
+        <ion-input autocomplete="off" mode="md" label="Mobile Number" label-placement="floating" fill="outline"
+          type="tel" placeholder="Enter Mobile Number" formControlName="mobileNumber">
+        </ion-input>
 
+        @if (profileForm.controls.mobileNoVerified.value) {
+        <span class="span-verified">Verified</span>
+        } @else {
+        <span class="span-verify">Verify</span>
+        }
+
+        @if (showError('mobileNumber','required')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Phone is required.</ion-label>
+        }
+        @if (showError('mobileNumber','pattern')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Enter a valid 10-digit
+          number.</ion-label>
+        }
+        @if (mobileChecking()) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Checking phone…</ion-label>
+        }
+        @if (mobileTaken()) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Phone number already taken. Please
+          enter another phone number.</ion-label>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="div-formgroup">
+        <ion-input style="--padding-end:85px" autocomplete="off" mode="md" label="Email" label-placement="floating"
+          fill="outline" type="email" placeholder="Email" formControlName="email">
+        </ion-input>
+
+        @if (profileForm.controls.emailVerified.value) {
+        <span class="span-verified">Verified</span>
+        } @else {
+        <span class="span-verify">Verify</span>
+        }
+
+        @if (showError('email','email')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Enter a valid email.</ion-label>
+        }
+        @if (emailChecking()) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Checking email…</ion-label>
+        }
+        @if (emailTaken()) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Email already taken. Please enter
+          another email.</ion-label>
+        }
+      </div>
+
+      <!-- DOB -->
+      <div class="div-formgroup">
+        <ion-input autocomplete="off" mode="md" label="Date Of Birth" label-placement="floating" fill="outline"
+          type="date" placeholder="Enter Date of Birth" formControlName="dob">
+        </ion-input>
+      </div>
+
+      <!-- Gender -->
+      <div class="div-formgroup" style="margin-bottom:0;">
+        <ion-select aria-label="Gender" interface="popover" placeholder="Gender" fill="outline" label="Gender" mode="md"
+          formControlName="gender">
+          <ion-select-option value="male">Male</ion-select-option>
+          <ion-select-option value="female">Female</ion-select-option>
+          <ion-select-option value="other">Other</ion-select-option>
+          <ion-select-option value="preferNotToDisclose">Prefer Not To Disclose</ion-select-option>
+        </ion-select>
       </div>
     </div>
-    <div class="div-img">
-      <ion-skeleton-text [animated]="true"
-        style="height:105px;width:105px;border-radius:50%;background-color:#fff;"></ion-skeleton-text>
-      <ion-img [src]="'assets/img/no-image.png'"></ion-img>
-    </div>
-  </div>
-  <div class="div-flex">
-    <ion-label class="edit" (click)="openProfileEdit()">Edit</ion-label>
-  </div>
-  <div class="div-card">
-    <div class="div-details-sub">
-      <ion-skeleton-text [animated]="true" style="height: 40px; width: 40px; border-radius: 50%;
-      "></ion-skeleton-text>
-
-      <div class="div-grid" style="margin-left: 10px;">
-        <ion-skeleton-text [animated]="true" style="height: 18px;width: 70px;"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="height: 21px;width: 150px;"></ion-skeleton-text>
-      </div>
-    </div>
-    <div class="div-details-sub">
-      <ion-skeleton-text [animated]="true" style="height: 40px; width: 40px; border-radius: 50%;
-      "></ion-skeleton-text>
-
-      <div class="div-grid" style="margin-left: 10px;">
-        <ion-skeleton-text [animated]="true" style="height: 18px;width: 70px;"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="height: 21px;width: 150px;"></ion-skeleton-text>
-      </div>
-    </div>
-    <div class="div-details-sub" style="align-items: flex-start;">
-      <ion-skeleton-text [animated]="true" style="height: 40px; width: 40px; border-radius: 50%;
-      "></ion-skeleton-text>
-
-      <div class="div-grid" style="margin-left: 10px;">
-        <ion-skeleton-text [animated]="true" style="height: 18px;width: 70px;"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="height: 21px;width: 150px;"></ion-skeleton-text>
-      </div>
-    </div>
-    <div class="div-details-sub" style="align-items: flex-start;">
-      <ion-skeleton-text [animated]="true" style="height: 40px; width: 40px; border-radius: 50%;
-      "></ion-skeleton-text>
-
-
-      <div class="div-grid" style="margin-left: 10px;">
-        <ion-skeleton-text [animated]="true" style="height: 18px;width: 70px;"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true" style="height: 21px;width: 150px;"></ion-skeleton-text>
-      </div>
-    </div>
-  </div>
-  }
+  </form>
 </ion-content>
+
+<ion-footer>
+  <ion-button mode="ios" expand="block" [disabled]="profileForm.invalid || saving() || mobileTaken() || emailTaken()"
+    (click)="updateProfile()">
+    @if (saving()) { <ion-spinner name="bubbles"></ion-spinner> } @else { Update Profile }
+  </ion-button>
+</ion-footer>

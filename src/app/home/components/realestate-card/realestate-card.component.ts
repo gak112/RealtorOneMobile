@@ -1,11 +1,11 @@
 import {
   Component,
-  computed,
   CUSTOM_ELEMENTS_SCHEMA,
+  computed,
   inject,
   input,
-  OnDestroy,
   OnInit,
+  OnDestroy,
   output,
   signal,
 } from '@angular/core';
@@ -24,24 +24,13 @@ import {
 } from 'src/app/services/animation';
 import { PropertyFullViewComponent } from '../../pages/property-full-view/property-full-view.component';
 
-import { register } from 'swiper/element';
-register();
-
-import {
-  deleteDoc,
-  doc,
-  DocumentData,
-  DocumentReference,
-  Firestore,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { IProperty, IPropertyImage } from 'src/app/models/property.model';
+
+// ⬇️ Use your flat-collection SavedService
 import {
-  SavedDocPayload,
   SavedService,
+  SavedDocPayload,
 } from 'src/app/more/services/saved.service';
 
 @Component({
@@ -53,33 +42,34 @@ import {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RealestateCardComponent implements OnInit, OnDestroy {
+  /** REQUIRED: the property to render */
+  property = input.required<IProperty>();
+
+  /** Optional: admin identity; used as the `uid` for saves */
+  admin = input<string | { uid: string }>('admin');
+
+  /** Optional: navigate to saved list after saving (default false) */
+  redirectOnSave = input<boolean>(false);
+
+  /** Outputs (optional for parent feeds) */
+  saved = output<string>(); // emits propertyId on save
+  unsaved = output<string>(); // emits propertyId on unsave
+
+  // DI
   private modalController = inject(ModalController);
-  private afs = inject(Firestore);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
   private savedSvc = inject(SavedService);
 
-  /** Card input — parent MUST pass this */
-  property = input<IProperty>();
-
-  /** Admin identity (optional). If omitted, 'admin' is used. */
-  admin = input<string | { uid: string }>();
-
-  /** Optional behavior flags */
-  redirectOnSave = input<boolean>(false);
-  removeFromFeedOnSave = input<boolean>(false);
-
-  /** Outputs so parent can update lists in-place */
-  saved = output<string>();
-  unsaved = output<string>();
-
-  /** UI state */
+  // UI state
   busy = signal(false);
-  private _isSaved = signal(false);
 
-  /** Derived/normalized fields (lazy-safe to call) */
+  // Saved-state lookup (provided by SavedService)
+  private isSavedLookup: () => boolean = () => false;
+
+  // Derived view bits
   readonly saleTypeKey = computed<'sale' | 'rent'>(() => {
-    const t = (this.property().saleType || '').toString().trim().toLowerCase();
+    const t = (this.property().saleType ?? '').toString().trim().toLowerCase();
     return t === 'rent' ? 'rent' : 'sale';
   });
 
@@ -101,45 +91,34 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
     return rent > 0 ? `₹${formatIN(rent)}` : '₹—';
   });
 
-  private unsubscribeSaved?: () => void;
-
   constructor() {
     addIcons({ heartOutline, heart, arrowRedoOutline });
   }
 
-  private _isSavedLookup: () => boolean = () => false;
-
   ngOnInit() {
-    // Now it's safe to read inputs
+    // Connect the heart state to the flat collection via the service
     const p = this.property();
     const uid = this.uid();
-
     if (p?.id) {
-      // Prepare a reactive lookup for the template
-      this._isSavedLookup = this.savedSvc.isSavedSignal(uid, p.id);
-      // Optionally pre-load state from Firestore (safe to ignore failures)
+      this.isSavedLookup = this.savedSvc.isSavedSignal(uid, p.id); // reactive getter
+      // Keep local flag in sync with DB (safe to ignore errors)
       this.savedSvc.ensureLoaded(uid, p.id).catch(() => {});
     }
   }
 
-  /** used by template */
-  isSaved() {
-    return this._isSavedLookup();
+  ngOnDestroy() {
+    // If you added per-card stop in the service, call it here:
+    // this.savedSvc.stop(this.uid(), this.property().id);
   }
+
+  // Expose to template
+  isSaved() {
+    return this.isSavedLookup();
+  }
+
   private uid(): string {
     const a = this.admin();
     return typeof a === 'string' ? a || 'admin' : a?.uid || 'admin';
-  }
-
-  ngOnDestroy() {
-    this.unsubscribeSaved?.();
-  }
-
-  private adminUid(): string {
-    const a = this.admin();
-    if (typeof a === 'string' && a) return a;
-    if (a && typeof a === 'object' && a.uid) return a.uid;
-    return 'admin';
   }
 
   async openPropertyDetails() {
@@ -152,7 +131,7 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  /** Save/Unsave favorite + notify parent + optional redirect */
+  /** Click handler for the heart (save/unsave) */
   async onToggleFavorite(ev: Event) {
     ev.stopPropagation();
     if (this.busy()) return;
@@ -160,17 +139,21 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
 
     try {
       const p = this.property();
-      if (!p?.id) throw new Error('Property not ready');
+      if (!p?.id) throw new Error('Property not ready.');
+
       const action = await this.savedSvc.toggle(this.uid(), toSavedPayload(p));
 
       if (action === 'saved') {
+        this.saved.emit(p.id);
         await this.presentToast('Saved to list', 'success');
+
         if (this.redirectOnSave()) {
           await this.router.navigateByUrl('/saved-properties', {
             replaceUrl: false,
           });
         }
       } else {
+        this.unsaved.emit(p.id);
         await this.presentToast('Removed from saved', 'medium');
       }
     } catch (e: any) {
@@ -195,32 +178,45 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
     });
     await t.present();
   }
-
-  private async toast(
-    message: string,
-    color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
-  ) {
-    const t = await this.toastCtrl.create({
-      message,
-      duration: 1600,
-      position: 'top',
-      color,
-    });
-    await t.present();
-  }
 }
 
-/** Helpers */
+/** ----- Helpers ----- */
+
 function formatIN(n: number) {
   return Number(n).toLocaleString('en-IN');
 }
 
+/** Build the flat-collection payload the service expects */
 function toSavedPayload(p: IProperty): SavedDocPayload {
   return {
-    ...p,
-    propertyImages: p.propertyImages.map((image) => ({
-      id: image.id,
-      image: image.image,
-    })),
+    id: p.id,
+    propertyTitle: p.propertyTitle ?? '',
+    addressOfProperty: p.addressOfProperty ?? '',
+    saleType: (p.saleType ?? 'sale') as 'sale' | 'rent',
+    category: (p.category ?? 'residential') as
+      | 'residential'
+      | 'commercial'
+      | 'plots'
+      | 'lands',
+    priceOfSale: Number(p.priceOfSale ?? 0),
+    priceOfRent: Number(p.priceOfRent ?? 0),
+    priceOfRentType: p.priceOfRentType ?? undefined,
+    houseType: p.houseType ?? '',
+    bhkType: p.bhkType ?? '',
+    propertySize:
+      (typeof p.propertySize === 'number'
+        ? p.propertySize
+        : Number(p.propertySize)) || 0,
+    propertyStatus: p.propertyStatus ?? 'Available',
+    agentName: p.agentName ?? '',
+    propertyId: p.propertyId ?? p.id,
+    floor: p.floor ?? undefined,
+    commercialType: p.commercialType ?? undefined,
+    propertyImages: Array.isArray(p.propertyImages)
+      ? p.propertyImages.map((img, i) => ({
+          id: String(img.id ?? `${p.id}-${i}`),
+          image: String(img.image ?? ''),
+        }))
+      : [],
   };
 }

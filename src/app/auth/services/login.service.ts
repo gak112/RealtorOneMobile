@@ -15,13 +15,12 @@ export class LoginService {
   async verifyAndLogin(phone: string, fullName = '') {
     const normalized = this.normalizePhone(phone);
     const existing = await this.findByPhone(normalized);
-
+    console.log(existing, 'existing');
     if (existing) {
       // login with stored secret
-      const doc = await this.afs.doc(`users/${existing.uid}`).ref.get();
-      const secret = (doc.data() as any)?.authSecret as string | undefined;
-      if (!secret) throw new Error('Login secret missing. Contact support.');
-      return this.auth.login(existing.loginEmail, secret);
+      const doc: any = await this.afs.doc(`users/${existing.uid}`).ref.get();
+      console.log(doc, 'doc', doc.data());
+      return this.auth.login(existing.loginEmail, doc.data()?.secureData);
     }
 
     // register new user
@@ -34,9 +33,9 @@ export class LoginService {
       uid,
       fullName,
       phone: normalized,
-      loginEmail,
-      readableId: '12345',
+      loginEmail
     });
+    console.log(user);
 
     await this.afs.doc(`users/${uid}`).set({ ...user, authSecret });
     return this.auth.login(loginEmail, authSecret);

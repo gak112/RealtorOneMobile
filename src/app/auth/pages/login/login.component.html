@@ -1,65 +1,55 @@
 <ion-content [scrollY]="false">
-    <div class="div-bg-dot"><ion-img src="assets/img/dot-bg.jpg"></ion-img></div>
-  
-    <div class="div-login-main">
-      <div class="div-logo-title">
-        <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
-        <div class="div-label">
-          <ion-label class="label-title">Welcome Back!</ion-label>
-          <span class="subtitle">Realtor One</span>
-        </div>
-      </div>
-  
-      <div class="div-details-main">
-        <div class="div-login-main-title">
-          <ion-label class="label-main-title">Login</ion-label>
-        </div>
-  
-        <div class="div-details">
-          <div class="div-formgroup">
-            <ion-input
-              type="text"
-              mode="md"
-              label="Full Name"
-              label-placement="floating"
-              fill="outline"
-              placeholder="Enter Full Name"
-              [value]="fullName()"
-              (ionInput)="onFullNameInput($event)"
-            ></ion-input>
-            @if (fullNameError()) { <div class="error">{{ fullNameError() }}</div> }
-          </div>
-  
-          <div class="div-formgroup">
-            <ion-input
-              type="tel" inputmode="numeric" maxlength="10" mode="md"
-              label="Mobile No" label-placement="floating" fill="outline"
-              placeholder="Enter 10-digit number"
-              [value]="phone()"
-              (ionInput)="onPhoneInput($event)"
-              (keydown.enter)="canContinue() && onContinue()"
-            ></ion-input>
-            @if (phoneError()) { <div class="error">{{ phoneError() }}</div> }
-          </div>
-  
-          <div class="div-buttons">
-            <ion-button
-              class="ion-button-settings"
-              expand="block"
-              color="warning"
-              [disabled]="!canContinue() || loading()"
-              (click)="onContinue()"
-            >
-              @if (loading()) { <ion-spinner name="bubbles"></ion-spinner> }
-              <span> Send OTP </span>
-            </ion-button>
-          </div>
-        </div>
-      </div>
-  
-      <div class="div-h5">
-        <ion-label class="p-company-name"><span>By</span> SBP Consulting Private Limited</ion-label>
+  <div class="div-bg-dot"><ion-img src="assets/img/dot-bg.jpg"></ion-img></div>
+
+  <div class="div-login-main">
+    <div class="div-logo-title">
+      <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
+      <div class="div-label">
+        <ion-label class="label-title">Welcome Back!</ion-label>
+        <span class="subtitle">Realtor One</span>
       </div>
     </div>
-  </ion-content>
-  
+
+    <div class="div-details-main">
+      <div class="div-login-main-title">
+        <ion-label class="label-main-title">Login</ion-label>
+      </div>
+
+      <div class="div-details">
+        <div class="div-formgroup">
+          <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
+            placeholder="Enter Full Name" [value]="fullName()" (ionInput)="onFullNameInput($event)"></ion-input>
+          @if (fullNameError()) { <div class="div-error">
+            <ion-icon name="information-circle" class="icon-info"></ion-icon>
+            <span class="name-error">{{fullNameError()}}
+            </span>
+          </div> }
+        </div>
+
+        <div class="div-formgroup">
+          <ion-input type="tel" inputmode="numeric" maxlength="10" mode="md" label="Mobile No"
+            label-placement="floating" fill="outline" placeholder="Enter 10-digit number" [value]="phone()"
+            (ionInput)="onPhoneInput($event)" (keydown.enter)="canContinue() && onContinue()"></ion-input>
+          @if (phoneError()) { <div class="div-error">
+            <ion-icon name="information-circle" class="icon-info"></ion-icon>
+            <span class="name-error">{{phoneError()}}
+            </span>
+          </div> }
+        </div>
+
+        <div class="div-buttons">
+          <ion-button class="ion-button-settings" expand="block" color="warning"
+            [disabled]="!canContinue() || loading()" (click)="onContinue()">
+            @if (loading()) { <ion-spinner name="bubbles"></ion-spinner> }
+            <span>Login </span>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="div-h5">
+      <ion-label class="p-register">Powered by</ion-label>
+      <ion-label class="p-company-name">Arhasri Technologies Private Limited</ion-label>
+    </div>
+  </div>
+</ion-content>

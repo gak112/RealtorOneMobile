@@ -28,26 +28,8 @@
     </div>
   </div>
   <ion-list>
-    <!-- <div class="ion-item-settings">
-      <div class="div-names">
-        <ion-label class="ion-label-settings">SVN AShok Kumar</ion-label>
-        <span (click)="goToProfile()">view profile</span>
-      </div>
-      @if(user.photo) {
-      <div class="div-img" (click)="selectMedia()">
-        <ion-img
-          [src]="user.photo || 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6c08249-45b1-4852-ac3c-f5e49a7f6d25/d6v0umi-48db83ce-8367-4e06-b71c-103b296794c5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2YzA4MjQ5LTQ1YjEtNDg1Mi1hYzNjLWY1ZTQ5YTdmNmQyNVwvZDZ2MHVtaS00OGRiODNjZS04MzY3LTRlMDYtYjcxYy0xMDNiMjk2Nzk0YzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.HhR535GRJ9MzqUS54LJ2XWtf-Y2v-aOuN4GTD6MC0q4'"
-          class="img-user-settings" (click)="openFullImage([user.photoURL])"></ion-img>
-        <ion-icon name="camera-outline"></ion-icon>
-      </div>
-      } @else {
-      <div class="div-img" (click)="selectMedia()" style="background: var(--background-main);">
-        <ion-label class="label-firstchar">AK</ion-label>
-        <ion-icon name="camera-outline"></ion-icon>
-      </div>
-      }
-    </div> -->
-    <div (click)="openAuth()" class="ion-item-settings" *ngIf="false">
+    @if(false) {
+    <div (click)="openAuth()" class="ion-item-settings">
       <div class="div-img">
         <ion-img src="assets/img/loginnouser.png" class="img-nouser-settings"></ion-img>
       </div>
@@ -55,47 +37,18 @@
         <ion-label class="ion-label-settings">Login / Register</ion-label>
       </div>
     </div>
+    }
 
     <ion-item (click)="setTheme()">
       <ion-icon class="icon-toggle" slot="start" name="moon-outline" />
       <ion-label class="label-toggle">Dark Mode</ion-label>
       <ion-toggle slot="end" color="tertiary" [checked]="theme() === 'dark'" />
     </ion-item>
-    <!-- darkmode skeleton-code start -->
-
-    <!-- <ion-item style="width: 100%;height: 44px;">
-       <ion-skeleton-text [animated]="true"
-        style="width: 30px;height: 30px;border-radius: 100px;   margin: 7px 16px 7px 0px;"></ion-skeleton-text>
-      <ion-skeleton-text [animated]="true"
-        style="width: 150px;height: 20px;margin: 10px 8px 10px 0px;"></ion-skeleton-text> 
-
-
-       <ion-skeleton-text [animated]="true" slot="end"
-        style="width: 51px; height: 32px;border-radius: 20px;position: relative;"></ion-skeleton-text> 
-      <ion-skeleton-text [animated]="true" style="width: 13px;height: 13px; border-radius: 100px;"></ion-skeleton-text> 
-    
-    </ion-item> -->
-    <!-- skeleton code end -->
-    <!-- <ion-list-header>Company Information</ion-list-header>
-
-    <div class="div-icon-main">
-      <div class="div-icon-name" (click)="openCompanyProfile()">
-        <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
-          <ion-label>About Realtor '1'</ion-label>
-        </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
-      </div>
-    </div> -->
-
     <ion-list-header style="padding-top: 16px;">
-
       Personal Information
-
     </ion-list-header>
-
     <div class="div-icon-main">
-      <div class="div-icon-name" (click)="openCompanyProfile()">
+      <div class="div-icon-name">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
           <ion-label>About Realtor '1'</ion-label>

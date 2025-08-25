@@ -6,7 +6,10 @@ export interface PostRequestForm {
   houseType:
     | 'Apartment'
     | 'Individual House/Villa'
-    | 'Gated Community Villa'
+    | 'Independent / Builder Floor'
+    | 'Farm House'
+    | 'Service Apartment'
+    | 'Other'
     | '';
   houseCondition: 'Old Houses' | 'New Houses' | null;
   rooms: number | null;
@@ -22,21 +25,17 @@ export interface PostRequestForm {
     | null;
   furnishingType: 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished' | null;
   commercialType:
-    | 'Shop'
+    | 'Retail'
     | 'Office'
     | 'Warehouse'
     | 'Factory'
-    | 'Showroom'
+    | 'Industriy'
+    | 'Hospitality'
     | 'Land'
     | 'Other'
     | null;
-    commercialSubType:
-    | 'Shopping Mall'
-    | 'Co-Working Space'
-    | 'IT Park'
-    | 'Showroom'
-    | 'Other'
-    | null;
+  commercialSubType: 'complex' | 'individual';
+  availabilityStatus: 'Ready to move' | 'Under construction' | null;
   securityDeposit: number | null;
   propertySize: number | null;
   totalPropertyUnits: string | null;
@@ -83,5 +82,3 @@ export interface PostRequestForm {
 
   // timestamps are set in service
 }
-
-

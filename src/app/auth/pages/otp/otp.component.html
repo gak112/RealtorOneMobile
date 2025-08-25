@@ -4,97 +4,66 @@
   </div>
 
   <div class="div-login-main">
+    <!-- Header -->
     <div class="div-logo-title">
       <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
       <div class="div-label">
         <ion-label class="label-title">Verify OTP</ion-label>
         <span class="subtitle">Realtor One</span>
       </div>
-      <ion-icon name="close-outline" class="close" (click)="close()"></ion-icon>
+      <ion-icon name="arrow-back-outline" class="close" (click)="close()"></ion-icon>
     </div>
 
+    <!-- OTP section -->
     <div class="div-otp-section">
       <ion-label class="p-text-format">
         Please enter the verification code sent to
         <span>{{ maskedPhone() }}</span>
       </ion-label>
 
+      <!-- IMPORTANT: use 'track $index' and reference $index inside -->
       <div class="otp-inputs" [class.invalid]="!!errorMsg()">
-        @for (d of digits(); let i = $index; track i) {
-        <ion-input class="otp-box" fill="outline" mode="md" maxlength="1" inputmode="numeric"
-          autocomplete="one-time-code" autocapitalize="off" autocorrect="off" pattern="[0-9]*" type="text"
-          [value]="digits()[i]" (ionInput)="onInput(i, $event)" (keydown)="onKeyDown(i, $event)"
-          (paste)="onPaste(i, $event)"></ion-input>
+        @for (d of digits(); track $index) {
+        <ion-input class="otp-box" mode="md" fill="outline" inputmode="numeric" maxlength="1" [value]="d"
+          (ionInput)="onInput($index, $event)" (keydown)="onKeyDown($index, $event)"
+          (paste)="onPaste($index, $event)"></ion-input>
         }
       </div>
 
       @if (errorMsg()) {
-        <div class="error-msg">{{ errorMsg() }}</div>
+      <div class="error-msg">{{ errorMsg() }}</div>
       }
+
       @if (!canResend()) {
       <ion-label class="label-time-left">
         Time Left: <span>{{ secondsLeft() }}</span> Seconds
       </ion-label>
       }
+
       @if (canResend()) {
-      <div class="div-resend" [class.disabled]="!canResend()" (click)="onResend()">
+      <div class="div-resend" (click)="onResend()">
         <ion-icon name="reload-outline"></ion-icon>
-        <ion-label>{{ timerLabel() }}</ion-label>
+        <ion-label>Resend Code</ion-label>
       </div>
       }
     </div>
 
+    <!-- Verify button -->
     <div class="div-button">
       <ion-button class="ion-button-settings" expand="block" color="warning"
         [disabled]="!isValidOtp() || loadingVerify()" (click)="onVerify()" enterkeyhint="done">
-        @if (loadingVerify()) { <ion-spinner name="bubbles"></ion-spinner> }
-        @else { <span>Verify Code</span> }
+        @if (loadingVerify()) {
+        <ion-spinner name="bubbles"></ion-spinner>
+        } @else {
+        <span>Verify Code</span>
+        }
       </ion-button>
     </div>
 
+    <!-- Footer -->
     <div class="div-h5">
       <ion-label class="p-register">Powered by</ion-label>
       <ion-label class="p-company-name">Arhasri Technologies Private Limited</ion-label>
     </div>
   </div>
 </ion-content>
-
-
-
-
-
-
-<!-- <ion-content [scrollY]="false">
-  <div class="p-4" style="padding: 16px;">
-    <div class="mb-2" style="margin-bottom: 8px;">
-      <ion-label>Enter OTP sent to <b>{{ maskedPhone() }}</b></ion-label>
-    </div>
-
-    <div class="otp-row" style="display:flex;gap:10px;justify-content:center;">
-      @for (d of digits(); let i = $index; track i) {
-      <ion-input #otpBox fill="outline" mode="md" inputmode="numeric" autocomplete="one-time-code" autocapitalize="off"
-        autocorrect="off" pattern="[0-9]*" type="text" maxlength="1" [value]="digits()[i]"
-        (ionInput)="onInput(i, $event)" (keydown)="onKeyDown(i, $event)" (paste)="onPaste(i, $event)"
-        style="width:48px;text-align:center;font-size:20px;"></ion-input>
-      }
-    </div>
-
-    @if (errorMsg()) {
-    <div style="color:#c0392b;margin-top:8px;">{{ errorMsg() }}</div>
-    }
-
-    <div class="mt-4" style="display:flex;gap:10px;justify-content:center;align-items:center;">
-      <ion-button [disabled]="!isValidOtp() || loadingVerify()" (click)="onVerify()" color="success">
-        @if (loadingVerify()) { <ion-spinner></ion-spinner> } @else { Verify }
-      </ion-button>
-
-      <ion-button [disabled]="!canResend() || loadingSend()" (click)="onResend()" color="medium">
-        @if (loadingSend()) { <ion-spinner></ion-spinner> } @else { Resend ({{ remainingResends() }}) }
-      </ion-button>
-      @if (!canResend()) {
-      <span>Resend in {{ secondsLeft() }}s</span>
-      }
-    </div>
-  </div>
-
-</ion-content> -->

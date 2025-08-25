@@ -6,6 +6,7 @@ import {
   collectionData,
   query,
   orderBy,
+  where,
 } from '@angular/fire/firestore';
 import {
   IonContent,
@@ -15,6 +16,7 @@ import {
   IonTitle,
   IonToolbar,
   ModalController,
+  ToastController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -23,28 +25,15 @@ import { of } from 'rxjs';
 
 import { SavedpropertycardComponent } from '../../components/savedpropertycard/savedpropertycard.component';
 import { IProperty } from 'src/app/models/property.model';
+import { SavedService, SavedDocPayload } from '../../services/saved.service';
 
-/** Saved docs stored under admins/{uid}/saved_properties */
-type SavedDoc = {
-  id: string;
-  propertyTitle?: string;
-  addressOfProperty?: string;
-  saleType?: string; // 'sale' | 'rent' (normalize)
-  category?: string; // 'residential' | 'commercial' | 'plots' | 'lands' (normalize)
-  priceOfSale?: number | string;
-  priceOfRent?: number | string;
-  houseType?: string;
-  bhkType?: string;
-  propertySize?: number | string;
-  propertyStatus?: string;
-  agentName?: string;
-  propertyId?: string;
-  propertyImages?: Array<{ id?: string; image?: string } | string>;
-  images?: string[]; // legacy fallback
+/** Flat collection doc shape (what SavedService writes) */
+type SavedDocStored = SavedDocPayload & {
+  uid: string;
+  key: string; // `${uid}__${id}`
   createdAt?: any;
   updatedAt?: any;
-  floor?: string;
-  commercialType?: string;
+  images?: string[]; // (legacy/fallback)
 };
 
 @Component({
@@ -65,16 +54,18 @@ type SavedDoc = {
 export class SavedpropertiesComponent {
   private modalController = inject(ModalController);
   private afs = inject(Firestore);
+  private savedSvc = inject(SavedService);
+  private toast = inject(ToastController);
 
   constructor() {
     addIcons({ chevronBackOutline });
   }
 
-  /** Back-compat: accept either `[user]` or `[currentUid]` */
-  user = input<any | null>(null); // e.g., { uid: 'abc' }
-  currentUid = input<string | null>(null); // e.g., 'abc'
+  /** Accept either `[user]` or `[currentUid]` */
+  user = input<any | null>(null);
+  currentUid = input<string | null>(null);
 
-  /** Effective uid used for the query */
+  /** Effective uid */
   readonly uid = computed<string>(() => {
     const explicit = this.currentUid();
     if (explicit) return explicit;
@@ -93,19 +84,24 @@ export class SavedpropertiesComponent {
     this.modalController.dismiss();
   }
 
-  /** Firestore stream */
+  /** Stream saved list from flat collection `saved_properties` */
   private savedDocs$ = toObservable(this.uid).pipe(
     switchMap((uid) => {
-      const col = collection(this.afs, `admins/${uid}/saved_properties`);
-      const qRef = query(col, orderBy('createdAt', 'desc') as any);
-      return collectionData(qRef, { idField: 'id' }) as any;
+      const col = collection(this.afs, 'saved_properties');
+      // NOTE: where('uid','==',uid) + orderBy('createdAt') may need an index
+      const qRef = query(
+        col,
+        where('uid', '==', uid),
+        orderBy('createdAt', 'desc') as any
+      );
+      return collectionData(qRef, { idField: 'key' }) as any;
     }),
     catchError((err) => {
       console.error('[saved-properties] stream error', err);
       this.errorMsg.set(
         'Failed to load saved properties. Pull to refresh or try again.'
       );
-      return of([] as SavedDoc[]);
+      return of([] as SavedDocStored[]);
     })
   );
 
@@ -114,12 +110,10 @@ export class SavedpropertiesComponent {
     const x = typeof n === 'string' ? Number(n) : (n as number);
     return Number.isFinite(x) ? x : fallback;
   }
-
   private normalizeSaleType(v?: string): IProperty['saleType'] {
     const s = (v ?? '').toLowerCase().trim();
     return (s === 'rent' ? 'rent' : 'sale') as IProperty['saleType'];
   }
-
   private normalizeCategory(v?: string): IProperty['category'] {
     const s = (v ?? '').toLowerCase().trim();
     if (s.startsWith('com')) return 'commercial';
@@ -130,72 +124,63 @@ export class SavedpropertiesComponent {
       return s as IProperty['category'];
     return 'residential';
   }
-
-  private toPropertyImages(d: SavedDoc): IProperty['propertyImages'] {
-    const out: IProperty['propertyImages'] = [];
-    if (Array.isArray(d.propertyImages)) {
-      d.propertyImages.forEach((it, i) => {
-        if (typeof it === 'string') {
-          out.push({ id: `${d.id}-${i}`, image: it });
-        } else if (it && typeof it === 'object') {
-          const img = (it as any).image ?? '';
-          if (img)
-            out.push({
-              id: (it as any).id ?? `${d.id}-${i}`,
-              image: String(img),
-            });
-        }
-      });
-    } else if (Array.isArray(d.images)) {
-      d.images
-        .filter(Boolean)
-        .forEach((url, i) =>
-          out.push({ id: `${d.id}-${i}`, image: String(url) })
-        );
+  private toPropertyImages(d: SavedDocStored): IProperty['propertyImages'] {
+    // prefer normalized propertyImages from SavedService; fallback to legacy images[]
+    if (Array.isArray(d.propertyImages) && d.propertyImages.length) {
+      return d.propertyImages
+        .filter((x) => x && typeof x.image === 'string' && x.image)
+        .map((x, i) => ({
+          id: String(x.id ?? `${d.id}-${i}`),
+          image: String(x.image),
+        }));
     }
-    return out;
+    if (Array.isArray(d.images)) {
+      return d.images
+        .filter(Boolean)
+        .map((url, i) => ({ id: `${d.id}-${i}`, image: String(url) }));
+    }
+    return [];
   }
 
-  /** SAFE mapper: SavedDoc -> IProperty (compile-safe) */
-  private toProperty = (d: SavedDoc): IProperty => {
+  /** Map flat doc -> IProperty */
+  private toProperty = (d: SavedDocStored): IProperty => {
     const prop: Partial<IProperty> = {
       id: d.id,
       propertyTitle: String(d.propertyTitle ?? '—'),
-
       priceOfSale: this.toNumber(d.priceOfSale),
       priceOfRent: this.toNumber(d.priceOfRent),
-      priceOfRentType: '—' as IProperty['priceOfRentType'],
-
+      priceOfRentType: (d.priceOfRentType ??
+        '—') as IProperty['priceOfRentType'],
       addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
       propertySize: this.toNumber(d.propertySize),
-
       propertyImages: this.toPropertyImages(d),
-
       saleType: this.normalizeSaleType(d.saleType),
       category: this.normalizeCategory(d.category),
-
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? d.id),
       commercialType: String(d.commercialType ?? '—'),
       floor: String(d.floor ?? '—'),
       propertyStatus: String(d.propertyStatus ?? 'Available'),
-
       createdAt: d.createdAt ?? null,
       updatedAt: d.updatedAt ?? null,
+      // optional extras your card may show:
+      totalPropertyUnits: undefined as any, // keep IProperty compatibility if needed
+      furnishingType: undefined as any,
     };
-
-    return prop as IProperty; // <- ✅ Type matches IProperty exactly
+    return prop as IProperty;
   };
 
   /** Items signal */
   private items = toSignal(
-    this.savedDocs$.pipe(map((arr: SavedDoc[]) => arr.map(this.toProperty))),
+    this.savedDocs$.pipe(
+      map((arr: SavedDocStored[]) => arr.map(this.toProperty))
+    ),
     { initialValue: [] as IProperty[] }
   );
 
-  /** Searchbar handler */
+  /** Searchbar */
   onSearch(ev: Event) {
     const v = (ev as CustomEvent).detail?.value ?? '';
     this.qText.set(String(v).trim().toLowerCase());
@@ -206,7 +191,6 @@ export class SavedpropertiesComponent {
     const list = this.items();
     const q = this.qText();
     const pruned = this.prunedIds();
-
     if (!q && pruned.size === 0) return list;
 
     return list
@@ -216,7 +200,9 @@ export class SavedpropertiesComponent {
         const title = (p.propertyTitle ?? '').toLowerCase();
         const loc = (p.addressOfProperty ?? '').toLowerCase();
         const pid = (p.propertyId ?? '').toLowerCase();
-        const priceBlob = `${p.priceOfSale ?? ''} ${p.priceOfRent ?? ''}`;
+        const priceBlob = `${p.priceOfSale ?? ''} ${
+          p.priceOfRent ?? ''
+        }`.toLowerCase();
         return (
           title.includes(q) ||
           loc.includes(q) ||
@@ -228,10 +214,76 @@ export class SavedpropertiesComponent {
 
   trackById = (_: number, p: IProperty) => p.id;
 
-  /** Child emits when unsaved; prune immediately for snappy UX */
-  onRemoved(id: string) {
+  /** Child emits when unsaved; also remove from DB (flat collection) */
+  async onRemoved(id: string) {
     const next = new Set(this.prunedIds());
     next.add(id);
     this.prunedIds.set(next);
+
+    try {
+      await this.savedSvc.remove(this.uid(), id);
+      await this.presentToast('Removed from saved', 'medium');
+      // stream will auto-update the list
+    } catch (e) {
+      console.error('[saved-properties] remove failed', e);
+      await this.presentToast('Failed to remove. Please try again.', 'danger');
+      // Optional rollback:
+      // next.delete(id); this.prunedIds.set(next);
+    }
+  }
+
+  /** Optional helper if you want to add to saved list from here */
+  async addToSaved(p: IProperty) {
+    try {
+      const payload: SavedDocPayload = {
+        id: p.id,
+        propertyTitle: p.propertyTitle ?? '',
+        addressOfProperty: p.addressOfProperty ?? '',
+        saleType: (p.saleType ?? 'sale') as 'sale' | 'rent',
+        category: (p.category ?? 'residential') as any,
+        priceOfSale: Number(p.priceOfSale ?? 0),
+        priceOfRent: Number(p.priceOfRent ?? 0),
+        priceOfRentType: p.priceOfRentType ?? undefined,
+        houseType: p.houseType ?? '',
+        bhkType: p.bhkType ?? '',
+        propertySize:
+          (typeof p.propertySize === 'number'
+            ? p.propertySize
+            : Number(p.propertySize)) || 0,
+        propertyStatus: p.propertyStatus ?? 'Available',
+        agentName: p.agentName ?? '',
+        propertyId: p.propertyId ?? p.id,
+        floor: p.floor ?? undefined,
+        commercialType: p.commercialType ?? undefined,
+        propertyImages: Array.isArray(p.propertyImages)
+          ? p.propertyImages.map((img) => ({
+              id: String(img.id ?? ''),
+              image: String(img.image ?? ''),
+            }))
+          : [],
+      };
+      await this.savedSvc.save(this.uid(), payload);
+      await this.presentToast('Saved to list', 'success');
+    } catch (e) {
+      console.error('[saved-properties] addToSaved failed', e);
+      this.errorMsg.set('Failed to add to saved. Please try again.');
+      await this.presentToast(
+        'Failed to add to saved. Please try again.',
+        'danger'
+      );
+    }
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'danger' | 'medium' = 'medium'
+  ) {
+    const t = await this.toast.create({
+      message,
+      duration: 1600,
+      position: 'top',
+      color,
+    });
+    await t.present();
   }
 }

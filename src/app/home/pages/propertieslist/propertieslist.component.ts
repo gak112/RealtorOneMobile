@@ -181,6 +181,7 @@ export class PropertieslistComponent {
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
       commercialType: String(d.commercialType ?? '—'),
+      availabilityStatus: String(d.availabilityStatus ?? '—'),
       floor: String(d.floor ?? '—'),
       propertyStatus: String(d.propertyStatus ?? 'Available'),
       houseCondition: String(d.houseCondition ?? '—'),
@@ -319,6 +320,7 @@ type PostDoc = {
   priceOfRent?: number;
   priceOfRentType?: string;
   commercialType?: string;
+  availabilityStatus?: string;
   floor?: string;
   houseCondition?: string;
   rooms?: number;

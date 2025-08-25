@@ -24,6 +24,7 @@ import { register } from 'swiper/element/bundle';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 register();
 
@@ -67,5 +68,6 @@ bootstrapApplication(AppComponent, {
     ),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
   ],
 }).catch(console.error);

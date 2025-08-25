@@ -1,128 +1,294 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ProfileeditComponent } from '../profileedit/profileedit.component';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
-// import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import {
-  ActionSheetController,
-  NavController,
-} from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { IProfile } from 'src/app/languages/interface/profile/profile.interface';
-// import { AuthService } from 'src/app/services/auth.service';
-// import { ProfileService } from 'src/app/services/profile.service';
+  ReactiveFormsModule,
+  Validators,
+  NonNullableFormBuilder,
+} from '@angular/forms';
 import {
+  IonButton,
   IonContent,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonImg,
+  IonInput,
   IonLabel,
-  IonSkeletonText,
-  IonToolbar,
+  IonSelect,
+  IonSelectOption,
   IonTitle,
-  ModalController
-} from '@ionic/angular/standalone';
+  IonToolbar,
+  ModalController,
+  ToastController, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
+import { arrowBackOutline, createOutline, informationCircle } from 'ionicons/icons';
+
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from 'src/app/services/auth.service';
+import { serverTimestamp } from '@angular/fire/firestore';
+
 import {
-  call,
-  cameraOutline,
-  chevronBackOutline,
-  location,
-  mail,
-  text,
-} from 'ionicons/icons';
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  firstValueFrom,
+  map,
+  of,
+  switchMap,
+  take,
+  timeout,
+} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  standalone: true,
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonIcon,
-    IonContent,
-    IonSkeletonText,
+  imports: [IonSpinner, 
+    CommonModule,
     IonImg,
     IonLabel,
+    IonIcon,
+    IonButton,
+    IonHeader,
+    IonToolbar,
     IonTitle,
+    IonContent,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    IonFooter,
+    ReactiveFormsModule,
   ],
 })
 export class ProfileComponent implements OnInit {
-  private modalController = inject(ModalController);
-  profiles$: any;
-  address$: any;
-  user: any;
-  profileData!: IProfile;
+  // --- DI ---
+  private readonly modalController = inject(ModalController);
+  private readonly toastCtrl = inject(ToastController);
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly afs = inject(AngularFirestore); // compat
+  private readonly auth = inject(AuthService);
 
-  task: any;
-  percentage$!: Observable<any>;
-  snapshot!: Observable<any>;
-  downloadURL: any;
+  // --- UI state (signals) ---
+  saving = signal(false);
+  loadingProfile = signal(true);
+  mobileChecking = signal(false);
+  mobileTaken = signal(false);
+  emailChecking = signal(false);
+  emailTaken = signal(false);
 
-  photo: any;
-  baseimage: any;
+  // --- current user id ---
+  private uid: string | null = null;
 
-  isUploadProcessRunning = false;
-  constructor(
-    /*private profileService: ProfileService,*/ private nav: NavController,
+  // --- form ---
+  profileForm = this.fb.group({
+    firstName: this.fb.control('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    lastName: this.fb.control('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    mobileNoVerified: this.fb.control<boolean>(false),
+    mobileNumber: this.fb.control('', {
+      validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
+    }),
+    emailVerified: this.fb.control<boolean>(false),
+    email: this.fb.control('', { validators: [Validators.email] }),
+    gender: this.fb.control<'male' | 'female' | 'other' | 'preferNotToDisclose' | ''>(''),
+    photo: this.fb.control(''),
+    dob: this.fb.control(''),
+  });
 
-    // private auth: AuthService,
-    // private afstorage: AngularFireStorage, private afs: AngularFirestore,
-    private actionSheetController: ActionSheetController,
-    private sanitizer: DomSanitizer
-  ) {
-    addIcons({ chevronBackOutline, cameraOutline, mail, call, location, text });
+  constructor() {
+    addIcons({ createOutline, arrowBackOutline, informationCircle });
   }
 
-  ngOnInit(): void {
-    return;
+  async ngOnInit() {
+    try {
+      // 1) load auth user (first emission)
+      const user = await firstValueFrom<User | null>(
+        this.auth.user$.pipe(
+          filter((u): u is User => !!u),                 // wait until we have a real user
+          timeout({ first: 10000 }),                     // bail out if nothing after 10s
+          catchError(() => of(null))                     // convert timeout/other errors to null
+        )
+      );
+      this.uid = (user as any)?.Uid ?? (user as any)?.uid ?? null;
 
-    // this.auth.user$.subscribe(user => {
-    //     this.user = user;
-    //     this.profileData = new profileData().getData(user?.language || 'english');
-    //   });
+      // 2) preload profile
+      if (this.uid) {
+        const docSnap = await firstValueFrom(
+          this.afs.doc(`users/${this.uid}`).valueChanges().pipe(take(1))
+        ).catch(() => null);
+
+        if (docSnap) {
+          const doc: any = docSnap;
+          this.profileForm.patchValue({
+            firstName: doc.firstName ?? '',
+            lastName: doc.lastName ?? '',
+            mobileNoVerified: !!doc.mobileNoVerified,
+            mobileNumber: doc.mobileNumber ?? '',
+            emailVerified: !!doc.emailVerified,
+            email: doc.email ?? '',
+            gender: doc.gender ?? '',
+            photo: doc.photo ?? '',
+            dob: doc.dob ?? '',
+          });
+        }
+      }
+    } catch (err) {
+      console.error('[Profile] load error:', err);
+      this.presentToast('Failed to load profile. Please try again.', 'danger');
+    } finally {
+      this.loadingProfile.set(false);
+    }
+
+    // 3) async “already taken” checks (exclude current uid)
+
+    // Mobile
+    this.profileForm.controls.mobileNumber.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((phone) => {
+          this.mobileTaken.set(false);
+          if (!phone || !/^\d{10}$/.test(phone)) {
+            this.mobileChecking.set(false);
+            return of([]);
+          }
+          this.mobileChecking.set(true);
+          return this.afs
+            .collection('users', (ref) => ref.where('mobileNumber', '==', phone))
+            .valueChanges({ idField: 'id' })
+            .pipe(take(1));
+        }),
+        map((list: any[]) => {
+          this.mobileChecking.set(false);
+          if (!Array.isArray(list)) return false;
+          return list.some((u: any) => (u.id ?? u.uid) !== this.uid);
+        })
+      )
+      .subscribe((taken) => this.mobileTaken.set(!!taken));
+
+    // Email
+    this.profileForm.controls.email.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((email) => {
+          this.emailTaken.set(false);
+          if (!email || this.profileForm.controls.email.invalid) {
+            this.emailChecking.set(false);
+            return of([]);
+          }
+          this.emailChecking.set(true);
+          return this.afs
+            .collection('users', (ref) => ref.where('email', '==', email))
+            .valueChanges({ idField: 'id' })
+            .pipe(take(1));
+        }),
+        map((list: any[]) => {
+          this.emailChecking.set(false);
+          if (!Array.isArray(list)) return false;
+          return list.some((u: any) => (u.id ?? u.uid) !== this.uid);
+        })
+      )
+      .subscribe((taken) => this.emailTaken.set(!!taken));
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  showError(
+    key: keyof typeof this.profileForm.controls,
+    err: string
+  ): boolean {
+    const c = this.profileForm.controls[key];
+    return !!(c && c.touched && c.invalid && c.errors?.[err]);
   }
 
-  async goToAuth() {
-    this.nav.navigateRoot('/auth');
+  async updateProfile() {
+    // basic validation
+    if (this.profileForm.invalid) {
+      const firstInvalid = Object.values(this.profileForm.controls).find((c) => c.invalid);
+      firstInvalid?.markAsTouched();
+      this.presentToast('Please fix highlighted fields.', 'warning');
+      return;
+    }
+    if (this.mobileTaken() || this.emailTaken()) {
+      Object.values(this.profileForm.controls).forEach((c) => c.markAsTouched());
+      this.presentToast('Email or phone already in use.', 'danger');
+      return;
+    }
+    if (!this.uid) {
+      this.presentToast('No authenticated user.', 'danger');
+      return;
+    }
+    if (this.saving()) return;
+
+    this.saving.set(true);
+    this.profileForm.disable({ emitEvent: false });
+
+    try {
+      const v = this.profileForm.getRawValue();
+
+      const payload: IProfile = {
+        firstName: v.firstName!.trim(),
+        lastName: v.lastName!.trim(),
+        mobileNoVerified: !!v.mobileNoVerified,
+        mobileNumber: v.mobileNumber!.trim(),
+        emailVerified: !!v.emailVerified,
+        email: (v.email || '').trim(),
+        gender: (v.gender as any) || '',
+        photo: (v.photo || '').trim(),
+        dob: v.dob || '',
+      };
+
+      const writeObj: any = {
+        ...payload,
+        updatedAt: serverTimestamp(),
+      };
+
+      await this.afs.doc(`users/${this.uid}`).set(writeObj, { merge: true });
+
+      this.profileForm.markAsPristine();
+      this.presentToast('Profile updated successfully.', 'success');
+    } catch (err) {
+      console.error('[Profile] update error:', err);
+      this.presentToast('Failed to update profile. Please try again.', 'danger');
+    } finally {
+      this.saving.set(false);
+      this.profileForm.enable({ emitEvent: false });
+    }
+  }
+
+  async dismiss() {
     await this.modalController.dismiss();
   }
 
-  async openProfileEdit() {
-    const modal = await this.modalController.create({
-      component: ProfileeditComponent,
-      componentProps: { user: this.user },
-    });
-    return await modal.present();
+  // --- helpers ---
+  private async presentToast(
+    message: string,
+    color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
+  ) {
+    const t = await this.toastCtrl.create({ message, duration: 1500, position: 'top', color });
+    await t.present();
   }
+}
 
-  async selectMedia() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Select Image source',
-      buttons: [
-        {
-          text: 'Load From library',
-          handler: () => {
-            // this.takePhoto(CameraSource.Photos);
-          },
-        },
-        {
-          text: 'Use Camera',
-          handler: () => {
-            // this.takePhoto(CameraSource.Camera);
-          },
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-      ],
-    });
-    await actionSheet.present();
-  }
+// DB payload typing
+export interface IProfile {
+  firstName: string;
+  lastName: string;
+  mobileNoVerified: boolean;
+  mobileNumber: string;
+  emailVerified: boolean;
+  email: string;
+  gender: 'male' | 'female' | 'other' | 'preferNotToDisclose' | '';
+  photo: string;
+  dob: string;
+  // Optionally on the doc:
+  // updatedAt?: Timestamp | FieldValue;
 }

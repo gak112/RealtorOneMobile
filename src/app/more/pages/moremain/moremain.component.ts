@@ -10,7 +10,6 @@ import { PrivacypolicyComponent } from '../privacypolicy/privacypolicy.component
 import { TermsandconditionsComponent } from '../termsandconditions/termsandconditions.component';
 import { AddonsComponent } from '../addons/addons.component';
 import { AgentprofileComponent } from '../agentprofile/agentprofile.component';
-import { ProfileComponent } from '../profile/profile.component';
 import { LanguageComponent } from '../language/language.component';
 import { PaymentsComponent } from '../payments/payments.component';
 import { ContactusComponent } from '../contactus/contactus.component';
@@ -71,6 +70,7 @@ import {
 import { AmenitiesListsComponent } from '../amenities-lists/amenities-lists.component';
 import { BillingComponent } from 'src/app/home/pages/billing/billing.component';
 import { VillaconfigureComponent } from '../villaconfigure/villaconfigure.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
   selector: 'app-moremain',
@@ -168,13 +168,6 @@ export class MoremainComponent implements OnInit {
     return await modal.present();
   }
 
-  async openCompanyProfile() {
-    const modal = await this.modalController.create({
-      component: ProfileComponent,
-    });
-    return await modal.present();
-  }
-
   async goToSubcriptions() {
     const modal = await this.changePasswordModalController.create({
       component: SubscriptionsComponent,
@@ -220,6 +213,9 @@ export class MoremainComponent implements OnInit {
   async goToProfile() {
     const modal = await this.modalController.create({
       component: ProfileComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+      componentProps: { user: this.user },
     });
     return await modal.present();
   }

@@ -30,6 +30,7 @@ import {
   business,
   chevronDownOutline,
   chevronForwardOutline,
+  funnelOutline,
   home,
   location,
   notificationsOutline,
@@ -64,6 +65,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { IProperty, IPropertyImage } from 'src/app/models/property.model';
 import { AgentService } from 'src/app/more/services/agent.service';
+import { ProductfilterComponent } from 'src/app/search/pages/productfilter/productfilter.component';
 
 @Component({
   selector: 'app-homemain',
@@ -119,6 +121,7 @@ export class HomemainComponent implements OnInit {
       notificationsOutline,
       location,
       chevronDownOutline,
+      funnelOutline,
     });
   }
 
@@ -154,10 +157,9 @@ export class HomemainComponent implements OnInit {
     });
     return await modal.present();
   }
-
-  async openHowITWorks() {
+  async openFilters() {
     const modal = await this.modalController.create({
-      component: HomeItWorksComponent,
+      component: ProductfilterComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });
@@ -308,6 +310,7 @@ export class HomemainComponent implements OnInit {
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
       commercialType: String(d.commercialType ?? '—'),
+      availabilityStatus: String(d.availabilityStatus ?? '—'),
       floor: String(d.floor ?? '—'),
       propertyStatus: String(d.propertyStatus ?? 'Available'),
       houseCondition: String(d.houseCondition ?? '—'),
@@ -373,6 +376,7 @@ type PostDoc = {
   priceOfRent?: number;
   priceOfRentType?: string;
   commercialType?: string;
+  availabilityStatus?: string;
   floor?: string;
   houseCondition?: string;
   rooms?: number;

@@ -18,7 +18,10 @@
     </div>
   </ion-toolbar>
   <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
-    <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;"></ion-searchbar>
+    <div class="div-search-filter">
+      <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;"></ion-searchbar>
+      <ion-icon name="funnel-outline" class="icon-filter" (click)="openFilters()"></ion-icon>
+    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -47,22 +50,6 @@
         }
       </div>
       }
-      <div style="margin: 16px; height: 20px;" class="div-heading">
-        <ion-label>Trending</ion-label>
-        <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
-      </div>
-      <div class="div-banners">
-        <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
-          [centeredSlides]="true" class="mySwiper" [navigation]="true">
-          <swiper-slide>
-            <div class="">
-              <ion-img class="slide" (click)="bannersview()"
-                [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
-            </div>
-          </swiper-slide>
-        </swiper-container>
-      </div>
-
 
       <div class="div-heading" style="margin: 16px;">
         <ion-label>Categories</ion-label>
@@ -93,6 +80,24 @@
           <ion-label style="color: #e43185;">Lands</ion-label>
         </div>
       </div>
+      <div style="margin: 16px; height: 20px;" class="div-heading">
+        <ion-label>Trending</ion-label>
+        <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
+      </div>
+      <div class="div-banners">
+        <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
+          [centeredSlides]="true" class="mySwiper" [navigation]="true">
+          <swiper-slide>
+            <div class="">
+              <ion-img class="slide" (click)="bannersview()"
+                [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
+            </div>
+          </swiper-slide>
+        </swiper-container>
+      </div>
+
+
+
     </div>
 
     <div class="div-heading">

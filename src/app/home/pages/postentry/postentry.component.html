@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="postEntryForm" (ngSubmit)="submit()">
+  <form [formGroup]="postEntryForm" (ngSubmit)="submit()" novalidate>
     <div class="div-form-main">
 
       <!-- Title -->
@@ -30,7 +30,10 @@
           formControlName="houseType">
           <ion-select-option value="Apartment">Apartment</ion-select-option>
           <ion-select-option value="Individual House/Villa">Individual House/Villa</ion-select-option>
-          <ion-select-option value="Gated Community Villa">Gated Community Villa</ion-select-option>
+          <ion-select-option value="Independent / Builder Floor">Independent / Builder Floor</ion-select-option>
+          <ion-select-option value="Farm House">Farm House</ion-select-option>
+          <ion-select-option value="Service Apartment">Service Apartment</ion-select-option>
+          <ion-select-option value="Other">Other</ion-select-option>
         </ion-select>
       </div>
 
@@ -93,11 +96,13 @@
       <div class="div-formgroup">
         <ion-select mode="md" label="Commercial Type" label-placement="floating" fill="outline"
           formControlName="commercialType">
-          <ion-select-option value="Shop">Shop</ion-select-option>
+          <ion-select-option value="Retail">Retail</ion-select-option>
           <ion-select-option value="Office">Office</ion-select-option>
           <ion-select-option value="Warehouse">Warehouse</ion-select-option>
           <ion-select-option value="Factory">Factory</ion-select-option>
-          <ion-select-option value="Showroom">Showroom</ion-select-option>
+          <ion-select-option value="Industriy">Industriy</ion-select-option>
+          <ion-select-option value="Hospitality">Hospitality</ion-select-option>
+          <ion-select-option value="Land">Land</ion-select-option>
           <ion-select-option value="Other">Other</ion-select-option>
         </ion-select>
       </div>
@@ -163,7 +168,7 @@
         </ion-select>
       </div>
 
-      <!-- North -->
+      <!-- Sides -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;gap:12px;">
           <ion-input type="text" mode="md" label="North Facing" label-placement="floating" fill="outline"
@@ -173,8 +178,6 @@
           <div class="div-label"><ion-label>{{ unitShort() }}</ion-label></div>
         </div>
       </div>
-
-      <!-- South -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;gap:12px;">
           <ion-input type="text" mode="md" label="South Facing" label-placement="floating" fill="outline"
@@ -184,8 +187,6 @@
           <div class="div-label"><ion-label>{{ unitShort() }}</ion-label></div>
         </div>
       </div>
-
-      <!-- East -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;gap:12px;">
           <ion-input type="text" mode="md" label="East Facing" label-placement="floating" fill="outline"
@@ -195,8 +196,6 @@
           <div class="div-label"><ion-label>{{ unitShort() }}</ion-label></div>
         </div>
       </div>
-
-      <!-- West -->
       <div class="div-formgroup">
         <div style="display:flex;align-items:center;gap:12px;">
           <ion-input type="text" mode="md" label="West Facing" label-placement="floating" fill="outline"
@@ -286,10 +285,18 @@
         </div>
       </div>
 
+
       <!-- Description -->
       <div class="div-formgroup">
         <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
           placeholder="Enter Description" rows="5" style="height:auto;" formControlName="description"></ion-textarea>
+      </div>
+      <div class="div-formgroup">
+        <ion-select mode="md" label="Availability Status" label-placement="floating" fill="outline"
+          formControlName="availabilityStatus">
+          <ion-select-option value="Available">Ready to move</ion-select-option>
+          <ion-select-option value="New Houses">Under construction</ion-select-option>
+        </ion-select>
       </div>
 
       <!-- Negotiable -->
@@ -298,31 +305,52 @@
         <ion-checkbox mode="md" formControlName="negotiable"></ion-checkbox>
       </div>
 
-      <!-- Uploadcare -->
-      <div class="div-formgroup">
-        <div class="div-input-sub">
-          <ngx-uploadcare-widget #kyc (on-upload-complete)="onComplete($event)" [multiple]="true" [multiple-min]="0"
-            [multiple-max]="10" [tabs]="'file'" [crop]="true" [preview-step]="true" [clearable]="true"
-            data-crop="300:300" [images-only]="true" public-key="75efde342f2df35f3190"
-            accept="image/png, image/jpeg, image/jpg">
-          </ngx-uploadcare-widget>
+      <!-- Upload Images (max 3) -->
+      <div class="div-upload">
+        <ion-label class="upload-label">Upload images (max 3)</ion-label>
+        <div class="div-add" (click)="imagesFileInput.click()">
+          <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+          <ion-label class="label-add">Upload files</ion-label>
+          <span class="label-span">.jpg, .jpeg, .png</span>
+          <input #imagesFileInput type="file" accept="image/jpeg,image/png,image/jpg" multiple hidden
+            (change)="selectImages($event)" />
         </div>
-        @if (images.length > 0) {
-        <div class="div-images1">
-          @for (image of images; track $index) {
-          <div class="div-images-sub">
-            @if (!edit) {
-            <div class="div-icons">
-              <ion-icon name="trash" (click)="removeImg($index)"></ion-icon>
-            </div>
-            }
-            <ion-img [src]="image"></ion-img>
-          </div>
-          }
-        </div>
+        @if (imgsBusy()) {
+        <div style="font-size:12px; color:#666; margin-top:8px;">Processing… {{ imgsPct() }}%</div>
         }
       </div>
 
+      @if (allImagePreviews().length > 0) {
+      <div class="div-venture-images">
+        @for (image of allImagePreviews(); let i = $index; track i) {
+        <div class="div-uploading">
+          <ion-icon name="trash-outline" (click)="deleteImageAt(i)"></ion-icon>
+          <ion-img [src]="image" loading="lazy"></ion-img>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Upload Video (≤ 20s) -->
+      <div class="div-upload">
+        <ion-label class="upload-label">Upload video (max 20 seconds)</ion-label>
+        <div class="div-add" (click)="videoFileInput.click()">
+          <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+          <ion-label class="label-add">Upload video</ion-label>
+          <span class="label-span">.mp4, .webm, .mov • ≤ 20s</span>
+          <input #videoFileInput type="file" accept="video/mp4,video/webm,video/quicktime" hidden
+            (change)="selectVideo($event)" />
+        </div>
+      </div>
+
+      @if (videoPreview()) {
+      <div class="div-venture-images">
+        <div class="div-uploading">
+          <ion-icon name="trash-outline" (click)="deleteVideo()"></ion-icon>
+          <video [src]="videoPreview()" controls playsinline style="width:100%; max-height:300px;"></video>
+        </div>
+      </div>
+      }
     </div>
   </form>
 </ion-content>

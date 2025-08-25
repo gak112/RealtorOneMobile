@@ -10,6 +10,7 @@ export interface IProperty {
   furnishingType: string;
   commercialType: string;
   commercialSubType: string;
+  availabilityStatus: string;
   securityDeposit: number | null;
   propertySize: number | null;
   totalPropertyUnits: string | null;

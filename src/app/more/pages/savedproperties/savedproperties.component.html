@@ -5,28 +5,33 @@
   </ion-toolbar>
 
   <ion-toolbar style="--padding-start:0;--padding-end:0;--min-height:55px;--padding-top:0;--padding-bottom:0;">
-    <ion-searchbar [debounce]="500" placeholder="Search by title, location, ID, or price" style="padding:0"
+    <ion-searchbar
+      [debounce]="500"
+      placeholder="Search by title, location, ID, or price"
+      style="padding:0"
       (ionInput)="onSearch($event)">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   @if (errorMsg()) {
-  <div style="padding:12px; color:var(--ion-color-danger);">
-    {{ errorMsg() }}
-  </div>
+    <div style="padding:12px; color:var(--ion-color-danger);">
+      {{ errorMsg() }}
+    </div>
   }
 
-  @if (filtered().length === 0 && !errorMsg()) {
-  <div style="padding:16px; text-align:center; color:#777;">
-    No saved properties.
-  </div>
+  @if (!errorMsg() && filtered().length === 0) {
+    <div style="padding:16px; text-align:center; color:#777;">
+      No saved properties.
+    </div>
   }
 
   @for (p of filtered(); track trackById($index, p)) {
-  <app-savedpropertycard [property]="p" [admin]="currentUid()" (removed)="onRemoved($event)">
-  </app-savedpropertycard>
+    <app-savedpropertycard
+      [property]="p"
+      [admin]="uid()"
+      (removed)="onRemoved($event)">
+    </app-savedpropertycard>
   }
 </ion-content>

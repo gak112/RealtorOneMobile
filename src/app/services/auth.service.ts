@@ -33,6 +33,7 @@ export class AuthService {
   currentUser = computed(() => this._user());
   currentSession = computed(() => this._session());
   isAuthenticated = computed(() => !!this._user() && !!this._session());
+  user$: any;
 
   constructor() {
     this.hydrateFromStorage();

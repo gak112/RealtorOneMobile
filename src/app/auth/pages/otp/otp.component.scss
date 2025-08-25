@@ -40,6 +40,13 @@ ion-content {
   }
 }
 
+.close {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: var(--color-black);
+}
+
 .div-label {
   display: flex;
   align-items: start;
@@ -153,14 +160,14 @@ ion-content {
   margin-bottom: 10px;
 
   ion-icon {
-    color: var(--color-black);
+    color: var(--color-skyblue);
     margin-right: 5px;
   }
 
   ion-label {
     font-weight: 600;
     letter-spacing: 1px;
-    color: var(--color-black);
+    color: var(--color-skyblue);
   }
 }
 
@@ -226,25 +233,3 @@ ion-content {
     border-radius: 8px;
   }
 }
-
-
-
-
-
-
-
-
-
-//otp style
-
-
-.container { min-height: 100dvh; padding: 24px 16px; display: grid; place-content: center; gap: 16px; }
-.title { text-align: center; }
-.phone { font-weight: 700; margin-top: 4px; }
-.otp-grid { display: grid; grid-template-columns: repeat(6, 44px); gap: 10px; justify-content: center; margin: 12px 0; }
-.digit { text-align: center; font-size: 20px; font-weight: 700; min-height: 48px; }
-.timer { text-align: center; color:#666; margin-bottom: 8px; }
-.link { background: none; border: 0; color: var(--ion-color-primary); font-weight: 600; cursor: pointer; }
-.left { margin-left: 6px; color:#888; }
-.error { text-align:center; color:#e53935; }
-.actions { padding: 0 24px; }

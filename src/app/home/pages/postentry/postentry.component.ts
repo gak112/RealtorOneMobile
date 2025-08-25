@@ -1,4 +1,3 @@
-// src/app/more/components/postentry/postentry.component.ts
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,14 +7,13 @@ import {
   Input,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
 import { Geolocation } from '@capacitor/geolocation';
+
 import {
   IonButton,
   IonCheckbox,
@@ -28,8 +26,6 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
-  IonSegment,
-  IonSegmentButton,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -47,10 +43,25 @@ import {
   cloudUploadOutline,
   trashOutline,
 } from 'ionicons/icons';
-import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
+
+import {
+  Firestore,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from '@angular/fire/firestore';
+import {
+  Storage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from '@angular/fire/storage';
+
 import { Observable } from 'rxjs';
 import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
-import { PostsService } from 'src/app/more/services/posts.service';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
@@ -59,7 +70,10 @@ import {
 type HouseType =
   | 'Apartment'
   | 'Individual House/Villa'
-  | 'Gated Community Villa'
+  | 'Independent / Builder Floor'
+  | 'Farm House'
+  | 'Service Apartment'
+  | 'Other'
   | '';
 type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
 type Units =
@@ -73,14 +87,16 @@ type Units =
 type RentType = 'Monthly' | 'Yearly';
 type FurnishingType = 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished';
 type CommercialType =
-  | 'Shop'
+  | 'Retail'
   | 'Office'
   | 'Warehouse'
   | 'Factory'
-  | 'Showroom'
+  | 'Industriy'
+  | 'Hospitality'
+  | 'Land'
   | 'Other';
 type CommercialSubType = 'Complex' | 'Individual';
-
+type AvailabilityStatus = 'Ready to move' | 'Under construction' | null;
 const DEFAULT_UNITS: Units = 'Sq Feet';
 
 type PostEntryForm = {
@@ -92,15 +108,14 @@ type PostEntryForm = {
   furnishingType: FormControl<FurnishingType | null>;
   commercialType: FormControl<CommercialType | null>;
   commercialSubType: FormControl<CommercialSubType | null>;
+  availabilityStatus: FormControl<AvailabilityStatus | null>;
   securityDeposit: FormControl<number | null>;
 
-  // sizes
   totalPropertyUnits: FormControl<Units | null>;
   propertySize: FormControl<number | null>;
   propertySizeBuiltup: FormControl<number | null>;
   sizeBuiltupUnits: FormControl<Units | null>;
 
-  // facing (shared units)
   facingUnits: FormControl<Units | null>;
   northFacing: FormControl<string | null>;
   northSize: FormControl<number | null>;
@@ -111,7 +126,6 @@ type PostEntryForm = {
   westFacing: FormControl<string | null>;
   westSize: FormControl<number | null>;
 
-  // counts
   toilets: FormControl<number | null>;
   poojaRoom: FormControl<number | null>;
   livingDining: FormControl<number | null>;
@@ -121,19 +135,18 @@ type PostEntryForm = {
   amenities: FormControl<string[] | null>;
   ageOfProperty: FormControl<string | null>;
 
-  // prices
   priceOfSale: FormControl<number | null>;
   priceOfRent: FormControl<number | null>;
   priceOfRentType: FormControl<RentType | null>;
 
-  // address
   addressOfProperty: FormControl<string | null>;
   lat: FormControl<number | null>;
   lng: FormControl<number | null>;
 
   description: FormControl<string | null>;
   negotiable: FormControl<boolean | null>;
-  images: FormControl<string[] | null>;
+
+  images: FormControl<string[] | null>; // previews (data URLs / remote URLs)
   videoResources: FormControl<string[] | null>;
 };
 
@@ -158,9 +171,6 @@ type PostEntryForm = {
     IonImg,
     IonFooter,
     IonCheckbox,
-    IonSegment,
-    IonSegmentButton,
-    UcWidgetModule,
   ],
   templateUrl: './postentry.component.html',
   styleUrls: ['./postentry.component.scss'],
@@ -171,7 +181,8 @@ export class PostentryComponent implements OnInit {
   private modalCtrl = inject(ModalController);
   private nav = inject(NavController);
   private toastCtrl = inject(ToastController);
-  private postsService = inject(PostsService);
+  private afs = inject(Firestore);
+  private storage = inject(Storage);
 
   // Inputs
   @Input() saleType: 'sale' | 'rent' = 'sale';
@@ -179,30 +190,25 @@ export class PostentryComponent implements OnInit {
     'residential';
   @Input() editId: string | null = null;
 
-  // signals for SaleType/Category
+  // Signals/UI
   readonly saleTypeSig = signal<'sale' | 'rent'>(this.saleType);
   readonly categorySig = signal<
     'residential' | 'commercial' | 'plots' | 'lands'
   >(this.category);
-
-  // UI state
   readonly loading = signal(false);
   readonly pageError = signal<string | null>(null);
 
-  // header + button labels
   readonly isEdit = computed(() => !!this.editId);
   readonly headerTitle = computed(() =>
     this.isEdit() ? 'Edit Property Details' : 'Property Details Entry'
   );
   readonly actionLabel = computed(() => (this.isEdit() ? 'Update' : 'Submit'));
-
-  // floors
   readonly floors = [
     'Ground',
     ...Array.from({ length: 40 }, (_, i) => `${i + 1}`),
   ];
 
-  // form
+  // Form
   postEntryForm = this.fb.group<PostEntryForm>({
     propertyTitle: this.fb.control<string | null>(''),
 
@@ -214,6 +220,7 @@ export class PostentryComponent implements OnInit {
 
     commercialType: this.fb.control<CommercialType | null>(null),
     commercialSubType: this.fb.control<CommercialSubType | null>(null),
+    availabilityStatus: this.fb.control<AvailabilityStatus | null>(null),
     securityDeposit: this.fb.control<number | null>(null),
 
     totalPropertyUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
@@ -250,22 +257,25 @@ export class PostentryComponent implements OnInit {
 
     description: this.fb.control<string | null>(null),
     negotiable: this.fb.control<boolean | null>(true),
+
     images: this.fb.control<string[] | null>([]),
     videoResources: this.fb.control<string[] | null>([]),
   });
 
-  // mini-selectors
+  ctrl = (n: keyof PostEntryForm) => this.postEntryForm.controls[n];
+
+  // Convert any control’s valueChanges to a signal (reactive to form updates)
   private sel<T>(name: keyof PostEntryForm) {
     const c = this.postEntryForm.controls[name];
     return toSignal(c.valueChanges as unknown as Observable<T>, {
       initialValue: c.value as T,
     });
   }
-  readonly facingUnits$ = this.sel<Units | null>('facingUnits');
 
-  // unit short for facing labels
+  // Facing units short label
+  readonly facingUnitsSig = this.sel<Units | null>('facingUnits');
   readonly unitShort = computed(() => {
-    switch (this.facingUnits$() || DEFAULT_UNITS) {
+    switch (this.facingUnitsSig() || DEFAULT_UNITS) {
       case 'Sq Feet':
         return 'Sqft';
       case 'Sq Yard':
@@ -285,10 +295,10 @@ export class PostentryComponent implements OnInit {
     }
   });
 
-  // chip view for amenities
+  // Amenities chip view (signal mirrors the control via a reactive signal)
   amenities = signal<string[]>([]);
-  hasAmenities = computed(() => this.amenities().length > 0);
-
+  private readonly amenitiesCtrlSig = this.sel<string[] | null>('amenities');
+  // ✅ This effect now reacts because it reads a SIGNAL (amenitiesCtrlSig)
   constructor() {
     addIcons({
       chevronBackOutline,
@@ -300,15 +310,96 @@ export class PostentryComponent implements OnInit {
       close,
     });
 
-    // mirror amenities control <-> signal (for chip UI)
     effect(() => {
-      this.amenities.set(this.postEntryForm.controls.amenities.value ?? []);
+      this.amenities.set(this.amenitiesCtrlSig() ?? []);
     });
   }
 
-  // helpers
-  ctrl = (name: keyof PostEntryForm) => this.postEntryForm.controls[name];
+  hasAmenities = computed(() => this.amenities().length > 0);
 
+  // Media limits/types
+  static readonly MAX_IMAGES = 3;
+  static readonly MAX_IMAGE_BYTES = 6 * 1024 * 1024;
+  static readonly ACCEPTED_IMAGES = new Set([
+    'image/jpeg',
+    'image/png',
+    'image/jpg',
+  ]);
+
+  static readonly ACCEPTED_VIDEOS = new Set([
+    'video/mp4',
+    'video/webm',
+    'video/quicktime',
+  ]);
+  static readonly MAX_VIDEO_SECS = 20;
+  static readonly MAX_VIDEO_BYTES = 40 * 1024 * 1024;
+
+  readonly MAX_FILES = PostentryComponent.MAX_IMAGES;
+
+  // New selections
+  private newImageFiles: File[] = [];
+  private newImagePreviews = signal<string[]>([]);
+  private newVideoFile: File | null = null;
+  private newVideoPreview = signal<string | null>(null);
+
+  // Existing media (edit mode)
+  private existingImageUrls = signal<string[]>([]);
+  private existingVideoUrl = signal<string | null>(null);
+
+  // Previews for UI
+  allImagePreviews = computed(() => [
+    ...this.existingImageUrls(),
+    ...this.newImagePreviews(),
+  ]);
+  videoPreview = computed(
+    () => this.newVideoPreview() || this.existingVideoUrl()
+  );
+
+  // State
+  imgsBusy = signal(false);
+  imgsPct = signal(0);
+
+  // Draft key
+  private static readonly DRAFT_IMG_KEY =
+    'realtorone.postentry.draft.v1.images';
+
+  // Persist draft previews of new images
+  ngOnInit(): void {
+    // init segments
+    this.saleTypeSig.set(this.saleType);
+    this.categorySig.set(this.category);
+
+    if (!this.editId) {
+      try {
+        const raw = localStorage.getItem(PostentryComponent.DRAFT_IMG_KEY);
+        const arr = raw ? (JSON.parse(raw) as string[]) : [];
+        if (Array.isArray(arr) && arr.length)
+          this.newImagePreviews.set(
+            arr.slice(0, PostentryComponent.MAX_IMAGES)
+          );
+      } catch {
+        /* ignore */
+      }
+    } else {
+      this.hydrateEdit(this.editId).catch((e) => {
+        this.pageError.set(this.mapError(e));
+      });
+    }
+
+    // save draft when previews change
+    effect(() => {
+      try {
+        localStorage.setItem(
+          PostentryComponent.DRAFT_IMG_KEY,
+          JSON.stringify(this.newImagePreviews())
+        );
+      } catch {
+        /* ignore */
+      }
+    });
+  }
+
+  // ====================== UI helpers
   private async toast(
     message: string,
     color: 'danger' | 'warning' | 'success' | 'medium' = 'warning'
@@ -321,49 +412,13 @@ export class PostentryComponent implements OnInit {
     });
     await t.present();
   }
-
-  private mapError(err: unknown): string {
-    if (err instanceof FirebaseError) {
-      switch (err.code) {
-        case 'permission-denied':
-          return 'Permission denied. Check Firestore rules for /posts.';
-        case 'unauthenticated':
-          return 'You must be signed in.';
-        case 'unavailable':
-          return 'Service unavailable. Try again.';
-        default:
-          return `Firestore error: ${err.code}`;
-      }
-    }
-    const any = err as any;
-    const msg = any?.error?.message || any?.message || 'Unexpected error.';
-    if (!navigator.onLine)
-      return 'You appear to be offline. Please check your connection.';
-    return msg;
-  }
-
-  // nav
   dismiss() {
     this.modalCtrl
       .getTop()
       .then((m) => (m ? m.dismiss() : this.nav.back()) as void);
   }
 
-  // segments
-  saleTypeChanged(ev: CustomEvent) {
-    this.saleTypeSig.set((ev.detail as any)?.value as 'sale' | 'rent');
-  }
-  categoryChanged(ev: CustomEvent) {
-    this.categorySig.set(
-      (ev.detail as any)?.value as
-        | 'residential'
-        | 'commercial'
-        | 'plots'
-        | 'lands'
-    );
-  }
-
-  // amenities modal
+  // ====================== Amenities
   async openAmenities() {
     const modal = await this.modalCtrl.create({
       component: AmenitiesComponent,
@@ -378,21 +433,19 @@ export class PostentryComponent implements OnInit {
       this.ctrl('amenities').setValue([...data] as never);
     }
   }
-  removeAmenity(index: number) {
+  removeAmenity(i: number) {
     const list = [...this.amenities()];
-    list.splice(index, 1);
+    list.splice(i, 1);
     this.amenities.set(list);
     this.ctrl('amenities').setValue(list as never);
   }
 
-  // location
+  // ====================== Location
   async openLocation() {
     try {
       const perm = await Geolocation.requestPermissions();
-      if (perm.location === 'denied') {
-        await this.toast('Location permission denied.', 'danger');
-        return;
-      }
+      if (perm.location === 'denied')
+        return this.toast('Location permission denied.', 'danger');
       const { coords } = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
@@ -414,76 +467,231 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  // images (Uploadcare)
-  @ViewChild('kyc') kyc: UcWidgetComponent | undefined;
-  images: string[] = [];
-  @Input() edit = false;
+  // ====================== Images (max 3)
+  async selectImages(evt: Event) {
+    const input = evt.target as HTMLInputElement | null;
+    const files = Array.from(input?.files ?? []);
+    if (!files.length) return;
 
-  onComplete(event: any): void {
-    if (event?.count && event.count > 10) {
-      this.showError('Images exceed limit. Upload up to 10.');
+    const already = this.existingImageUrls().length + this.newImageFiles.length;
+    if (already + files.length > PostentryComponent.MAX_IMAGES) {
+      this.toast(
+        `Only ${PostentryComponent.MAX_IMAGES} images allowed total.`,
+        'danger'
+      );
+      if (input) input.value = '';
       return;
     }
-    this.kyc?.reset();
-    this.kyc?.clearUploads();
 
-    if (event?.count) {
-      for (let i = 0; i < event.count; i++)
-        this.images.push(event.cdnUrl + '/nth/' + i + '/');
-    } else if (event?.cdnUrl) {
-      this.images.push(event.cdnUrl);
+    this.imgsBusy.set(true);
+    this.pageError.set(null);
+
+    try {
+      let accepted = 0;
+      const newPreviews = [...this.newImagePreviews()];
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        if (!PostentryComponent.ACCEPTED_IMAGES.has(f.type)) {
+          await this.toast(`${f.name}: unsupported type.`, 'danger');
+          continue;
+        }
+        if (f.size > PostentryComponent.MAX_IMAGE_BYTES) {
+          await this.toast(`${f.name}: too large (>6MB).`, 'danger');
+          continue;
+        }
+
+        const dataUrl = await this.fileToDataUrl(f);
+        this.newImageFiles.push(f);
+        newPreviews.push(dataUrl);
+        accepted++;
+        this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
+        await new Promise((r) => setTimeout(r, 6));
+      }
+      this.newImagePreviews.set(newPreviews);
+      if (accepted)
+        this.toast(
+          `Added ${accepted} image${accepted === 1 ? '' : 's'}`,
+          'success'
+        );
+    } catch (e) {
+      this.pageError.set('Failed to add images.');
+      this.toast(this.mapError(e), 'danger');
+    } finally {
+      this.imgsBusy.set(false);
+      this.imgsPct.set(0);
+      if (input) input.value = '';
     }
-    this.postEntryForm.patchValue(
-      { images: this.images },
-      { emitEvent: false }
-    );
-
-    if (2 - this.images.length === 1 && this.kyc)
-      (this.kyc as any).multiple = false;
   }
 
-  removeImg(i: number) {
-    this.images.splice(i, 1);
-    this.postEntryForm.patchValue(
-      { images: this.images },
-      { emitEvent: false }
-    );
+  deleteImageAt(index: number) {
+    const exLen = this.existingImageUrls().length;
+    if (index < exLen) {
+      const next = [...this.existingImageUrls()];
+      next.splice(index, 1);
+      this.existingImageUrls.set(next);
+    } else {
+      const i = index - exLen;
+      const nextPrev = [...this.newImagePreviews()];
+      const nextFiles = [...this.newImageFiles];
+      nextPrev.splice(i, 1);
+      nextFiles.splice(i, 1);
+      this.newImagePreviews.set(nextPrev);
+      this.newImageFiles = nextFiles;
+    }
   }
 
+  private fileToDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onerror = () => reject(new Error('read failed'));
+      fr.onload = () => resolve(String(fr.result || ''));
+      fr.readAsDataURL(file);
+    });
+  }
+
+  // ====================== Video (≤ 20s)
+  async selectVideo(evt: Event) {
+    const input = evt.target as HTMLInputElement | null;
+    const file = (input?.files && input.files[0]) || null;
+    if (!file) return;
+
+    if (!PostentryComponent.ACCEPTED_VIDEOS.has(file.type)) {
+      this.toast('Unsupported video type. Use mp4/webm/mov.', 'danger');
+      if (input) input.value = '';
+      return;
+    }
+    if (file.size > PostentryComponent.MAX_VIDEO_BYTES) {
+      this.toast('Video too large.', 'danger');
+      if (input) input.value = '';
+      return;
+    }
+
+    try {
+      const duration = await this.getVideoDuration(file);
+      if (duration > PostentryComponent.MAX_VIDEO_SECS) {
+        this.toast(
+          `Video longer than ${PostentryComponent.MAX_VIDEO_SECS}s not allowed.`,
+          'danger'
+        );
+        if (input) input.value = '';
+        return;
+      }
+      this.newVideoFile = file;
+      const url = URL.createObjectURL(file);
+      this.newVideoPreview.set(url);
+      await this.toast('Video added', 'success');
+    } catch (e) {
+      this.toast(this.mapError(e), 'danger');
+    } finally {
+      if (input) input.value = '';
+    }
+  }
+
+  deleteVideo() {
+    try {
+      if (this.newVideoPreview()) URL.revokeObjectURL(this.newVideoPreview()!);
+    } catch {}
+    this.newVideoFile = null;
+    this.newVideoPreview.set(null);
+    this.existingVideoUrl.set(null);
+  }
+
+  private getVideoDuration(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      try {
+        const url = URL.createObjectURL(file);
+        const v = document.createElement('video');
+        v.preload = 'metadata';
+        v.onloadedmetadata = () => {
+          URL.revokeObjectURL(url);
+          resolve(Number(v.duration || 0));
+        };
+        v.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('Unable to read video metadata.'));
+        };
+        v.src = url;
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  // ====================== Submit (Create / Update)
   async submit() {
     this.pageError.set(null);
+
     if (!navigator.onLine) {
       const msg = 'You appear to be offline. Please check your connection.';
       this.pageError.set(msg);
-      await this.toast(msg, 'danger');
-      return;
+      return this.toast(msg, 'danger');
+    }
+
+    if (this.allImagePreviews().length > PostentryComponent.MAX_IMAGES) {
+      return this.toast(
+        `Only ${PostentryComponent.MAX_IMAGES} images allowed.`,
+        'danger'
+      );
     }
 
     this.loading.set(true);
     try {
       const raw = this.postEntryForm.getRawValue();
-
-      // ensure units are never null in payload
-      const payload: any = {
+      const basePayload: any = {
         ...raw,
-        images: raw.images ?? [],
+        images: [],
+        videoUrl: null,
         amenities: raw.amenities ?? [],
         totalPropertyUnits: raw.totalPropertyUnits || DEFAULT_UNITS,
         sizeBuiltupUnits: raw.sizeBuiltupUnits || DEFAULT_UNITS,
         facingUnits: raw.facingUnits || DEFAULT_UNITS,
         saleType: this.saleTypeSig(),
         category: this.categorySig(),
+        updatedAt: serverTimestamp(),
       };
 
-      if (this.isEdit()) {
-        await this.postsService.update(this.editId as string, payload);
-        await this.toast('Property updated', 'success');
+      let postId = this.editId;
+
+      if (!this.isEdit()) {
+        const colRef = collection(this.afs, 'posts');
+        const docRef = await addDoc(colRef, {
+          ...basePayload,
+          createdAt: serverTimestamp(),
+        });
+        postId = docRef.id;
       } else {
-        await this.postsService.create(payload);
-        await this.toast('Property saved', 'success');
+        const ref = doc(this.afs, 'posts', postId!);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) throw new Error('Post not found.');
       }
 
-      this.resetFormAndUI();
+      // Upload media
+      const uploadedImageUrls = await this.uploadImages(
+        postId!,
+        this.newImageFiles
+      );
+      const videoUrl = await this.uploadVideo(postId!, this.newVideoFile);
+
+      const finalImageUrls = [
+        ...this.existingImageUrls(),
+        ...uploadedImageUrls,
+      ].slice(0, PostentryComponent.MAX_IMAGES);
+
+      const finalVideoUrl = this.existingVideoUrl() ?? videoUrl ?? null;
+
+      const ref = doc(this.afs, 'posts', postId!);
+      await updateDoc(ref, {
+        ...basePayload,
+        images: finalImageUrls,
+        videoUrl: finalVideoUrl,
+      });
+
+      await this.toast(
+        this.isEdit() ? 'Property updated' : 'Property saved',
+        'success'
+      );
+
+      if (!this.isEdit()) this.resetFormAndUI();
     } catch (e) {
       const msg = this.mapError(e);
       this.pageError.set(msg);
@@ -493,57 +701,88 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  async ngOnInit() {
-    // initialize SaleType/Category from @Inputs
-    this.saleTypeSig.set(this.saleType);
-    this.categorySig.set(this.category);
-
-    if (this.editId) {
-      try {
-        this.loading.set(true);
-        const doc = await this.postsService.getById(this.editId);
-        if (doc) {
-          // normalize/migrate legacy fields → current form shape
-          const normalized = this.normalizeDocForForm(doc as any);
-
-          const existingSaleType = (normalized as any).saleType as
-            | 'sale'
-            | 'rent'
-            | undefined;
-          const existingCategory = (normalized as any).category as
-            | 'residential'
-            | 'commercial'
-            | 'plots'
-            | 'lands'
-            | undefined;
-
-          if (existingSaleType) this.saleTypeSig.set(existingSaleType);
-          if (existingCategory) this.categorySig.set(existingCategory);
-
-          this.postEntryForm.patchValue(normalized, { emitEvent: false });
-          this.images = normalized.images ?? [];
-          this.amenities.set(normalized.amenities ?? []);
-        } else {
-          this.pageError.set('Post not found.');
-        }
-      } catch (e) {
-        this.pageError.set(this.mapError(e));
-      } finally {
-        this.loading.set(false);
-      }
-    }
+  private async uploadImages(postId: string, files: File[]): Promise<string[]> {
+    if (!files.length) return [];
+    const urls: string[] = [];
+    await Promise.all(
+      files.map(async (f, i) => {
+        const ext = this.extOf(f.name) || this.extFromType(f.type) || 'jpg';
+        const path = `posts/${postId}/images/${Date.now()}_${i}.${ext}`;
+        const storageRef = ref(this.storage, path);
+        await uploadBytes(storageRef, f);
+        const url = await getDownloadURL(storageRef);
+        urls.push(url);
+      })
+    );
+    return urls;
   }
 
-  private toastr = inject(ToastController);
-  private async showError(msg: string) {
-    const toast = await this.toastr.create({
-      message: msg,
-      position: 'top',
-      color: 'danger',
-      duration: 2000,
+  private async uploadVideo(
+    postId: string,
+    file: File | null
+  ): Promise<string | null> {
+    if (!file) return null;
+    const ext = this.extOf(file.name) || this.extFromType(file.type) || 'mp4';
+    const path = `posts/${postId}/video/${Date.now()}.${ext}`;
+    const storageRef = ref(this.storage, path);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  }
+
+  private extOf(name: string): string | '' {
+    const m = /\.([a-zA-Z0-9]+)$/.exec(name || '');
+    return (m?.[1] || '').toLowerCase();
+  }
+  private extFromType(type: string): string | '' {
+    if (type === 'image/jpeg') return 'jpg';
+    if (type === 'image/png') return 'png';
+    if (type === 'video/mp4') return 'mp4';
+    if (type === 'video/webm') return 'webm';
+    if (type === 'video/quicktime') return 'mov';
+    return '';
+  }
+
+  // =============== Edit hydrate
+  private async hydrateEdit(id: string) {
+    const ref = doc(this.afs, 'posts', id);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) throw new Error('Post not found.');
+
+    const data: any = snap.data();
+    this.saleTypeSig.set((data.saleType as 'sale' | 'rent') || 'sale');
+    this.categorySig.set((data.category as any) || 'residential');
+
+    const imgs = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
+    this.existingImageUrls.set(imgs.slice(0, PostentryComponent.MAX_IMAGES));
+    this.existingVideoUrl.set((data.videoUrl as string) || null);
+
+    this.postEntryForm.patchValue(this.normalizeDocForForm(data), {
+      emitEvent: false,
     });
-    (await this.toastr.getTop())?.dismiss();
-    await toast.present();
+    this.amenities.set((this.ctrl('amenities').value as string[]) ?? []);
+  }
+
+  private normalizeDocForForm(doc: any) {
+    const out: any = { ...doc };
+    out.totalPropertyUnits = (out.totalPropertyUnits as Units) || DEFAULT_UNITS;
+    out.sizeBuiltupUnits =
+      (out.sizeBuiltupUnits as Units) ||
+      out.totalPropertyUnits ||
+      DEFAULT_UNITS;
+
+    const candidateFacingUnit =
+      out.facingUnits ||
+      out.northSizeUnit ||
+      out.southSizeUnit ||
+      out.eastSizeUnit ||
+      out.westSizeUnit;
+    out.facingUnits = (candidateFacingUnit as Units) || DEFAULT_UNITS;
+
+    out.images = Array.isArray(out.images) ? out.images.filter(Boolean) : [];
+    out.amenities = Array.isArray(out.amenities)
+      ? out.amenities.filter(Boolean)
+      : [];
+    return out;
   }
 
   private resetFormAndUI() {
@@ -558,6 +797,7 @@ export class PostentryComponent implements OnInit {
 
         commercialType: null,
         commercialSubType: null,
+        availabilityStatus: null,
         securityDeposit: null,
 
         totalPropertyUnits: DEFAULT_UNITS,
@@ -593,60 +833,66 @@ export class PostentryComponent implements OnInit {
         lng: null,
         description: null,
         negotiable: true,
+
         images: [],
         videoResources: [],
       } as any,
       { emitEvent: false }
     );
 
-    this.amenities.set([]);
-    this.images = [];
-    this.ctrl('images').setValue([] as never, { emitEvent: false });
+    // Clear local media state
+    this.newImageFiles = [];
+    this.newImagePreviews.set([]);
+    this.existingImageUrls.set([]);
+    this.newVideoFile = null;
+    if (this.newVideoPreview()) {
+      try {
+        URL.revokeObjectURL(this.newVideoPreview()!);
+      } catch {}
+    }
+    this.newVideoPreview.set(null);
+    this.existingVideoUrl.set(null);
 
+    // Reset segments
     this.saleTypeSig.set('sale');
     this.categorySig.set('residential');
 
-    this.kyc?.reset();
-    this.kyc?.clearUploads();
+    try {
+      localStorage.removeItem(PostentryComponent.DRAFT_IMG_KEY);
+    } catch {}
   }
 
-  /**
-   * Bring any legacy / inconsistent document into the current form shape.
-   * - backfills default units if missing
-   * - maps old `propertySizeBuiltup` -> `propertySizeBuildUp` (case)
-   * - prefers any existing side-specific units to set shared `facingUnits`
-   */
-  private normalizeDocForForm(doc: any) {
-    const out: any = { ...doc };
+  // Optional: if you add segment UI later
+  saleTypeChanged(ev: CustomEvent) {
+    this.saleTypeSig.set((ev.detail as any)?.value as 'sale' | 'rent');
+  }
+  categoryChanged(ev: CustomEvent) {
+    this.categorySig.set(
+      (ev.detail as any)?.value as
+        | 'residential'
+        | 'commercial'
+        | 'plots'
+        | 'lands'
+    );
+  }
 
-    // Case normalization: some data may have 'propertySizeBuiltup'
-    if (out.propertySizeBuiltup != null && out.propertySizeBuiltup == null) {
-      out.propertySizeBuiltup = out.propertySizeBuiltup;
+  private mapError(err: unknown): string {
+    if (err instanceof FirebaseError) {
+      switch (err.code) {
+        case 'permission-denied':
+          return 'Permission denied. Check Firestore rules.';
+        case 'unauthenticated':
+          return 'You must be signed in.';
+        case 'unavailable':
+          return 'Service unavailable. Try again.';
+        default:
+          return `Firebase error: ${err.code}`;
+      }
     }
-
-    // Default units if missing
-    out.totalPropertyUnits = (out.totalPropertyUnits as Units) || DEFAULT_UNITS;
-    out.sizeBuiltupUnits =
-      (out.sizeBuiltupUnits as Units) ||
-      out.totalPropertyUnits ||
-      DEFAULT_UNITS;
-
-    // If the doc has per-side unit fields, pick one to seed facingUnits; else keep what's present or default
-    const candidateFacingUnit =
-      out.northSizeUnit ||
-      out.southSizeUnit ||
-      out.eastSizeUnit ||
-      out.westSizeUnit ||
-      out.facingUnits;
-
-    out.facingUnits = (candidateFacingUnit as Units) || DEFAULT_UNITS;
-
-    // Clean images / amenities
-    out.images = Array.isArray(out.images) ? out.images.filter(Boolean) : [];
-    out.amenities = Array.isArray(out.amenities)
-      ? out.amenities.filter(Boolean)
-      : [];
-
-    return out;
+    const any = err as any;
+    const msg = any?.error?.message || any?.message || 'Unexpected error.';
+    if (!navigator.onLine)
+      return 'You appear to be offline. Please check your connection.';
+    return msg;
   }
 }
