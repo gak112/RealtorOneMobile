@@ -3,11 +3,17 @@ ion-title {
   padding-left: 40px !important;
 }
 
-.edit-agent {
+.div-buttons {
+  display: flex;
+  gap: 10px;
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+  align-items: center;
+}
+
+.edit-agent {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;

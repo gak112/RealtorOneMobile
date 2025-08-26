@@ -1,6 +1,6 @@
 import {  NgIf } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
-import { IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { register } from 'swiper/element';
 register();
 
@@ -9,7 +9,7 @@ register();
   templateUrl: './ventureflatdetails.component.html',
   styleUrls: ['./ventureflatdetails.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonImg,NgIf,IonLabel,],
+  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonImg,NgIf,IonLabel],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers:[ModalController],
 })

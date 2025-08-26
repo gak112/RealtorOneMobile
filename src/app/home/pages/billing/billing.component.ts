@@ -1,7 +1,7 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonButton, IonContent, IonFooter, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController, NavController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController, NavController } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { UpgradeplanComponent } from 'src/app/home/pages/upgradeplan/upgradeplan.component';
 
@@ -10,7 +10,7 @@ import { UpgradeplanComponent } from 'src/app/home/pages/upgradeplan/upgradeplan
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonImg,NgIf,NgFor,IonLabel,IonButton,IonFooter],
+  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonImg,IonLabel,IonButton],
   providers:[ModalController],
 })
 export class BillingComponent  implements OnInit {

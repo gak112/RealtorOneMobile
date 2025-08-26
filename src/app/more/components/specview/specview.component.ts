@@ -1,10 +1,9 @@
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   ModalController,
   IonLabel,
-  IonIcon,
-  IonButton,
+  IonIcon
 } from '@ionic/angular/standalone';
 import {
   SpecificationsComponent,
@@ -22,7 +21,7 @@ import { create, trashOutline } from 'ionicons/icons';
   templateUrl: './specview.component.html',
   styleUrls: ['./specview.component.scss'],
   standalone: true,
-  imports: [IonButton, IonIcon, IonLabel, NgFor],
+  imports: [IonIcon, IonLabel],
   providers: [ModalController],
 })
 export class SpecviewComponent implements OnInit {

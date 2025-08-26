@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 
@@ -8,7 +8,7 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './termsandconditions.component.html',
   styleUrls: ['./termsandconditions.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonLabel,],
+  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonLabel],
   providers:[ModalController],
 })
 

@@ -62,6 +62,7 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+      @if (user.agent) {
       <div class="div-icon-name" (click)="goToAgentProfile()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
@@ -69,6 +70,7 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+      }
       <div class="div-icon-name" (click)="goToBilling()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>

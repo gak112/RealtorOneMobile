@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -12,7 +12,7 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './contactus.component.html',
   styleUrls: ['./contactus.component.scss'],
   standalone: true,
-  imports: [IonFooter, IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,IonInput,FormsModule,IonButton,NgIf,],
+  imports: [IonFooter, IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonInput,FormsModule,IonButton,NgIf],
 })
 export class ContactusComponent implements OnInit {
 

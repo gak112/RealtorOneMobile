@@ -9,8 +9,9 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+
 import { FirebaseError } from '@angular/fire/app';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -33,9 +34,11 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
 import {
   add,
+  arrowForwardOutline,
   caretDownOutline,
   caretUpOutline,
   chevronBackOutline,
@@ -52,7 +55,10 @@ import {
   getDoc,
   serverTimestamp,
   updateDoc,
+  setDoc,
+  deleteDoc,
 } from '@angular/fire/firestore';
+
 import {
   Storage,
   ref,
@@ -67,6 +73,10 @@ import {
   forwardEnterAnimation,
 } from 'src/app/services/animation';
 
+/* ===========================================================
+   Types & Constants
+   =========================================================== */
+
 type HouseType =
   | 'Apartment'
   | 'Individual House/Villa'
@@ -75,7 +85,9 @@ type HouseType =
   | 'Service Apartment'
   | 'Other'
   | '';
+
 type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
+
 type Units =
   | 'Sq Feet'
   | 'Sq Yard'
@@ -84,8 +96,15 @@ type Units =
   | 'Feet'
   | 'Yard'
   | 'Mtr';
+
 type RentType = 'Monthly' | 'Yearly';
 type FurnishingType = 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished';
+type HouseFacingType =
+  | 'North Facing'
+  | 'South Facing'
+  | 'East Facing'
+  | 'West Facing';
+
 type CommercialType =
   | 'Retail'
   | 'Office'
@@ -95,26 +114,33 @@ type CommercialType =
   | 'Hospitality'
   | 'Land'
   | 'Other';
-type CommercialSubType = 'Complex' | 'Individual';
+
+// HTML uses value "Shopping Mall" while label shows "Complex"
+type CommercialSubType = 'Shopping Mall' | 'Individual';
+
 type AvailabilityStatus = 'Ready to move' | 'Under construction' | null;
+
 const DEFAULT_UNITS: Units = 'Sq Feet';
 
 type PostEntryForm = {
   propertyTitle: FormControl<string | null>;
+
   houseType: FormControl<HouseType | null>;
+  houseFacingType: FormControl<HouseFacingType | null>;
   houseCondition: FormControl<'Old Houses' | 'New Houses' | null>;
   rooms: FormControl<number | null>;
   bhkType: FormControl<BHKType | null>;
   furnishingType: FormControl<FurnishingType | null>;
+
   commercialType: FormControl<CommercialType | null>;
   commercialSubType: FormControl<CommercialSubType | null>;
   availabilityStatus: FormControl<AvailabilityStatus | null>;
   securityDeposit: FormControl<number | null>;
 
-  totalPropertyUnits: FormControl<Units | null>;
-  propertySize: FormControl<number | null>;
-  propertySizeBuiltup: FormControl<number | null>;
-  sizeBuiltupUnits: FormControl<Units | null>;
+  plotAreaUnits: FormControl<Units | null>;
+  PlotArea: FormControl<number | null>;
+  builtUpArea: FormControl<number | null>;
+  builtUpAreaUnits: FormControl<Units | null>;
 
   facingUnits: FormControl<Units | null>;
   northFacing: FormControl<string | null>;
@@ -146,7 +172,7 @@ type PostEntryForm = {
   description: FormControl<string | null>;
   negotiable: FormControl<boolean | null>;
 
-  images: FormControl<string[] | null>; // previews (data URLs / remote URLs)
+  images: FormControl<string[] | null>;
   videoResources: FormControl<string[] | null>;
 };
 
@@ -176,24 +202,27 @@ type PostEntryForm = {
   styleUrls: ['./postentry.component.scss'],
 })
 export class PostentryComponent implements OnInit {
-  // DI
+  /* ---------------- DI ---------------- */
   private fb = inject(FormBuilder);
   private modalCtrl = inject(ModalController);
   private nav = inject(NavController);
   private toastCtrl = inject(ToastController);
   private afs = inject(Firestore);
-  private storage = inject(Storage);
+  private storage = inject(Storage, { optional: true }); // optional
 
-  // Inputs
+  /* ---------------- Inputs ---------------- */
   @Input() saleType: 'sale' | 'rent' = 'sale';
-  @Input() category: 'residential' | 'commercial' | 'plots' | 'lands' =
-    'residential';
+  @Input() category:
+    | 'residential'
+    | 'commercial'
+    | 'plots'
+    | 'agriculturalLands' = 'residential';
   @Input() editId: string | null = null;
 
-  // Signals/UI
+  /* ---------------- Signals/UI ---------------- */
   readonly saleTypeSig = signal<'sale' | 'rent'>(this.saleType);
   readonly categorySig = signal<
-    'residential' | 'commercial' | 'plots' | 'lands'
+    'residential' | 'commercial' | 'plots' | 'agriculturalLands'
   >(this.category);
   readonly loading = signal(false);
   readonly pageError = signal<string | null>(null);
@@ -208,11 +237,12 @@ export class PostentryComponent implements OnInit {
     ...Array.from({ length: 40 }, (_, i) => `${i + 1}`),
   ];
 
-  // Form
+  /* ---------------- Form ---------------- */
   postEntryForm = this.fb.group<PostEntryForm>({
-    propertyTitle: this.fb.control<string | null>(''),
+    propertyTitle: this.fb.control<string | null>(null),
 
     houseType: this.fb.control<HouseType | null>(null),
+    houseFacingType: this.fb.control<HouseFacingType | null>(null),
     houseCondition: this.fb.control<'Old Houses' | 'New Houses' | null>(null),
     rooms: this.fb.control<number | null>(null),
     bhkType: this.fb.control<BHKType | null>(null),
@@ -223,10 +253,10 @@ export class PostentryComponent implements OnInit {
     availabilityStatus: this.fb.control<AvailabilityStatus | null>(null),
     securityDeposit: this.fb.control<number | null>(null),
 
-    totalPropertyUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
-    propertySize: this.fb.control<number | null>(null),
-    propertySizeBuiltup: this.fb.control<number | null>(null),
-    sizeBuiltupUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
+    plotAreaUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
+    PlotArea: this.fb.control<number | null>(null),
+    builtUpArea: this.fb.control<number | null>(null),
+    builtUpAreaUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
 
     facingUnits: this.fb.control<Units | null>(DEFAULT_UNITS),
     northFacing: this.fb.control<string | null>(null),
@@ -264,7 +294,7 @@ export class PostentryComponent implements OnInit {
 
   ctrl = (n: keyof PostEntryForm) => this.postEntryForm.controls[n];
 
-  // Convert any control’s valueChanges to a signal (reactive to form updates)
+  // Convert a control’s valueChanges to a signal for template conditionals
   private sel<T>(name: keyof PostEntryForm) {
     const c = this.postEntryForm.controls[name];
     return toSignal(c.valueChanges as unknown as Observable<T>, {
@@ -272,8 +302,8 @@ export class PostentryComponent implements OnInit {
     });
   }
 
-  // Facing units short label
-  readonly facingUnitsSig = this.sel<Units | null>('facingUnits');
+  // Facing unit short label
+  private facingUnitsSig = this.sel<Units | null>('facingUnits');
   readonly unitShort = computed(() => {
     switch (this.facingUnitsSig() || DEFAULT_UNITS) {
       case 'Sq Feet':
@@ -295,27 +325,9 @@ export class PostentryComponent implements OnInit {
     }
   });
 
-  // Amenities chip view (signal mirrors the control via a reactive signal)
+  // Amenities chip view (signal mirrors the control)
   amenities = signal<string[]>([]);
-  private readonly amenitiesCtrlSig = this.sel<string[] | null>('amenities');
-  // ✅ This effect now reacts because it reads a SIGNAL (amenitiesCtrlSig)
-  constructor() {
-    addIcons({
-      chevronBackOutline,
-      cloudUploadOutline,
-      trashOutline,
-      add,
-      caretDownOutline,
-      caretUpOutline,
-      close,
-    });
-
-    effect(() => {
-      this.amenities.set(this.amenitiesCtrlSig() ?? []);
-    });
-  }
-
-  hasAmenities = computed(() => this.amenities().length > 0);
+  private amenitiesCtrlSig = this.sel<string[] | null>('amenities');
 
   // Media limits/types
   static readonly MAX_IMAGES = 3;
@@ -326,80 +338,79 @@ export class PostentryComponent implements OnInit {
     'image/jpg',
   ]);
 
+  static readonly MAX_VIDEO_SECS = 20;
+  static readonly MAX_VIDEO_BYTES = 40 * 1024 * 1024;
   static readonly ACCEPTED_VIDEOS = new Set([
     'video/mp4',
     'video/webm',
     'video/quicktime',
   ]);
-  static readonly MAX_VIDEO_SECS = 20;
-  static readonly MAX_VIDEO_BYTES = 40 * 1024 * 1024;
 
-  readonly MAX_FILES = PostentryComponent.MAX_IMAGES;
-
-  // New selections
+  // Media state
   private newImageFiles: File[] = [];
   private newImagePreviews = signal<string[]>([]);
+  private existingImageUrls = signal<string[]>([]);
+
   private newVideoFile: File | null = null;
   private newVideoPreview = signal<string | null>(null);
-
-  // Existing media (edit mode)
-  private existingImageUrls = signal<string[]>([]);
   private existingVideoUrl = signal<string | null>(null);
 
-  // Previews for UI
-  allImagePreviews = computed(() => [
+  // Previews
+  readonly allImagePreviews = computed(() => [
     ...this.existingImageUrls(),
     ...this.newImagePreviews(),
   ]);
-  videoPreview = computed(
+  readonly videoPreview = computed(
     () => this.newVideoPreview() || this.existingVideoUrl()
   );
 
-  // State
+  // Progress
   imgsBusy = signal(false);
   imgsPct = signal(0);
 
-  // Draft key
-  private static readonly DRAFT_IMG_KEY =
-    'realtorone.postentry.draft.v1.images';
 
-  // Persist draft previews of new images
-  ngOnInit(): void {
-    // init segments
-    this.saleTypeSig.set(this.saleType);
-    this.categorySig.set(this.category);
 
-    if (!this.editId) {
-      try {
-        const raw = localStorage.getItem(PostentryComponent.DRAFT_IMG_KEY);
-        const arr = raw ? (JSON.parse(raw) as string[]) : [];
-        if (Array.isArray(arr) && arr.length)
-          this.newImagePreviews.set(
-            arr.slice(0, PostentryComponent.MAX_IMAGES)
-          );
-      } catch {
-        /* ignore */
-      }
-    } else {
-      this.hydrateEdit(this.editId).catch((e) => {
-        this.pageError.set(this.mapError(e));
-      });
-    }
+  constructor() {
+    addIcons({
+      chevronBackOutline,
+      cloudUploadOutline,
+      trashOutline,
+      add,
+      caretDownOutline,
+      caretUpOutline,
+      close,
+      arrowForwardOutline,
+    });
 
-    // save draft when previews change
+    // Sync amenities signal with form
     effect(() => {
-      try {
-        localStorage.setItem(
-          PostentryComponent.DRAFT_IMG_KEY,
-          JSON.stringify(this.newImagePreviews())
-        );
-      } catch {
-        /* ignore */
-      }
+      this.amenities.set(this.amenitiesCtrlSig() ?? []);
     });
   }
 
-  // ====================== UI helpers
+  /* ---------------- Lifecycle ---------------- */
+  async ngOnInit() {
+    // initialize segments from inputs
+    this.saleTypeSig.set(this.saleType);
+    this.categorySig.set(this.category);
+
+    // Edit mode
+    if (this.editId) {
+      try {
+        await this.hydrateEdit(this.editId);
+      } catch (e) {
+        this.pageError.set(this.mapError(e));
+      }
+    }
+  }
+
+  /* ---------------- UI ---------------- */
+  dismiss() {
+    this.modalCtrl
+      .getTop()
+      .then((m) => (m ? m.dismiss() : this.nav.back()) as void);
+  }
+
   private async toast(
     message: string,
     color: 'danger' | 'warning' | 'success' | 'medium' = 'warning'
@@ -412,13 +423,8 @@ export class PostentryComponent implements OnInit {
     });
     await t.present();
   }
-  dismiss() {
-    this.modalCtrl
-      .getTop()
-      .then((m) => (m ? m.dismiss() : this.nav.back()) as void);
-  }
 
-  // ====================== Amenities
+  /* ---------------- Amenities ---------------- */
   async openAmenities() {
     const modal = await this.modalCtrl.create({
       component: AmenitiesComponent,
@@ -433,6 +439,7 @@ export class PostentryComponent implements OnInit {
       this.ctrl('amenities').setValue([...data] as never);
     }
   }
+
   removeAmenity(i: number) {
     const list = [...this.amenities()];
     list.splice(i, 1);
@@ -440,12 +447,13 @@ export class PostentryComponent implements OnInit {
     this.ctrl('amenities').setValue(list as never);
   }
 
-  // ====================== Location
+  /* ---------------- Location ---------------- */
   async openLocation() {
     try {
       const perm = await Geolocation.requestPermissions();
       if (perm.location === 'denied')
         return this.toast('Location permission denied.', 'danger');
+
       const { coords } = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
@@ -467,7 +475,7 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  // ====================== Images (max 3)
+  /* ---------------- Images ---------------- */
   async selectImages(evt: Event) {
     const input = evt.target as HTMLInputElement | null;
     const files = Array.from(input?.files ?? []);
@@ -488,7 +496,7 @@ export class PostentryComponent implements OnInit {
 
     try {
       let accepted = 0;
-      const newPreviews = [...this.newImagePreviews()];
+      const previews = [...this.newImagePreviews()];
       for (let i = 0; i < files.length; i++) {
         const f = files[i];
         if (!PostentryComponent.ACCEPTED_IMAGES.has(f.type)) {
@@ -499,15 +507,14 @@ export class PostentryComponent implements OnInit {
           await this.toast(`${f.name}: too large (>6MB).`, 'danger');
           continue;
         }
-
         const dataUrl = await this.fileToDataUrl(f);
         this.newImageFiles.push(f);
-        newPreviews.push(dataUrl);
+        previews.push(dataUrl);
         accepted++;
         this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
         await new Promise((r) => setTimeout(r, 6));
       }
-      this.newImagePreviews.set(newPreviews);
+      this.newImagePreviews.set(previews);
       if (accepted)
         this.toast(
           `Added ${accepted} image${accepted === 1 ? '' : 's'}`,
@@ -531,12 +538,12 @@ export class PostentryComponent implements OnInit {
       this.existingImageUrls.set(next);
     } else {
       const i = index - exLen;
-      const nextPrev = [...this.newImagePreviews()];
-      const nextFiles = [...this.newImageFiles];
-      nextPrev.splice(i, 1);
-      nextFiles.splice(i, 1);
-      this.newImagePreviews.set(nextPrev);
-      this.newImageFiles = nextFiles;
+      const p = [...this.newImagePreviews()];
+      const f = [...this.newImageFiles];
+      p.splice(i, 1);
+      f.splice(i, 1);
+      this.newImagePreviews.set(p);
+      this.newImageFiles = f;
     }
   }
 
@@ -549,7 +556,7 @@ export class PostentryComponent implements OnInit {
     });
   }
 
-  // ====================== Video (≤ 20s)
+  /* ---------------- Video ---------------- */
   async selectVideo(evt: Event) {
     const input = evt.target as HTMLInputElement | null;
     const file = (input?.files && input.files[0]) || null;
@@ -577,8 +584,7 @@ export class PostentryComponent implements OnInit {
         return;
       }
       this.newVideoFile = file;
-      const url = URL.createObjectURL(file);
-      this.newVideoPreview.set(url);
+      this.newVideoPreview.set(URL.createObjectURL(file));
       await this.toast('Video added', 'success');
     } catch (e) {
       this.toast(this.mapError(e), 'danger');
@@ -617,7 +623,7 @@ export class PostentryComponent implements OnInit {
     });
   }
 
-  // ====================== Submit (Create / Update)
+  /* ---------------- Submit ---------------- */
   async submit() {
     this.pageError.set(null);
 
@@ -637,17 +643,74 @@ export class PostentryComponent implements OnInit {
     this.loading.set(true);
     try {
       const raw = this.postEntryForm.getRawValue();
+
+      // Debug logging to check all form values
+      console.log('Complete form values:', raw);
+
       const basePayload: any = {
-        ...raw,
+        // Basic property information
+        propertyTitle: raw.propertyTitle,
+        description: raw.description,
+        addressOfProperty: raw.addressOfProperty,
+        lat: raw.lat,
+        lng: raw.lng,
+
+        // Property type and category
+        houseType: raw.houseType,
+        houseFacingType: raw.houseFacingType,
+        houseCondition: raw.houseCondition,
+        commercialType: raw.commercialType,
+        commercialSubType: raw.commercialSubType,
+        availabilityStatus: raw.availabilityStatus,
+
+        // Property details
+        rooms: raw.rooms,
+        bhkType: raw.bhkType,
+        furnishingType: raw.furnishingType,
+        toilets: raw.toilets,
+        poojaRoom: raw.poojaRoom,
+        livingDining: raw.livingDining,
+        kitchen: raw.kitchen,
+        floor: raw.floor,
+
+        // Area measurements
+        plotAreaUnits: raw.plotAreaUnits || DEFAULT_UNITS,
+        PlotArea: raw.PlotArea,
+        builtUpArea: raw.builtUpArea,
+        builtUpAreaUnits: raw.builtUpAreaUnits || DEFAULT_UNITS,
+
+        // Facing measurements - all 8 facing fields
+        facingUnits: raw.facingUnits || DEFAULT_UNITS,
+        northFacing: raw.northFacing,
+        northSize: raw.northSize,
+        southFacing: raw.southFacing,
+        southSize: raw.southSize,
+        eastFacing: raw.eastFacing,
+        eastSize: raw.eastSize,
+        westFacing: raw.westFacing,
+        westSize: raw.westSize,
+
+        // Property features
+        amenities: raw.amenities ?? [],
+        ageOfProperty: raw.ageOfProperty,
+        negotiable: raw.negotiable,
+        securityDeposit: raw.securityDeposit,
+
+        // Pricing
+        priceOfSale: raw.priceOfSale,
+        priceOfRent: raw.priceOfRent,
+        priceOfRentType: raw.priceOfRentType,
+
+        // Media fields (will be populated after upload)
         images: [],
         videoUrl: null,
-        amenities: raw.amenities ?? [],
-        totalPropertyUnits: raw.totalPropertyUnits || DEFAULT_UNITS,
-        sizeBuiltupUnits: raw.sizeBuiltupUnits || DEFAULT_UNITS,
-        facingUnits: raw.facingUnits || DEFAULT_UNITS,
+        videoResources: raw.videoResources,
+
+        // Metadata
         saleType: this.saleTypeSig(),
         category: this.categorySig(),
         updatedAt: serverTimestamp(),
+        isDeleted: false,
       };
 
       let postId = this.editId;
@@ -665,19 +728,30 @@ export class PostentryComponent implements OnInit {
         if (!snap.exists()) throw new Error('Post not found.');
       }
 
-      // Upload media
-      const uploadedImageUrls = await this.uploadImages(
-        postId!,
-        this.newImageFiles
-      );
-      const videoUrl = await this.uploadVideo(postId!, this.newVideoFile);
+      // Upload media if Storage configured
+      let uploadedImageUrls: string[] = [];
+      let uploadedVideoUrl: string | null = null;
+
+      if (!this.storage) {
+        if (this.newImageFiles.length || this.newVideoFile) {
+          await this.toast(
+            'Uploads skipped: Firebase Storage not configured.',
+            'warning'
+          );
+        }
+      } else {
+        uploadedImageUrls = await this.uploadImages(
+          postId!,
+          this.newImageFiles
+        );
+        uploadedVideoUrl = await this.uploadVideo(postId!, this.newVideoFile);
+      }
 
       const finalImageUrls = [
         ...this.existingImageUrls(),
         ...uploadedImageUrls,
       ].slice(0, PostentryComponent.MAX_IMAGES);
-
-      const finalVideoUrl = this.existingVideoUrl() ?? videoUrl ?? null;
+      const finalVideoUrl = this.existingVideoUrl() ?? uploadedVideoUrl ?? null;
 
       const ref = doc(this.afs, 'posts', postId!);
       await updateDoc(ref, {
@@ -690,8 +764,7 @@ export class PostentryComponent implements OnInit {
         this.isEdit() ? 'Property updated' : 'Property saved',
         'success'
       );
-
-      if (!this.isEdit()) this.resetFormAndUI();
+      if (!this.isEdit()) await this.resetFormAndUI();
     } catch (e) {
       const msg = this.mapError(e);
       this.pageError.set(msg);
@@ -701,8 +774,9 @@ export class PostentryComponent implements OnInit {
     }
   }
 
+  /* ---------------- Upload helpers ---------------- */
   private async uploadImages(postId: string, files: File[]): Promise<string[]> {
-    if (!files.length) return [];
+    if (!files.length || !this.storage) return [];
     const urls: string[] = [];
     await Promise.all(
       files.map(async (f, i) => {
@@ -721,7 +795,7 @@ export class PostentryComponent implements OnInit {
     postId: string,
     file: File | null
   ): Promise<string | null> {
-    if (!file) return null;
+    if (!file || !this.storage) return null;
     const ext = this.extOf(file.name) || this.extFromType(file.type) || 'mp4';
     const path = `posts/${postId}/video/${Date.now()}.${ext}`;
     const storageRef = ref(this.storage, path);
@@ -742,13 +816,14 @@ export class PostentryComponent implements OnInit {
     return '';
   }
 
-  // =============== Edit hydrate
+  /* ---------------- Edit hydrate ---------------- */
   private async hydrateEdit(id: string) {
     const ref = doc(this.afs, 'posts', id);
     const snap = await getDoc(ref);
     if (!snap.exists()) throw new Error('Post not found.');
 
     const data: any = snap.data();
+
     this.saleTypeSig.set((data.saleType as 'sale' | 'rent') || 'sale');
     this.categorySig.set((data.category as any) || 'residential');
 
@@ -764,11 +839,9 @@ export class PostentryComponent implements OnInit {
 
   private normalizeDocForForm(doc: any) {
     const out: any = { ...doc };
-    out.totalPropertyUnits = (out.totalPropertyUnits as Units) || DEFAULT_UNITS;
-    out.sizeBuiltupUnits =
-      (out.sizeBuiltupUnits as Units) ||
-      out.totalPropertyUnits ||
-      DEFAULT_UNITS;
+    out.plotAreaUnits = (out.plotAreaUnits as Units) || DEFAULT_UNITS;
+    out.builtUpAreaUnits =
+      (out.builtUpAreaUnits as Units) || out.plotAreaUnits || DEFAULT_UNITS;
 
     const candidateFacingUnit =
       out.facingUnits ||
@@ -785,11 +858,12 @@ export class PostentryComponent implements OnInit {
     return out;
   }
 
-  private resetFormAndUI() {
+  private async resetFormAndUI() {
     this.postEntryForm.reset(
       {
-        propertyTitle: '',
+        propertyTitle: null,
         houseType: null,
+        houseFacingType: null,
         houseCondition: null,
         rooms: null,
         bhkType: null,
@@ -800,10 +874,10 @@ export class PostentryComponent implements OnInit {
         availabilityStatus: null,
         securityDeposit: null,
 
-        totalPropertyUnits: DEFAULT_UNITS,
-        propertySize: null,
-        propertySizeBuiltup: null,
-        sizeBuiltupUnits: DEFAULT_UNITS,
+        plotAreaUnits: DEFAULT_UNITS,
+        PlotArea: null,
+        builtUpArea: null,
+        builtUpAreaUnits: DEFAULT_UNITS,
 
         facingUnits: DEFAULT_UNITS,
         northFacing: null,
@@ -831,6 +905,7 @@ export class PostentryComponent implements OnInit {
         addressOfProperty: null,
         lat: null,
         lng: null,
+
         description: null,
         negotiable: true,
 
@@ -840,16 +915,17 @@ export class PostentryComponent implements OnInit {
       { emitEvent: false }
     );
 
-    // Clear local media state
+    // Clear media
     this.newImageFiles = [];
     this.newImagePreviews.set([]);
     this.existingImageUrls.set([]);
-    this.newVideoFile = null;
+
     if (this.newVideoPreview()) {
       try {
         URL.revokeObjectURL(this.newVideoPreview()!);
       } catch {}
     }
+    this.newVideoFile = null;
     this.newVideoPreview.set(null);
     this.existingVideoUrl.set(null);
 
@@ -857,25 +933,12 @@ export class PostentryComponent implements OnInit {
     this.saleTypeSig.set('sale');
     this.categorySig.set('residential');
 
-    try {
-      localStorage.removeItem(PostentryComponent.DRAFT_IMG_KEY);
-    } catch {}
+
   }
 
-  // Optional: if you add segment UI later
-  saleTypeChanged(ev: CustomEvent) {
-    this.saleTypeSig.set((ev.detail as any)?.value as 'sale' | 'rent');
-  }
-  categoryChanged(ev: CustomEvent) {
-    this.categorySig.set(
-      (ev.detail as any)?.value as
-        | 'residential'
-        | 'commercial'
-        | 'plots'
-        | 'lands'
-    );
-  }
 
+
+  /* ---------------- Errors ---------------- */
   private mapError(err: unknown): string {
     if (err instanceof FirebaseError) {
       switch (err.code) {

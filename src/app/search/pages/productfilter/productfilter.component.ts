@@ -22,7 +22,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 
 export type Filters = {
-  category?: 'residential' | 'commercial' | 'plots' | 'lands';
+  category?: 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
   saleType?: 'sale' | 'rent';
   priceMin?: number | null;
   priceMax?: number | null;
@@ -66,7 +66,10 @@ export class ProductfilterComponent implements OnInit {
   houseTypeOptions = [
     'Apartment',
     'Individual House/Villa',
-    'Gated Community Villa',
+    'Independent / Builder Floor',
+    'Farm House',
+    'Service Apartment',
+    'Other',
   ];
   bhkOptions = ['1BHK', '2BHK', '3BHK', '4BHK', '5BHK', '+5BHK'];
 
@@ -92,7 +95,7 @@ export class ProductfilterComponent implements OnInit {
       ? 'Commercial'
       : c === 'plots'
       ? 'Plots'
-      : c === 'lands'
+      : c === 'agriculturalLands'
       ? 'Lands'
       : 'Residential';
   });
@@ -101,7 +104,7 @@ export class ProductfilterComponent implements OnInit {
     const c = this.category() ?? 'residential';
     if (c === 'commercial') return 'tertiary';
     if (c === 'plots') return 'warning';
-    if (c === 'lands') return 'danger';
+    if (c === 'agriculturalLands') return 'danger';
     return 'primary';
   }
 

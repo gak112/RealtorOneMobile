@@ -197,17 +197,17 @@ function toSavedPayload(p: IProperty): SavedDocPayload {
       | 'residential'
       | 'commercial'
       | 'plots'
-      | 'lands',
+      | 'agriculturalLands',
     priceOfSale: Number(p.priceOfSale ?? 0),
     priceOfRent: Number(p.priceOfRent ?? 0),
     priceOfRentType: p.priceOfRentType ?? undefined,
     houseType: p.houseType ?? '',
     bhkType: p.bhkType ?? '',
-    propertySize:
-      (typeof p.propertySize === 'number'
-        ? p.propertySize
-        : Number(p.propertySize)) || 0,
-    propertyStatus: p.propertyStatus ?? 'Available',
+    PlotArea:
+      (typeof p.PlotArea === 'number'
+        ? p.PlotArea
+        : Number(p.PlotArea)) || 0,
+    availabilityStatus: p.availabilityStatus ?? '—',
     agentName: p.agentName ?? '',
     propertyId: p.propertyId ?? p.id,
     floor: p.floor ?? undefined,

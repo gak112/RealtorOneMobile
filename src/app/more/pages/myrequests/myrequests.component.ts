@@ -32,13 +32,10 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { PostsService } from 'src/app/more/services/posts.service';
-import {
-  MyPropertyCardComponent,
-  IProperty,
-  IPropertyImage,
-} from '../../components/my-property-card/my-property-card.component';
+import { MyPropertyCardComponent } from '../../components/my-property-card/my-property-card.component';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { IPropertyImage } from 'src/app/models/property.model';
 
 type PostPayload = any; // your PostRequest-like shape
 
@@ -124,7 +121,7 @@ export class MyrequestsComponent implements OnInit {
     const price = Number(rawPrice) || 0;
 
     // Sizes formatted as strings
-    const size = d.propertySize ?? '—';
+    const size = d.PlotArea ?? '—';
     const sizeStr = String(size);
 
     return {
@@ -137,27 +134,27 @@ export class MyrequestsComponent implements OnInit {
       priceOfRentType: String(d.priceOfRentType ?? '—'),
       addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
+      houseFacingType: String(d.houseFacingType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
-      propertySize: Number(d.propertySize ?? 0),
+      PlotArea: Number(d.PlotArea ?? 0),
       propertyImages,
       saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
       category: String(d.category ?? 'residential') as
         | 'residential'
         | 'commercial'
         | 'plots'
-        | 'lands',
+        | 'agriculturalLands',
       agentName: String(d.agentName ?? '—'),
       propertyId: String(d.propertyId ?? id),
       commercialType: String(d.commercialType ?? '—'),
       floor: String(d.floor ?? '—'),
-      propertyStatus: String(d.propertyStatus ?? 'Available'),
       houseCondition: String(d.houseCondition ?? '—'),
       rooms: Number(d.rooms ?? 0),
       furnishingType: String(d.furnishingType ?? '—'),
       commercialSubType: String(d.commercialSubType ?? '—'),
       securityDeposit: Number(d.securityDeposit ?? 0),
-      propertySizeBuiltup: Number(d.propertySizeBuiltup ?? 0),
-      sizeBuiltupUnits: String(d.sizeBuiltupUnits ?? '—'),
+      builtUpArea: Number(d.builtUpArea ?? 0),
+      builtUpAreaUnits: String(d.builtUpAreaUnits ?? '—'),
       northFacing: String(d.northFacing ?? '—'),
       northSize: Number(d.northSize ?? 0),
       southFacing: String(d.southFacing ?? '—'),
@@ -185,13 +182,13 @@ export class MyrequestsComponent implements OnInit {
       isDeleted: Boolean(d.isDeleted ?? false),
       deletedBy: String(d.deletedBy ?? '—'),
       deletedAt: d.deletedAt,
-      status: String(d.status ?? 'Available'),
       fullSearchText: Array.isArray(d.fullSearchText) ? d.fullSearchText : [],
-      totalPropertyUnits: String(d.totalPropertyUnits ?? '—'),
+      plotAreaUnits: String(d.plotAreaUnits ?? '—'),
       facingUnits: String(d.facingUnits ?? '—'),
       lat: Number(d.lat ?? 0),
       lng: Number(d.lng ?? 0),
       description: String(d.description ?? '—'),
+      availabilityStatus: String(d.availabilityStatus ?? '-'),
     };
   };
 }
@@ -205,8 +202,9 @@ type PostDoc = {
   category?: string;
   addressOfProperty?: string;
   houseType?: string;
+  houseFacingType?: string;
   bhkType?: string;
-  propertySize?: number | string;
+  PlotArea?: number | string;
   agentName?: string;
   propertyId?: string;
   propertyStatus?: string;
@@ -221,8 +219,8 @@ type PostDoc = {
   furnishingType?: string;
   commercialSubType?: string;
   securityDeposit?: number;
-  propertySizeBuiltup?: number;
-  sizeBuiltupUnits?: string;
+  builtUpArea?: number;
+  builtUpAreaUnits?: string;
   northFacing?: string;
   northSize?: number;
   southFacing?: string;
@@ -250,8 +248,9 @@ type PostDoc = {
   deletedAt?: any;
   status?: string;
   fullSearchText?: string[];
-  totalPropertyUnits?: string;
+  plotAreaUnits?: string;
   facingUnits?: string;
+  availabilityStatus?: string;
 
   createdAt?: any;
   updatedAt?: any;

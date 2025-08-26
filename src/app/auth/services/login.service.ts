@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, map } from 'rxjs';
-import { AuthService } from './auth.service';
 import { IUser } from '../models/user.model';
 import { generateSecureCode } from 'src/app/utils/secure.code';
 import { buildRealtorUser } from 'src/app/utils/user.builder';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
@@ -33,7 +33,7 @@ export class LoginService {
       uid,
       fullName,
       phone: normalized,
-      loginEmail
+      loginEmail,
     });
     console.log(user);
 

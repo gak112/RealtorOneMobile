@@ -1,107 +1,65 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
+import { of } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
+import { IUser } from '../auth/models/user.model';
 
-export type Session = {
-  id: string;
-  token: string;
-  expiresAt: string; // ISO
-};
-
-export type UserProfile = {
-  id: string;           // simple demo id
-  fullName: string;
-  phone: string;        // 10-digit
-  role: 'normal' | 'admin';
-};
-
-type PersistShape = {
-  user: UserProfile | null;
-  session: Session | null;
-};
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private LS_KEY = 'realtorone_auth_v1';
+  private afAuth = inject(AngularFireAuth);
+  private afs = inject(AngularFirestore);
+  private router = inject(Router);
 
-  private _user = signal<UserProfile | null>(null);
-  private _session = signal<Session | null>(null);
+  user$ = this.afAuth.authState.pipe(
+    switchMap((user) =>
+      user ? this.afs.doc<IUser>(`users/${user.uid}`).valueChanges() : of(null)
+    ),
+    catchError((error) => {
+      console.error('Error fetching user data:', error);
+      return of(null);
+    }),
 
-  /** pending (pre-otp) info */
-  private _pendingPhone = signal<string | null>(null);
-  private _pendingName = signal<string | null>(null);
+    shareReplay(1)
+  );
 
-  /** public signals */
-  currentUser = computed(() => this._user());
-  currentSession = computed(() => this._session());
-  isAuthenticated = computed(() => !!this._user() && !!this._session());
-  user$: any;
-
-  constructor() {
-    this.hydrateFromStorage();
+  login(email: string, password: string) {
+    return this.afAuth.signInWithEmailAndPassword(email, password);
   }
 
-  /** Before OTP, remember phone/name so you can prefill or analytics */
-  setPendingPhone(phone10: string, fullName: string) {
-    this._pendingPhone.set(this.normalizePhone(phone10));
-    this._pendingName.set(fullName.trim());
+  async logout() {
+    await this.afAuth.signOut();
+    await this.router.navigateByUrl('/auth');
   }
 
-  /** Call right after OTP modal returns success */
-  finalizeLogin(opts: { phone: string; fullName: string; session: Session }) {
-    const phone = this.normalizePhone(opts.phone);
-    const user: UserProfile = {
-      id: `user_${phone.slice(-6)}`,
-      fullName: opts.fullName.trim(),
-      phone,
-      role: 'normal',
-    };
-    this._user.set(user);
-    this._session.set(opts.session);
-    this._pendingPhone.set(null);
-    this._pendingName.set(null);
-    this.persist();
+  async register(email: string, password: string) {
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  signOut() {
-    this._user.set(null);
-    this._session.set(null);
-    this._pendingPhone.set(null);
-    this._pendingName.set(null);
-    try { localStorage.removeItem(this.LS_KEY); } catch {}
-  }
-
-  /** Helpers */
-  private hydrateFromStorage() {
-    try {
-      const raw = localStorage.getItem(this.LS_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as PersistShape;
-
-      // basic sanity checks
-      if (parsed?.user && parsed?.session) {
-        this._user.set(parsed.user);
-        this._session.set(parsed.session);
-
-        // auto signout if expired
-        const exp = Date.parse(parsed.session.expiresAt);
-        if (Number.isFinite(exp) && Date.now() > exp) {
-          this.signOut();
+  async deleteUser() {
+    return this.afAuth.currentUser
+      .then((user) => {
+        if (user) {
+          return user.delete();
+        } else {
+          throw new Error('No user is currently signed in.');
         }
-      }
-    } catch {
-      // ignore corrupt storage
-    }
-  }
-
-  private persist() {
-    const data: PersistShape = { user: this._user(), session: this._session() };
-    try {
-      localStorage.setItem(this.LS_KEY, JSON.stringify(data));
-    } catch {
-      // storage might be full/blocked; ignore for demo
-    }
-  }
-
-  private normalizePhone(p: string) {
-    return String(p).replace(/\D+/g, '').slice(-10);
+      })
+      .catch((error) => {
+        console.error('Error deleting user:', error);
+        throw error;
+      });
   }
 }

@@ -1,68 +1,90 @@
-<ion-item-sliding #slider appLongPress (longPress)="selectMessage()">
-  <!--[style.background-color]="
+<ion-item-sliding
+  #slider
+  appLongPress
+  [duration]="1000"
+  [canSelectMessages]="canSelectMessages()"
+  (longPress)="selectMessage()"
+  [style.background-color]="
     selectedMessage()?.id === message().id ? 'rgb(59 89 152 / 40%)' : null
-  "-->
-
-  <ion-icon name="close-circle" style="
+  "
+>
+  @if(selectedMessage()?.id === message().id){
+  <ion-icon
+    (click)="selectedMessage.set(null)"
+    name="close-circle"
+    style="
       position: absolute;
       top: 8px;
       right: 4px;
       z-index: 10;
       font-size: 24px;
       color: gray;
-    "></ion-icon>
-
-  <ion-item style="
+    "
+  ></ion-icon>
+  }
+  <ion-item
+    style="
       --background: transparent;
       --inner-border-width: 0;
       --padding-start: 0;
       --inner-padding-end: 0;
       width: 80%;
       position: relative;
-    ">
+    "
+  >
     <div class="left-flex">
-      <!-- @if(isGroupChat()){
-      <ion-img [src]="'assets/img/noimage.avif'" class="ion-img-profile"></ion-img>
-      } -->
+      @if(isGroupChat()){
+      <ion-img
+        [src]="sender()?.photoURL || 'assets/img/noimage.avif'"
+        class="ion-img-profile"
+      ></ion-img>
+      }
       <div class="message received">
-
-        <!-- <ion-label class="p-entertext">
+        @if(message().isDeleted){
+        <ion-label class="p-entertext">
           <ion-icon name="warning-outline"></ion-icon> The message has been
-          deleted</ion-label> -->
-
+          deleted</ion-label
+        >
+        }@else { @if(isGroupChat()){
         <ion-label class="label-user-name">{{
-          'SVN AShok Kumar'
-          }}</ion-label>
-
+          sender()?.fullName || sender()?.firstName + " " + sender()?.lastName
+        }}</ion-label>
+        } @if(message().type === 'reply') {
         <div class="div-img-reply">
+          @let imageUrl = message().replyMessage?.image;
           <div class="div-reply-text1">
             <ion-label class="p-username">{{
-              'SVN AShok Kumar'
-              }}</ion-label>
+              replySender()?.fullName || replySender()?.firstName
+            }}</ion-label>
             <ion-label class="label-reply-text">
-              Hello</ion-label>
-
+              {{ message().replyMessage?.message }}</ion-label
+            >
+            @if(imageUrl) {
             <div class="div-p">
               <ion-icon name="camera"></ion-icon>
               <ion-label class="p-usertext">Photo</ion-label>
             </div>
-
+            }
           </div>
-
+          @if(imageUrl){
           <div class="div-img">
-            <ion-img [src]="'assets/img/noimage.avif'" class="img-reply"></ion-img>
+            <ion-img [src]="imageUrl" class="img-reply"></ion-img>
           </div>
-
+          }
         </div>
-
-        <ion-label class="p-entertext"> Hello</ion-label>
-
-        <ion-img [src]="'assets/img/noimage.avif'" class="img-settings"></ion-img>
-
+        }
+        <ion-label class="p-entertext"> {{ message().message }}</ion-label>
+        @if(message().image){
+        <ion-img
+          (click)="openImage(message().image)"
+          [src]="message().image"
+          class="img-settings"
+        ></ion-img>
+        }
         <span class="metadata">
-          <span class="time">07/08/2025 10:00 AM</span>
+          <span class="time">{{ message().sortDate | date : "h:mm a" }}</span>
         </span>
-
+        }
       </div>
     </div>
   </ion-item>

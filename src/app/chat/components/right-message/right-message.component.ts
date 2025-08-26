@@ -39,7 +39,11 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { ImgfullviewComponent } from 'src/app/more/pages/imgfullview/imgfullview.component';
+import { Message } from 'src/app/models/groups.model';
+import { User } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { ImgfullviewComponent } from 'src/app/shared/pages/imgfullview/imgfullview.component';
+import { LongPressDirective } from 'src/app/utils/long-press.directive';
 @Component({
   selector: 'app-right-message',
   templateUrl: './right-message.component.html',
@@ -53,15 +57,47 @@ import { ImgfullviewComponent } from 'src/app/more/pages/imgfullview/imgfullview
     IonLabel,
     IonItem,
     DatePipe,
+    LongPressDirective,
   ],
 })
 export class RightMessageComponent {
+  private firestore = inject(AngularFirestore);
+  private authService = inject(AuthService);
   private modalController = inject(ModalController);
+  user$ = this.authService.user$;
+  user = toSignal(this.user$);
+
+  message = input.required<Message>();
+  message$ = toObservable(this.message);
+
+  userIds = input<string[]>();
+  otherUserId = computed(
+    () => this.userIds()?.filter((id) => id !== this.user()?.uid)?.[0]
+  );
 
   canSelectMessages = input(false);
+  selectedMessage = model<Message | null>(null);
 
   slider = viewChild<IonItemSliding>('slider');
   slider$ = toObservable(this.slider);
+  onDrag$ = combineLatest([this.slider$, this.message$]).pipe(
+    switchMap(([slider, message]) =>
+      slider
+        ? slider?.ionDrag.pipe(map(() => ({ message, sender: 'me' as const })))
+        : of(null)
+    ),
+    debounceTime(500)
+  );
+  onDragOutput = outputFromObservable(this.onDrag$);
+
+  replySender$ = this.message$.pipe(
+    filter((message) => message.type === 'reply'),
+    map((message) => message.replyMessage?.senderId),
+    switchMap((senderId) =>
+      this.firestore.doc<User>(`users/${senderId}`).valueChanges()
+    )
+  );
+  replySender = toSignal(this.replySender$);
 
   constructor() {
     addIcons({
@@ -73,7 +109,9 @@ export class RightMessageComponent {
     });
   }
 
-  selectMessage() {}
+  selectMessage() {
+    this.selectedMessage.set(this.message());
+  }
 
   async openImage(image: string) {
     const modal = await this.modalController.create({

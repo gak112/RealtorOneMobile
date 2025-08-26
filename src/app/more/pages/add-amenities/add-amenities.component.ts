@@ -16,13 +16,11 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
-  IonImg,
   IonInput,
-  IonLabel,
   IonTextarea,
   IonTitle,
   IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -77,10 +75,8 @@ type Amenity = {
     IonButton,
     IonIcon,
     IonInput,
-    IonTextarea,
-    IonLabel,
-    IonImg,
-  ],
+    IonTextarea
+    ],
   templateUrl: './add-amenities.component.html',
   styleUrls: ['./add-amenities.component.scss'],
 })

@@ -96,8 +96,6 @@ export class AgentService {
     return d ? { id: d.id, ...d.data() } : null;
   }
 
-
-
   async setNormalUser(uid: string, termsVersion = 'v1'): Promise<void> {
     const ref = doc(this.fs, `users/${uid}`);
     const snap = await getDoc(ref);

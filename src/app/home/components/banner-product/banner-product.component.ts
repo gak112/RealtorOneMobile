@@ -61,7 +61,7 @@ export interface IProperty {
   locationCode: string;
   location: string;
   propertyType: string;
-  propertySize: string;
+  PlotArea: string;
   propertySqft: string;
   propertyImages: IPropertyImage[];
   type: string;

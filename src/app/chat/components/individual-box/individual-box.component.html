@@ -1,8 +1,10 @@
 <div class="div-chat-individual" (click)="openChatFullview()">
   <div class="div-chat-img">
-    <!-- <ion-skeleton-text animated style="height: 55px; width: 55px; border-radius: 50%; overflow: hidden"
-      [style.display]="isLoaded() ? 'none' : 'block'"></ion-skeleton-text> -->
-    <ion-img class="img-chat" [src]="'assets/img/noimage.avif'"></ion-img>
+    <ion-skeleton-text animated style="height: 55px; width: 55px; border-radius: 50%; overflow: hidden"
+      [style.display]="isLoaded() ? 'none' : 'block'"></ion-skeleton-text>
+    <ion-img class="img-chat" (ionImgDidLoad)="onImageLoaded($event)"
+      [src]="otherUser()?.photoURL || 'assets/img/noimage.avif'"
+      [style.visibility]="isLoaded() ? 'visible' : 'hidden'"></ion-img>
   </div>
   <div class="div-name-time">
     <div class="div-chat-name">
@@ -12,27 +14,116 @@
           gap: 10px;
           justify-content: space-between;
         ">
-        <ion-label class="p-settings">SVN AShok Kumar</ion-label>
+        <ion-label class="p-settings">{{
+          otherUser()?.fullName || 'Unknown User'
+          }}</ion-label>
         <div class="div-time">
-          <app-chat-timestamp [timestamp]="1723075200" [isUnseen]="true"></app-chat-timestamp>
+          <app-chat-timestamp [isUnseen]="(unSeenMessages()?.length ?? 0) > 0"
+            [timestamp]="lastMessage()?.sortDate ?? 0"></app-chat-timestamp>
         </div>
       </div>
       <div class="div-p-flex">
-        <!-- <ion-icon class="icon-double-tick" name="checkmark-done" style="color: #3880ff"></ion-icon> -->
-        <!-- <ion-icon class="icon-double-tick" name="checkmark" style="color: #777"></ion-icon> -->
-        <!-- <ion-icon name="image" class="icon-double-tick" style="color: var(--color-999)"></ion-icon> -->
-        <ion-label class="p-settings1">Hello</ion-label>
+        @let OtherUserID = otherUser()?.uid;
+        @let tickIconShow = (OtherUserID && lastMessage()?.senderId ===
+        user()?.uid);
+
+        @if(tickIconShow){
+        @if(lastMessage()?.seenBy?.[OtherUserID??'']){
+        <ion-icon class="icon-double-tick" name="checkmark-done" style="color: #3880ff"></ion-icon>
+        }@else {
+        <ion-icon class="icon-double-tick" name="checkmark" style="color: #777"></ion-icon>
+        }} @if(lastMessage()?.image){
+        <ion-icon name="image" class="icon-double-tick" style="color: var(--color-999)"
+          [ngStyle]="{left : tickIconShow ? '22px' : '0px'}"></ion-icon>
+        } @if(lastMessage()?.message){
+        <ion-label class="p-settings1" [ngStyle]="{
+            'text-indent':
+              tickIconShow && lastMessage()?.image
+                ? '46px'
+                : tickIconShow || lastMessage()?.image
+                ? '22px'
+                : '0px'
+          }">{{ lastMessage()?.message }}</ion-label>
+        } @if((unSeenMessages()?.length ?? 0) > 0){
         <div class="p-width">
           <div class="div-no">
-            <ion-label class="p-settings3">1</ion-label>
+            <ion-label class="p-settings3">{{
+              unSeenMessages()?.length
+              }}</ion-label>
           </div>
         </div>
+        }
       </div>
     </div>
   </div>
 </div>
 
+<!-- <ion-item (click)="openChatFullview()">
+  <ion-avatar slot="start">
+    <ion-skeleton-text animated style="       height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    overflow: hidden;" [style.display]="isLoaded() ? 'none' : 'block'"></ion-skeleton-text>
+    <ion-img
+    (ionImgDidLoad)="onImageLoaded($event)"
+      [src]="otherUser()?.photoURL || 'assets/img/noimage.avif'"
+      [style.visibility]="isLoaded() ? 'visible' : 'hidden'"
+     ></ion-img>
+  </ion-avatar>
+  <div class="div-flex">
+    <div class="div-flex1">
+      <ion-label *ngIf="otherUser()?.fullName" class="label-name"
+        >{{ otherUser()?.fullName || otherUser()?.firstName }}
+      </ion-label>
+      <ion-skeleton-text *ngIf="!otherUser()?.fullName" animated style="    height: 20px;
+      width: 85px;
+      overflow: hidden;
+      object-fit: cover;
+      object-position: top;"></ion-skeleton-text>
 
+      <div class="div-flex2">
+        @let OtherUserID = otherUser()?.uid;
+        @if(lastMessage()?.image){
+        <ion-icon name="image"></ion-icon>
+        }
+        @if(OtherUserID && lastMessage()?.senderId === user()?.uid){
+        @if(lastMessage()?.seenBy?.[OtherUserID]){
+        <ion-icon
+          name="checkmark-done"
+          style="margin-right: 5px; color: #3880ff"
+        ></ion-icon>
+        }@else {
+        <ion-icon
+          name="checkmark"
+          style="margin-right: 5px; color: #777"
+        ></ion-icon>
+        }}
+        <span class="span-message" *ngIf="lastMessage()?.message">
+          {{ lastMessage()?.message }}
+        </span>
+        <ion-skeleton-text *ngIf="!lastMessage()?.message" animated style="    height: 18px;
+        width: 85px;
+        overflow: hidden;
+        object-fit: cover;
+        object-position: top;"></ion-skeleton-text>
+      </div>
+    </div>
+    <ion-item
+      style="width: 85px; --inner-padding-end: 0; --background: transparent"
+    >
+      @if(unSeenMessages()?.length){
+      <ion-badge>
+        {{ unSeenMessages()?.length }}
+      </ion-badge>
+      }
+      <span class="span-settings">
+        <app-timestamp-label
+          [timestamp]="lastMessage()?.sortDate ?? 0"
+        ></app-timestamp-label>
+      </span>
+    </ion-item>
+  </div>
+</ion-item> -->
 
 <!-- skeleton-code-start -->
 

@@ -22,7 +22,6 @@ import { environment } from 'src/environments/environment';
 import {
   ActionSheetController,
   IonContent,
-  IonFooter,
   IonHeader,
   IonIcon,
   IonImg,
@@ -37,12 +36,12 @@ import {
   ModalController,
   NavController,
   IonSkeletonText,
-  IonButton,
+  IonButton
 } from '@ionic/angular/standalone';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
 import { IonicModule } from '@ionic/angular';
-import { AsyncPipe, CommonModule, DecimalPipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DecimalPipe } from '@angular/common';
 import { addIcons } from 'ionicons';
 import {
   cameraOutline,
@@ -83,12 +82,10 @@ import { ProfileComponent } from '../profile/profile.component';
     IonImg,
     IonIcon,
     IonLabel,
-    NgIf,
     IonItem,
     IonToggle,
-    IonListHeader,
-    IonFooter,
-  ],
+    IonListHeader
+    ],
   providers: [ModalController],
 })
 export class MoremainComponent implements OnInit {
@@ -215,7 +212,6 @@ export class MoremainComponent implements OnInit {
       component: ProfileComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
-      componentProps: { user: this.user },
     });
     return await modal.present();
   }
@@ -423,6 +419,6 @@ export class MoremainComponent implements OnInit {
 
   logout() {
     // this.auth.logout();
-    this.nav.navigateRoot('/auth');
+    this.nav.navigateRoot('/login');
   }
 }

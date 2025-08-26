@@ -72,6 +72,7 @@ export class MyPropertyCardComponent implements OnInit {
 
   async editProperty() {
     const p = this.property();
+    console.log(p);
     const modal = await this.modalController.create({
       component: PostentryComponent,
       componentProps: {
@@ -136,31 +137,4 @@ export class MyPropertyCardComponent implements OnInit {
     (await this.toastCtrl.getTop())?.dismiss();
     await t.present();
   }
-}
-
-/** Card view model */
-export interface IProperty {
-  id: string;
-  propertyTitle: string;
-  priceOfSale: number | null | undefined;
-  location: string;
-  houseType: string;
-  bhkType: string;
-  propertySize: string | number;
-  totalPropertyUnits: string;
-  propertyImages: IPropertyImage[];
-  agentName: string;
-  propertyId: string;
-  saleType: string; // 'sale' | 'rent' | 'Sale' | 'Rent' (we normalize)
-  propertyStatus: string;
-  category: string;
-  priceOfRent: number | null | undefined;
-  priceOfRentType: string;
-  commercialType: string;
-  floor: string;
-}
-
-export interface IPropertyImage {
-  id: string;
-  image: string;
 }

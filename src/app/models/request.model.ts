@@ -12,6 +12,12 @@ export interface PostRequestForm {
     | 'Other'
     | '';
   houseCondition: 'Old Houses' | 'New Houses' | null;
+  houseFacingType:
+    | 'North Facing'
+    | 'South Facing'
+    | 'East Facing'
+    | 'West Facing'
+    | null;
   rooms: number | null;
   bhkType: '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK' | null;
   facingUnits:
@@ -37,10 +43,10 @@ export interface PostRequestForm {
   commercialSubType: 'complex' | 'individual';
   availabilityStatus: 'Ready to move' | 'Under construction' | null;
   securityDeposit: number | null;
-  propertySize: number | null;
-  totalPropertyUnits: string | null;
-  propertySizeBuiltup: number | null;
-  sizeBuiltupUnits: string | null;
+  PlotArea: number | null;
+  plotAreaUnits: string | null;
+  builtUpArea: number | null;
+  builtUpAreaUnits: string | null;
   northFacing: string | null;
   northSize: number | null;
   southFacing: string | null;
@@ -74,11 +80,10 @@ export interface PostRequestForm {
   isDeleted: boolean;
   deletedBy: string | null;
   deletedAt: Timestamp | FieldValue | null;
-  status: string;
   fullSearchText: string[];
   // ------- extras you add on submit -------
   saleType: 'sale' | 'rent';
-  category: 'residential' | 'commercial' | 'plots' | 'lands';
+  category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
 
   // timestamps are set in service
 }

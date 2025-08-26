@@ -27,7 +27,7 @@
 <ion-content>
   <div>
     <div class="div-main">
-      @if(user) {
+
       <div>
         @if(!user.agent) {
         <div class="div-agent">
@@ -40,7 +40,6 @@
                     Yes
                   </ion-button>
                   <ion-button size="small" color="danger" (click)="no()">No</ion-button>
-                  <!-- <ion-label (click)="openHowITWorks()" class="howit">How It Works?</ion-label> -->
                 </div>
               </div>
             </div>
@@ -49,21 +48,16 @@
         </div>
         }
       </div>
-      }
-
-      <div class="div-heading" style="margin: 16px;">
-        <ion-label>Categories</ion-label>
-      </div>
       <div class="div-categories-list">
         <div class="div-category" (click)="productlist('Residential')">
           <div class="div-img">
-            <ion-img src="assets/img/house2.png" style="background: rgb(12 119 193 / 30%);"></ion-img>
+            <ion-img src="assets/img/residential.png" style="background: rgb(12 119 193 / 30%);"></ion-img>
           </div>
           <ion-label>Residential</ion-label>
         </div>
         <div class="div-category" (click)="productlist('Commercial')">
           <div class="div-img">
-            <ion-img src="assets/img/residential.png" style="background: rgb(66 221 109 / 30%);"></ion-img>
+            <ion-img src="assets/img/commercial.png" style="background: rgb(66 221 109 / 30%);"></ion-img>
           </div>
           <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
         </div>

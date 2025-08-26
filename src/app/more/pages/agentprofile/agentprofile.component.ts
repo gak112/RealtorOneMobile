@@ -20,6 +20,7 @@ import {
   IonTitle,
   ModalController,
   ToastController,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -82,6 +83,7 @@ export class AgentprofileComponent {
   private modalCtrl = inject(ModalController);
   private toastCtrl = inject(ToastController);
   private svc = inject(AgentService);
+  private alertCtrl = inject(AlertController);
 
   // UI state
   loading = signal(true);
@@ -170,6 +172,44 @@ export class AgentprofileComponent {
       } finally {
         this.loading.set(false);
       }
+    }
+  }
+
+  /** Leave Agent → revert user to normal */
+  async leaveAgent() {
+    if (!this.uid) {
+      await this.toast('Missing user id (uid).', 'danger');
+      return;
+    }
+
+    const alert = await this.alertCtrl.create({
+      header: 'Leave Agent?',
+      message:
+        'You will be reverted to a normal user. This action can be re-applied later by becoming an agent again.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Leave',
+          role: 'confirm',
+          handler: () => true,
+        },
+      ],
+    });
+    await alert.present();
+    const r = await alert.onWillDismiss();
+    if (r.role !== 'confirm') return;
+
+    this.loading.set(true);
+    this.pageError.set(null);
+    try {
+      await this.svc.leaveAgent(this.uid()); // <-- implement in AgentService
+      await this.toast('You have left the Agent program.', 'success');
+      await this.dismiss(); // close modal, parent can refresh UI
+    } catch (e: any) {
+      this.pageError.set(e?.message || 'Failed to leave agent.');
+      await this.toast(this.pageError()!, 'danger');
+    } finally {
+      this.loading.set(false);
     }
   }
 }

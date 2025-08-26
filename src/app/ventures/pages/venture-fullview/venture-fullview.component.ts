@@ -10,13 +10,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
   IonButton,
   IonContent,
-  IonHeader,
   IonIcon,
   IonImg,
   IonLabel,
-  IonTitle,
-  IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -50,16 +47,13 @@ register();
   styleUrls: ['./venture-fullview.component.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
     IonIcon,
-    IonTitle,
     IonContent,
     IonImg,
     IonLabel,
     AmentitycardComponent,
     IonButton,
-    HouseFactsFeaturesComponent,
+    HouseFactsFeaturesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ModalController],

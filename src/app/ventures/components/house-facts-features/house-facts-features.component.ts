@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+
 import { Component, input, OnInit } from '@angular/core';
 import { IonLabel } from '@ionic/angular/standalone';
 
@@ -7,7 +7,7 @@ import { IonLabel } from '@ionic/angular/standalone';
   templateUrl: './house-facts-features.component.html',
   styleUrls: ['./house-facts-features.component.scss'],
   standalone: true,
-  imports: [IonLabel, DatePipe],
+  imports: [IonLabel],
 })
 export class HouseFactsFeaturesComponent {
   constructor() {}

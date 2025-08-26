@@ -8,7 +8,7 @@ import { FlatconfigureComponent } from '../../pages/flatconfigure/flatconfigure.
 import { firstValueFrom } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { register } from 'swiper/element';
-import {  NgFor } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 import { serverTimestamp } from '@angular/fire/firestore';
 register();
 
@@ -17,7 +17,7 @@ register();
   templateUrl: './towerflat-box.component.html',
   styleUrls: ['./towerflat-box.component.scss'],
   standalone:true,
-  imports:[IonLabel,IonIcon,IonButton,NgFor,IonImg,],
+  imports:[IonLabel,IonIcon,IonButton,NgIf,NgFor,IonImg,],
   providers:[ModalController],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,14 +1,33 @@
-import { Component, Input, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonCheckbox,
-  IonLabel, IonFooter, IonButton, ToastController, ModalController, AlertController
+  IonHeader,
+  IonToolbar,
+  IonIcon,
+  IonTitle,
+  IonContent,
+  IonCheckbox,
+  IonLabel,
+  IonFooter,
+  IonButton,
+  ToastController,
+  ModalController,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 
 import { AgentBasicDetailsComponent } from '../agent-basic-details/agent-basic-details.component';
-import { forwardEnterAnimation, backwardEnterAnimation } from 'src/app/services/animation';
+import {
+  forwardEnterAnimation,
+  backwardEnterAnimation,
+} from 'src/app/services/animation';
 import { AgentService } from 'src/app/more/services/agent.service';
 
 @Component({
@@ -19,8 +38,15 @@ import { AgentService } from 'src/app/more/services/agent.service';
   styleUrls: ['./agentconfirmation.component.scss'],
   imports: [
     CommonModule,
-    IonHeader, IonToolbar, IonIcon, IonTitle, IonContent,
-    IonCheckbox, IonLabel, IonFooter, IonButton
+    IonHeader,
+    IonToolbar,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonCheckbox,
+    IonLabel,
+    IonFooter,
+    IonButton,
   ],
 })
 export class AgentconfirmationComponent {
@@ -34,7 +60,7 @@ export class AgentconfirmationComponent {
 
   // UI state (signals)
   accepted = signal(false);
-  loading  = signal(false);
+  loading = signal(false);
   pageError = signal<string | null>(null);
 
   constructor() {
@@ -42,12 +68,20 @@ export class AgentconfirmationComponent {
   }
 
   // Utilities
-  private async toast(msg: string, color: 'success'|'warning'|'danger'|'medium'='medium') {
-    const t = await this.toastCtrl.create({ message: msg, duration: 2200, color, position: 'top' });
+  private async toast(
+    msg: string,
+    color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
+  ) {
+    const t = await this.toastCtrl.create({
+      message: msg,
+      duration: 2200,
+      color,
+      position: 'top',
+    });
     await t.present();
   }
 
-  async dismiss(role: 'cancel'|'agent-created'|'agent-left' = 'cancel') {
+  async dismiss(role: 'cancel' | 'agent-created' | 'agent-left' = 'cancel') {
     try {
       const top = await this.modalCtrl.getTop();
       if (top) await top.dismiss(null, role);
@@ -62,7 +96,10 @@ export class AgentconfirmationComponent {
   /** Accept → record T&C + open Agent Basic Details modal */
   async agentConfirmation() {
     if (!this.accepted()) {
-      await this.toast('Please accept the Terms & Conditions to continue.', 'warning');
+      await this.toast(
+        'Please accept the Terms & Conditions to continue.',
+        'warning'
+      );
       return;
     }
     if (!this.uid) {
@@ -95,43 +132,6 @@ export class AgentconfirmationComponent {
       }
     } catch (e: any) {
       this.pageError.set(e?.message || 'Failed to proceed.');
-      await this.toast(this.pageError()!, 'danger');
-    } finally {
-      this.loading.set(false);
-    }
-  }
-
-  /** Leave Agent → revert user to normal */
-  async leaveAgent() {
-    if (!this.uid) {
-      await this.toast('Missing user id (uid).', 'danger');
-      return;
-    }
-
-    const alert = await this.alertCtrl.create({
-      header: 'Leave Agent?',
-      message: 'You will be reverted to a normal user. This action can be re-applied later by becoming an agent again.',
-      buttons: [
-        { text: 'Cancel', role: 'cancel' },
-        {
-          text: 'Leave',
-          role: 'confirm',
-          handler: () => true,
-        }
-      ]
-    });
-    await alert.present();
-    const r = await alert.onWillDismiss();
-    if (r.role !== 'confirm') return;
-
-    this.loading.set(true);
-    this.pageError.set(null);
-    try {
-      await this.svc.leaveAgent(this.uid); // <-- implement in AgentService
-      await this.toast('You have left the Agent program.', 'success');
-      await this.dismiss('agent-left'); // close modal, parent can refresh UI
-    } catch (e: any) {
-      this.pageError.set(e?.message || 'Failed to leave agent.');
       await this.toast(this.pageError()!, 'danger');
     } finally {
       this.loading.set(false);

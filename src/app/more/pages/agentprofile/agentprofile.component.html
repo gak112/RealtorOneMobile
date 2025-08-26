@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
     <ion-title>Agent Profile</ion-title>
-    <ion-button size="small" color="danger" class="edit-agent" (click)="editAgent()">Edit Agent</ion-button>
+    <div class="div-buttons">
+      <ion-button size="small" color="danger" class="leave" (click)="leaveAgent()">Leave Agent</ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -28,7 +30,7 @@
       <ion-label class="label-agent-name">Agent Profile</ion-label>
       <ion-img class="img-profile" [src]="agent()?.photoUrl || 'assets/img/ryan.jpg'"></ion-img>
       <a>
-        <ion-label>Redeem</ion-label>
+        <ion-label (click)="editAgent()">Edit&nbsp;Agent</ion-label>
       </a>
     </div>
 

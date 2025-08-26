@@ -16,7 +16,7 @@
 //     active: boolean;
 //   }
 
-export type CategoryKey = 'residential' | 'commercial' | 'plots' | 'lands';
+export type CategoryKey = 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
 export type SaleType = 'sale' | 'rent';
 export type PropertyType = 'apartment' | 'gated_villa' | 'individual_house';
 export type AgentStatus = 'none' | 'pending' | 'approved' | 'rejected';
@@ -28,6 +28,14 @@ export interface IUser {
   loginEmail: string; // e.g. 9876543210@realtorone.app
   email?: string;
   photoURL?: string;
+
+  // Verification status
+  phone_verified?: boolean;
+  email_verified?: boolean;
+
+  // Additional profile fields
+  dob?: string;
+  gender?: string;
 
   role?: 'user' | 'agent' | 'admin';
   agent?: {

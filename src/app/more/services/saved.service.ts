@@ -20,23 +20,25 @@ import { Observable } from 'rxjs';
 
 /** Payload your UI/components pass in */
 export type SavedDocPayload = {
-  id: string; // property id
+  id: string;
   propertyTitle: string;
   addressOfProperty: string;
   saleType: 'sale' | 'rent';
-  category: 'residential' | 'commercial' | 'plots' | 'lands';
+  category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
   priceOfSale: number;
   priceOfRent: number;
   priceOfRentType?: string;
   houseType: string;
   bhkType: string;
-  propertySize: number | string;
-  propertyStatus: string;
+  PlotArea: number | string;
+  availabilityStatus: string;
   agentName: string;
   propertyId: string;
   floor?: string;
   commercialType?: string;
   propertyImages: { id: string; image: string }[];
+  furnishingType?: string;
+  houseFacingType?: string;
 };
 
 /** Flat collection document stored in Firestore */

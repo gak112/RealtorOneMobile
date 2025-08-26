@@ -118,9 +118,9 @@ export class SavedpropertiesComponent {
     const s = (v ?? '').toLowerCase().trim();
     if (s.startsWith('com')) return 'commercial';
     if (s.startsWith('plot')) return 'plots';
-    if (s.startsWith('land')) return 'lands';
+    if (s.startsWith('land')) return 'agriculturalLands';
     if (s.startsWith('res')) return 'residential';
-    if (['residential', 'commercial', 'plots', 'lands'].includes(s))
+    if (['residential', 'commercial', 'plots', 'agriculturalLands'].includes(s))
       return s as IProperty['category'];
     return 'residential';
   }
@@ -154,7 +154,7 @@ export class SavedpropertiesComponent {
       addressOfProperty: String(d.addressOfProperty ?? '—'),
       houseType: String(d.houseType ?? '—'),
       bhkType: String(d.bhkType ?? '—'),
-      propertySize: this.toNumber(d.propertySize),
+      PlotArea: this.toNumber(d.PlotArea),
       propertyImages: this.toPropertyImages(d),
       saleType: this.normalizeSaleType(d.saleType),
       category: this.normalizeCategory(d.category),
@@ -162,12 +162,13 @@ export class SavedpropertiesComponent {
       propertyId: String(d.propertyId ?? d.id),
       commercialType: String(d.commercialType ?? '—'),
       floor: String(d.floor ?? '—'),
-      propertyStatus: String(d.propertyStatus ?? 'Available'),
+      availabilityStatus: String(d.availabilityStatus ?? '—'),
       createdAt: d.createdAt ?? null,
       updatedAt: d.updatedAt ?? null,
       // optional extras your card may show:
-      totalPropertyUnits: undefined as any, // keep IProperty compatibility if needed
-      furnishingType: undefined as any,
+      plotAreaUnits: undefined as any, // keep IProperty compatibility if needed
+      furnishingType: String(d.furnishingType ?? '—'),
+      houseFacingType: String(d.houseFacingType ?? '—'),
     };
     return prop as IProperty;
   };
@@ -243,18 +244,19 @@ export class SavedpropertiesComponent {
         category: (p.category ?? 'residential') as any,
         priceOfSale: Number(p.priceOfSale ?? 0),
         priceOfRent: Number(p.priceOfRent ?? 0),
-        priceOfRentType: p.priceOfRentType ?? undefined,
+        priceOfRentType: p.priceOfRentType ?? '',
         houseType: p.houseType ?? '',
         bhkType: p.bhkType ?? '',
-        propertySize:
-          (typeof p.propertySize === 'number'
-            ? p.propertySize
-            : Number(p.propertySize)) || 0,
-        propertyStatus: p.propertyStatus ?? 'Available',
+        PlotArea:
+          (typeof p.PlotArea === 'number' ? p.PlotArea : Number(p.PlotArea)) ||
+          0,
+        availabilityStatus: p.availabilityStatus ?? '',
         agentName: p.agentName ?? '',
         propertyId: p.propertyId ?? p.id,
-        floor: p.floor ?? undefined,
-        commercialType: p.commercialType ?? undefined,
+        floor: p.floor ?? '',
+        commercialType: p.commercialType ?? '',
+        furnishingType: p.furnishingType ?? '',
+        houseFacingType: p.houseFacingType ?? '',
         propertyImages: Array.isArray(p.propertyImages)
           ? p.propertyImages.map((img) => ({
               id: String(img.id ?? ''),

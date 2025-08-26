@@ -6,9 +6,8 @@ import {
 } from '@angular/core';
 import {
   IonCard,
-  IonIcon,
   IonImg,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { PropertyviewerslistComponent } from '../../pages/propertyviewerslist/propertyviewerslist.component';
 import {
@@ -21,7 +20,7 @@ import {
   templateUrl: './property-view-card.component.html',
   styleUrls: ['./property-view-card.component.scss'],
   standalone: true,
-  imports: [IonCard, IonIcon, IonImg],
+  imports: [IonCard, IonImg],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PropertyViewCardComponent implements OnInit {

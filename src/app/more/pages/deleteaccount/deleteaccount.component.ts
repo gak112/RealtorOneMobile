@@ -4,9 +4,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 // import { collection } from 'firebase/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { IonContent, IonFooter, IonLabel, ModalController, IonIcon, IonListHeader, IonItem, IonList,
-   IonToggle, IonToolbar, IonTitle, IonImg, IonHeader, IonButton, IonInput } from "@ionic/angular/standalone";
-import { NgIf } from '@angular/common';
+import {
+  IonContent, IonLabel, ModalController,
+  IonToolbar, IonTitle, IonHeader, IonButton
+} from "@ionic/angular/standalone";
+
 import { FormsModule } from '@angular/forms';
 
 
@@ -15,8 +17,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './deleteaccount.component.html',
   styleUrls: ['./deleteaccount.component.scss'],
   standalone: true,
-  imports: [IonButton, IonHeader, IonToolbar, IonListHeader, IonItem, IonList, IonTitle, IonContent,
-      IonLabel, IonImg, IonIcon, IonToggle, IonFooter, NgIf, IonInput, FormsModule ],
+  imports: [IonButton, IonHeader, IonToolbar, IonTitle, IonContent,
+      IonLabel, FormsModule],
   providers: [ModalController]
 })
 export class DeleteaccountComponent {

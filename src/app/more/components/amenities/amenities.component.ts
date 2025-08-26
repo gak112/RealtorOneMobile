@@ -16,12 +16,11 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
   IonLabel,
   IonTitle,
   IonToolbar,
   ModalController,
-  IonSearchbar,
+  IonSearchbar
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -44,11 +43,10 @@ type AmenityVM = AmenityDoc & { selected: boolean };
     IonToolbar,
     IonTitle,
     IonContent,
-    IonImg,
     IonLabel,
     IonCheckbox,
     IonIcon,
-    IonButton,
+    IonButton
   ],
   providers: [ModalController],
 })

@@ -9,28 +9,50 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar style="--min-height: 40px !important;">
+      <ion-title size="large" style="font-size: 34px;letter-spacing: 0px;line-height: 1;">Chats</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-
-  <ion-toolbar style="
+  <ion-toolbar
+    style="
       --padding-start: 0px;
       --padding-end: 0px;
       --min-height: 55px;
       --padding-top: 0;
       --padding-bottom: 0;
-    ">
+    "
+  >
     <!-- <ion-icon class="icon-microphone" name="mic-outline"></ion-icon> -->
-    <ion-searchbar [placeholder]="'Ask Meta AI or Search'"></ion-searchbar>
+    <ion-searchbar
+      [placeholder]="'Ask Meta AI or Search'"
+      [formControl]="searchCtrl"
+    ></ion-searchbar>
   </ion-toolbar>
   <div class="div-tabs">
-    <ion-label [class.active]="chatSegment() === 'all'" (click)="chatSegment.set('all')">All</ion-label>
-    <ion-label [class.active]="chatSegment() === 'unRead'" (click)="chatSegment.set('unRead')">Unread</ion-label>
+    <ion-label
+      [class.active]="chatSegment() === 'all'"
+      (click)="chatSegment.set('all')"
+      >All</ion-label
+    >
+    <ion-label
+      [class.active]="chatSegment() === 'unRead'"
+      (click)="chatSegment.set('unRead')"
+      >Unread</ion-label
+    >
   </div>
   <div class="div-chat-box">
-    @for(i of [1,2,3,4,5,6,7,8,9,10]; track i){
-
-    <app-individual-box></app-individual-box>
+    @for(personalChat of chats(); track $index){
+    <!---->
+    @let show = showChats().includes(personalChat?.id || personalChat?.objectID
+    || '') ;
+    <app-individual-box
+      [style.display]="show ? 'block' : 'none'"
+      [personalChat]="personalChat"
+      (chatData)="chatDataUpdate($event)"
+    ></app-individual-box>
     }
-
   </div>
 </ion-content>
 
@@ -38,12 +60,21 @@
 <ion-header style="display: none">
   <ion-toolbar>
     <div class="div-flex-header">
-      <ion-skeleton-text animated="true" style="width: 35px; height: 35px; border-radius: 50%"></ion-skeleton-text>
+      <ion-skeleton-text
+        animated="true"
+        style="width: 35px; height: 35px; border-radius: 50%"
+      ></ion-skeleton-text>
 
-      <ion-skeleton-text animated="true" style="width: 138px; height: 27px; margin-left: 10px"></ion-skeleton-text>
+      <ion-skeleton-text
+        animated="true"
+        style="width: 138px; height: 27px; margin-left: 10px"
+      ></ion-skeleton-text>
     </div>
     <div class="div-icon" (click)="openNotifications()">
-      <ion-skeleton-text animated="true" style="width: 35px; height: 35px"></ion-skeleton-text>
+      <ion-skeleton-text
+        animated="true"
+        style="width: 35px; height: 35px"
+      ></ion-skeleton-text>
     </div>
   </ion-toolbar>
 </ion-header>

@@ -1,13 +1,13 @@
 import { Component, input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
+import { IonLabel, ModalController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-amentitycard',
   templateUrl: './amentitycard.component.html',
   styleUrls: ['./amentitycard.component.scss'],
   standalone: true,
-  imports: [IonImg, IonLabel],
+  imports: [IonLabel],
   providers: [ModalController],
 })
 export class AmentitycardComponent implements OnInit {

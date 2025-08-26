@@ -19,7 +19,7 @@
   </div>
 
   <!-- Property Information Container -->
-  <div class="info-container">
+  <div class="info-container" (click)="openPropertyDetails()">
     <!-- Main Information Section -->
     <div class="main-info-section">
       <!-- Location Section -->
@@ -44,15 +44,15 @@
         }
         @if(property().category === 'residential'){
         <ion-label class="property-size">
-          {{ property().bhkType }}, {{ property().propertySize }} sqft
+          {{ property().bhkType }}, {{ property().PlotArea }} sqft
         </ion-label>
         }
         @if(property().category === 'commercial'){
         <ion-label class="property-size">
-          {{ property().floor }} floor, {{ property().propertySize }} sqft
+          {{ property().floor }} floor, {{ property().PlotArea }} sqft
         </ion-label>
         }
-        <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
+        <ion-label class="property-status">{{ property().availabilityStatus }}</ion-label>
       </div>
     </div>
 
@@ -80,8 +80,8 @@
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">
-        <ion-label class="footer-label">Property ID</ion-label>
-        <ion-label class="footer-value">{{ property().propertyId }}</ion-label>
+        <ion-label class="footer-label">Furnishing Type</ion-label>
+        <ion-label class="footer-value">{{ property().furnishingType }}</ion-label>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">

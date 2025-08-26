@@ -80,12 +80,15 @@
         <div class="feature-list">
           <ul>
             <li><ion-label><span> House&nbsp;Type&nbsp;: </span>{{ vm()!.houseType }}</ion-label></li>
+            @if(vm()!.houseCondition === 'newHouses') {
             <li><ion-label><span> BHK&nbsp;Type&nbsp;: </span>{{ vm()!.bhkType }}</ion-label></li>
+            }
+            @if(vm()!.houseCondition === 'oldHouses') {
             <li><ion-label><span> Pooja&nbsp;Room&nbsp;: </span>{{ vm()!.poojaRoom }}</ion-label></li>
             <li><ion-label><span> Living/Dining&nbsp;Room&nbsp;: </span>{{ vm()!.livingDining }}</ion-label></li>
             <li><ion-label><span> Kitchen&nbsp;: </span>{{ vm()!.kitchen }}</ion-label></li>
             <li><ion-label><span> Toilets&nbsp;: </span>{{ vm()!.toilets }}</ion-label></li>
-
+            }
             @if (vm()!.category === 'Commercial') {
             <li><ion-label><span> Commercial&nbsp;Type&nbsp;: </span>{{ vm()!.commercialType }}</ion-label></li>
             <li><ion-label><span> Commercial&nbsp;Sub&nbsp;Type&nbsp;: </span>{{ vm()!.commercialSubType }}</ion-label>
@@ -108,16 +111,16 @@
           <ul>
             <li>
               <ion-label>
-                <span> Size of Property&nbsp;: </span>
-                {{ vm()!.propertySize }}
-                @if (vm()!.propertySize !== '—') { {{ ' ' + vm()!.totalPropertyUnits }} }
+                <span> Plot Area&nbsp;: </span>
+                {{ vm()!.PlotArea }}
+                @if (vm()!.PlotArea !== '—') { {{ ' ' + vm()!.plotAreaUnits }} }
               </ion-label>
             </li>
             <li>
               <ion-label>
-                <span> Size of Built Up&nbsp;: </span>
-                {{ vm()!.propertySizeBuiltup }}
-                @if (vm()!.propertySizeBuiltup !== '—') { {{ ' ' + vm()!.sizeBuiltupUnits }} }
+                <span> Built Up Area&nbsp;: </span>
+                {{ vm()!.builtUpArea }}
+                @if (vm()!.builtUpArea !== '—') { {{ ' ' + vm()!.builtUpAreaUnits }} }
               </ion-label>
             </li>
             @if(vm()!.category === 'residential' || vm()!.category === 'commercial'){
@@ -131,8 +134,8 @@
         </div>
       </div>
 
-      <!-- Facing (for plots / lands) -->
-      @if (vm()!.category === 'Plots' || vm()!.category === 'Lands') {
+      <!-- Facing (for plots / agriculturalLands) -->
+      @if (vm()!.category === 'Plots' || vm()!.category === 'agriculturalLands') {
       <div class="div-facts-items">
         <ion-label class="label-property-details">Facing Details</ion-label>
       </div>

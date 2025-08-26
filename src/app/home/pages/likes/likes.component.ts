@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { LikeboxComponent } from '../../components/likebox/likebox.component';
-import { NgFor, NgIf } from '@angular/common';
+
 import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar,  } from '@ionic/angular/standalone';
 
 @Component({
@@ -10,7 +10,7 @@ import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar,  } from '@ionic/a
   templateUrl: './likes.component.html',
   styleUrls: ['./likes.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,LikeboxComponent,NgIf,NgFor],
+  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,LikeboxComponent],
   providers:[ModalController],
 })
 export class LikesComponent  implements OnInit {

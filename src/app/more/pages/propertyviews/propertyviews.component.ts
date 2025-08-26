@@ -1,17 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
-  IonAvatar,
-  IonCard,
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonSkeletonText,
   IonTitle,
   IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, eye } from 'ionicons/icons';
@@ -33,12 +27,6 @@ import { PropertyViewCardComponent } from "../../components/property-view-card/p
     IonIcon,
     IonTitle,
     IonContent,
-    IonCard,
-    IonItem,
-    IonSkeletonText,
-    IonAvatar,
-    IonLabel,
-    IonImg,
     PropertyViewCardComponent
 ],
 })

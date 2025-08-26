@@ -4,6 +4,7 @@ export interface IProperty {
   id: string;
   propertyTitle: string;
   houseType: string;
+  houseFacingType: string;
   houseCondition: string;
   rooms: number | null;
   bhkType: string;
@@ -12,11 +13,11 @@ export interface IProperty {
   commercialSubType: string;
   availabilityStatus: string;
   securityDeposit: number | null;
-  propertySize: number | null;
-  totalPropertyUnits: string | null;
+  PlotArea: number | null;
+  plotAreaUnits: string | null;
   facingUnits: string;
-  propertySizeBuiltup: number | null;
-  sizeBuiltupUnits: string | null;
+  builtUpArea: number | null;
+  builtUpAreaUnits: string | null;
   northFacing: string | null;
   northSize: number | null;
   southFacing: string | null;
@@ -50,17 +51,14 @@ export interface IProperty {
   isDeleted: boolean;
   deletedBy: string | null;
   deletedAt: Timestamp | FieldValue | null;
-  status: string;
   fullSearchText: string[];
   agentName: string;
   propertyId: string;
   // ------- extras you add on submit -------
   saleType: 'sale' | 'rent';
-  category: 'residential' | 'commercial' | 'plots' | 'lands';
+  category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
 
   propertyImages: IPropertyImage[];
-
-  propertyStatus: string;
 }
 
 export interface IPropertyImage {

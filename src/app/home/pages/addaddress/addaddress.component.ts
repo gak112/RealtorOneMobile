@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonLabel, IonRadio, IonRadioGroup, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonRadio, IonRadioGroup, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-addaddress',
   templateUrl: './addaddress.component.html',
   styleUrls: ['./addaddress.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonTitle,IonIcon,IonContent,IonLabel,IonRadioGroup,IonRadio,IonImg,IonInput,IonButton],
+  imports:[IonHeader,IonToolbar,IonTitle,IonIcon,IonContent,IonLabel,IonRadioGroup,IonRadio,IonImg,IonButton],
   providers:[ModalController],
 })
 export class AddaddressComponent  implements OnInit {

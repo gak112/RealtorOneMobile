@@ -1,4 +1,4 @@
-import {  NgIf } from '@angular/common';
+
 import { Component, NgZone, OnInit } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonSearchbar, IonTitle, IonToolbar, ModalController,  } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -14,7 +14,7 @@ declare var google: { maps: { places: { AutocompleteService: new () => any; }; G
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonSearchbar,IonContent,IonLabel,LivelocationComponent,IonList,IonItem,NgIf,],
+  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonSearchbar,IonContent,IonLabel,LivelocationComponent,IonList,IonItem],
   providers:[ModalController],
 })
 export class LocationComponent implements OnInit {

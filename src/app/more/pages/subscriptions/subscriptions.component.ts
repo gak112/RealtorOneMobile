@@ -6,15 +6,10 @@ import {
   IonContent,
   IonHeader,
   IonToolbar,
-  IonButtons,
   IonIcon,
   IonTitle,
   IonImg,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
-  IonButton,
-  IonCard,
+  IonCard
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { CoupondetailsComponent } from '../coupondetails/coupondetails.component';
@@ -34,16 +29,11 @@ import {
   imports: [
     IonHeader,
     IonToolbar,
-    IonButtons,
     IonIcon,
     IonTitle,
     IonContent,
     IonImg,
-    IonSegment,
-    IonSegmentButton,
-    IonLabel,
-    IonButton,
-    IonCard,
+    IonCard
   ],
   providers: [ModalController],
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { VentureflatdetailsComponent } from '../ventureflatdetails/ventureflatdetails.component';
 import { IonicModule } from '@ionic/angular';
 
@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
   selector: 'app-venturefloordetails',
   templateUrl: './venturefloordetails.component.html',
   styleUrls: ['./venturefloordetails.component.scss'],
-  imports:[IonHeader,IonToolbar,IonButtons,IonTitle,IonContent,IonImg,IonLabel,IonIcon],
+  imports:[IonHeader,IonToolbar,IonTitle,IonContent,IonImg,IonLabel,IonIcon],
   standalone:true,
   providers:[ModalController],
 })

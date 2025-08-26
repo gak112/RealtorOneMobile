@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, DestroyRef } from '@angular/core';
 import {
   ReactiveFormsModule,
   Validators,
@@ -18,13 +18,20 @@ import {
   IonTitle,
   IonToolbar,
   ModalController,
-  ToastController, IonSpinner } from '@ionic/angular/standalone';
+  ToastController,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, createOutline, informationCircle } from 'ionicons/icons';
+import {
+  arrowBackOutline,
+  createOutline,
+  informationCircle,
+} from 'ionicons/icons';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { serverTimestamp } from '@angular/fire/firestore';
+import { IUser } from '../../../auth/models/user.model';
 
 import {
   catchError,
@@ -39,16 +46,14 @@ import {
   timeout,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
-import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  imports: [IonSpinner, 
-    CommonModule,
+  imports: [
+    IonSpinner,
     IonImg,
     IonLabel,
     IonIcon,
@@ -71,6 +76,7 @@ export class ProfileComponent implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly afs = inject(AngularFirestore); // compat
   private readonly auth = inject(AuthService);
+  private readonly destroyRef = inject(DestroyRef);
 
   // --- UI state (signals) ---
   saving = signal(false);
@@ -85,19 +91,19 @@ export class ProfileComponent implements OnInit {
 
   // --- form ---
   profileForm = this.fb.group({
-    firstName: this.fb.control('', {
+    fullName: this.fb.control('', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
-    lastName: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(3)],
-    }),
+
     mobileNoVerified: this.fb.control<boolean>(false),
     mobileNumber: this.fb.control('', {
       validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
     }),
     emailVerified: this.fb.control<boolean>(false),
     email: this.fb.control('', { validators: [Validators.email] }),
-    gender: this.fb.control<'male' | 'female' | 'other' | 'preferNotToDisclose' | ''>(''),
+    gender: this.fb.control<
+      'male' | 'female' | 'other' | 'preferNotToDisclose' | ''
+    >(''),
     photo: this.fb.control(''),
     dob: this.fb.control(''),
   });
@@ -109,11 +115,11 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
     try {
       // 1) load auth user (first emission)
-      const user = await firstValueFrom<User | null>(
+      const user = await firstValueFrom<IUser | null>(
         this.auth.user$.pipe(
-          filter((u): u is User => !!u),                 // wait until we have a real user
-          timeout({ first: 10000 }),                     // bail out if nothing after 10s
-          catchError(() => of(null))                     // convert timeout/other errors to null
+          filter((u): u is IUser => !!u), // wait until we have a real user
+          timeout({ first: 10000 }), // bail out if nothing after 10s
+          catchError(() => of(null)) // convert timeout/other errors to null
         )
       );
       this.uid = (user as any)?.Uid ?? (user as any)?.uid ?? null;
@@ -127,8 +133,7 @@ export class ProfileComponent implements OnInit {
         if (docSnap) {
           const doc: any = docSnap;
           this.profileForm.patchValue({
-            firstName: doc.firstName ?? '',
-            lastName: doc.lastName ?? '',
+            fullName: doc.fullName ?? '',
             mobileNoVerified: !!doc.mobileNoVerified,
             mobileNumber: doc.mobileNumber ?? '',
             emailVerified: !!doc.emailVerified,
@@ -151,7 +156,7 @@ export class ProfileComponent implements OnInit {
     // Mobile
     this.profileForm.controls.mobileNumber.valueChanges
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((phone) => {
@@ -162,7 +167,9 @@ export class ProfileComponent implements OnInit {
           }
           this.mobileChecking.set(true);
           return this.afs
-            .collection('users', (ref) => ref.where('mobileNumber', '==', phone))
+            .collection('users', (ref) =>
+              ref.where('mobileNumber', '==', phone)
+            )
             .valueChanges({ idField: 'id' })
             .pipe(take(1));
         }),
@@ -177,7 +184,7 @@ export class ProfileComponent implements OnInit {
     // Email
     this.profileForm.controls.email.valueChanges
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((email) => {
@@ -201,10 +208,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((taken) => this.emailTaken.set(!!taken));
   }
 
-  showError(
-    key: keyof typeof this.profileForm.controls,
-    err: string
-  ): boolean {
+  showError(key: keyof typeof this.profileForm.controls, err: string): boolean {
     const c = this.profileForm.controls[key];
     return !!(c && c.touched && c.invalid && c.errors?.[err]);
   }
@@ -212,13 +216,17 @@ export class ProfileComponent implements OnInit {
   async updateProfile() {
     // basic validation
     if (this.profileForm.invalid) {
-      const firstInvalid = Object.values(this.profileForm.controls).find((c) => c.invalid);
+      const firstInvalid = Object.values(this.profileForm.controls).find(
+        (c) => c.invalid
+      );
       firstInvalid?.markAsTouched();
       this.presentToast('Please fix highlighted fields.', 'warning');
       return;
     }
     if (this.mobileTaken() || this.emailTaken()) {
-      Object.values(this.profileForm.controls).forEach((c) => c.markAsTouched());
+      Object.values(this.profileForm.controls).forEach((c) =>
+        c.markAsTouched()
+      );
       this.presentToast('Email or phone already in use.', 'danger');
       return;
     }
@@ -235,8 +243,7 @@ export class ProfileComponent implements OnInit {
       const v = this.profileForm.getRawValue();
 
       const payload: IProfile = {
-        firstName: v.firstName!.trim(),
-        lastName: v.lastName!.trim(),
+        fullName: v.fullName!.trim(),
         mobileNoVerified: !!v.mobileNoVerified,
         mobileNumber: v.mobileNumber!.trim(),
         emailVerified: !!v.emailVerified,
@@ -257,7 +264,10 @@ export class ProfileComponent implements OnInit {
       this.presentToast('Profile updated successfully.', 'success');
     } catch (err) {
       console.error('[Profile] update error:', err);
-      this.presentToast('Failed to update profile. Please try again.', 'danger');
+      this.presentToast(
+        'Failed to update profile. Please try again.',
+        'danger'
+      );
     } finally {
       this.saving.set(false);
       this.profileForm.enable({ emitEvent: false });
@@ -273,15 +283,19 @@ export class ProfileComponent implements OnInit {
     message: string,
     color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
   ) {
-    const t = await this.toastCtrl.create({ message, duration: 1500, position: 'top', color });
+    const t = await this.toastCtrl.create({
+      message,
+      duration: 1500,
+      position: 'top',
+      color,
+    });
     await t.present();
   }
 }
 
 // DB payload typing
 export interface IProfile {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   mobileNoVerified: boolean;
   mobileNumber: string;
   emailVerified: boolean;

@@ -1,4 +1,4 @@
-import {  NgIf, NgFor } from '@angular/common';
+
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonIcon, IonImg, IonInput, IonLabel, ModalController } from '@ionic/angular/standalone';
@@ -13,7 +13,7 @@ register();
   templateUrl: './venture-housevilla.component.html',
   styleUrls: ['./venture-housevilla.component.scss'],
   standalone: true,
-  imports: [NgIf,IonImg,NgFor,IonButton,IonInput,FormsModule,IonLabel,IonIcon,UcWidgetModule],
+  imports: [IonImg,IonButton,IonInput,FormsModule,IonLabel,IonIcon,UcWidgetModule],
   providers:[ModalController],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

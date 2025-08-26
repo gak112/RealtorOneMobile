@@ -1,4 +1,4 @@
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -8,8 +8,8 @@ import { callOutline, chevronBackOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { register } from 'swiper/element';
-import { IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
-import { AmentitycardComponent } from '../../components/amentitycard/amentitycard.component';
+import { IonContent, IonFooter, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+
 register();
 
 @Component({
@@ -17,7 +17,7 @@ register();
   templateUrl: './postfullview.component.html',
   styleUrls: ['./postfullview.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonIcon,IonButtons,IonTitle,IonContent,NgFor,IonLabel,NgIf,AmentitycardComponent,CurrencyPipe,IonFooter,NgFor],
+  imports: [IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonLabel,IonFooter],
   providers:[ModalController],
  
 schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -46,7 +46,7 @@ export class PostfullviewComponent implements OnInit {
     poojaRoom: "1",
     livingDining: "1",
     kitchen: "1",
-    propertySize: 1500,
+    PlotArea: 1500,
     propertyUnits: "Sq Yard",
     northFacing: "500",
     northSize: "0",

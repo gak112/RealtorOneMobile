@@ -52,20 +52,20 @@
         }
         @if(property().category === 'residential'){
         <ion-label class="property-size">
-          {{ property().bhkType }}, {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+          {{ property().bhkType }}, {{ property().PlotArea }} ({{ property().plotAreaUnits }})
         </ion-label>
         }
         @if(property().category === 'commercial'){
         <ion-label class="property-size">
-          {{ property().floor }} floor, {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+          {{ property().floor }} floor, {{ property().PlotArea }} ({{ property().plotAreaUnits }})
         </ion-label>
         }
         @if(property().category === 'plots' || property().category === 'Lands'){
         <ion-label class="property-size">
-          {{ property().propertySize }} ({{ property().totalPropertyUnits }})
+          {{ property().PlotArea }} ({{ property().plotAreaUnits }})
         </ion-label>
         }
-        <ion-label class="property-status">{{ property().propertyStatus }}</ion-label>
+        <ion-label class="property-status">{{ property().availabilityStatus }}</ion-label>
       </div>
     </div>
 
@@ -95,8 +95,8 @@
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">
-        <ion-label class="footer-label">Property ID</ion-label>
-        <ion-label class="footer-value">{{ property().propertyId }}</ion-label>
+        <ion-label class="footer-label">Furnishing Type</ion-label>
+        <ion-label class="footer-value">{{ property().furnishingType }}</ion-label>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-item">

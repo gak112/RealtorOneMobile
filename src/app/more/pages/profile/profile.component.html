@@ -22,27 +22,14 @@
 
       <!-- First Name -->
       <div class="div-formgroup">
-        <ion-input autocomplete="off" mode="md" label="First Name" label-placement="floating" fill="outline" type="text"
-          placeholder="First Name" formControlName="firstName">
+        <ion-input autocomplete="off" mode="md" label="Full Name" label-placement="floating" fill="outline" type="text"
+          placeholder="Full Name" formControlName="fullName">
         </ion-input>
-        @if (showError('firstName','required')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> First name is
+        @if (showError('fullName','required')) {
+        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Full name is
           required.</ion-label>
         }
-        @if (showError('firstName','minlength')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Minimum 3 characters.</ion-label>
-        }
-      </div>
-
-      <!-- Last Name -->
-      <div class="div-formgroup">
-        <ion-input autocomplete="off" mode="md" label="Last Name" label-placement="floating" fill="outline" type="text"
-          placeholder="Last Name" formControlName="lastName">
-        </ion-input>
-        @if (showError('lastName','required')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Last name is required.</ion-label>
-        }
-        @if (showError('lastName','minlength')) {
+        @if (showError('fullName','minlength')) {
         <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Minimum 3 characters.</ion-label>
         }
       </div>

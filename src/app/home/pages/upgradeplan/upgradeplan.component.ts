@@ -7,11 +7,9 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
-  IonSelect,
-  IonSelectOption,
   IonTitle,
   IonToolbar,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, informationCircleOutline } from 'ionicons/icons';
@@ -31,10 +29,8 @@ import { chevronBackOutline, informationCircleOutline } from 'ionicons/icons';
     IonLabel,
     IonFooter,
     IonInput,
-    IonButton,
-    IonSelect,
-    IonSelectOption,
-  ],
+    IonButton
+    ],
   providers: [ModalController],
 })
 export class UpgradeplanComponent implements OnInit {

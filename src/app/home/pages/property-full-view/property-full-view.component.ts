@@ -7,15 +7,11 @@ import {
   signal,
 } from '@angular/core';
 import {
-  IonHeader,
   IonContent,
-  IonToolbar,
   IonIcon,
-  IonTitle,
   IonImg,
   IonLabel,
-  IonButton,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 // icons
@@ -61,7 +57,7 @@ import {
 export type PostDoc = {
   id: string;
   saleType?: 'sale' | 'rent' | string;
-  category?: 'residential' | 'commercial' | 'plots' | 'lands' | string;
+  category?: 'residential' | 'commercial' | 'plots' | 'agriculturalLands' | string;
 
   priceOfSale?: number | string;
   priceOfRent?: number | string;
@@ -73,6 +69,7 @@ export type PostDoc = {
   images?: string[];
 
   houseType?: string;
+  houseCondition?: string;
   bhkType?: string;
   poojaRoom?: number | string;
   livingDining?: number | string;
@@ -83,11 +80,11 @@ export type PostDoc = {
   commercialSubType?: string;
   furnishingType?: string;
 
-  propertySize?: number | string;
-  totalPropertyUnits?: string;
+  PlotArea?: number | string;
+  plotAreaUnits?: string;
 
-  propertySizeBuiltup?: number | string;
-  sizeBuiltupUnits?: string;
+  builtUpArea?: number | string;
+  builtUpAreaUnits?: string;
 
   ageOfProperty?: string | number;
   propertyAge?: string | number;
@@ -106,7 +103,7 @@ export type PostDoc = {
   agentName?: string;
   propertyId?: string;
   status?: string;
-  propertyStatus?: string;
+  availabilityStatus?: string;
 
   description?: string;
   amenities?: string[];
@@ -131,6 +128,7 @@ type PropertyVM = {
   images: string[];
 
   houseType: string;
+  houseCondition: string;
   bhkType: string;
   poojaRoom: string;
   livingDining: string;
@@ -141,11 +139,11 @@ type PropertyVM = {
   commercialSubType: string;
   furnishingType: string;
 
-  propertySize: string;
-  totalPropertyUnits: string;
+  PlotArea: string;
+  plotAreaUnits: string;
 
-  propertySizeBuiltup: string;
-  sizeBuiltupUnits: string;
+  builtUpArea: string;
+  builtUpAreaUnits: string;
 
   ageOfProperty: string;
 
@@ -161,7 +159,7 @@ type PropertyVM = {
 
   agentName: string;
   propertyId: string;
-  propertyStatus: string;
+  availabilityStatus: string;
 
   description: string;
   amenityNames: string[];
@@ -173,16 +171,12 @@ type PropertyVM = {
   templateUrl: './property-full-view.component.html',
   styleUrls: ['./property-full-view.component.scss'],
   imports: [
-    IonHeader,
     IonContent,
-    IonToolbar,
     IonIcon,
-    IonTitle,
     IonImg,
     IonLabel,
-    IonButton,
     AmentitycardComponent,
-    DecimalPipe,
+    DecimalPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -198,7 +192,7 @@ export class PropertyFullViewComponent {
   /** Optional filters (also read from query params if provided) */
   saleTypeFilter = input<'sale' | 'rent' | null>(null);
   categoryFilter = input<
-    'residential' | 'commercial' | 'plots' | 'lands' | null
+    'residential' | 'commercial' | 'plots' | 'agriculturalLands' | null
   >(null);
 
   /** Error banner */
@@ -237,7 +231,7 @@ export class PropertyFullViewComponent {
   });
 
   private effectiveCategory = computed<
-    'residential' | 'commercial' | 'plots' | 'lands' | null
+    'residential' | 'commercial' | 'plots' | 'agriculturalLands' | null
   >(() => {
     const inp = this.categoryFilter();
     return inp ?? null;
@@ -318,7 +312,7 @@ export class PropertyFullViewComponent {
 
     const filteredLatest$ = filters$.pipe(
       switchMap(([saleType, category]) => {
-        const colRef = collection(this.afs, 'postentry');
+        const colRef = collection(this.afs, 'posts');
 
         const parts: any[] = [where('isDeleted', '==', false)];
         if (saleType) parts.push(where('saleType', '==', saleType));
@@ -342,7 +336,7 @@ export class PropertyFullViewComponent {
         if (docFromParent) return of(this.mapToVM(docFromParent));
 
         if (rid) {
-          const ref = doc(this.afs, 'postentry', rid);
+          const ref = doc(this.afs, 'posts', rid);
           return docData(ref, { idField: 'id' }).pipe(
             map((d) => (d ? this.mapToVM(d as PostDoc) : null))
           );
@@ -387,6 +381,7 @@ export class PropertyFullViewComponent {
 
     // house basics
     const houseType = nonEmpty([d.houseType], '—');
+    const houseCondition = nonEmpty([d.houseCondition], '—');
     const bhkType = nonEmpty([d.bhkType], '—');
     const poojaRoom = toDisplayCount(d.poojaRoom);
     const livingDining = toDisplayCount(d.livingDining);
@@ -396,20 +391,21 @@ export class PropertyFullViewComponent {
     const furnishingType = nonEmpty([d.furnishingType], '—');
     const commercialType = nonEmpty([d.commercialType], '—');
     const commercialSubType = nonEmpty([d.commercialSubType], '—');
+    const availabilityStatus = nonEmpty([d.availabilityStatus], '—');
 
     // sizes
-    const totalPropertyUnits = unitShort(
-      nonEmpty([d.totalPropertyUnits], 'Sqft')
+    const plotAreaUnits = unitShort(
+      nonEmpty([d.plotAreaUnits], 'Sqft')
     );
-    const sizeBuiltupUnits = unitShort(nonEmpty([d.sizeBuiltupUnits], 'Sqft'));
+    const builtUpAreaUnits = unitShort(nonEmpty([d.builtUpAreaUnits], 'Sqft'));
 
-    const propertySizeVal = num([d.propertySize]);
-    const propertySize = propertySizeVal > 0 ? fmtIN(propertySizeVal) : '—';
+    const propertySizeVal = num([d.PlotArea]);
+    const PlotArea = propertySizeVal > 0 ? fmtIN(propertySizeVal) : '—';
 
     // built-up (handle variants)
-    const builtupRaw = pickFirstDefined(d.propertySizeBuiltup);
+    const builtupRaw = pickFirstDefined(d.builtUpArea);
     const propertySizeBuiltupVal = num([builtupRaw]);
-    const propertySizeBuiltup =
+    const builtUpArea =
       propertySizeBuiltupVal > 0 ? fmtIN(propertySizeBuiltupVal) : '—';
 
     // age normalization
@@ -434,7 +430,6 @@ export class PropertyFullViewComponent {
     // meta
     const agentName = nonEmpty([d.agentName], '—');
     const propertyId = nonEmpty([d.propertyId], id);
-    const propertyStatus = nonEmpty([d.status, d.propertyStatus], 'Available');
 
     const description = nonEmpty([d.description], '—');
     const amenityNames = Array.isArray(d.amenities)
@@ -453,6 +448,7 @@ export class PropertyFullViewComponent {
       addressOfProperty,
       images,
       houseType,
+      houseCondition,
       bhkType,
       poojaRoom,
       livingDining,
@@ -462,10 +458,10 @@ export class PropertyFullViewComponent {
       commercialType,
       commercialSubType,
       furnishingType,
-      propertySize,
-      totalPropertyUnits,
-      propertySizeBuiltup,
-      sizeBuiltupUnits,
+      PlotArea,
+      plotAreaUnits,
+      builtUpArea,
+      builtUpAreaUnits,
       ageOfProperty,
       facingUnits,
       northFacing,
@@ -478,9 +474,9 @@ export class PropertyFullViewComponent {
       westSizeValue,
       agentName,
       propertyId,
-      propertyStatus,
       description,
       amenityNames,
+      availabilityStatus,
     };
   }
 }
@@ -564,14 +560,14 @@ function capFirst(s: string): string {
 }
 function normalizeCategoryKey(
   s?: string | null
-): 'residential' | 'commercial' | 'plots' | 'lands' | null {
+): 'residential' | 'commercial' | 'plots' | 'agriculturalLands' | null {
   const v = (s ?? '').toLowerCase().trim();
   if (!v) return null;
   if (v.startsWith('res')) return 'residential';
   if (v.startsWith('com')) return 'commercial';
   if (v.startsWith('plot')) return 'plots';
-  if (v.startsWith('land')) return 'lands';
-  if (['residential', 'commercial', 'plots', 'lands'].includes(v))
+  if (v.startsWith('land')) return 'agriculturalLands';
+  if (['residential', 'commercial', 'plots', 'agriculturalLands'].includes(v))
     return v as any;
   return null;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonContent, IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { SubscriptionsComponent } from 'src/app/more/pages/subscriptions/subscriptions.component';
 
 @Component({
@@ -7,7 +7,7 @@ import { SubscriptionsComponent } from 'src/app/more/pages/subscriptions/subscri
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
   standalone:true,
-  imports:[IonContent,IonIcon,IonLabel,IonImg],
+  imports:[IonContent,IonIcon,IonLabel],
   providers:[ModalController],
 })
 export class NotificationComponent  implements OnInit {

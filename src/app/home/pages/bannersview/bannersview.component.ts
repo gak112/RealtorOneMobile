@@ -87,7 +87,7 @@ export class BannersviewComponent implements OnInit {
       locationCode: 'HYD',
       location: 'Hyderabad, Jubilee Hills',
       propertyType: 'Apartment',
-      propertySize: '3BHK',
+      PlotArea: '3BHK',
       propertySqft: '1000',
       propertyImages: [
         {
@@ -115,7 +115,7 @@ export class BannersviewComponent implements OnInit {
       locationCode: 'HYD',
       location: 'Hyderabad, Banjara Hills',
       propertyType: 'Apartment',
-      propertySize: '4BHK',
+      PlotArea: '4BHK',
       propertySqft: '3000',
       propertyImages: [
         {
@@ -146,7 +146,7 @@ export class BannersviewComponent implements OnInit {
       locationCode: 'HYD',
       location: 'Hyderabad, Kukatpally',
       propertyType: 'Villa',
-      propertySize: '5BHK',
+      PlotArea: '5BHK',
       propertySqft: '4000',
       propertyImages: [
         {
@@ -177,7 +177,7 @@ export class BannersviewComponent implements OnInit {
       locationCode: 'HYD',
       location: 'Hyderabad, Kukatpally',
       propertyType: 'Villa',
-      propertySize: '5BHK',
+      PlotArea: '5BHK',
       propertySqft: '4000',
       propertyImages: [
         {

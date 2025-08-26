@@ -10,10 +10,9 @@ import {
 import {
   IonImg,
   IonLabel,
-  IonSkeletonText,
   IonIcon,
   ToastController,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -32,7 +31,7 @@ import {
   standalone: true,
   templateUrl: './savedpropertycard.component.html',
   styleUrls: ['./savedpropertycard.component.scss'],
-  imports: [IonSkeletonText, IonLabel, IonImg, IonIcon],
+  imports: [IonLabel, IonImg, IonIcon],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SavedpropertycardComponent {
@@ -172,17 +171,19 @@ function toSavedPayload(p: IProperty): SavedDocPayload {
     propertyTitle: p.propertyTitle ?? '',
     addressOfProperty: p.addressOfProperty ?? '',
     saleType: p.saleType ?? 'sale', // 'sale' | 'rent'
-    category: p.category ?? 'residential', // 'residential' | 'commercial' | 'plots' | 'lands'
-    priceOfSale : Number(p.priceOfSale ?? 0),
+    category: p.category ?? 'residential', // 'residential' | 'commercial' | 'plots' | 'agriculturalLands'
+    priceOfSale: Number(p.priceOfSale ?? 0),
     priceOfRent: Number(p.priceOfRent ?? 0),
     houseType: p.houseType ?? '',
     bhkType: p.bhkType ?? '',
-    propertySize: p.propertySize ?? 0,
-    propertyStatus: p.propertyStatus ?? '',
+    PlotArea: p.PlotArea ?? 0,
+    availabilityStatus: p.availabilityStatus ?? '',
     agentName: p.agentName ?? '',
     propertyId: p.propertyId ?? '',
     propertyImages: Array.isArray(p.propertyImages) ? p.propertyImages : [],
     floor: p.floor ?? '',
     commercialType: p.commercialType ?? '',
+    furnishingType: p.furnishingType ?? '',
+    houseFacingType: p.houseFacingType ?? '',
   };
 }

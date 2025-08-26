@@ -34,7 +34,8 @@ export class RequestsubmenuComponent implements OnInit {
   private modalController = inject(ModalController);
 
   @Input() saleType: 'sale' | 'rent' = 'sale';
-  @Input() category: 'residential' | 'commercial' | 'plots' | 'lands' = 'residential';
+  @Input() category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands' =
+    'residential';
   propertyComponent = PostentryComponent;
 
   constructor() {
@@ -47,7 +48,7 @@ export class RequestsubmenuComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  async openPostEntry(type: 'residential' | 'commercial' | 'plots' | 'lands') {
+  async openPostEntry(type: 'residential' | 'commercial' | 'plots' | 'agriculturalLands') {
     const modal = await this.modalController.create({
       component: PostentryComponent,
       enterAnimation: forwardEnterAnimation,

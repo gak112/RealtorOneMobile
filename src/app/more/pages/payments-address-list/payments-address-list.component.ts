@@ -14,16 +14,14 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import {
-  IonBadge,
   IonButton,
   IonContent,
   IonHeader,
   IonIcon,
-  IonSpinner,
   IonTitle,
   IonToolbar,
   ModalController,
-  IonFooter,
+  IonFooter
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -43,10 +41,8 @@ import { ToastService } from 'src/app/services/toast.service';
     IonTitle,
     IonContent,
     ReactiveFormsModule,
-    IonBadge,
     IonButton,
-    IonSpinner,
-    IonFooter,
+    IonFooter
   ],
 })
 export class PaymentsAddressListComponent implements OnInit {
