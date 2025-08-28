@@ -5,6 +5,7 @@ import {
   OnInit,
   computed,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular/standalone';
@@ -63,7 +64,12 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { IProperty, IPropertyImage } from 'src/app/models/property.model';
 import { AgentService } from 'src/app/more/services/agent.service';
-import { ProductfilterComponent } from 'src/app/search/pages/productfilter/productfilter.component';
+import {
+  Filters,
+  ProductfilterComponent,
+} from 'src/app/search/pages/productfilter/productfilter.component';
+
+type CatKey = 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
 
 @Component({
   selector: 'app-homemain',
@@ -98,7 +104,7 @@ export class HomemainComponent implements OnInit {
   // propertyComponent = PostEntryComponent;
   propertyComponent = RequestmenuComponent;
   busniessComponent = VenturecreationComponent;
-  user: any = true;
+  user = toSignal(this.auth.user$);
   properties$!: Observable<any>;
   banners$!: Observable<any>;
   banners: any = [
@@ -141,13 +147,14 @@ export class HomemainComponent implements OnInit {
     });
     return await modal.present();
   }
+
   async openFilters() {
     const modal = await this.modalController.create({
       component: ProductfilterComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });
-    return await modal.present();
+    await modal.present();
   }
 
   async bannersview() {

@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit {
     }),
 
     mobileNoVerified: this.fb.control<boolean>(false),
-    mobileNumber: this.fb.control('', {
+    phone: this.fb.control('', {
       validators: [Validators.required, Validators.pattern(/^\d{10}$/)],
     }),
     emailVerified: this.fb.control<boolean>(false),
@@ -135,7 +135,7 @@ export class ProfileComponent implements OnInit {
           this.profileForm.patchValue({
             fullName: doc.fullName ?? '',
             mobileNoVerified: !!doc.mobileNoVerified,
-            mobileNumber: doc.mobileNumber ?? '',
+            phone: doc.phone ?? '',
             emailVerified: !!doc.emailVerified,
             email: doc.email ?? '',
             gender: doc.gender ?? '',
@@ -154,7 +154,7 @@ export class ProfileComponent implements OnInit {
     // 3) async “already taken” checks (exclude current uid)
 
     // Mobile
-    this.profileForm.controls.mobileNumber.valueChanges
+    this.profileForm.controls.phone.valueChanges
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         debounceTime(300),
@@ -168,7 +168,7 @@ export class ProfileComponent implements OnInit {
           this.mobileChecking.set(true);
           return this.afs
             .collection('users', (ref) =>
-              ref.where('mobileNumber', '==', phone)
+              ref.where('phone', '==', phone)
             )
             .valueChanges({ idField: 'id' })
             .pipe(take(1));
@@ -245,7 +245,7 @@ export class ProfileComponent implements OnInit {
       const payload: IProfile = {
         fullName: v.fullName!.trim(),
         mobileNoVerified: !!v.mobileNoVerified,
-        mobileNumber: v.mobileNumber!.trim(),
+        phone: v.phone!.trim(),
         emailVerified: !!v.emailVerified,
         email: (v.email || '').trim(),
         gender: (v.gender as any) || '',
@@ -297,7 +297,7 @@ export class ProfileComponent implements OnInit {
 export interface IProfile {
   fullName: string;
   mobileNoVerified: boolean;
-  mobileNumber: string;
+  phone: string;
   emailVerified: boolean;
   email: string;
   gender: 'male' | 'female' | 'other' | 'preferNotToDisclose' | '';

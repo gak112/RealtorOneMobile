@@ -37,7 +37,7 @@
       <!-- Mobile -->
       <div class="div-formgroup">
         <ion-input autocomplete="off" mode="md" label="Mobile Number" label-placement="floating" fill="outline"
-          type="tel" placeholder="Enter Mobile Number" formControlName="mobileNumber">
+          type="tel" placeholder="Enter Mobile Number" formControlName="phone">
         </ion-input>
 
         @if (profileForm.controls.mobileNoVerified.value) {
@@ -46,10 +46,10 @@
         <span class="span-verify">Verify</span>
         }
 
-        @if (showError('mobileNumber','required')) {
+        @if (showError('phone','required')) {
         <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Phone is required.</ion-label>
         }
-        @if (showError('mobileNumber','pattern')) {
+        @if (showError('phone','pattern')) {
         <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Enter a valid 10-digit
           number.</ion-label>
         }

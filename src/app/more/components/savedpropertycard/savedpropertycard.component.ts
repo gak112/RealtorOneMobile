@@ -12,7 +12,7 @@ import {
   IonLabel,
   IonIcon,
   ToastController,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -185,5 +185,47 @@ function toSavedPayload(p: IProperty): SavedDocPayload {
     commercialType: p.commercialType ?? '',
     furnishingType: p.furnishingType ?? '',
     houseFacingType: p.houseFacingType ?? '',
+    houseCondition: p.houseCondition ?? '',
+    rooms: p.rooms ?? 0,
+    commercialSubType: p.commercialSubType ?? '',
+    securityDeposit: p.securityDeposit ?? 0,
+    facingUnits: p.facingUnits ?? '',
+    builtUpArea: p.builtUpArea ?? 0,
+    builtUpAreaUnits: p.builtUpAreaUnits ?? '',
+    northFacing: p.northFacing ?? '',
+    northSize: p.northSize ?? 0,
+    southFacing: p.southFacing ?? '',
+    southSize: p.southSize ?? 0,
+    eastFacing: p.eastFacing ?? '',
+    eastSize: p.eastSize ?? 0,
+    westFacing: p.westFacing ?? '',
+    westSize: p.westSize ?? 0,
+    toilets: p.toilets ?? 0,
+    poojaRoom: p.poojaRoom ?? 0,
+    livingDining: p.livingDining ?? 0,
+    kitchen: p.kitchen ?? 0,
+    amenities: p.amenities ?? [],
+    ageOfProperty: p.ageOfProperty ?? '',
+    description: p.description ?? '',
+    negotiable: p.negotiable ?? false,
+    videoResources: Array.isArray(p.videoResources)
+      ? p.videoResources.map((video) => ({
+          id: String(video.id ?? ''),
+          video: String(video.video ?? ''),
+        }))
+      : [],
+    plotAreaUnits: p.plotAreaUnits ?? '',
+    lat: p.lat ?? 0,
+    lng: p.lng ?? 0,
+    priceOfRentType: p.priceOfRentType ?? '',
+    createdAt: p.createdAt ?? null,
+    updatedAt: p.updatedAt ?? null,
+    createdBy: p.createdBy ?? '',
+    updatedBy: p.updatedBy ?? '',
+    sortDate: p.sortDate ?? 0,
+    isDeleted: p.isDeleted ?? false,
+    deletedBy: p.deletedBy ?? null,
+    deletedAt: p.deletedAt ?? null,
+    fullSearchText: p.fullSearchText ?? [],
   };
 }

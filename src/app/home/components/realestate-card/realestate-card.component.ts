@@ -32,6 +32,7 @@ import {
   SavedService,
   SavedDocPayload,
 } from 'src/app/more/services/saved.service';
+import { PostfullviewComponent } from '../../pages/postfullview/postfullview.component';
 
 @Component({
   selector: 'app-realestate-card',
@@ -123,8 +124,8 @@ export class RealestateCardComponent implements OnInit, OnDestroy {
 
   async openPropertyDetails() {
     const modal = await this.modalController.create({
-      component: PropertyFullViewComponent,
-      componentProps: { propertyIn: this.property() },
+      component: PostfullviewComponent,
+      componentProps: { id: this.property().id },
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });
@@ -204,9 +205,7 @@ function toSavedPayload(p: IProperty): SavedDocPayload {
     houseType: p.houseType ?? '',
     bhkType: p.bhkType ?? '',
     PlotArea:
-      (typeof p.PlotArea === 'number'
-        ? p.PlotArea
-        : Number(p.PlotArea)) || 0,
+      (typeof p.PlotArea === 'number' ? p.PlotArea : Number(p.PlotArea)) || 0,
     availabilityStatus: p.availabilityStatus ?? '—',
     agentName: p.agentName ?? '',
     propertyId: p.propertyId ?? p.id,
@@ -218,5 +217,48 @@ function toSavedPayload(p: IProperty): SavedDocPayload {
           image: String(img.image ?? ''),
         }))
       : [],
+    houseFacingType: p.houseFacingType ?? '',
+    houseCondition: p.houseCondition ?? '',
+    rooms: p.rooms ?? 0,
+    furnishingType: p.furnishingType ?? '',
+    commercialSubType: p.commercialSubType ?? '',
+    securityDeposit: p.securityDeposit ?? 0,
+    facingUnits: p.facingUnits ?? '',
+    builtUpArea: p.builtUpArea ?? 0,
+    builtUpAreaUnits: p.builtUpAreaUnits ?? '',
+    northFacing: p.northFacing ?? '',
+    northSize: p.northSize ?? 0,
+    southFacing: p.southFacing ?? '',
+    southSize: p.southSize ?? 0,
+    eastFacing: p.eastFacing ?? '',
+    eastSize: p.eastSize ?? 0,
+    westFacing: p.westFacing ?? '',
+    westSize: p.westSize ?? 0,
+    toilets: p.toilets ?? 0,
+    poojaRoom: p.poojaRoom ?? 0,
+    livingDining: p.livingDining ?? 0,
+    kitchen: p.kitchen ?? 0,
+    amenities: p.amenities ?? [],
+    ageOfProperty: p.ageOfProperty ?? '',
+    description: p.description ?? '',
+    negotiable: p.negotiable ?? false,
+    videoResources: Array.isArray(p.videoResources)
+      ? p.videoResources.map((video) => ({
+          id: String(video.id ?? ''),
+          video: String(video.video ?? ''),
+        }))
+      : [],
+    plotAreaUnits: p.plotAreaUnits ?? '',
+    lat: p.lat ?? 0,
+    lng: p.lng ?? 0,
+    createdAt: p.createdAt ?? null,
+    updatedAt: p.updatedAt ?? null,
+    createdBy: p.createdBy ?? '',
+    updatedBy: p.updatedBy ?? '',
+    sortDate: p.sortDate ?? 0,
+    isDeleted: p.isDeleted ?? false,
+    deletedBy: p.deletedBy ?? null,
+    deletedAt: p.deletedAt ?? null,
+    fullSearchText: p.fullSearchText ?? [],
   };
 }

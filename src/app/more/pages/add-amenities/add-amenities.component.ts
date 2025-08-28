@@ -20,7 +20,7 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -75,15 +75,14 @@ type Amenity = {
     IonButton,
     IonIcon,
     IonInput,
-    IonTextarea
-    ],
+    IonTextarea,
+  ],
   templateUrl: './add-amenities.component.html',
   styleUrls: ['./add-amenities.component.scss'],
 })
 export class AddAmenitiesComponent implements OnInit {
   async submitV2($event: SubmitEvent) {
     $event.preventDefault();
-    console.log('submitV2');
 
     if (this.loading() || this.uploading()) return;
 
@@ -135,13 +134,13 @@ export class AddAmenitiesComponent implements OnInit {
     this.loading.set(false);
 
     console.log('submitted');
-    this.modal.dismiss();
+    this.modalController.dismiss();
   }
 
   private fb = inject(FormBuilder);
   private db = inject(Firestore); // <-- modular Firestore
   // private storage = inject(Storage);   // <-- modular Storage
-  private modal = inject(ModalController);
+  private modalController = inject(ModalController);
 
   constructor() {
     addIcons({
@@ -233,61 +232,7 @@ export class AddAmenitiesComponent implements OnInit {
     // return { name: file.name, type: file.type, size: file.size, path, url };
   }
 
-  // Submit
-  async submit() {
-    if (this.loading() || this.uploading()) return;
-
-    const formValid =
-      this.amenityForm.valid &&
-      (this.isEdit()
-        ? !!this.logoURL()
-        : !!(this.logoFile() && this.logoURL()));
-    if (!formValid) return;
-
-    this.loading.set(true);
-
-    const { amenityName, description } = this.amenityForm.getRawValue();
-
-    let uploadedLogo: Uploaded | null = null;
-    // if (this.logoFile()) {
-    //   const f = this.logoFile()!;
-    //   uploadedLogo = await this.uploadOne(`amenities/${Date.now()}_${f.name}`, f);
-    // }
-
-    if (!this.isEdit()) {
-      // CREATE
-      const payload: Amenity = {
-        amenityName,
-        description,
-        logo: uploadedLogo,
-        createdAt: Date.now(),
-      };
-      const col = collection(this.db, 'amenities');
-      const ref = await addDoc(col, payload);
-      this.saved.emit({ id: ref.id });
-    } else {
-      // UPDATE
-      const update: Partial<Amenity> = {
-        amenityName,
-        description,
-        updatedAt: Date.now(),
-      };
-      if (uploadedLogo) update.logo = uploadedLogo;
-
-      const ref = doc(this.db, 'amenities', this.docId!);
-      await updateDoc(ref, update);
-      this.saved.emit({ id: this.docId! });
-    }
-
-    if (this.logoURL()?.startsWith('blob:'))
-      URL.revokeObjectURL(this.logoURL()!);
-    this.amenityForm.reset();
-    this.logoFile.set(null);
-    this.logoURL.set(null);
-    this.loading.set(false);
-  }
-
   dismiss() {
-    this.modal.dismiss();
+    this.modalController.dismiss();
   }
 }

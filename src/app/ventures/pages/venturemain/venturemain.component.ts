@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   IonButton,
@@ -7,6 +7,10 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { ProductfilterComponent } from 'src/app/search/pages/productfilter/productfilter.component';
 import {
@@ -17,6 +21,10 @@ import {
   IVentureDetails,
   VentureCardComponent,
 } from '../../components/venture-card/venture-card.component';
+import { addIcons } from 'ionicons';
+import { business } from 'ionicons/icons';
+import { VentureTypeFormComponent } from '../venture-type-form/venture-type-form.component';
+import { CreateVentureTypeFormComponent } from '../create-venture-type-form/create-venture-type-form.component';
 
 @Component({
   selector: 'app-venturemain',
@@ -24,6 +32,10 @@ import {
   styleUrls: ['./venturemain.component.scss'],
   standalone: true,
   imports: [
+    IonIcon,
+    IonFabList,
+    IonFabButton,
+    IonFab,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -35,10 +47,24 @@ import {
   providers: [ModalController],
 })
 export class VenturemainComponent implements OnInit {
-  constructor(private modalController: ModalController) {}
+  private modalController = inject(ModalController);
+  constructor() {
+    addIcons({
+      business,
+    });
+  }
 
   ngOnInit() {
     return;
+  }
+
+  async openVentureTypeForm() {
+    const modal = await this.modalController.create({
+      component: CreateVentureTypeFormComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
   }
 
   async showFilters() {

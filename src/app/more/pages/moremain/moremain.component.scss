@@ -97,6 +97,8 @@ ion-list-header {
   padding: 10px;
   border: var(--border);
   display: flex;
+  align-items: center;
+  justify-content: center;
 
   ion-icon {
     position: absolute;

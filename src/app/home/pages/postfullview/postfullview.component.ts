@@ -1,97 +1,296 @@
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  signal,
+  computed,
+  inject,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonLabel,
+  IonButton,
+  IonBadge,
+  IonChip,
+  IonList,
+  IonItem,
+  IonSkeletonText,
+  ModalController,
+  ToastController,
+  IonFooter,
+} from '@ionic/angular/standalone';
 
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { addIcons } from 'ionicons';
-import { callOutline, chevronBackOutline } from 'ionicons/icons';
-import { Observable } from 'rxjs';
-import { ToastService } from 'src/app/services/toast.service';
-import { register } from 'swiper/element';
-import { IonContent, IonFooter, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
+import {
+  chevronBackOutline,
+  shareOutline,
+  locationOutline,
+  homeOutline,
+  businessOutline,
+  pricetagOutline,
+  timeOutline,
+  cubeOutline,
+  filmOutline,
+  callOutline,
+} from 'ionicons/icons';
 
-register();
+import { Firestore, doc, docData } from '@angular/fire/firestore';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
+import {
+  switchMap,
+  map,
+  distinctUntilChanged,
+  catchError,
+} from 'rxjs/operators';
+import { IAmentity } from '../../components/amentitycard/amentitycard.component';
+
+/** Replace with your project model if you have one */
+export interface IProperty {
+  id: string;
+  saleType: 'sale' | 'rent';
+  category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
+  propertyTitle?: string;
+  addressOfProperty?: string;
+
+  priceOfSale?: number;
+  priceOfRent?: number;
+  priceOfRentType?: 'Monthly' | 'Yearly';
+  securityDeposit?: number;
+
+  houseType?: string;
+  houseCondition?: 'Old Houses' | 'New Houses';
+  bhkType?: string;
+  houseFacingType?:
+    | 'North Facing'
+    | 'South Facing'
+    | 'East Facing'
+    | 'West Facing';
+  rooms?: number;
+  toilets?: number;
+  poojaRoom?: number;
+  livingDining?: number;
+  kitchen?: number;
+
+  furnishingType?: 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished';
+  floor?: string;
+
+  commercialType?: string;
+  commercialSubType?: string;
+
+  PlotArea?: number;
+  plotAreaUnits?: string;
+  builtUpArea?: number;
+  builtUpAreaUnits?: string;
+
+  facingUnits?: string;
+  northFacing?: string;
+  northSize?: number;
+  southFacing?: string;
+  southSize?: number;
+  eastFacing?: string;
+  eastSize?: number;
+  westFacing?: string;
+  westSize?: number;
+
+  amenities?: string[];
+  ageOfProperty?: string;
+  negotiable?: boolean;
+  availabilityStatus?: string;
+  description?: string;
+
+  propertyImages?: { id: string; image: string }[];
+  images?: { id: string; image: string }[];
+  videoResources?: { id: string; video: string }[];
+
+  agentName?: string;
+
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 @Component({
   selector: 'app-postfullview',
   templateUrl: './postfullview.component.html',
   styleUrls: ['./postfullview.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonLabel,IonFooter],
-  providers:[ModalController],
- 
-schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonIcon,
+    IonImg,
+    IonLabel,
+    IonButton,
+    IonBadge,
+    IonChip,
+    IonList,
+    IonItem,
+    IonSkeletonText,
+    IonFooter,
+  ],
+  providers: [ModalController],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PostfullviewComponent implements OnInit {
+export class PostfullviewComponent {
+  /** Pass a full object or an id to fetch from Firestore (`posts/{id}`) */
+  propertyIn = input<IProperty | null>(null);
+  id = input<string>('');
 
-  @Input() property: any;
-  @Input() user: any;
-  @Input() venture: any;
+  private readonly modalController = inject(ModalController);
+  private readonly toast = inject(ToastController);
+  private readonly location = inject(Location);
+  private readonly afs = inject(Firestore);
 
-  dummyproperty: any = {
-    actionType: "commercial",
-    bhkType: "3bhk",
-    resources: [{
-      resourceUrl: "https://ucarecdn.com/c58b2143-187e-4d28-81a1-22371e91e075~1//nth/0/"
-    }, {
-      resourceUrl: "https://ucarecdn.com/10a5a223-f6a0-4499-91e9-aec139b5254d/"
-    }, {
-      resourceUrl: "https://ucarecdn.com/c58b2143-187e-4d28-81a1-22371e91e075~1//nth/0/"
-    }],
-    action: "sale",
-    costOfProperty: 20202020,
-    title: "Sai Envlave 2 bed room flat",
-    houseType: "Apartment",
-    toilets: "2",
-    poojaRoom: "1",
-    livingDining: "1",
-    kitchen: "1",
-    PlotArea: 1500,
-    propertyUnits: "Sq Yard",
-    northFacing: "500",
-    northSize: "0",
-    southFacing: "100",
-    southSize: "10",
-    units: "Yard",
-    eastFacing: "100",
-    eastSize: "0",
-    westFacing: "100",
-    westSize: "0",
-    floor: "2nd Floor",
-    ageOfPropertyAction: "noofyears",
-    noOfYears: "5",
-    amenities: {},
-    ownership: "Bhavani Sankar",
-    rent: "20000",
-    rentUnits: "$",
-    description: "lorem ipsum",
-    addressOfProperty: {
-      address: "8R44+8FR, Kamapalli, Brahmapur, Odisha 760004, India - 760004"
-    }
-  };
-  dummyuser: any = {
-    fullName: "Bhavani Sankar",
-    phone: "9398068299"
-  };
+  /** ✅ Always give `toSignal` an Observable (fallback to of(null)) */
+  private readonly id$ = toObservable(this.id);
+  private readonly remoteSig = toSignal<IProperty | null>(
+    this.id$.pipe(
+      map((v) => (v ?? '').trim()),
+      distinctUntilChanged(),
+      switchMap((pid) =>
+        pid
+          ? (docData(doc(this.afs, `posts/${pid}`), { idField: 'id' }) as any)
+          : of(null)
+      ),
+      catchError(() => of(null))
+    ),
+    { initialValue: null }
+  );
 
+  /** Prefer direct input object; else the loaded one */
+  readonly model = computed<IProperty | null>(
+    () => this.propertyIn() || this.remoteSig()
+  );
 
-  safeURL!: SafeResourceUrl;
-  action = 'rent';
-  media = 'video';
-  loading = false;
-  users$!: Observable<any>;
-  constructor(private modalController: ModalController, /*private afs: AngularFirestore,*/private toast: ToastService,
-    private router: Router, private sanitizer: DomSanitizer,) {
-    addIcons({ callOutline, chevronBackOutline })
-  }
+  readonly pageError = computed(() =>
+    this.id() && !this.model() ? 'Property not found.' : null
+  );
 
-  ngOnInit(): void {
-    // this.users$ = this.afs.doc(`users/${this.property.uid}`).valueChanges({idField: 'id'});
-    this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.venture?.brochure);
+  readonly headerTitle = computed(
+    () => this.model()?.propertyTitle || 'Property'
+  );
+  readonly saleType = computed(() => this.model()?.saleType || 'sale');
+  readonly category = computed(() => this.model()?.category || 'residential');
+
+  readonly images = computed(() => {
+    const m = this.model();
+    return m?.propertyImages?.length
+      ? m.propertyImages
+      : m?.images?.length
+      ? m.images
+      : [];
+  });
+  readonly video = computed(
+    () => this.model()?.videoResources?.[0]?.video || ''
+  );
+  readonly amenities = computed(() => this.model()?.amenities || []);
+
+  // readonly amenities = computed<IAmentity[]>(() => {
+  //   const names = this.model()?.amenities ?? [];
+  //   return names.map((name, i) => ({
+  //     id: String(i + 1),
+  //     name,
+  //     image: 'assets/img/amenity-placeholder.png',
+  //   }));
+  // });
+
+  readonly priceLine = computed(() => {
+    const m = this.model();
+    if (!m) return '';
+    const inr = (n?: number) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
+    if (m.saleType === 'sale') return inr(m.priceOfSale);
+    const period = (m.priceOfRentType || 'Monthly').trim();
+    return `${inr(m.priceOfRent)} / ${period}`;
+  });
+
+  readonly secDepositLine = computed(() => {
+    const m = this.model();
+    if (!m || m.saleType !== 'rent') return '';
+    if (this.category() !== 'commercial' || !m.securityDeposit) return '';
+    return `Security Deposit: ₹${Number(m.securityDeposit).toLocaleString(
+      'en-IN'
+    )}`;
+  });
+
+  readonly unitShort = computed(() => {
+    const m = this.model();
+    const u = m?.facingUnits || m?.plotAreaUnits || '';
+    const map: Record<string, string> = {
+      'Square Feet': 'Sqft',
+      'Sq Feet': 'Sqft',
+      'Sq Yard': 'SqYd',
+      'Sq Mtr': 'SqM',
+    };
+    return map[u] || u;
+  });
+
+  readonly hasImages = computed(() => (this.images() || []).length > 0);
+  readonly hasVideo = computed(() => !!this.video());
+  readonly availability = computed(
+    () => this.model()?.availabilityStatus || ''
+  );
+
+  constructor() {
+    addIcons({
+      chevronBackOutline,
+      shareOutline,
+      locationOutline,
+      homeOutline,
+      businessOutline,
+      pricetagOutline,
+      timeOutline,
+      cubeOutline,
+      filmOutline,
+      callOutline,
+    });
   }
 
   dismiss() {
-    this.modalController.dismiss();
+    this.modalController.getTop().then((top) => {
+      if (top) this.modalController.dismiss().catch(() => this.location.back());
+      else this.location.back();
+    });
   }
 
+  async share() {
+    try {
+      const m = this.model();
+      if (!m || !navigator.share) return;
+      const text = `${m.propertyTitle || 'Property'} • ${this.priceLine()}
+${m.addressOfProperty || ''}`;
+      await navigator.share({ title: 'Property', text });
+    } catch {
+      this.presentToast('Unable to share.', 'medium');
+    }
+  }
+
+  formatINR(n?: number) {
+    return `₹${Number(n || 0).toLocaleString('en-IN')}`;
+  }
+
+  private async presentToast(
+    message: string,
+    color: 'success' | 'warning' | 'danger' | 'medium' = 'medium'
+  ) {
+    const t = await this.toast.create({
+      message,
+      duration: 1500,
+      position: 'top',
+      color,
+    });
+    await t.present();
+  }
 }

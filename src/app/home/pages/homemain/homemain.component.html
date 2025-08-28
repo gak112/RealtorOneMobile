@@ -27,9 +27,8 @@
 <ion-content>
   <div>
     <div class="div-main">
-
       <div>
-        @if(!user.agent) {
+        @if(!user()?.agent) {
         <div class="div-agent">
           <div class="div-agent-c">
             <div class="div-confirmation">
@@ -74,7 +73,7 @@
           <ion-label style="color: #e43185;">Lands</ion-label>
         </div>
       </div>
-      <div style="margin: 16px; height: 20px;" class="div-heading">
+      <div style="margin: 16px 10px; height: 20px;" class="div-heading">
         <ion-label>Trending</ion-label>
         <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
       </div>
@@ -125,9 +124,9 @@
         --color: white;" (click)="openRequestForm()">
           <ion-icon name="home"></ion-icon>
         </ion-fab-button>
-        <!-- <ion-fab-button style="--background: darkslateblue; --color: white">
+        <ion-fab-button style="--background: darkslateblue; --color: white">
           <ion-icon name="business" (click)="openVentureCreation()"></ion-icon>
-        </ion-fab-button> -->
+        </ion-fab-button>
       </ion-fab-list>
     </ion-fab>
   </div>

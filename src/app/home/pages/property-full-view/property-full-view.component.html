@@ -130,12 +130,17 @@
               </ion-label>
             </li>
             }
+            <li>
+              <ion-label>
+                <span> Negotiable&nbsp;: </span>Yes
+              </ion-label>
+            </li>
           </ul>
         </div>
       </div>
 
       <!-- Facing (for plots / agriculturalLands) -->
-      @if (vm()!.category === 'Plots' || vm()!.category === 'agriculturalLands') {
+      @if (vm()!.category === 'plots' || vm()!.category === 'agriculturalLands' ) {
       <div class="div-facts-items">
         <ion-label class="label-property-details">Facing Details</ion-label>
       </div>

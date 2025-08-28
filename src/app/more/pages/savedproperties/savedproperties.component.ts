@@ -147,8 +147,8 @@ export class SavedpropertiesComponent {
     const prop: Partial<IProperty> = {
       id: d.id,
       propertyTitle: String(d.propertyTitle ?? '—'),
-      priceOfSale: this.toNumber(d.priceOfSale),
-      priceOfRent: this.toNumber(d.priceOfRent),
+      priceOfSale: Number(d.priceOfSale ?? 0),
+      priceOfRent: Number(d.priceOfRent ?? 0),
       priceOfRentType: (d.priceOfRentType ??
         '—') as IProperty['priceOfRentType'],
       addressOfProperty: String(d.addressOfProperty ?? '—'),
@@ -169,6 +169,13 @@ export class SavedpropertiesComponent {
       plotAreaUnits: undefined as any, // keep IProperty compatibility if needed
       furnishingType: String(d.furnishingType ?? '—'),
       houseFacingType: String(d.houseFacingType ?? '—'),
+      createdBy: String(d.createdBy ?? '—'),
+      updatedBy: String(d.updatedBy ?? '—'),
+      sortDate: Number(d.sortDate ?? 0),
+      isDeleted: Boolean(d.isDeleted ?? false),
+      deletedBy: String(d.deletedBy ?? '—'),
+      deletedAt: d.deletedAt ?? null,
+      fullSearchText: Array.isArray(d.fullSearchText) ? d.fullSearchText : [],
     };
     return prop as IProperty;
   };
@@ -263,6 +270,47 @@ export class SavedpropertiesComponent {
               image: String(img.image ?? ''),
             }))
           : [],
+        houseCondition: p.houseCondition ?? '',
+        rooms: p.rooms ?? 0,
+        commercialSubType: p.commercialSubType ?? '',
+        securityDeposit: p.securityDeposit ?? 0,
+        facingUnits: p.facingUnits ?? '',
+        builtUpArea: p.builtUpArea ?? 0,
+        builtUpAreaUnits: p.builtUpAreaUnits ?? '',
+        northFacing: p.northFacing ?? '',
+        northSize: p.northSize ?? 0,
+        southFacing: p.southFacing ?? '',
+        southSize: p.southSize ?? 0,
+        eastFacing: p.eastFacing ?? '',
+        eastSize: p.eastSize ?? 0,
+        westFacing: p.westFacing ?? '',
+        westSize: p.westSize ?? 0,
+        toilets: p.toilets ?? 0,
+        poojaRoom: p.poojaRoom ?? 0,
+        livingDining: p.livingDining ?? 0,
+        kitchen: p.kitchen ?? 0,
+        amenities: p.amenities ?? [],
+        ageOfProperty: p.ageOfProperty ?? '',
+        description: p.description ?? '',
+        negotiable: p.negotiable ?? false,
+        videoResources: Array.isArray(p.videoResources)
+          ? p.videoResources.map((video) => ({
+              id: String(video.id ?? ''),
+              video: String(video.video ?? ''),
+            }))
+          : [],
+        plotAreaUnits: p.plotAreaUnits ?? '',
+        lat: p.lat ?? 0,
+        lng: p.lng ?? 0,
+        createdAt: p.createdAt ?? null,
+        updatedAt: p.updatedAt ?? null,
+        createdBy: p.createdBy ?? '',
+        updatedBy: p.updatedBy ?? '',
+        sortDate: p.sortDate ?? 0,
+        isDeleted: p.isDeleted ?? false,
+        deletedBy: p.deletedBy ?? null,
+        deletedAt: p.deletedAt ?? null,
+        fullSearchText: p.fullSearchText ?? [],
       };
       await this.savedSvc.save(this.uid(), payload);
       await this.presentToast('Saved to list', 'success');

@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonImg,
   IonLabel,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 // icons
@@ -57,7 +57,12 @@ import {
 export type PostDoc = {
   id: string;
   saleType?: 'sale' | 'rent' | string;
-  category?: 'residential' | 'commercial' | 'plots' | 'agriculturalLands' | string;
+  category?:
+    | 'residential'
+    | 'commercial'
+    | 'plots'
+    | 'agriculturalLands'
+    | string;
 
   priceOfSale?: number | string;
   priceOfRent?: number | string;
@@ -176,7 +181,7 @@ type PropertyVM = {
     IonImg,
     IonLabel,
     AmentitycardComponent,
-    DecimalPipe
+    DecimalPipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -394,9 +399,7 @@ export class PropertyFullViewComponent {
     const availabilityStatus = nonEmpty([d.availabilityStatus], '—');
 
     // sizes
-    const plotAreaUnits = unitShort(
-      nonEmpty([d.plotAreaUnits], 'Sqft')
-    );
+    const plotAreaUnits = unitShort(nonEmpty([d.plotAreaUnits], 'Sqft'));
     const builtUpAreaUnits = unitShort(nonEmpty([d.builtUpAreaUnits], 'Sqft'));
 
     const propertySizeVal = num([d.PlotArea]);

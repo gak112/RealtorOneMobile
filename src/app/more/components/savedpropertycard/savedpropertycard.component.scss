@@ -1,5 +1,5 @@
 .property-card {
-  margin: 16px;
+  margin: 16px 10px;
   border-radius: 20px;
   overflow: hidden;
   //   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -53,7 +53,7 @@
   background: var(--content-background-white);
   margin: -30px 0;
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px;
   //   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2;
@@ -98,10 +98,10 @@
 }
 
 .location-code {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--color-black);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   margin-bottom: 4px;
   display: block;
 }
@@ -111,6 +111,7 @@
   color: var(--color-777);
   margin-bottom: 8px;
   display: block;
+  width: 315px;
 }
 
 .price-info {
@@ -184,6 +185,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 0;
+  margin-bottom: 16px;
 }
 
 .footer-item {
@@ -192,7 +194,7 @@
 }
 
 .footer-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--color-777);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -202,7 +204,7 @@
 }
 
 .footer-value {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--color-black);
   display: block;

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar style="--border-width: 0;">
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-title>Venture Type</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-request-menu">
+    <div class="div-request-sub" style="background: rgb(66 221 109 / 30%);"
+      (click)="openCreateVentureTypeForm('openPlot')">
+      <ion-img src="https://cdn-icons-png.flaticon.com/128/4631/4631598.png"></ion-img>
+      <ion-label style="color: hsl(137 70% 45% / 1);">Open Plots</ion-label>
+    </div>
+    <div class="div-request-sub" style="background: rgb(228 49 133 / 30%);"
+      (click)="openCreateVentureTypeForm('farmLands')">
+      <ion-img src="assets/img/farm-land.png"></ion-img>
+      <ion-label style="color: hsl(330 70% 45% / 1);">Farm Lands</ion-label>
+    </div>
+  </div>
+</ion-content>

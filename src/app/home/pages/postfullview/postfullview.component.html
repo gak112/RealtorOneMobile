@@ -1,205 +1,288 @@
-<ion-header>
+<!-- <ion-header>
     <ion-toolbar>
         <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
-        <ion-title>Commercial <span> - 2 BHK</span></ion-title>
+        <ion-title>{{ headerTitle() }}</ion-title>
+        <ion-icon slot="end" name="share-outline" style="margin-right:12px;font-size:20px;color:var(--color-skyblue)"
+            (click)="share()">
+        </ion-icon>
     </ion-toolbar>
-</ion-header>
+
+    @if (pageError()) {
+    <div style="background:#fee2e2;color:#7f1d1d;padding:8px 12px;font-size:13px;">
+        {{ pageError() }}
+    </div>
+    }
+</ion-header> -->
+
 <ion-content>
-    <div class="div-fullview-main">
-        <div class="div-slides">
-            <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
-                <swiper-slide>
-                    <div class="div-img">
-                        <img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt="">
-                    </div>
-                </swiper-slide>
-                <swiper-slide>
-                    <div class="div-img">
-                        <img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt="">
-                    </div>
-                </swiper-slide>
-                <swiper-slide>
-                    <div class="div-img">
-                        <img [src]="'https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/'" alt="">
-                    </div>
-                </swiper-slide>
-            </swiper-container>
+    <div class="div-images">
+        <div class="div-icons-header">
+            <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+            <ion-icon slot="end" name="share-outline" class="back-icon" (click)="share()">
+            </ion-icon>
         </div>
-        <div class="div-details-main">
-            <div class="div-rent">
-                <ion-label class="label-rent-title">Sale</ion-label>
-                <ion-label class="label-amount">₹1.5 Cr</ion-label>
-            </div>
-            <ion-label class="label-title">Sai Enclave </ion-label>
-            <ion-label class="h6-size" style="margin: 10px;">Hyderabad, Jubliee hills</ion-label>
-            <div class="div-individual">
-                <ion-label class="label-property">House Type</ion-label>
-                <ion-label class="h6-size">Office</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">BHK Type</ion-label>
-                <ion-label class="h6-size">4 BHK</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Bathrooms</ion-label>
-                <ion-label class="h6-size">2</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Pooja Room</ion-label>
-                <ion-label class="h6-size">1</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Living/Dining</ion-label>
-                <ion-label class="h6-size">1</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Kitchen</ion-label>
-                <ion-label class="h6-size">1</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Total Size of Property</ion-label>
-                <ion-label class="h6-size">100<span>Acres</span></ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Property Size (Build up)</ion-label>
-                <ion-label class="h6-size">3000<span>Sqft</span></ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Dimensions</ion-label>
-                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">North
-                    Dimensions:</ion-label>
-                <ul>
-                    <li><ion-label class="h6-size">North</ion-label></li>
-                    <li><ion-label class="h6-size">1000<span>Sqft</span></ion-label>
-                    </li>
-                </ul>
-                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">South
-                    Dimensions:</ion-label>
-                <ul>
-                    <li><ion-label class="h6-size">South</ion-label></li>
-                    <li><ion-label class="h6-size">1000<span>Sqft</span></ion-label>
-                    </li>
-                </ul>
-                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">East
-                    Dimensions:</ion-label>
-                <ul>
-                    <li><ion-label class="h6-size">East</ion-label></li>
-                    <li><ion-label class="h6-size">1000<span>Sqft</span></ion-label>
-                    </li>
-                </ul>
-                <ion-label class="h6-title" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">West
-                    Dimensions:</ion-label>
-                <ul>
-                    <li><ion-label class="h6-size">West</ion-label></li>
-                    <li><ion-label class="h6-size">1000<span>Sqft</span></ion-label>
-                    </li>
-                </ul>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Floor</ion-label>
-                <ion-label class="h6-size">1</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Age of Property</ion-label>
-                <ion-label class="h6-size">
-                    10 Years
-                </ion-label>
-                <ion-label class="h6-size">
-                    Under Construction
-                </ion-label>
-            </div>
-            <div class="div-individual" style="padding-bottom: 0;">
-                <ion-label class="label-property">Amenities</ion-label>
-                <div>
-                    <app-amentity-card></app-amentity-card>
+
+        @if (hasImages()) {
+        <swiper-container [zoom]="true" [slidesPerView]="1" loop="true" autoplay-delay="2800"
+            autoplay-disable-on-interaction="false" class="mySwiper">
+            @for (img of images(); track img.id) {
+            <swiper-slide>
+                <div class="div-img">
+                    <ion-img [src]="img.image || 'assets/img/no-image.png'"></ion-img>
                 </div>
-            </div>
+            </swiper-slide>
+            }
+        </swiper-container>
+        } @else {
+        <ion-img src="assets/img/no-image.png" class="media-image"></ion-img>
+        }
 
 
-            <br>
-            <div class="div-individual">
-                <ion-label class="label-property">Ownership</ion-label>
-                <ion-label class="h6-size">Freehold</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Rent</ion-label>
-                <ion-label class="h6-size">₹40000<span>rs</span></ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Cost of Property</ion-label>
-                <ion-label class="h6-size">₹1.5 Cr</ion-label>
-            </div>
-            <div class="div-individual">
-                <ion-label class="label-property">Address of Property</ion-label>
-                <ion-label class="h6-size">Hyderabad, Jubliee hills</ion-label>
-            </div> <br>
+    </div>
+    <div class="div-price-type">
+        <ion-label class="label-amount">{{ priceLine() }}</ion-label>
+        <ion-label class="label-type">{{ saleType() }}</ion-label>
+    </div>
 
-            <div class="div-individual">
-                <ion-label class="label-property">Description</ion-label>
-                <ion-label class="h6-size">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-                    quos.</ion-label>
-            </div>
+    <!-- TITLE + PRICE -->
+    <div class="div-title-location">
+        <div class="div-img-flex">
+            <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
+            <ion-label class="label-title">{{ model()?.propertyTitle || 'Property' }}</ion-label>
+        </div>
+        @if (model()?.addressOfProperty) {
+        <div class="div-location-flex">
+            <ion-icon name="location-outline"></ion-icon>
+            <ion-label class="label-address">{{ model()?.addressOfProperty }}</ion-label>
+        </div>
+        }
+    </div>
+    <!-- DETAILS: vary by category -->
+    <div class="div-section">
+        <div class="div-facts-items">
+            <ion-label class="label-property-details">Property details</ion-label>
+        </div>
+        <div class="div-section-details">
+            <ion-list lines="none">
+                <ion-item><ion-label class="label-list">Category</ion-label><ion-label slot="end" class="label-value">{{
+                        category() }}</ion-label></ion-item>
+                @if (availability()) {
+                <ion-item><ion-label class="label-list">Availability</ion-label><ion-label slot="end"
+                        class="label-value">{{ availability()
+                        }}</ion-label></ion-item>
+                }
+                @if (secDepositLine()) {
+                <ion-item><ion-label class="label-list">Price of Deposit</ion-label><ion-label slot="end"
+                        class="label-value">{{ secDepositLine()
+                        }}</ion-label></ion-item>
+                }
+            </ion-list>
+            <!-- Residential -->
+            @if (category() === 'residential') {
+            <ion-list lines="none" class="flat-list">
+                @if (model()?.houseType) {
+                <ion-item><ion-label class="label-list">House Type</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.houseType
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.houseCondition) {
+                <ion-item><ion-label class="label-list">Condition</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.houseCondition
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.houseCondition === 'New Houses' && model()?.bhkType) {
+                <ion-item><ion-label class="label-list">BHK</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.bhkType }}</ion-label></ion-item>
+                }
+                @if (model()?.houseCondition === 'New Houses' && model()?.houseFacingType) {
+                <ion-item><ion-label class="label-list">House Facing</ion-label><ion-label slot="end"
+                        class="label-value">{{
+                        model()?.houseFacingType
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.houseCondition === 'Old Houses') {
+                <ion-item><ion-label class="label-list">Rooms</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.rooms || 0
+                        }}</ion-label></ion-item>
+                <ion-item><ion-label class="label-list">Bathrooms</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.toilets || 0
+                        }}</ion-label></ion-item>
+                <ion-item><ion-label class="label-list">Pooja Room</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.poojaRoom || 0
+                        }}</ion-label></ion-item>
+                <ion-item><ion-label class="label-list">Living/Dining</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.livingDining || 0
+                        }}</ion-label></ion-item>
+                <ion-item><ion-label class="label-list">Kitchen</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.kitchen || 0
+                        }}</ion-label></ion-item>
+                }
+            </ion-list>
+            }
+
+            <!-- Commercial -->
+            @if (category() === 'commercial') {
+            <ion-list lines="none" class="flat-list">
+                @if (model()?.commercialType) {
+                <ion-item><ion-label class="label-list">Type</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.commercialType
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.commercialSubType) {
+                <ion-item><ion-label class="label-list">Sub Type</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.commercialSubType
+                        }}</ion-label></ion-item>
+                }
+            </ion-list>
+            }
+
+            <!-- Common (residential & commercial) -->
+            @if (category() === 'residential' || category() === 'commercial') {
+            <ion-list lines="none" class="flat-list">
+                @if (model()?.furnishingType) {
+                <ion-item><ion-label class="label-list">Furnishing</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.furnishingType
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.floor) {
+                <ion-item><ion-label class="label-list">Floor</ion-label><ion-label slot="end" class="label-value">{{
+                        model()?.floor }}</ion-label></ion-item>
+                }
+                @if (model()?.builtUpArea) {
+                <ion-item>
+                    <ion-label class="label-list">Builtup Area</ion-label>
+                    <ion-label slot="end" class="label-value">
+                        {{ model()?.builtUpArea }} {{ model()?.builtUpAreaUnits || '' }}
+                    </ion-label>
+                </ion-item>
+                }
+            </ion-list>
+            }
+
+            <!-- Plots / Agricultural -->
+            @if (category() === 'plots' || category() === 'agriculturalLands' || (category() === 'residential' &&
+            model()?.houseType === 'Individual House/Villa' ||
+            model()?.houseType === 'Farm House')
+            || (category() === 'commercial' && model()?.commercialSubType === 'Individual')) {
+            <ion-list lines="none" class="flat-list">
+
+                <!-- Sides -->
+                @if (model()?.northFacing || model()?.northSize) {
+                <ion-item>
+                    <ion-label class="label-list">North Facing</ion-label>
+                    <ion-label slot="end" class="label-value">
+                        {{ model()?.northFacing || '-' }} • {{ model()?.northSize || 0 }} {{ unitShort() }}
+                    </ion-label>
+                </ion-item>
+                }
+                @if (model()?.southFacing || model()?.southSize) {
+                <ion-item>
+                    <ion-label class="label-list">South Facing</ion-label>
+                    <ion-label slot="end" class="label-value">
+                        {{ model()?.southFacing || '-' }} • {{ model()?.southSize || 0 }} {{ unitShort() }}
+                    </ion-label>
+                </ion-item>
+                }
+                @if (model()?.eastFacing || model()?.eastSize) {
+                <ion-item>
+                    <ion-label class="label-list">East Facing</ion-label>
+                    <ion-label slot="end" class="label-value">
+                        {{ model()?.eastFacing || '-' }} • {{ model()?.eastSize || 0 }} {{ unitShort() }}
+                    </ion-label>
+                </ion-item>
+                }
+                @if (model()?.westFacing || model()?.westSize) {
+                <ion-item>
+                    <ion-label class="label-list">West Facing</ion-label>
+                    <ion-label slot="end" class="label-value">
+                        {{ model()?.westFacing || '-' }} • {{ model()?.westSize || 0 }} {{ unitShort() }}
+                    </ion-label>
+                </ion-item>
+                }
+            </ion-list>
+            }
+
+            <!-- Shared across categories -->
+            <ion-list lines="none" class="flat-list">
+                @if (model()?.PlotArea && (category() === 'residential' || category() === 'commercial')) {
+                <ion-item>
+                    <ion-label class="label-list">Plot Area</ion-label>
+                    <ion-label slot="end" class="label-value">{{ model()?.PlotArea }} {{ model()?.plotAreaUnits || ''
+                        }}</ion-label>
+                </ion-item>
+                }
+                @if (model()?.ageOfProperty) {
+                <ion-item><ion-label class="label-list">Age of Property</ion-label><ion-label slot="end"
+                        class="label-value">{{ model()?.ageOfProperty
+                        }}</ion-label></ion-item>
+                }
+                @if (model()?.negotiable !== undefined) {
+                <ion-item>
+                    <ion-label class="label-list">Negotiable</ion-label>
+                    <ion-label slot="end" class="label-value">{{ model()?.negotiable ? 'Yes' : 'No' }}</ion-label>
+                </ion-item>
+                }
+            </ion-list>
         </div>
     </div>
+
+    <!-- AMENITIES -->
+    @if (amenities().length > 0) {
+    <div class="section">
+        <div class="div-facts-items">
+            <ion-label class="label-property-details">Amenities</ion-label>
+        </div>
+        <div class="amenity-wrap" style="border-bottom: var(--border-7);">
+            <!-- @for (amenity of amenities(); track amenity) {
+            <app-amentitycard [amentity]="amenity"></app-amentitycard>
+            } -->
+            @for (a of amenities(); track a) {
+            <!-- <ion-chip color="primary" outline="true">{{ a }}</ion-chip> -->
+            <ul>
+                <li>
+                    <ion-label class="label-value">{{a}}</ion-label>
+                </li>
+            </ul>
+            }
+        </div>
+    </div>
+    }
+
+    <!-- DESCRIPTION -->
+    @if (model()?.description) {
+    <div class="section">
+        <div class="div-description">
+            <ion-label class="label-description">Description</ion-label>
+            <span class="span-description">{{ model()?.description }}</span>
+        </div>
+    </div>
+    }
+
+    <!-- VIDEO -->
+    @if (hasVideo()) {
+    <div class="section">
+        <div class="title-row">
+            <ion-icon name="film-outline"></ion-icon>
+            <ion-label class="subtitle">Video</ion-label>
+        </div>
+        <video [src]="video()" controls playsinline style="width:100%;max-height:300px;border-radius:12px;"></video>
+    </div>
+    }
+
+    <!-- AGENT -->
+
+
 </ion-content>
-
-
-<!-- <ion-footer>
-    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
-        <div class="div-mobile-icon" [class.blur]="true">
-            <div>
-                <ion-label>Sai Enclave</ion-label>
-                <ion-label>90XXXXXX90</ion-label>
-            </div>
-
-            <br>
-            <div>
-                <ion-label>Seller Name</ion-label>
-                <ion-label>90XXXXXX90</ion-label>
-            </div><br>
-
-            <a href="tel:property.phone" style="height: 45px;">
-                <ion-icon name="call-outline" [class.bRent]="action === 'rent'"
-                    [class.bSale]="action === 'sale'"></ion-icon>
-            </a>
-        </div>
-    </div>
-</ion-footer> -->
-
-
-
-
-
-
 <ion-footer>
-    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
-        <div class="div-mobile-icon" [class.blur]="false">
+    <div class="div-mobile">
+        <div class="div-mobile-icon">
             <div>
-                <ion-label>{{dummyuser.fullName}}</ion-label>
-                <ion-label>{{dummyuser.phone}}</ion-label>
+                <ion-label>Bhavani Sankar</ion-label>
+                <ion-label>+91 9876543210</ion-label>
             </div>
-
             <a href="tel:property.phone" style="height: 45px;">
-                <ion-icon name="call-outline" [class.bRent]="action === 'rent'"
-                    [class.bSale]="action === 'sale'"></ion-icon>
+                <ion-icon name="call-outline"></ion-icon>
             </a>
         </div>
     </div>
 </ion-footer>
-<!-- skeleton-code -->
-<!-- <ion-footer style="width: 375px;height: 80px;padding: 16px;">
-    <div class="div-mobile" [class.bRent]="action === 'rent'" [class.bSale]="action === 'sale'">
-        <div class="div-mobile-icon" [class.blur]="false">
-            <div>
-                <ion-skeleton-text [animated]="true" style="width: 174px;height: 24px;"></ion-skeleton-text>
-                <ion-skeleton-text [animated]="true" style="width: 174px;height: 24px;"></ion-skeleton-text>
-
-            </div>
-
-            <a href="tel:property.phone" style="height: 45px;">
-                <ion-skeleton-text [animated]="true"
-                    style="width: 45px;height: 45px; border-radius: 100px;"></ion-skeleton-text>
-            </a>
-        </div>
-    </div>
-</ion-footer> -->

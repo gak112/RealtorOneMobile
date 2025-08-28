@@ -115,15 +115,15 @@ ion-fab-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 16px;
+  margin: 16px 10px;
 
   ion-label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 1px;
     color: var(--color-black);
     /* line-height: 1; */
-    font-family: "operatr" !important;
+    // font-family: "operatr" !important;
   }
 
   ion-icon {
@@ -138,7 +138,7 @@ ion-fab-button {
   border: var(--border);
   border-radius: 12px;
   overflow: hidden;
-  margin: 16px;
+  margin: 16px 10px;
 
   .div-agent-c {
     padding: 16px;
@@ -230,7 +230,7 @@ ion-fab-button {
   gap: 16px;
   align-items: center;
   overflow-x: scroll;
-  margin: 16px;
+  margin: 16px 10px;
 }
 
 // .div-img {

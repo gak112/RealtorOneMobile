@@ -8,7 +8,7 @@ export interface IUserProfile {
   fullName: string | null;
 
   // Phone
-  mobile: string | null; // 10-digit string, e.g. "9876543210"
+  phone: string | null; // 10-digit string, e.g. "9876543210"
   phoneVerified: boolean;
 
   // Email

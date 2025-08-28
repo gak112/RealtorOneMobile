@@ -1,60 +1,55 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>More</ion-title>
-  </ion-toolbar>
-</ion-header> -->
 <ion-content fullscreen="true">
-  <div class="">
+  <!-- Header background & header row -->
+  <div class="header-wrap">
     <ion-img src="assets/img/more-bg1.png" class="img-more-bg"></ion-img>
     <span class="span-more">More</span>
+
     <div class="ion-item-settings">
       <div class="div-names">
-        <ion-label class="ion-label-settings">SVN AShok Kumar</ion-label>
+        <ion-label class="ion-label-settings">
+          {{ displayName() || 'User' }}
+        </ion-label>
         <span (click)="goToProfile()">view profile</span>
       </div>
-      @if(user.photo) {
+
+      @if (userPhoto()) {
       <div class="div-img" (click)="selectMedia()">
-        <ion-img
-          [src]="user.photo || 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6c08249-45b1-4852-ac3c-f5e49a7f6d25/d6v0umi-48db83ce-8367-4e06-b71c-103b296794c5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2YzA4MjQ5LTQ1YjEtNDg1Mi1hYzNjLWY1ZTQ5YTdmNmQyNVwvZDZ2MHVtaS00OGRiODNjZS04MzY3LTRlMDYtYjcxYy0xMDNiMjk2Nzk0YzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.HhR535GRJ9MzqUS54LJ2XWtf-Y2v-aOuN4GTD6MC0q4'"
-          class="img-user-settings" (click)="openFullImage([user.photoURL])"></ion-img>
+        <ion-img [src]="userPhoto()" class="img-user-settings" (click)="openFullImage([userPhoto()])">
+        </ion-img>
         <ion-icon name="camera-outline"></ion-icon>
       </div>
       } @else {
       <div class="div-img" (click)="selectMedia()" style="background: var(--background-main);">
-        <ion-label class="label-firstchar">AK</ion-label>
+        <ion-label class="label-firstchar">{{ initials() }}</ion-label>
         <ion-icon name="camera-outline"></ion-icon>
       </div>
       }
     </div>
   </div>
-  <ion-list>
-    @if(false) {
-    <div (click)="openAuth()" class="ion-item-settings">
-      <div class="div-img">
-        <ion-img src="assets/img/loginnouser.png" class="img-nouser-settings"></ion-img>
-      </div>
-      <div class="div-names">
-        <ion-label class="ion-label-settings">Login / Register</ion-label>
-      </div>
-    </div>
-    }
 
-    <ion-item (click)="setTheme()">
-      <ion-icon class="icon-toggle" slot="start" name="moon-outline" />
+  <ion-list>
+
+    <!-- Dark mode -->
+    <ion-item lines="full">
+      <ion-icon class="icon-toggle" slot="start" name="moon-outline"></ion-icon>
       <ion-label class="label-toggle">Dark Mode</ion-label>
-      <ion-toggle slot="end" color="tertiary" [checked]="theme() === 'dark'" />
+      <ion-toggle slot="end" color="tertiary" [checked]="isDark()" (ionChange)="onThemeToggle($event)">
+      </ion-toggle>
     </ion-item>
-    <ion-list-header style="padding-top: 16px;">
-      Personal Information
-    </ion-list-header>
+
+    <ion-list-header style="padding-top: 16px;">Personal Information</ion-list-header>
+
     <div class="div-icon-main">
-      <div class="div-icon-name">
+      <!-- About -->
+      <div class="div-icon-name" (click)="openAbout()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
           <ion-label>About Realtor '1'</ion-label>
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
+      <!-- Profile -->
       <div class="div-icon-name" (click)="goToProfile()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
@@ -62,7 +57,9 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
-      @if (user.agent) {
+
+      <!-- Agent Profile -->
+      @if (userAgent()) {
       <div class="div-icon-name" (click)="goToAgentProfile()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
@@ -71,6 +68,8 @@
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
       }
+
+      <!-- Billing -->
       <div class="div-icon-name" (click)="goToBilling()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
@@ -78,6 +77,8 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
+      <!-- Subscription -->
       <div class="div-icon-name" (click)="goToSubscription()">
         <div class="div-icon-sub">
           <ion-icon name="person-outline" class="icon-title"></ion-icon>
@@ -85,6 +86,8 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
+      <!-- My Properties -->
       <div class="div-icon-name" (click)="goToMyRequests()">
         <div class="div-icon-sub">
           <ion-icon name="git-compare-outline" class="icon-title"></ion-icon>
@@ -93,6 +96,7 @@
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
 
+      <!-- Saved Properties -->
       <div class="div-icon-name" (click)="goToSavedProperties()">
         <div class="div-icon-sub">
           <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
@@ -100,6 +104,8 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
+      <!-- Property Views -->
       <div class="div-icon-name" (click)="goToPropertyViews()">
         <div class="div-icon-sub">
           <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
@@ -107,68 +113,27 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
+      <!-- Amenities -->
       <div class="div-icon-name" (click)="openAmenities()">
         <div class="div-icon-sub">
           <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
-          <ion-label>Amentities</ion-label>
+          <ion-label>Amenities</ion-label>
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
 
-      <!-- <div class="div-icon-name" (click)="goToMyPayments()">
-          <div class="div-icon-sub">
-            <ion-icon name="card-outline" class="icon-title"></ion-icon>
-            <ion-label >Payments</ion-label>
-          </div>
-          <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
-        </div> -->
-    </div>
-
-    <!-- Personal Information start -->
-
-    <!-- <ion-skeleton-text [animated]="true" style="width: 50%; height: 21px;margin: 15px;"></ion-skeleton-text> 
-    <div class="div-icon-main">
-      <div style="width: 100%;height: 56px;" class="div-icon-name" (click)="goToProfile()">
-        <div class="div-icon-sub" style="display: flex;align-items: center;width: 81px;height:20px;">
-         <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" style="width: 45px;height: 18px;"></ion-skeleton-text>
+      <div class="div-icon-name" (click)="openLanguage()">
+        <div class="div-icon-sub">
+          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-label>Languages</ion-label>
         </div>
-     <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
+        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
-      <div class="div-icon-name" (click)="goToMyRequests()">
-        <div style="width: 132px;height: 20px;" class="div-icon-sub">
-     <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-        <ion-skeleton-text [animated]="true" style="width: 96px;height: 18px;"></ion-skeleton-text> 
-        </div>
- <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-      </div>
-
-      <div class="div-icon-name" (click)="goToSavedProperties()">
-        <div style="width: 155px;height: 20px;" class="div-icon-sub">
-      <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" style="width: 119px;height: 18px;"></ion-skeleton-text> 
-        </div>
-        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
-      </div>
-      <div class="div-icon-name" (click)="goToPropertyViews()">
-        <div style="width: 140px;height: 20px;" class="div-icon-sub">
-       <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-    <ion-skeleton-text [animated]="true" style="width: 104px;height: 18px;"></ion-skeleton-text>  
-        </div>
-        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-      </div>
-
-      <div class="div-icon-name" (click)="goToMyPayments()">
-          <div class="div-icon-sub">
-          </div>
-        </div> 
-    </div> -->
-
-    <!-- Personal Information end -->
+  </div>
 
     <ion-list-header>Account Privacy</ion-list-header>
-    <div class="div-icon-main" style="margin-bottom: 0;">
-
+    <div class="div-icon-main" style="margin-bottom:0;">
       <div class="div-icon-name" (click)="faqs()">
         <div class="div-icon-sub">
           <ion-icon name="help-outline" class="icon-title"></ion-icon>
@@ -176,6 +141,7 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
       <div class="div-icon-name" (click)="helpus()">
         <div class="div-icon-sub">
           <ion-icon name="mail-outline" class="icon-title"></ion-icon>
@@ -183,13 +149,15 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
       <div class="div-icon-name" (click)="termsConditions()">
         <div class="div-icon-sub">
           <ion-icon name="clipboard-outline" class="icon-title"></ion-icon>
-          <ion-label>Terms & Conditions</ion-label>
+          <ion-label>Terms &amp; Conditions</ion-label>
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
+
       <div class="div-icon-name" (click)="privacyPolicy()">
         <div class="div-icon-sub">
           <ion-icon name="document-outline" class="icon-title"></ion-icon>
@@ -198,7 +166,6 @@
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
 
-
       <div class="div-icon-name" (click)="alertLogout()">
         <div class="div-icon-sub">
           <ion-icon name="log-out-outline" class="icon-title"></ion-icon>
@@ -206,64 +173,14 @@
         </div>
         <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
       </div>
-
     </div>
-
-    <!-- Account Privacy Start-->
-
-
-    <!-- <ion-skeleton-text [animated]="true" style="width: 50%; height: 21px;margin: 15px;"></ion-skeleton-text>
-    <div class="div-icon-main" style="margin-bottom: 0;">
-
-      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="faqs()">
-        <div style="width: 69px;height: 20px;" class="div-icon-sub">
-          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-          <ion-skeleton-text [animated]="true" style="width: 33px;height: 18px;"></ion-skeleton-text> 
-        </div>
-        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
-      </div>
-      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="helpus()">
-        <div style="width: 88px;height: 20px;" class="div-icon-sub">
-         <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-          <ion-skeleton-text [animated]="true" style="width: 52px;height: 18px;"></ion-skeleton-text> 
-        </div>
-        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text>
-      </div>
-      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="termsConditions()">
-        <div style="width: 173px;height: 20px;" class="div-icon-sub">
-          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" style="width: 137px;height: 18px;"></ion-skeleton-text> 
-        </div>
-       <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-      </div>
-      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="privacyPolicy()">
-        <div style="width: 134px;height: 20px;" class="div-icon-sub">
-          <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" style="width: 98px;height: 18px;"></ion-skeleton-text> 
-        </div>
-         <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-      </div>
-
-
-      <div style="width: 100%; height: 56px;" class="div-icon-name" (click)="alertLogout()">
-        <div style="width: 83px;height: 20px;" class="div-icon-sub">
-           <ion-skeleton-text [animated]="true" style="width: 20px;height: 20px;margin-right: 10px;"></ion-skeleton-text>
-          <ion-skeleton-text [animated]="true" style="width: 47px;height: 18px;"></ion-skeleton-text> 
-        </div>
-        <ion-skeleton-text [animated]="true" style="width: 20px; height: 20px;margin-right: 10px;"></ion-skeleton-text> 
-      </div>
-
-    </div> -->
-    <!-- Account Privacy end-->
   </ion-list>
+
   <div class="div-company">
     <label class="name">
-      <span> Arhasri </span>
-      Technologies Private Limited
+      <span> Arhasri </span> Technologies Private Limited
     </label>
-    <p
-      style="font-size:16px; font-family: 'gak'!important;color: var(--color-black); font-weight: 600;text-shadow: 1px 1px 1px hsl(224deg 52% 22%); letter-spacing: 1px;">
-      Developed by GAK</p>
+    <p class="dev-note">Developed by GAK</p>
     <ion-img src="assets/img/mwl.png" style="height: 50px; width: 100%" />
   </div>
 </ion-content>

@@ -25,6 +25,7 @@ import {
 } from 'src/app/services/animation';
 import { PostsService } from '../../services/posts.service';
 import { PropertyFullViewComponent } from 'src/app/home/pages/property-full-view/property-full-view.component';
+import { PostfullviewComponent } from 'src/app/home/pages/postfullview/postfullview.component';
 
 @Component({
   selector: 'app-my-property-card',
@@ -55,8 +56,8 @@ export class MyPropertyCardComponent implements OnInit {
 
   async openPropertyDetails() {
     const modal = await this.modalController.create({
-      component: PropertyFullViewComponent,
-      componentProps: { propertyIn: this.property() },
+      component: PostfullviewComponent,
+      componentProps: { id: this.property().id },
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });

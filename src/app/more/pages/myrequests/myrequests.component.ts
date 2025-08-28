@@ -1,24 +1,18 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  inject,
-  OnInit,
-  computed,
-  effect,
-  signal,
-  Input,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import {
   IonContent,
   IonHeader,
   IonTitle,
   IonToolbar,
   IonIcon,
-  ModalController,
-  IonSpinner,
   IonSearchbar,
+  IonSpinner,
+  ModalController,
 } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
+
 import {
   Firestore,
   collection,
@@ -28,172 +22,11 @@ import {
   query,
 } from '@angular/fire/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map, of, startWith } from 'rxjs';
 
-import { PostsService } from 'src/app/more/services/posts.service';
 import { MyPropertyCardComponent } from '../../components/my-property-card/my-property-card.component';
-import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
 import { IPropertyImage } from 'src/app/models/property.model';
 
-type PostPayload = any; // your PostRequest-like shape
-
-@Component({
-  selector: 'app-myrequests',
-  templateUrl: './myrequests.component.html',
-  styleUrls: ['./myrequests.component.scss'],
-  standalone: true,
-  imports: [
-    IonSearchbar,
-    IonHeader,
-    IonToolbar,
-    IonIcon,
-    IonTitle,
-    IonContent,
-    MyPropertyCardComponent,
-  ],
-})
-export class MyrequestsComponent implements OnInit {
-  private modalController = inject(ModalController);
-
-  constructor() {
-    addIcons({ chevronBackOutline });
-  }
-
-  @Input() user: any | null = null;
-
-  ngOnInit(): void {
-    return;
-    // this.afs.collection(`requests`,
-    // ref => ref.where('uid', '==', this.user.uid)).valueChanges({idField: 'id'}).subscribe((data: any) => {
-    //   this.properties = data;
-    // });
-  }
-
-  dismiss() {
-    this.modalController.dismiss();
-  }
-
-  readonly searchQuery = signal('');
-
-  onSearch(ev: CustomEvent) {
-    const val = ((ev.detail as any)?.value ?? '').toString();
-    this.searchQuery.set(val);
-  }
-
-  clearSearch() {
-    this.searchQuery.set('');
-  }
-
-  private afs = inject(Firestore);
-
-  // Query: order by createdAt desc. Ensure you set createdAt = serverTimestamp() on create.
-  private postsCol = collection(this.afs, 'posts');
-  private q = query(this.postsCol, orderBy('createdAt', 'desc'), limit(200));
-
-  private rows$: Observable<PostDoc[]> = collectionData(this.q, {
-    idField: 'id',
-  }) as Observable<PostDoc[]>;
-
-  // Stream → signal; map docs to the IProperty shape your card expects
-  readonly properties = toSignal<any[]>(
-    this.rows$.pipe(map((docs) => docs.map(this.toProperty)))
-  );
-
-  // basic loading signal (first render until we get anything)
-  readonly loading = computed(() => this.properties().length === 0);
-
-  private toProperty = (d: PostDoc): any => {
-    const id = d.id;
-
-    // Build images array for the card
-    const imgs: string[] = Array.isArray(d.images)
-      ? d.images.filter(Boolean)
-      : [];
-    const propertyImages: IPropertyImage[] = imgs.map((url, i) => ({
-      id: `${id}-${i}`,
-      image: url,
-    }));
-
-    // Price preference: price → costOfProperty → rent
-    const rawPrice = d.priceOfSale ?? d.priceOfRent ?? 0;
-    const price = Number(rawPrice) || 0;
-
-    // Sizes formatted as strings
-    const size = d.PlotArea ?? '—';
-    const sizeStr = String(size);
-
-    return {
-      createdAt: d.createdAt,
-      updatedAt: d.updatedAt,
-      id,
-      propertyTitle: String(d.propertyTitle ?? '—'),
-      priceOfSale: Number(d.priceOfSale ?? 0),
-      priceOfRent: Number(d.priceOfRent ?? 0),
-      priceOfRentType: String(d.priceOfRentType ?? '—'),
-      addressOfProperty: String(d.addressOfProperty ?? '—'),
-      houseType: String(d.houseType ?? '—'),
-      houseFacingType: String(d.houseFacingType ?? '—'),
-      bhkType: String(d.bhkType ?? '—'),
-      PlotArea: Number(d.PlotArea ?? 0),
-      propertyImages,
-      saleType: String(d.saleType ?? 'sale') as 'sale' | 'rent',
-      category: String(d.category ?? 'residential') as
-        | 'residential'
-        | 'commercial'
-        | 'plots'
-        | 'agriculturalLands',
-      agentName: String(d.agentName ?? '—'),
-      propertyId: String(d.propertyId ?? id),
-      commercialType: String(d.commercialType ?? '—'),
-      floor: String(d.floor ?? '—'),
-      houseCondition: String(d.houseCondition ?? '—'),
-      rooms: Number(d.rooms ?? 0),
-      furnishingType: String(d.furnishingType ?? '—'),
-      commercialSubType: String(d.commercialSubType ?? '—'),
-      securityDeposit: Number(d.securityDeposit ?? 0),
-      builtUpArea: Number(d.builtUpArea ?? 0),
-      builtUpAreaUnits: String(d.builtUpAreaUnits ?? '—'),
-      northFacing: String(d.northFacing ?? '—'),
-      northSize: Number(d.northSize ?? 0),
-      southFacing: String(d.southFacing ?? '—'),
-      southSize: Number(d.southSize ?? 0),
-      eastFacing: String(d.eastFacing ?? '—'),
-      eastSize: Number(d.eastSize ?? 0),
-      westFacing: String(d.westFacing ?? '—'),
-      westSize: Number(d.westSize ?? 0),
-      toilets: Number(d.toilets ?? 0),
-      poojaRoom: Number(d.poojaRoom ?? 0),
-      livingDining: Number(d.livingDining ?? 0),
-      kitchen: Number(d.kitchen ?? 0),
-      amenities: Array.isArray(d.amenities) ? d.amenities : [],
-      ageOfProperty: String(d.ageOfProperty ?? '—'),
-      negotiable: Boolean(d.negotiable ?? false),
-      images: Array.isArray(d.images)
-        ? d.images.map((url, i) => ({ id: `${id}-${i}`, image: url }))
-        : [],
-      videoResources: Array.isArray(d.videoResources)
-        ? d.videoResources.map((url, i) => ({ id: `${id}-${i}`, video: url }))
-        : [],
-      createdBy: String(d.createdBy ?? '—'),
-      updatedBy: String(d.updatedBy ?? '—'),
-      sortDate: Number(d.sortDate ?? 0),
-      isDeleted: Boolean(d.isDeleted ?? false),
-      deletedBy: String(d.deletedBy ?? '—'),
-      deletedAt: d.deletedAt,
-      fullSearchText: Array.isArray(d.fullSearchText) ? d.fullSearchText : [],
-      plotAreaUnits: String(d.plotAreaUnits ?? '—'),
-      facingUnits: String(d.facingUnits ?? '—'),
-      lat: Number(d.lat ?? 0),
-      lng: Number(d.lng ?? 0),
-      description: String(d.description ?? '—'),
-      availabilityStatus: String(d.availabilityStatus ?? '-'),
-    };
-  };
-}
-
-/* ------------ Firestore doc shape ------------ */
 type PostDoc = {
   id: string;
   images?: string[];
@@ -207,8 +40,6 @@ type PostDoc = {
   PlotArea?: number | string;
   agentName?: string;
   propertyId?: string;
-  propertyStatus?: string;
-  costOfProperty?: number | string;
   priceOfSale?: number;
   priceOfRent?: number;
   priceOfRentType?: string;
@@ -236,9 +67,6 @@ type PostDoc = {
   amenities?: string[];
   ageOfProperty?: string;
   negotiable?: boolean;
-  lat?: number;
-  lng?: number;
-  description?: string;
   videoResources?: string[];
   createdBy?: string;
   updatedBy?: string;
@@ -246,13 +74,209 @@ type PostDoc = {
   isDeleted?: boolean;
   deletedBy?: string;
   deletedAt?: any;
-  status?: string;
   fullSearchText?: string[];
   plotAreaUnits?: string;
   facingUnits?: string;
   availabilityStatus?: string;
+  lat?: number;
+  lng?: number;
+  description?: string;
 
   createdAt?: any;
   updatedAt?: any;
-  // …any other fields you store
 };
+
+@Component({
+  selector: 'app-myrequests',
+  standalone: true,
+  templateUrl: './myrequests.component.html',
+  styleUrls: ['./myrequests.component.scss'],
+  imports: [
+    CommonModule,
+    IonSearchbar,
+    IonHeader,
+    IonToolbar,
+    IonIcon,
+    IonTitle,
+    IonContent,
+    IonSpinner,
+    MyPropertyCardComponent,
+  ],
+})
+export class MyrequestsComponent implements OnInit {
+  private readonly modalController = inject(ModalController);
+  private readonly afs = inject(Firestore);
+
+  constructor() {
+    addIcons({ chevronBackOutline });
+  }
+
+  ngOnInit(): void {}
+
+  dismiss() {
+    this.modalController.dismiss();
+  }
+
+  /** UI state */
+  readonly searchQuery = signal<string>('');
+  readonly errorMsg = signal<string | null>(null);
+
+  /** Base Firestore query (latest first; cap at 200 for fast client filtering) */
+  private readonly postsCol = collection(this.afs, 'posts');
+  private readonly baseQuery = query(
+    this.postsCol,
+    orderBy('createdAt', 'desc'),
+    limit(200)
+  );
+
+  /** Firestore stream with error handling + initial empty list to avoid flicker */
+  private readonly allRows = toSignal<PostDoc[]>(
+    collectionData(this.baseQuery, { idField: 'id' }).pipe(
+      map((rows) => rows as PostDoc[]),
+      startWith([] as PostDoc[]),
+      catchError((err) => {
+        console.error('[Myrequests] Firestore error:', err);
+        this.errorMsg.set('Failed to load properties. Please try again.');
+        return of([] as PostDoc[]);
+      })
+    )
+  );
+
+  /** Map Firestore docs → card-friendly objects */
+  readonly properties = computed(() => this.allRows().map(this.toProperty));
+
+  /** Loading while we still have nothing and no error */
+  readonly loading = computed(
+    () => this.errorMsg() == null && this.properties().length === 0
+  );
+
+  /** Client-side filtered list (fast + robust) */
+  readonly filtered = computed(() => {
+    const q = normalize(this.searchQuery());
+    if (!q) return this.properties();
+
+    const tokens = q.split(/\s+/).filter(Boolean);
+    const fields = (p: any) =>
+      [
+        p.propertyTitle,
+        p.addressOfProperty,
+        p.agentName,
+        p.category,
+        p.saleType,
+        p.houseType,
+        p.commercialType,
+        p.bhkType,
+        p.propertyId,
+      ]
+        .join(' ')
+        .toLowerCase();
+
+    return this.properties().filter((p) => {
+      const hay = fields(p);
+      return tokens.every((t) => hay.includes(t));
+    });
+  });
+
+  onSearch(ev: CustomEvent) {
+    const val = String((ev as any)?.detail?.value ?? '');
+    this.searchQuery.set(val);
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
+  }
+
+  /** Safe mapper: PostDoc -> object your card expects */
+  private toProperty = (d: PostDoc): any => {
+    const id = d.id;
+
+    // images → [{id, image}]
+    const imgs: string[] = Array.isArray(d.images)
+      ? d.images.filter(Boolean)
+      : [];
+    const propertyImages: IPropertyImage[] = imgs.map((url, i) => ({
+      id: `${id}-${i}`,
+      image: url,
+    }));
+
+    return {
+      id,
+      createdAt: d.createdAt,
+      updatedAt: d.updatedAt,
+
+      propertyTitle: String(d.propertyTitle ?? '—'),
+      addressOfProperty: String(d.addressOfProperty ?? '—'),
+
+      saleType: (d.saleType as any) ?? 'sale', // 'sale' | 'rent'
+      category: (d.category as any) ?? 'residential', // 'residential' | 'commercial' | 'plots' | 'agriculturalLands'
+
+      priceOfSale: Number(d.priceOfSale ?? 0),
+      priceOfRent: Number(d.priceOfRent ?? 0),
+      priceOfRentType: String(d.priceOfRentType ?? 'Monthly'),
+
+      houseType: String(d.houseType ?? '—'),
+      houseFacingType: String(d.houseFacingType ?? '—'),
+      bhkType: String(d.bhkType ?? '—'),
+      PlotArea: Number(d.PlotArea ?? 0),
+
+      propertyImages,
+      agentName: String(d.agentName ?? '—'),
+      propertyId: String(d.propertyId ?? id),
+
+      commercialType: String(d.commercialType ?? '—'),
+      floor: String(d.floor ?? '—'),
+      houseCondition: String(d.houseCondition ?? '—'),
+      rooms: Number(d.rooms ?? 0),
+      furnishingType: String(d.furnishingType ?? '—'),
+      commercialSubType: String(d.commercialSubType ?? '—'),
+
+      securityDeposit: Number(d.securityDeposit ?? 0),
+      builtUpArea: Number(d.builtUpArea ?? 0),
+      builtUpAreaUnits: String(d.builtUpAreaUnits ?? '—'),
+
+      northFacing: String(d.northFacing ?? '—'),
+      northSize: Number(d.northSize ?? 0),
+      southFacing: String(d.southFacing ?? '—'),
+      southSize: Number(d.southSize ?? 0),
+      eastFacing: String(d.eastFacing ?? '—'),
+      eastSize: Number(d.eastSize ?? 0),
+      westFacing: String(d.westFacing ?? '—'),
+      westSize: Number(d.westSize ?? 0),
+
+      toilets: Number(d.toilets ?? 0),
+      poojaRoom: Number(d.poojaRoom ?? 0),
+      livingDining: Number(d.livingDining ?? 0),
+      kitchen: Number(d.kitchen ?? 0),
+
+      amenities: Array.isArray(d.amenities) ? d.amenities : [],
+
+      ageOfProperty: String(d.ageOfProperty ?? '—'),
+      negotiable: Boolean(d.negotiable ?? false),
+
+      images: imgs.map((url, i) => ({ id: `${id}-${i}`, image: url })), // (if card uses .images)
+      videoResources: Array.isArray(d.videoResources)
+        ? d.videoResources.map((url, i) => ({ id: `${id}-${i}`, video: url }))
+        : [],
+
+      createdBy: String(d.createdBy ?? '—'),
+      updatedBy: String(d.updatedBy ?? '—'),
+      sortDate: Number(d.sortDate ?? 0),
+      isDeleted: Boolean(d.isDeleted ?? false),
+      deletedBy: String(d.deletedBy ?? '—'),
+      deletedAt: d.deletedAt,
+
+      fullSearchText: Array.isArray(d.fullSearchText) ? d.fullSearchText : [],
+      plotAreaUnits: String(d.plotAreaUnits ?? '—'),
+      facingUnits: String(d.facingUnits ?? '—'),
+      lat: Number(d.lat ?? 0),
+      lng: Number(d.lng ?? 0),
+      description: String(d.description ?? '—'),
+      availabilityStatus: String(d.availabilityStatus ?? '-'),
+    };
+  };
+}
+
+/** Lowercase + trim + collapse spaces (good enough for client filtering) */
+function normalize(s: string): string {
+  return (s || '').toLowerCase().normalize('NFKD').replace(/\s+/g, ' ').trim();
+}

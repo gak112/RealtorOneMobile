@@ -368,8 +368,6 @@ export class PostentryComponent implements OnInit {
   imgsBusy = signal(false);
   imgsPct = signal(0);
 
-
-
   constructor() {
     addIcons({
       chevronBackOutline,
@@ -932,11 +930,7 @@ export class PostentryComponent implements OnInit {
     // Reset segments
     this.saleTypeSig.set('sale');
     this.categorySig.set('residential');
-
-
   }
-
-
 
   /* ---------------- Errors ---------------- */
   private mapError(err: unknown): string {
