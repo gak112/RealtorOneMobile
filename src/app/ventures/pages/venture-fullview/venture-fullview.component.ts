@@ -13,7 +13,7 @@ import {
   IonIcon,
   IonImg,
   IonLabel,
-  ModalController
+  ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -39,6 +39,7 @@ import { register } from 'swiper/element';
 import { HouseFactsFeaturesComponent } from '../../components/house-facts-features/house-facts-features.component';
 import { VenturefloordetailsComponent } from '../venturefloordetails/venturefloordetails.component';
 import { HomeAllPhotosComponent } from 'src/app/home/pages/home-all-photos/home-all-photos.component';
+import { TotalPlotsListComponent } from '../total-plots-list/total-plots-list.component';
 register();
 
 @Component({
@@ -53,7 +54,7 @@ register();
     IonLabel,
     AmentitycardComponent,
     IonButton,
-    HouseFactsFeaturesComponent
+    HouseFactsFeaturesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [ModalController],
@@ -119,6 +120,15 @@ export class VentureFullviewComponent implements OnInit {
   async openAllPhotos() {
     const modal = await this.modalController.create({
       component: HomeAllPhotosComponent,
+      enterAnimation: forwardEnterAnimation,
+      leaveAnimation: backwardEnterAnimation,
+    });
+    await modal.present();
+  }
+
+  async openTotalPlotLists() {
+    const modal = await this.modalController.create({
+      component: TotalPlotsListComponent,
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
     });

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon class="icon-close" (click)="dismiss()" name="chevron-back-outline" />
+    <ion-title>Total Plots</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class="div-layout-main">
+    <div class="div-layout-display">
+      @for(i of
+      [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100];
+      track i) {
+      <ion-label [class.available]="status() === 'available'" [class.booked]="status() === 'booked'"
+        [class.sold]="status() === 'sold'" [class.mortgage]="status() === 'mortgage'">{{i}}</ion-label>
+      }
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <div class="div-layout-status">
+    <div class="div-layout-status-item">
+      <ion-icon name="square-outline" class="icon-square" style="color: #4ade80;"></ion-icon>
+      <span class="span-status">Available</span>
+    </div>
+    <div class="div-layout-status-item">
+      <ion-icon name="square" class="icon-square" style="color: #4ade80;"></ion-icon>
+      <span class="span-status">Booked</span>
+    </div>
+    <div class="div-layout-status-item">
+      <ion-icon name="square" class="icon-square" style="color: var(--color-999);"></ion-icon>
+      <span class="span-status">Sold</span>
+    </div>
+    <div class="div-layout-status-item">
+      <ion-icon name="square" class="icon-square" style="color: #7dd3fc;"></ion-icon>
+      <span class="span-status">Mortgage&nbsp;Plots</span>
+    </div>
+  </div>
+</ion-footer>

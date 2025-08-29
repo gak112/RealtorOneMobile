@@ -1,20 +1,22 @@
 import {
+  CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
+  Input,
+  OnInit,
   computed,
   effect,
   inject,
-  Input,
-  OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Observable, firstValueFrom, timeout } from 'rxjs';
 
-import { FirebaseError } from '@angular/fire/app';
 import { Geolocation } from '@capacitor/geolocation';
-
+import { CameraSource } from '@capacitor/camera';
 import {
   IonButton,
   IonCheckbox,
@@ -33,6 +35,8 @@ import {
   ModalController,
   NavController,
   ToastController,
+  ActionSheetController,
+  IonProgressBar,
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -45,6 +49,8 @@ import {
   close,
   cloudUploadOutline,
   trashOutline,
+  camera,
+  images,
 } from 'ionicons/icons';
 
 import {
@@ -55,28 +61,29 @@ import {
   getDoc,
   serverTimestamp,
   updateDoc,
-  setDoc,
-  deleteDoc,
 } from '@angular/fire/firestore';
 
-import {
-  Storage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from '@angular/fire/storage';
-
-import { Observable } from 'rxjs';
-import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
+import { UcWidgetComponent, UcWidgetModule } from 'ngx-uploadcare-widget';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
+import { AmenitiesComponent } from 'src/app/more/components/amenities/amenities.component';
+import { CameraService } from 'src/app/services/camera.service';
 
-/* ===========================================================
-   Types & Constants
-   =========================================================== */
+// ------------------- CONFIG: your backend API base -------------------
+const MUX_API_BASE = '/api/mux'; // change if needed
+// Expect your backend to expose:
+// POST   `${MUX_API_BASE}/create-upload` -> { uploadUrl: string, uploadId: string }
+// GET    `${MUX_API_BASE}/upload-status?uploadId=...` -> { status: 'waiting'|'asset_created'|'ready'|'errored', assetId?: string, playbackId?: string, error?: string }
 
+declare global {
+  interface Window {
+    uploadcare?: any;
+  }
+}
+
+/* ================= Types & constants ================= */
 type HouseType =
   | 'Apartment'
   | 'Individual House/Villa'
@@ -87,7 +94,6 @@ type HouseType =
   | '';
 
 type BHKType = '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK';
-
 type Units =
   | 'Sq Feet'
   | 'Sq Yard'
@@ -96,15 +102,17 @@ type Units =
   | 'Feet'
   | 'Yard'
   | 'Mtr';
-
 type RentType = 'Monthly' | 'Yearly';
 type FurnishingType = 'Fully-Furnished' | 'Semi-Furnished' | 'Unfurnished';
 type HouseFacingType =
   | 'North Facing'
   | 'South Facing'
   | 'East Facing'
-  | 'West Facing';
-
+  | 'West Facing'
+  | 'North-East Facing'
+  | 'North-West Facing'
+  | 'South-East Facing'
+  | 'South-West Facing';
 type CommercialType =
   | 'Retail'
   | 'Office'
@@ -114,14 +122,12 @@ type CommercialType =
   | 'Hospitality'
   | 'Land'
   | 'Other';
-
-// HTML uses value "Shopping Mall" while label shows "Complex"
 type CommercialSubType = 'Shopping Mall' | 'Individual';
-
 type AvailabilityStatus = 'Ready to move' | 'Under construction' | null;
 
 const DEFAULT_UNITS: Units = 'Sq Feet';
 
+// Firestore form type
 type PostEntryForm = {
   propertyTitle: FormControl<string | null>;
 
@@ -173,6 +179,21 @@ type PostEntryForm = {
   negotiable: FormControl<boolean | null>;
 
   images: FormControl<string[] | null>;
+
+  // Mux fields we will store
+  muxUploadId: FormControl<string | null>;
+  muxAssetId: FormControl<string | null>;
+  muxPlaybackId: FormControl<string | null>;
+  muxStatus: FormControl<
+    | 'idle'
+    | 'uploading'
+    | 'uploaded'
+    | 'processing'
+    | 'ready'
+    | 'errored'
+    | null
+  >;
+
   videoResources: FormControl<string[] | null>;
 };
 
@@ -197,9 +218,12 @@ type PostEntryForm = {
     IonImg,
     IonFooter,
     IonCheckbox,
+    IonProgressBar,
+    UcWidgetModule,
   ],
   templateUrl: './postentry.component.html',
   styleUrls: ['./postentry.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PostentryComponent implements OnInit {
   /* ---------------- DI ---------------- */
@@ -208,7 +232,8 @@ export class PostentryComponent implements OnInit {
   private nav = inject(NavController);
   private toastCtrl = inject(ToastController);
   private afs = inject(Firestore);
-  private storage = inject(Storage, { optional: true }); // optional
+  private cameraService = inject(CameraService);
+  private actionSheetCtrl = inject(ActionSheetController);
 
   /* ---------------- Inputs ---------------- */
   @Input() saleType: 'sale' | 'rent' = 'sale';
@@ -289,12 +314,25 @@ export class PostentryComponent implements OnInit {
     negotiable: this.fb.control<boolean | null>(true),
 
     images: this.fb.control<string[] | null>([]),
+
+    // Mux
+    muxUploadId: this.fb.control<string | null>(null),
+    muxAssetId: this.fb.control<string | null>(null),
+    muxPlaybackId: this.fb.control<string | null>(null),
+    muxStatus: this.fb.control<
+      | 'idle'
+      | 'uploading'
+      | 'uploaded'
+      | 'processing'
+      | 'ready'
+      | 'errored'
+      | null
+    >('idle'),
+
     videoResources: this.fb.control<string[] | null>([]),
   });
 
   ctrl = (n: keyof PostEntryForm) => this.postEntryForm.controls[n];
-
-  // Convert a control’s valueChanges to a signal for template conditionals
   private sel<T>(name: keyof PostEntryForm) {
     const c = this.postEntryForm.controls[name];
     return toSignal(c.valueChanges as unknown as Observable<T>, {
@@ -325,48 +363,30 @@ export class PostentryComponent implements OnInit {
     }
   });
 
-  // Amenities chip view (signal mirrors the control)
+  // Amenities view
   amenities = signal<string[]>([]);
   private amenitiesCtrlSig = this.sel<string[] | null>('amenities');
 
-  // Media limits/types
+  // Images
+  readonly images = signal<string[]>([]);
   static readonly MAX_IMAGES = 3;
-  static readonly MAX_IMAGE_BYTES = 6 * 1024 * 1024;
-  static readonly ACCEPTED_IMAGES = new Set([
-    'image/jpeg',
-    'image/png',
-    'image/jpg',
-  ]);
+  readonly remainingSlots = computed(() =>
+    Math.max(0, PostentryComponent.MAX_IMAGES - this.images().length)
+  );
+  readonly ucBusy = signal(false);
 
-  static readonly MAX_VIDEO_SECS = 20;
-  static readonly MAX_VIDEO_BYTES = 40 * 1024 * 1024;
-  static readonly ACCEPTED_VIDEOS = new Set([
-    'video/mp4',
-    'video/webm',
-    'video/quicktime',
-  ]);
-
-  // Media state
-  private newImageFiles: File[] = [];
-  private newImagePreviews = signal<string[]>([]);
-  private existingImageUrls = signal<string[]>([]);
-
-  private newVideoFile: File | null = null;
-  private newVideoPreview = signal<string | null>(null);
-  private existingVideoUrl = signal<string | null>(null);
-
-  // Previews
-  readonly allImagePreviews = computed(() => [
-    ...this.existingImageUrls(),
-    ...this.newImagePreviews(),
-  ]);
-  readonly videoPreview = computed(
-    () => this.newVideoPreview() || this.existingVideoUrl()
+  // Mux Player values
+  private muxIdSig = this.sel<string | null>('muxPlaybackId');
+  readonly muxPlaybackId = computed(() => (this.muxIdSig() || '').trim());
+  readonly muxPosterUrl = computed(() =>
+    this.muxPlaybackId()
+      ? `https://image.mux.com/${this.muxPlaybackId()}/thumbnail.png?time=1`
+      : null
   );
 
-  // Progress
-  imgsBusy = signal(false);
-  imgsPct = signal(0);
+  // Uploadcare remnant (images only)
+  UC_PUBLIC_KEY = 'af593dad582ebef4ed5f' as const;
+  readonly ucare = viewChild<UcWidgetComponent>('uc');
 
   constructor() {
     addIcons({
@@ -378,21 +398,23 @@ export class PostentryComponent implements OnInit {
       caretUpOutline,
       close,
       arrowForwardOutline,
+      camera,
+      images,
     });
 
-    // Sync amenities signal with form
+    effect(() => this.amenities.set(this.amenitiesCtrlSig() ?? []));
     effect(() => {
-      this.amenities.set(this.amenitiesCtrlSig() ?? []);
+      const arr = this.images();
+      this.ctrl('images').setValue(arr as never, { emitEvent: false });
+      this.ctrl('images').markAsDirty({ onlySelf: true });
     });
   }
 
   /* ---------------- Lifecycle ---------------- */
   async ngOnInit() {
-    // initialize segments from inputs
     this.saleTypeSig.set(this.saleType);
     this.categorySig.set(this.category);
 
-    // Edit mode
     if (this.editId) {
       try {
         await this.hydrateEdit(this.editId);
@@ -402,7 +424,7 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  /* ---------------- UI ---------------- */
+  /* ---------------- UI helpers ---------------- */
   dismiss() {
     this.modalCtrl
       .getTop()
@@ -437,7 +459,6 @@ export class PostentryComponent implements OnInit {
       this.ctrl('amenities').setValue([...data] as never);
     }
   }
-
   removeAmenity(i: number) {
     const list = [...this.amenities()];
     list.splice(i, 1);
@@ -473,131 +494,187 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  /* ---------------- Images ---------------- */
-  async selectImages(evt: Event) {
-    const input = evt.target as HTMLInputElement | null;
-    const files = Array.from(input?.files ?? []);
-    if (!files.length) return;
-
-    const already = this.existingImageUrls().length + this.newImageFiles.length;
-    if (already + files.length > PostentryComponent.MAX_IMAGES) {
-      this.toast(
-        `Only ${PostentryComponent.MAX_IMAGES} images allowed total.`,
-        'danger'
-      );
-      if (input) input.value = '';
+  /* ---------------- Images: camera/gallery ---------------- */
+  async openImageSource() {
+    if (this.remainingSlots() <= 0) {
+      this.toast('You can upload up to 3 images.', 'warning');
       return;
     }
-
-    this.imgsBusy.set(true);
-    this.pageError.set(null);
-
-    try {
-      let accepted = 0;
-      const previews = [...this.newImagePreviews()];
-      for (let i = 0; i < files.length; i++) {
-        const f = files[i];
-        if (!PostentryComponent.ACCEPTED_IMAGES.has(f.type)) {
-          await this.toast(`${f.name}: unsupported type.`, 'danger');
-          continue;
-        }
-        if (f.size > PostentryComponent.MAX_IMAGE_BYTES) {
-          await this.toast(`${f.name}: too large (>6MB).`, 'danger');
-          continue;
-        }
-        const dataUrl = await this.fileToDataUrl(f);
-        this.newImageFiles.push(f);
-        previews.push(dataUrl);
-        accepted++;
-        this.imgsPct.set(Math.round(((i + 1) / files.length) * 100));
-        await new Promise((r) => setTimeout(r, 6));
-      }
-      this.newImagePreviews.set(previews);
-      if (accepted)
-        this.toast(
-          `Added ${accepted} image${accepted === 1 ? '' : 's'}`,
-          'success'
-        );
-    } catch (e) {
-      this.pageError.set('Failed to add images.');
-      this.toast(this.mapError(e), 'danger');
-    } finally {
-      this.imgsBusy.set(false);
-      this.imgsPct.set(0);
-      if (input) input.value = '';
-    }
-  }
-
-  deleteImageAt(index: number) {
-    const exLen = this.existingImageUrls().length;
-    if (index < exLen) {
-      const next = [...this.existingImageUrls()];
-      next.splice(index, 1);
-      this.existingImageUrls.set(next);
-    } else {
-      const i = index - exLen;
-      const p = [...this.newImagePreviews()];
-      const f = [...this.newImageFiles];
-      p.splice(i, 1);
-      f.splice(i, 1);
-      this.newImagePreviews.set(p);
-      this.newImageFiles = f;
-    }
-  }
-
-  private fileToDataUrl(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onerror = () => reject(new Error('read failed'));
-      fr.onload = () => resolve(String(fr.result || ''));
-      fr.readAsDataURL(file);
+    const sheet = await this.actionSheetCtrl.create({
+      header: 'Select Image Source',
+      buttons: [
+        {
+          text: 'Camera',
+          icon: 'camera',
+          role: 'destructive',
+          handler: () => this.takePhoto(CameraSource.Camera),
+        },
+        {
+          text: 'Gallery',
+          icon: 'images',
+          handler: () => this.takePhoto(CameraSource.Photos),
+        },
+        { text: 'Cancel', role: 'cancel' },
+      ],
     });
+    await sheet.present();
+  }
+  async takePhoto(sourceType: CameraSource) {
+    try {
+      this.ucBusy.set(true);
+      await this.cameraService.setupPermissions();
+      const imageUrl = await this.cameraService.takePropertyPhoto(sourceType);
+      const next = [...this.images(), imageUrl].slice(
+        0,
+        PostentryComponent.MAX_IMAGES
+      );
+      this.images.set(Array.from(new Set(next)));
+      await this.toast('Image added.', 'success');
+    } catch (e) {
+      await this.toast(this.mapError(e), 'danger');
+    } finally {
+      this.ucBusy.set(false);
+    }
+  }
+  removeImageAt(idx: number) {
+    const arr = [...this.images()];
+    if (idx >= 0 && idx < arr.length) {
+      arr.splice(idx, 1);
+      this.images.set(arr);
+    }
   }
 
-  /* ---------------- Video ---------------- */
-  async selectVideo(evt: Event) {
+  /* ---------------- VIDEO: Mux-only flow ---------------- */
+
+  // Limits
+  // ---- Config (keep/adjust as needed) ----
+  private static readonly ACCEPTED_VIDEOS = new Set([
+    'video/mp4',
+    'video/webm',
+    'video/quicktime',
+  ]);
+  private static readonly MAX_VIDEO_BYTES = 40 * 1024 * 1024; // 40MB
+  private static readonly MAX_VIDEO_SECS = 20; // 20s
+  private static readonly MUX_API_BASE = '/api/mux'; // your backend prefix
+
+  private uploadAbort: AbortController | null = null;
+
+  // If you don't already have these signals/properties, add them:
+  readonly videoBusy = signal(false);
+  readonly videoProgress = signal(0); // 0..1
+  readonly videoStatus = signal('Idle');
+
+  // ============ MAIN HANDLERS ============
+
+  async handleMuxVideoSelect(evt: Event) {
     const input = evt.target as HTMLInputElement | null;
     const file = (input?.files && input.files[0]) || null;
+    if (input) input.value = ''; // allow same file reselect
     if (!file) return;
 
-    if (!PostentryComponent.ACCEPTED_VIDEOS.has(file.type)) {
-      this.toast('Unsupported video type. Use mp4/webm/mov.', 'danger');
-      if (input) input.value = '';
-      return;
-    }
-    if (file.size > PostentryComponent.MAX_VIDEO_BYTES) {
-      this.toast('Video too large.', 'danger');
-      if (input) input.value = '';
-      return;
-    }
+    // Cancel any previous upload
+    this.uploadAbort?.abort();
+    this.uploadAbort = new AbortController();
+
+    // Reset Mux fields in form
+    this.ctrl('muxUploadId').setValue(null as never);
+    this.ctrl('muxAssetId').setValue(null as never);
+    this.ctrl('muxPlaybackId').setValue(null as never);
+    this.ctrl('muxStatus').setValue('idle' as never);
+
+    // Reset UI
+    this.videoProgress.set(0);
+    this.videoBusy.set(true);
+    this.videoStatus.set('Validating video…');
 
     try {
+      // ---- Validate file ----
+      if (!this.isAcceptedVideo(file))
+        throw new Error('Unsupported video type. Use mp4/webm/mov.');
+      if (file.size > PostentryComponent.MAX_VIDEO_BYTES)
+        throw new Error('Video too large.');
       const duration = await this.getVideoDuration(file);
       if (duration > PostentryComponent.MAX_VIDEO_SECS) {
-        this.toast(
-          `Video longer than ${PostentryComponent.MAX_VIDEO_SECS}s not allowed.`,
-          'danger'
+        throw new Error(
+          `Video longer than ${PostentryComponent.MAX_VIDEO_SECS}s not allowed.`
         );
-        if (input) input.value = '';
-        return;
       }
-      this.newVideoFile = file;
-      this.newVideoPreview.set(URL.createObjectURL(file));
-      await this.toast('Video added', 'success');
+
+      // ---- 1) Ask backend to create a Mux Direct Upload (multipart) ----
+      this.videoStatus.set('Creating Mux upload…');
+      const create = await this.postJson(
+        `${PostentryComponent.MUX_API_BASE}/create-upload`,
+        { type: 'multipart' }
+      );
+      const uploadUrl: string | undefined = create?.uploadUrl;
+      const uploadId: string | undefined = create?.uploadId;
+      if (!uploadUrl || !uploadId)
+        throw new Error('Failed to create Mux upload.');
+
+      this.ctrl('muxUploadId').setValue(uploadId as never);
+      this.ctrl('muxStatus').setValue('uploading' as never);
+
+      // ---- 2) Upload file to the returned uploadUrl ----
+      this.videoStatus.set('Uploading to Mux…');
+      await this.multipartUpload(
+        uploadUrl,
+        file,
+        (p) => this.videoProgress.set(p),
+        this.uploadAbort.signal
+      );
+
+      this.ctrl('muxStatus').setValue('uploaded' as never);
+      this.videoProgress.set(1);
+      this.videoStatus.set('Uploaded. Processing on Mux…');
+
+      // ---- 3) Poll your backend until asset/playbackId is ready ----
+      const { assetId, playbackId } = await this.pollMuxUntilReady(
+        uploadId,
+        90_000,
+        3_000
+      );
+      if (!assetId || !playbackId) throw new Error('Mux asset not ready.');
+
+      this.ctrl('muxAssetId').setValue(assetId as never);
+      this.ctrl('muxPlaybackId').setValue(playbackId as never);
+      this.ctrl('muxStatus').setValue('ready' as never);
+
+      this.videoStatus.set('Ready.');
+      await this.toast('Video uploaded to Mux and ready to play.', 'success');
     } catch (e) {
-      this.toast(this.mapError(e), 'danger');
+      const msg = this.mapError(e);
+      this.ctrl('muxStatus').setValue('errored' as never);
+      this.videoStatus.set(`Error: ${msg}`);
+      await this.toast(msg, 'danger');
     } finally {
-      if (input) input.value = '';
+      this.videoBusy.set(false);
     }
   }
 
-  deleteVideo() {
+  clearMuxVideo() {
     try {
-      if (this.newVideoPreview()) URL.revokeObjectURL(this.newVideoPreview()!);
+      this.uploadAbort?.abort();
     } catch {}
-    this.newVideoFile = null;
-    this.newVideoPreview.set(null);
-    this.existingVideoUrl.set(null);
+    this.uploadAbort = null;
+
+    // Clear form mux fields
+    this.ctrl('muxUploadId').setValue(null as never);
+    this.ctrl('muxAssetId').setValue(null as never);
+    this.ctrl('muxPlaybackId').setValue(null as never);
+    this.ctrl('muxStatus').setValue('idle' as never);
+
+    // Reset UI
+    this.videoProgress.set(0);
+    this.videoStatus.set('Idle');
+  }
+
+  // ============ HELPERS ============
+
+  // Some iOS browsers attach no MIME type; fall back to file extension.
+  private isAcceptedVideo(file: File): boolean {
+    if (PostentryComponent.ACCEPTED_VIDEOS.has(file.type)) return true;
+    const name = (file.name || '').toLowerCase();
+    return /\.(mp4|webm|mov)$/i.test(name);
   }
 
   private getVideoDuration(file: File): Promise<number> {
@@ -621,6 +698,72 @@ export class PostentryComponent implements OnInit {
     });
   }
 
+  // Use XHR for progress + abort support
+  private async multipartUpload(
+    uploadUrl: string,
+    file: File,
+    onProgress: (p: number) => void,
+    signal: AbortSignal
+  ) {
+    await new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', uploadUrl);
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) onProgress(e.loaded / (e.total || 1));
+      };
+      xhr.onerror = () =>
+        reject(new Error('Network error while uploading to Mux.'));
+      xhr.onabort = () => reject(new Error('Upload canceled.'));
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) resolve();
+        else reject(new Error(`Mux upload failed (${xhr.status}).`));
+      };
+      signal.addEventListener('abort', () => {
+        try {
+          xhr.abort();
+        } catch {}
+      });
+      const form = new FormData();
+      form.append('file', file);
+      xhr.send(form);
+    });
+  }
+
+  private async pollMuxUntilReady(
+    uploadId: string,
+    timeoutMs = 90_000,
+    intervalMs = 3_000
+  ) {
+    const start = Date.now();
+    // loop with simple backoff
+    while (true) {
+      if (Date.now() - start > timeoutMs)
+        throw new Error('Mux processing timeout. Try again later.');
+      const s = await this.getJson(
+        `${
+          PostentryComponent.MUX_API_BASE
+        }/upload-status?uploadId=${encodeURIComponent(uploadId)}`
+      );
+      const status = s?.status as string | undefined;
+
+      if (status === 'ready' && s?.playbackId && s?.assetId) {
+        return { playbackId: String(s.playbackId), assetId: String(s.assetId) };
+      }
+      if (status === 'errored') {
+        throw new Error(s?.error || 'Mux processing error.');
+      }
+
+      // still processing / waiting
+      this.ctrl('muxStatus').setValue('processing' as never);
+      this.videoStatus.set('Processing on Mux…');
+      await this.sleep(intervalMs);
+    }
+  }
+
+  private sleep(ms: number) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
   /* ---------------- Submit ---------------- */
   async submit() {
     this.pageError.set(null);
@@ -631,10 +774,21 @@ export class PostentryComponent implements OnInit {
       return this.toast(msg, 'danger');
     }
 
-    if (this.allImagePreviews().length > PostentryComponent.MAX_IMAGES) {
+    if ((this.images()?.length || 0) > PostentryComponent.MAX_IMAGES) {
       return this.toast(
         `Only ${PostentryComponent.MAX_IMAGES} images allowed.`,
         'danger'
+      );
+    }
+
+    // Warn if video not ready
+    if (
+      this.ctrl('muxStatus').value &&
+      this.ctrl('muxStatus').value !== 'ready'
+    ) {
+      await this.toast(
+        'Video is not ready on Mux yet. You can still save; it will play once ready.',
+        'medium'
       );
     }
 
@@ -642,18 +796,15 @@ export class PostentryComponent implements OnInit {
     try {
       const raw = this.postEntryForm.getRawValue();
 
-      // Debug logging to check all form values
-      console.log('Complete form values:', raw);
-
       const basePayload: any = {
-        // Basic property information
+        // Basic
         propertyTitle: raw.propertyTitle,
         description: raw.description,
         addressOfProperty: raw.addressOfProperty,
         lat: raw.lat,
         lng: raw.lng,
 
-        // Property type and category
+        // Types
         houseType: raw.houseType,
         houseFacingType: raw.houseFacingType,
         houseCondition: raw.houseCondition,
@@ -661,7 +812,7 @@ export class PostentryComponent implements OnInit {
         commercialSubType: raw.commercialSubType,
         availabilityStatus: raw.availabilityStatus,
 
-        // Property details
+        // Details
         rooms: raw.rooms,
         bhkType: raw.bhkType,
         furnishingType: raw.furnishingType,
@@ -671,13 +822,13 @@ export class PostentryComponent implements OnInit {
         kitchen: raw.kitchen,
         floor: raw.floor,
 
-        // Area measurements
+        // Areas
         plotAreaUnits: raw.plotAreaUnits || DEFAULT_UNITS,
         PlotArea: raw.PlotArea,
         builtUpArea: raw.builtUpArea,
         builtUpAreaUnits: raw.builtUpAreaUnits || DEFAULT_UNITS,
 
-        // Facing measurements - all 8 facing fields
+        // Facing
         facingUnits: raw.facingUnits || DEFAULT_UNITS,
         northFacing: raw.northFacing,
         northSize: raw.northSize,
@@ -688,7 +839,7 @@ export class PostentryComponent implements OnInit {
         westFacing: raw.westFacing,
         westSize: raw.westSize,
 
-        // Property features
+        // Features
         amenities: raw.amenities ?? [],
         ageOfProperty: raw.ageOfProperty,
         negotiable: raw.negotiable,
@@ -699,12 +850,15 @@ export class PostentryComponent implements OnInit {
         priceOfRent: raw.priceOfRent,
         priceOfRentType: raw.priceOfRentType,
 
-        // Media fields (will be populated after upload)
-        images: [],
-        videoUrl: null,
+        // Media (images + mux)
+        images: this.images(),
+        muxUploadId: raw.muxUploadId || null,
+        muxAssetId: raw.muxAssetId || null,
+        muxPlaybackId: raw.muxPlaybackId || null,
+        muxStatus: raw.muxStatus || 'idle',
         videoResources: raw.videoResources,
 
-        // Metadata
+        // Meta
         saleType: this.saleTypeSig(),
         category: this.categorySig(),
         updatedAt: serverTimestamp(),
@@ -724,39 +878,8 @@ export class PostentryComponent implements OnInit {
         const ref = doc(this.afs, 'posts', postId!);
         const snap = await getDoc(ref);
         if (!snap.exists()) throw new Error('Post not found.');
+        await updateDoc(ref, basePayload);
       }
-
-      // Upload media if Storage configured
-      let uploadedImageUrls: string[] = [];
-      let uploadedVideoUrl: string | null = null;
-
-      if (!this.storage) {
-        if (this.newImageFiles.length || this.newVideoFile) {
-          await this.toast(
-            'Uploads skipped: Firebase Storage not configured.',
-            'warning'
-          );
-        }
-      } else {
-        uploadedImageUrls = await this.uploadImages(
-          postId!,
-          this.newImageFiles
-        );
-        uploadedVideoUrl = await this.uploadVideo(postId!, this.newVideoFile);
-      }
-
-      const finalImageUrls = [
-        ...this.existingImageUrls(),
-        ...uploadedImageUrls,
-      ].slice(0, PostentryComponent.MAX_IMAGES);
-      const finalVideoUrl = this.existingVideoUrl() ?? uploadedVideoUrl ?? null;
-
-      const ref = doc(this.afs, 'posts', postId!);
-      await updateDoc(ref, {
-        ...basePayload,
-        images: finalImageUrls,
-        videoUrl: finalVideoUrl,
-      });
 
       await this.toast(
         this.isEdit() ? 'Property updated' : 'Property saved',
@@ -772,48 +895,6 @@ export class PostentryComponent implements OnInit {
     }
   }
 
-  /* ---------------- Upload helpers ---------------- */
-  private async uploadImages(postId: string, files: File[]): Promise<string[]> {
-    if (!files.length || !this.storage) return [];
-    const urls: string[] = [];
-    await Promise.all(
-      files.map(async (f, i) => {
-        const ext = this.extOf(f.name) || this.extFromType(f.type) || 'jpg';
-        const path = `posts/${postId}/images/${Date.now()}_${i}.${ext}`;
-        const storageRef = ref(this.storage, path);
-        await uploadBytes(storageRef, f);
-        const url = await getDownloadURL(storageRef);
-        urls.push(url);
-      })
-    );
-    return urls;
-  }
-
-  private async uploadVideo(
-    postId: string,
-    file: File | null
-  ): Promise<string | null> {
-    if (!file || !this.storage) return null;
-    const ext = this.extOf(file.name) || this.extFromType(file.type) || 'mp4';
-    const path = `posts/${postId}/video/${Date.now()}.${ext}`;
-    const storageRef = ref(this.storage, path);
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
-  }
-
-  private extOf(name: string): string | '' {
-    const m = /\.([a-zA-Z0-9]+)$/.exec(name || '');
-    return (m?.[1] || '').toLowerCase();
-  }
-  private extFromType(type: string): string | '' {
-    if (type === 'image/jpeg') return 'jpg';
-    if (type === 'image/png') return 'png';
-    if (type === 'video/mp4') return 'mp4';
-    if (type === 'video/webm') return 'webm';
-    if (type === 'video/quicktime') return 'mov';
-    return '';
-  }
-
   /* ---------------- Edit hydrate ---------------- */
   private async hydrateEdit(id: string) {
     const ref = doc(this.afs, 'posts', id);
@@ -826,8 +907,7 @@ export class PostentryComponent implements OnInit {
     this.categorySig.set((data.category as any) || 'residential');
 
     const imgs = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
-    this.existingImageUrls.set(imgs.slice(0, PostentryComponent.MAX_IMAGES));
-    this.existingVideoUrl.set((data.videoUrl as string) || null);
+    this.images.set(imgs.slice(0, PostentryComponent.MAX_IMAGES));
 
     this.postEntryForm.patchValue(this.normalizeDocForForm(data), {
       emitEvent: false,
@@ -853,6 +933,15 @@ export class PostentryComponent implements OnInit {
     out.amenities = Array.isArray(out.amenities)
       ? out.amenities.filter(Boolean)
       : [];
+
+    // Mux fields normalize
+    out.muxUploadId =
+      typeof out.muxUploadId === 'string' ? out.muxUploadId : null;
+    out.muxAssetId = typeof out.muxAssetId === 'string' ? out.muxAssetId : null;
+    out.muxPlaybackId =
+      typeof out.muxPlaybackId === 'string' ? out.muxPlaybackId : null;
+    out.muxStatus = out.muxStatus || (out.muxPlaybackId ? 'ready' : 'idle');
+
     return out;
   }
 
@@ -908,44 +997,41 @@ export class PostentryComponent implements OnInit {
         negotiable: true,
 
         images: [],
+
+        muxUploadId: null,
+        muxAssetId: null,
+        muxPlaybackId: null,
+        muxStatus: 'idle',
+
         videoResources: [],
       } as any,
       { emitEvent: false }
     );
 
-    // Clear media
-    this.newImageFiles = [];
-    this.newImagePreviews.set([]);
-    this.existingImageUrls.set([]);
+    this.images.set([]);
+    this.videoProgress.set(0);
+    this.videoBusy.set(false);
+    this.videoStatus.set('Idle');
+  }
 
-    if (this.newVideoPreview()) {
-      try {
-        URL.revokeObjectURL(this.newVideoPreview()!);
-      } catch {}
-    }
-    this.newVideoFile = null;
-    this.newVideoPreview.set(null);
-    this.existingVideoUrl.set(null);
-
-    // Reset segments
-    this.saleTypeSig.set('sale');
-    this.categorySig.set('residential');
+  /* ---------------- HTTP helpers ---------------- */
+  private async postJson(url: string, body: any) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+    return await res.json().catch(() => ({}));
+  }
+  private async getJson(url: string) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+    return await res.json().catch(() => ({}));
   }
 
   /* ---------------- Errors ---------------- */
   private mapError(err: unknown): string {
-    if (err instanceof FirebaseError) {
-      switch (err.code) {
-        case 'permission-denied':
-          return 'Permission denied. Check Firestore rules.';
-        case 'unauthenticated':
-          return 'You must be signed in.';
-        case 'unavailable':
-          return 'Service unavailable. Try again.';
-        default:
-          return `Firebase error: ${err.code}`;
-      }
-    }
     const any = err as any;
     const msg = any?.error?.message || any?.message || 'Unexpected error.';
     if (!navigator.onLine)

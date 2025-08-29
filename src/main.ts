@@ -1,5 +1,9 @@
 // main.ts
-import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import {
+  enableProdMode,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
   PreloadAllModules,
@@ -25,8 +29,14 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { environment } from './environments/environment';
 
 register();
+defineCustomElements(window);
+if (environment.production) {
+  enableProdMode();
+}
 
 bootstrapApplication(AppComponent, {
   providers: [

@@ -9,55 +9,233 @@
     @if(activeFilter() === 'basicDetails') {
     <ion-label class="label-heading">Add Basic Details</ion-label>
     }
-    @if(activeFilter() !== 'plotsDetails') {
+    @if(activeFilter() === 'propertyDetails') {
     <ion-label class="label-heading">Add Property Details</ion-label>
     }
-    @if(activeFilter() !== 'uploadAttachments') {
+    @if(activeFilter() === 'uploadAttachments') {
     <ion-label class="label-heading">Upload Attachments</ion-label>
     }
     <span class="label-steps">Steps
       <span class="label-steps-count">{{stepCount() + 1}}</span>
       of 3</span>
   </div>
-  <div class="div-venture-type">
-    <ion-label class="label-venture-type">Venture Type</ion-label>
-    <div class="div-venture-type-options">
-      <span class="span-venture-type-option" [class.active]="ventureTypeForm() === 'openPlot'"
-        (click)="ventureTypeForm.set('openPlot')">Open&nbsp;Plots</span>
-      <span class="span-venture-type-option" [class.active]="ventureTypeForm() === 'farmLands'"
-        (click)="ventureTypeForm.set('farmLands')">Farm&nbsp;Lands</span>
+  @if(activeFilter() === 'basicDetails') {
+  <div class="">
+    <div class="div-venture-type">
+      <ion-label class="label-venture-type">Venture Type</ion-label>
+      <div class="div-venture-type-options">
+        <span class="span-venture-type-option" [class.active]="ventureTypeForm() === 'openPlot'"
+          (click)="ventureTypeForm.set('openPlot')">Open&nbsp;Plots</span>
+        <span class="span-venture-type-option" [class.active]="ventureTypeForm() === 'farmLands'"
+          (click)="ventureTypeForm.set('farmLands')">Farm&nbsp;Lands</span>
+      </div>
     </div>
-  </div>
-  <div class="div-formgroup">
-    <ion-input type="text" mode="md" label="Venture Name" label-placement="floating" fill="outline"
-      placeholder="Enter Venture Name" formControlName="ventureName">
-    </ion-input>
-  </div>
-  <!-- Description -->
-  <div class="div-formgroup">
-    <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
-      placeholder="Enter Description" rows="5" style="height: auto;" formControlName="description">
-    </ion-textarea>
-  </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Venture Name" label-placement="floating" fill="outline"
+        placeholder="Enter Venture Name" formControlName="ventureName">
+      </ion-input>
+    </div>
+    <!-- Description -->
+    <div class="div-formgroup">
+      <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
+        placeholder="Enter Description" rows="5" style="height: auto;" formControlName="description">
+      </ion-textarea>
+    </div>
 
-  <!-- Venture Location -->
-  <div class="div-formgroup">
-    <ion-textarea type="text" mode="md" label="Venture Address" label-placement="floating" fill="outline"
-      placeholder="Enter Venture Address" rows="3" style="height: auto;" formControlName="ventureAddress">
-    </ion-textarea>
-    <div class="div-detect-location" (click)="openDetectLocation()">
-      <ion-img src="assets/img/gps.png" class="img-detect-location"></ion-img>
-      <span class="span-detect-location">Detect my location</span>
+    <!-- Venture Location -->
+    <div class="div-formgroup">
+      <ion-textarea type="text" mode="md" label="Venture Address" label-placement="floating" fill="outline"
+        placeholder="Enter Venture Address" rows="3" style="height: auto;" formControlName="ventureAddress">
+      </ion-textarea>
+      <div class="div-detect-location" (click)="openDetectLocation()">
+        <ion-img src="assets/img/gps.png" class="img-detect-location"></ion-img>
+        <span class="span-detect-location">Detect my location</span>
+      </div>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Venture Website" label-placement="floating" fill="outline"
+        placeholder="Enter Venture Website" formControlName="ventureWebsite">
+      </ion-input>
+    </div>
+    <div>
+      <div style="display: flex;align-items: center; margin-bottom: 16px;">
+        <div style="margin-right: 16px;flex-grow: 1;">
+          <ion-input type="text" mode="md" label="Land Area" label-placement="floating" fill="outline"
+            placeholder="Enter Land Area" formControlName="landArea">
+          </ion-input>
+        </div>
+        <div style="width: 100px;">
+          <ion-select toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
+            label-placement="floating" fill="outline" class="select-units" formControlName="landAreaUnits">
+            <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+            <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+            <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+            <ion-select-option value="Acre">Acre</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="div-formgroup">
-    <ion-input type="text" mode="md" label="Venture Website" label-placement="floating" fill="outline"
-      placeholder="Enter Venture Website" formControlName="ventureWebsite">
-    </ion-input>
+  }
+  @if(activeFilter() === 'propertyDetails') {
+  @if(ventureTypeForm() === 'openPlot') {
+  <div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Plot No" label-placement="floating" fill="outline"
+        placeholder="Enter Plot No" formControlName="ventureWebsite">
+      </ion-input>
+    </div>
+    <div class="div-formgroup">
+      <ion-select mode="md" label="Select Plot Facing" label-placement="floating" fill="outline"
+        formControlName="plotFacingType">
+        <ion-select-option value="North Facing">North Facing</ion-select-option>
+        <ion-select-option value="South Facing">South Facing</ion-select-option>
+        <ion-select-option value="East Facing">East Facing</ion-select-option>
+        <ion-select-option value="West Facing">West Facing</ion-select-option>
+        <ion-select-option value="North-East Facing">North-East Facing</ion-select-option>
+        <ion-select-option value="North-West Facing">North-West Facing</ion-select-option>
+        <ion-select-option value="South-East Facing">South-East Facing</ion-select-option>
+        <ion-select-option value="South-West Facing">South-West Facing</ion-select-option>
+      </ion-select>
+    </div>
+    <div>
+      <div style="display: flex;align-items: center; margin-bottom: 16px;">
+        <div style="margin-right: 16px;flex-grow: 1;">
+          <ion-input type="text" mode="md" label="Plot Area" label-placement="floating" fill="outline"
+            placeholder="Enter Plot Area" formControlName="plotArea">
+          </ion-input>
+        </div>
+        <div style="width: 100px;">
+          <ion-select toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
+            label-placement="floating" fill="outline" class="select-units" formControlName="landAreaUnits">
+            <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+            <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+            <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+            <ion-select-option value="Acre">Acre</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+    </div>
+    <div class="div-formgroup">
+      <ion-select mode="md" label="Type of Plot" label-placement="floating" fill="outline" formControlName="typeOfPlot">
+        <ion-select-option value="residential">Residential</ion-select-option>
+        <ion-select-option value="commercial">Commercial</ion-select-option>
+      </ion-select>
+    </div>
+    <div class="div-cornerPlot">
+      <ion-label class="label-cornerPlot">Corner Plot</ion-label>
+      <ion-checkbox mode="md" formControlName="cornerPlot"></ion-checkbox>
+    </div>
+    <div class="div-formgroup">
+      <ion-select mode="md" label="Plot Status" label-placement="floating" fill="outline" formControlName="plotStatus">
+        <ion-select-option value="Available">Available</ion-select-option>
+        <ion-select-option value="Booked">Booked</ion-select-option>
+        <ion-select-option value="Sold">Sold</ion-select-option>
+      </ion-select>
+    </div>
   </div>
+  }
+  @if(ventureTypeForm() === 'farmLands') {
+  <div class="">
+    <div class="div-formgroup">
+      <ion-select mode="md" label="Select Farmland Type" label-placement="floating" fill="outline"
+        formControlName="farmlandType">
+        <ion-select-option value="Red Sandalwood">Red Sandalwood</ion-select-option>
+        <ion-select-option value="White Sandalwood">White Sandalwood</ion-select-option>
+        <ion-select-option value="Teak">Teak</ion-select-option>
+        <ion-select-option value="Other">Other</ion-select-option>
+      </ion-select>
+    </div>
+    <div>
+      <div style="display: flex;align-items: center; margin-bottom: 16px;">
+        <div style="margin-right: 16px;flex-grow: 1;">
+          <ion-input type="text" mode="md" label="Farm Land Area" label-placement="floating" fill="outline"
+            placeholder="Enter Farm Land Area" formControlName="farmLandArea">
+          </ion-input>
+        </div>
+        <div style="width: 100px;">
+          <ion-select toggleIcon="caret-down-outline" expandedIcon="caret-up-outline" mode="md" label="Units"
+            label-placement="floating" fill="outline" class="select-units" formControlName="landAreaUnits">
+            <ion-select-option value="Sq Feet">Sq Feet</ion-select-option>
+            <ion-select-option value="Sq Yard">Sq Yard</ion-select-option>
+            <ion-select-option value="Sq Mtr">Sq Mtr</ion-select-option>
+            <ion-select-option value="Acre">Acre</ion-select-option>
+          </ion-select>
+        </div>
+      </div>
+    </div>
+    <div class="div-formgroup">
+      <ion-input type="text" mode="md" label="Trees" label-placement="floating" fill="outline" placeholder="Enter Trees"
+        formControlName="ventureWebsite">
+      </ion-input>
+    </div>
+  </div>
+  }
+  }
+
+  @if(activeFilter() === 'uploadAttachments') {
+  <div>
+    <!-- Upload logo -->
+    <div class="div-upload">
+      <ion-label class="upload-label">Upload logo</ion-label>
+      <div class="div-add">
+        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-label class="label-add">Upload a file or drag and drop</ion-label>
+        <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+      </div>
+
+    </div>
+
+    <!-- Logo preview -->
+
+    <div class="div-dataimg2">
+      <div class="div-uploading" style="width: auto;">
+        <ion-icon name="trash-outline"></ion-icon>
+        <ion-img [src]="'assets/img/no-image.png'" style="object-fit: contain;"></ion-img>
+      </div>
+    </div>
+
+
+    <!-- Upload Venture Images -->
+    <div class="div-upload">
+      <ion-label class="upload-label">Upload Venture Images</ion-label>
+      <div class="div-add">
+        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-label class="label-add">Upload a file or drag and drop</ion-label>
+        <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+      </div>
+
+    </div>
+
+    <!-- Venture Images preview -->
+    <div class="div-venture-images">
+      @for(image of [0,1,2,3,4,5,6,7,8,9]; track $index) {
+      <div class="div-uploading">
+        <ion-icon name="trash-outline"></ion-icon>
+        <ion-img [src]="'assets/img/no-image.png'" style="object-fit: contain;"></ion-img>
+      </div>
+      }
+    </div>
+
+    <!-- Upload Brochure -->
+    <div class="div-upload">
+      <ion-label class="upload-label">Upload Brochure</ion-label>
+      <div class="div-add">
+        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-label class="label-add">Upload a file or drag and drop</ion-label>
+        <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
+      </div>
+    </div>
+    <div class="div-dataimg2">
+      <div class="div-uploading" style="width: auto;">
+        <ion-icon name="trash-outline"></ion-icon>
+        <ion-img [src]="'assets/img/no-image.png'" style="object-fit: contain;"></ion-img>
+      </div>
+    </div>
+  </div>
+  }
 </ion-content>
-
-<!-- <ion-footer>
+<ion-footer>
   @if(activeFilter() === 'basicDetails') {
   <div></div>
   }
@@ -67,19 +245,17 @@
     Previous
   </ion-button>
   }
-  @if(activeFilter() !== 'attachments') {
-  <ion-button (click)="next()" fill="clear" size="small" [disabled]="!stepsValid()[activeFilter()]?.valid"
+  @if(activeFilter() !== 'uploadAttachments') {
+  <ion-button (click)="next()" fill="clear" size="small"
     style="background-color: darkcyan; color: white; border-radius: 6px;">
     Next
     <ion-icon name="arrow-forward" style="margin-left: 5px; margin-right: 0;"></ion-icon>
   </ion-button>
   }
-  @if(activeFilter() === 'attachments') {
-  <ion-button size="small" fill="clear" (click)="submit()" [disabled]="!stepsValid().basicDetails.valid && 
-  !stepsValid().propertyDetails.valid &&
-   !stepsValid().locationInfo.valid && 
-    !stepsValid().attachments.valid" style="background-color: darkcyan; color: white; border-radius: 6px;">
+  @if(activeFilter() === 'uploadAttachments') {
+  <ion-button size="small" fill="clear" (click)="submit()"
+    style="background-color: darkcyan; color: white; border-radius: 6px;">
     Submit
   </ion-button>
   }
-</ion-footer> -->
+</ion-footer>

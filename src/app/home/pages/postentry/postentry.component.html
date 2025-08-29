@@ -13,17 +13,16 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="postEntryForm" (ngSubmit)="submit()" novalidate>
-    <div style="margin-bottom: 16px;">
+    <div style="margin-bottom:16px;">
       <ion-label>Property Type</ion-label>
-      <div style="display: flex; gap: 12px; align-items: center;">
+      <div style="display:flex;gap:12px;align-items:center;">
         <span class="span-type">{{ saleTypeSig() }}</span>
-        <ion-icon name="arrow-forward-outline" style="font-size: 16px; color: var(--color-skyblue);"></ion-icon>
+        <ion-icon name="arrow-forward-outline" style="font-size:16px;color:var(--color-skyblue);"></ion-icon>
         <span class="span-type">{{ categorySig() }}</span>
       </div>
     </div>
 
     <div class="div-form-main">
-
       <!-- Title -->
       <div class="div-formgroup">
         <ion-input type="text" mode="md" label="Property Title" label-placement="floating" fill="outline"
@@ -59,8 +58,7 @@
       <!-- Rooms + counts -->
       <div class="div-formgroup">
         <ion-input type="number" inputmode="numeric" mode="md" label="No of Rooms" label-placement="floating"
-          fill="outline" placeholder="Enter No of Rooms" formControlName="rooms">
-        </ion-input>
+          fill="outline" placeholder="Enter No of Rooms" formControlName="rooms"></ion-input>
       </div>
 
       <div class="div-grid">
@@ -96,6 +94,10 @@
           <ion-select-option value="South Facing">South Facing</ion-select-option>
           <ion-select-option value="East Facing">East Facing</ion-select-option>
           <ion-select-option value="West Facing">West Facing</ion-select-option>
+          <ion-select-option value="North-East Facing">North-East Facing</ion-select-option>
+          <ion-select-option value="North-West Facing">North-West Facing</ion-select-option>
+          <ion-select-option value="South-East Facing">South-East Facing</ion-select-option>
+          <ion-select-option value="South-West Facing">South-West Facing</ion-select-option>
         </ion-select>
       </div>
       }
@@ -139,8 +141,7 @@
       <!-- Plot area + units -->
       <div class="div-formgroup" style="display:flex;gap:12px;align-items:center;">
         <ion-input type="number" inputmode="numeric" mode="md" label="Plot Area" label-placement="floating"
-          fill="outline" placeholder="Enter Plot Area" formControlName="PlotArea">
-        </ion-input>
+          fill="outline" placeholder="Enter Plot Area" formControlName="PlotArea"></ion-input>
 
         <ion-select mode="md" label="Units" label-placement="floating" fill="outline" style="min-width:150px;"
           formControlName="plotAreaUnits">
@@ -157,8 +158,7 @@
       <!-- Builtup area + units -->
       <div class="div-formgroup" style="display:flex;gap:12px;align-items:center;">
         <ion-input type="number" inputmode="numeric" mode="md" label="Builtup Area" label-placement="floating"
-          fill="outline" placeholder="Enter Builtup Area" formControlName="builtUpArea">
-        </ion-input>
+          fill="outline" placeholder="Enter Builtup Area" formControlName="builtUpArea"></ion-input>
 
         <ion-select mode="md" label="Units" label-placement="floating" fill="outline" style="min-width:150px;"
           formControlName="builtUpAreaUnits">
@@ -172,11 +172,13 @@
         </ion-select>
       </div>
 
-      @if (categorySig() === 'plots' || categorySig() === 'agriculturalLands'
-      || (categorySig() === 'residential' && ctrl('houseType').value === 'Individual House/Villa' ||
-      ctrl('houseType').value === 'Farm House')
-      || (categorySig() === 'commercial' && ctrl('commercialSubType').value === 'Individual')) {
-
+      @if (
+      categorySig() === 'plots' ||
+      categorySig() === 'agriculturalLands' ||
+      (categorySig() === 'residential' && (ctrl('houseType').value === 'Individual House/Villa' ||
+      ctrl('houseType').value === 'Farm House')) ||
+      (categorySig() === 'commercial' && ctrl('commercialSubType').value === 'Individual')
+      ) {
       <!-- Common Facing Units -->
       <div class="div-formgroup">
         <ion-select mode="md" label="Facing Units" label-placement="floating" fill="outline"
@@ -247,7 +249,7 @@
       @if (categorySig() === 'residential' || categorySig() === 'commercial') {
       <!-- Amenities -->
       <div class="div-formgroup"
-        style="display:flex;align-items:center;gap:8px; justify-content: space-between; border: var(--border-ddd); border-radius: 8px; padding: 8px 12px;">
+        style="display:flex;align-items:center;gap:8px;justify-content:space-between;border:var(--border-ddd);border-radius:8px;padding:8px 12px;">
         <ion-label style="margin:0;font-size:16px;">Amenities</ion-label>
         <ion-button size="small" color="warning" (click)="openAmenities()">
           <ion-icon slot="start" name="add"></ion-icon> Add
@@ -259,7 +261,7 @@
         @for (a of amenities(); track a; let i = $index) {
         <span class="badge-amenity">
           {{ a }}
-          <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
+          <ion-icon name="close" (click)="removeAmenity(i)" style="font-size:14px;color:#fff;"></ion-icon>
         </span>
         }
       </div>
@@ -336,52 +338,65 @@
         <ion-checkbox mode="md" formControlName="negotiable"></ion-checkbox>
       </div>
 
-      <!-- Upload Images (max 3) -->
+      <!-- Property Images (max 3) -->
       <div class="div-upload">
         <ion-label class="upload-label">Upload images (max 3)</ion-label>
-        <div class="div-add" (click)="imagesFileInput.click()">
-          <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
-          <ion-label class="label-add">Upload files</ion-label>
-          <span class="label-span">.jpg, .jpeg, .png</span>
-          <input #imagesFileInput type="file" accept="image/jpeg,image/png,image/jpg" multiple hidden
-            (change)="selectImages($event)" />
+
+        <div class="div-add" (click)="openImageSource()">
+          <ion-icon name="camera" class="icon-upload"></ion-icon>
+          <ion-label class="label-add">Add Images</ion-label>
+          <span class="label-span">Camera • Gallery</span>
         </div>
-        @if (imgsBusy()) {
-        <div style="font-size:12px; color:#666; margin-top:8px;">Processing… {{ imgsPct() }}%</div>
+
+        @if (ucBusy()) {
+        <div style="font-size:12px;color:#666;margin-top:8px;">Uploading…</div>
         }
       </div>
 
-      @if (allImagePreviews().length > 0) {
+      @if (images().length > 0) {
       <div class="div-venture-images">
-        @for (image of allImagePreviews(); let i = $index; track i) {
+        @for (url of images(); let i = $index; track url) {
         <div class="div-uploading">
-          <ion-icon name="trash-outline" (click)="deleteImageAt(i)"></ion-icon>
-          <ion-img [src]="image" loading="lazy"></ion-img>
+          <ion-icon name="trash-outline" (click)="removeImageAt(i)"></ion-icon>
+          <ion-img [src]="url" loading="lazy"></ion-img>
         </div>
         }
       </div>
       }
 
-      <!-- Upload Video (≤ 20s) -->
+      <!-- VIDEO (Mux only) -->
       <div class="div-upload">
-        <ion-label class="upload-label">Upload video (max 20 seconds)</ion-label>
+        <ion-label class="upload-label">Property video (Mux)</ion-label>
+
+        <!-- File picker -->
         <div class="div-add" (click)="videoFileInput.click()">
           <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
-          <ion-label class="label-add">Upload video</ion-label>
-          <span class="label-span">.mp4, .webm, .mov • ≤ 20s</span>
+          <ion-label class="label-add">Choose video</ion-label>
+          <span class="label-span">.mp4 / .webm / .mov • ≤ 20s</span>
           <input #videoFileInput type="file" accept="video/mp4,video/webm,video/quicktime" hidden
-            (change)="selectVideo($event)" />
+            (change)="handleMuxVideoSelect($event)" />
         </div>
-      </div>
 
-      @if (videoPreview()) {
-      <div class="div-venture-images">
-        <div class="div-uploading">
-          <ion-icon name="trash-outline" (click)="deleteVideo()"></ion-icon>
-          <video [src]="videoPreview()" controls playsinline style="width:100%; max-height:300px;"></video>
+        <!-- Upload progress/status -->
+        @if (videoBusy()) {
+        <div style="margin-top:8px;font-size:12px;color:#555;">
+          {{ videoStatus() }}
         </div>
+        <ion-progress-bar [value]="videoProgress()" color="warning" style="margin-top:4px;"></ion-progress-bar>
+        }
+
+        <!-- Player once playback id exists -->
+        @if (muxPlaybackId()) {
+        <div class="div-venture-images" style="margin-top:12px;">
+          <div class="div-uploading" style="width:auto;">
+            <ion-icon name="trash-outline" (click)="clearMuxVideo()"></ion-icon>
+            <mux-player style="width:100%;max-height:360px;" [attr.playback-id]="muxPlaybackId()"
+              [attr.poster]="muxPosterUrl()" stream-type="on-demand" playsinline controls>
+            </mux-player>
+          </div>
+        </div>
+        }
       </div>
-      }
     </div>
   </form>
 </ion-content>

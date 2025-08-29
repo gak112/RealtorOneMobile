@@ -533,3 +533,11 @@ ion-footer {
   font-weight: 600;
   letter-spacing: 0.5px;
 }
+
+mux-player {
+  --media-object-fit: cover;
+  --media-object-position: center;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}

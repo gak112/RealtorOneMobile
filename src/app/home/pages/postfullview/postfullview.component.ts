@@ -40,6 +40,7 @@ import {
   cubeOutline,
   filmOutline,
   callOutline,
+  navigateCircle,
 } from 'ionicons/icons';
 
 import { Firestore, doc, docData } from '@angular/fire/firestore';
@@ -255,6 +256,7 @@ export class PostfullviewComponent {
       cubeOutline,
       filmOutline,
       callOutline,
+      navigateCircle
     });
   }
 

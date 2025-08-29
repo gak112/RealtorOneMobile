@@ -321,6 +321,24 @@ ion-content {
   }
 }
 
+
+.div-plot-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--content-background);
+  margin: 16px;
+}
+.label-plot-title {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--color-black);
+  display: block;
+}
+
+
 .div-specifications {
   padding: 16px;
   border-radius: 6px;

@@ -83,6 +83,15 @@
       letter-spacing: 0.25px;
       color: #0c77c1;
       display: block;
+      width: calc(100% - 100px);
+      flex: 1;
+      text-transform: capitalize;
+    }
+
+    .icon-navigate {
+      font-size: 28px;
+      color: var(--color-skyblue);
+      margin-left: 10px;
     }
   }
 

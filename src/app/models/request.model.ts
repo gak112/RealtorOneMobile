@@ -17,6 +17,10 @@ export interface PostRequestForm {
     | 'South Facing'
     | 'East Facing'
     | 'West Facing'
+    | 'North-East Facing'
+    | 'North-West Facing'
+    | 'South-East Facing'
+    | 'South-West Facing'
     | null;
   rooms: number | null;
   bhkType: '1BHK' | '2BHK' | '3BHK' | '4BHK' | '5BHK' | '+5BHK' | null;

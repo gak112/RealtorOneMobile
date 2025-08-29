@@ -1,0 +1,79 @@
+ion-title {
+  padding-left: 40px;
+  text-align: left;
+}
+
+.div-layout-main {
+  height: 100%;
+  position: relative;
+}
+
+.div-layout-display {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+  gap: 14px;
+
+  ion-label {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 35px;
+    height: 30px;
+    line-height: 1;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+ion-footer {
+  padding: 16px 10px;
+  background: var(--content-background-white);
+  border-top: var(--border);
+}
+
+.div-layout-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.div-layout-status-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .icon-square {
+    font-size: 20px;
+  }
+
+  .span-status {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-555);
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+  }
+}
+
+.available {
+  border: 2px solid #4ade80;
+  color: var(--color-555) !important;
+}
+
+.booked {
+  background: #4ade80;
+  color: var(--color-white) !important;
+}
+
+.sold {
+  background: #999;
+  color: var(--color-white) !important;
+}
+
+.mortgage {
+  background: #7dd3fc;
+  color: var(--color-white) !important;
+}

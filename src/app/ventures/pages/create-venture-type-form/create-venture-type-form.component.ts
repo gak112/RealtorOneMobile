@@ -1,4 +1,11 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -9,16 +16,30 @@ import {
   IonLabel,
   IonInput,
   IonTextarea,
-  IonImg, IonFooter, IonButton } from '@ionic/angular/standalone';
+  IonImg,
+  IonFooter,
+  IonButton,
+  IonSelect,
+  IonSelectOption, IonCheckbox } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
+import {
+  arrowBack,
+  arrowForward,
+  caretDownOutline,
+  caretUpOutline,
+  chevronBackOutline,
+  cloudUploadOutline,
+  trashOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-create-venture-type-form',
   templateUrl: './create-venture-type-form.component.html',
   styleUrls: ['./create-venture-type-form.component.scss'],
   standalone: true,
-  imports: [IonButton, IonFooter, 
+  imports: [IonCheckbox, 
+    IonButton,
+    IonFooter,
     IonImg,
     IonTextarea,
     IonInput,
@@ -28,6 +49,8 @@ import { chevronBackOutline } from 'ionicons/icons';
     IonToolbar,
     IonIcon,
     IonTitle,
+    IonSelect,
+    IonSelectOption,
   ],
 })
 export class CreateVentureTypeFormComponent implements OnInit {
@@ -35,11 +58,22 @@ export class CreateVentureTypeFormComponent implements OnInit {
 
   ventureTypeForm = signal<string>('');
 
-  activeFilter = signal<'basicDetails' | 'plotsDetails' | 'uploadAttachments'>('basicDetails');
-  stepCount = signal(0);
+  typeOfPlot = signal<string>('');
+
+  activeFilter = signal<
+    'basicDetails' | 'propertyDetails' | 'uploadAttachments'
+  >('basicDetails');
 
   constructor() {
-    addIcons({ chevronBackOutline });
+    addIcons({
+      chevronBackOutline,
+      arrowForward,
+      arrowBack,
+      caretDownOutline,
+      caretUpOutline,
+      cloudUploadOutline,
+      trashOutline,
+    });
   }
   dismiss() {
     this.modalController.dismiss();
@@ -49,38 +83,37 @@ export class CreateVentureTypeFormComponent implements OnInit {
 
   ngOnInit() {}
 
+  next() {
+    switch (this.activeFilter()) {
+      case 'basicDetails':
+        this.activeFilter.set('propertyDetails');
+        break;
+      case 'propertyDetails':
+        this.activeFilter.set('uploadAttachments');
+        break;
+    }
+  }
 
-  // next() {
-  //   switch (this.activeFilter()) {
-  //     case 'basicDetails':
-  //       this.activeFilter.set('propertyDetails');
-  //       break;
-  //     case 'propertyDetails':
-  //       this.activeFilter.set('uploadAttachments');
-  //       break;
-     
-  //   }
-  // }
+  back() {
+    switch (this.activeFilter()) {
+      case 'basicDetails':
+        break;
+      case 'propertyDetails':
+        this.activeFilter.set('basicDetails');
+        break;
+      case 'uploadAttachments':
+        this.activeFilter.set('propertyDetails');
+        break;
+    }
+  }
 
-  // back() {
-  //   switch (this.activeFilter()) {
-  //     case 'basicDetails':
-  //       break;
-  //     case 'propertyDetails':
-  //       this.activeFilter.set('basicDetails');
-  //       break;
-  //     case 'locationInfo':
-  //       this.activeFilter.set('propertyDetails');
-  //       break;
-  //     case 'pricingInfo':
-  //       this.activeFilter.set('propertyDetails');
-  //       break;
-  //     case 'locationInfo':
-  //       this.activeFilter.set('pricingInfo');
-  //       break;
-  //     case 'attachments':
-  //       this.activeFilter.set('locationInfo');
-  //       break;
-  //   }
-  // }
+  stepCount = computed(() => {
+    return this.activeFilter() === 'basicDetails'
+      ? 0
+      : this.activeFilter() === 'propertyDetails'
+      ? 1
+      : 2;
+  });
+
+  submit() {}
 }

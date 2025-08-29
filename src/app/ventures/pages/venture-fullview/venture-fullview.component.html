@@ -16,27 +16,27 @@
             <ion-img class="slide" src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/"></ion-img>
           </swiper-slide>
         </swiper-container>
-       <div class="div-icons-position">
-        <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
-        <div class="div-icons">
-          <ion-icon name="heart-outline" class="back-icon" (click)="dismiss()"></ion-icon>
-          <ion-icon name="arrow-redo-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+        <div class="div-icons-position">
+          <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+          <div class="div-icons">
+            <ion-icon name="heart-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+            <ion-icon name="arrow-redo-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+          </div>
         </div>
-       </div>
-       <div class="tags">
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-        <div class="" style="position: relative;" (click)="openAllPhotos()">
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"
-            style="opacity: 0.3;">
-          </ion-img>
-          <span class="tag-count">+10</span>
+        <div class="tags">
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <div class="" style="position: relative;" (click)="openAllPhotos()">
+            <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"
+              style="opacity: 0.3;">
+            </ion-img>
+            <span class="tag-count">+10</span>
+          </div>
         </div>
-      </div>
       </div>
       <div class="div-ventortitle">
         <div class="div-img">
@@ -157,6 +157,12 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="div-plot-details">
+      <ion-label class="label-plot-title">Plot Detials</ion-label>
+      <ion-button (click)="openTotalPlotLists()" color="warning" size="small" class="ion-button-settings">View
+        details</ion-button>
     </div>
 
 
