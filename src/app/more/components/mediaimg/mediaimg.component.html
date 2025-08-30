@@ -4,7 +4,7 @@
   @if (imgFiles$ | async; as images) {
     <div class="div-img">
       @for (image of images; track image) {
-        <ion-img (click)="openImageModal([image.imageSource])" [src]="image.imageSource"></ion-img>
+        <ion-img (click)="openImageModal([image.imageSource])" [src]="image.imageSource" />
       }
     </div>
   }

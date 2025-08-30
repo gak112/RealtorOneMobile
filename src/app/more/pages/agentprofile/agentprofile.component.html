@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Agent Profile</ion-title>
     <div class="div-buttons">
       <ion-button size="small" color="danger" class="leave" (click)="leaveAgent()">Leave Agent</ion-button>
@@ -25,10 +25,10 @@
       <div class="div-refer" style="right: 30px;left: inherit;">
         <ion-label><span>Amount</span>₹{{ agent()?.redeemableAmount ?? 0 }}</ion-label>
       </div>
-      <ion-img class="img-left" src="assets/img/shape1.png"></ion-img>
-      <ion-img class="img-right" src="assets/img/shape2.png"></ion-img>
+      <ion-img class="img-left" src="assets/img/shape1.png" />
+      <ion-img class="img-right" src="assets/img/shape2.png" />
       <ion-label class="label-agent-name">Agent Profile</ion-label>
-      <ion-img class="img-profile" [src]="agent()?.photoUrl || 'assets/img/ryan.jpg'"></ion-img>
+      <ion-img class="img-profile" [src]="agent()?.photoUrl || 'assets/img/ryan.jpg'" />
       <a>
         <ion-label (click)="editAgent()">Edit&nbsp;Agent</ion-label>
       </a>
@@ -39,7 +39,7 @@
       <ion-label class="label-code">{{ agent()?.agentCode || '-' }}</ion-label>
 
       <div class="div-location">
-        <ion-icon name="location-outline"></ion-icon>
+        <ion-icon name="location-outline" />
         <ion-label>
           {{ agent()?.address }}
           @if (agent()?.city) {, {{ agent()?.city }}}
@@ -49,12 +49,12 @@
       </div>
 
       <div class="div-location">
-        <ion-icon name="mail-outline"></ion-icon>
+        <ion-icon name="mail-outline" />
         <ion-label>{{ agent()?.email }}</ion-label>
       </div>
 
       <div class="div-location">
-        <ion-icon name="call-outline"></ion-icon>
+        <ion-icon name="call-outline" />
         <ion-label>{{ agent()?.phone }}</ion-label>
       </div>
     </div>
@@ -73,12 +73,12 @@
 
   @if (segmentAction() === 'ReferredCustomers') {
   <div>
-    <app-transactions></app-transactions>
+    <app-transactions />
   </div>
   }
   @if (segmentAction() === 'Properties') {
   <div>
-    <app-renewalproperties></app-renewalproperties>
+    <app-renewalproperties />
   </div>
   }
 

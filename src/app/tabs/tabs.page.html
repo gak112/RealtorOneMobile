@@ -3,24 +3,24 @@
 
     <ion-tab-button (click)="tabClick($event, 'home')" tab="home" href="/tabs/home">
       <!-- <ion-img class="img-icon" [src]="'assets/img/profile2.png'"></ion-img> -->
-      <ion-icon #homeIcon [name]="selectedTab() === 'home' ? 'home' : 'home-outline'"></ion-icon>
+      <ion-icon #homeIcon [name]="selectedTab() === 'home' ? 'home' : 'home-outline'" />
       <ion-label>Home</ion-label>
     </ion-tab-button>
     <ion-tab-button (click)="tabClick($event, 'ventures')" tab="ventures" href="/tabs/ventures">
-      <ion-icon #venturesIcon [name]="selectedTab() === 'ventures' ? 'business' : 'business-outline'"></ion-icon>
+      <ion-icon #venturesIcon [name]="selectedTab() === 'ventures' ? 'business' : 'business-outline'" />
       <ion-label>Ventures</ion-label>
     </ion-tab-button>
     <ion-tab-button (click)="tabClick($event, 'search')" tab="search" href="/tabs/search">
-      <ion-icon #searchIcon [name]="selectedTab() === 'search' ? 'search' : 'search-outline'"></ion-icon>
+      <ion-icon #searchIcon [name]="selectedTab() === 'search' ? 'search' : 'search-outline'" />
       <ion-label>Search</ion-label>
     </ion-tab-button>
     <ion-tab-button (click)="tabClick($event, 'chat')" tab="chat" href="/tabs/chat">
-      <ion-icon #chatIcon [name]="selectedTab() === 'chat' ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline'"></ion-icon>
+      <ion-icon #chatIcon [name]="selectedTab() === 'chat' ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline'" />
       <ion-label>Chat</ion-label>
     </ion-tab-button>
     <ion-tab-button (click)="tabClick($event, 'more')" tab="more" href="/tabs/more">
       <ion-icon #moreIcon
-        [name]="selectedTab() === 'more' ? 'ellipsis-vertical' : 'ellipsis-vertical-outline'"></ion-icon>
+        [name]="selectedTab() === 'more' ? 'ellipsis-vertical' : 'ellipsis-vertical-outline'" />
       <ion-label>More</ion-label>
     </ion-tab-button>
   </ion-tab-bar>

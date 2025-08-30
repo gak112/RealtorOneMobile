@@ -2,10 +2,10 @@
   <ion-toolbar>
     <div class="user-bar">
       <div class="back" style="display: flex" (click)="close()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
+        <ion-icon name="chevron-back-outline" />
       </div>
       <div class="avatar">
-        <ion-img [src]="otherUserData()?.photoURL || 'assets/img/noimage.avif'"></ion-img>
+        <ion-img [src]="otherUserData()?.photoURL || 'assets/img/noimage.avif'" />
       </div>
       <div class="name">
         <span class="span-name" (click)="openProfile()">{{
@@ -15,12 +15,12 @@
         <!-- <span class="status">{{ 'tap here for contact info' }}</span> -->
       </div>
       <div class="div-video-call">
-        <ion-icon name="videocam-outline" style="font-size: 28px"></ion-icon>
-        <ion-icon name="call-outline"></ion-icon>
+        <ion-icon name="videocam-outline" style="font-size: 28px" />
+        <ion-icon name="call-outline" />
       </div>
       @let triggerID = 'click-trigger-' + (otherUserData()?.objectID ??
       otherUserData()?.uid);
-      <ion-icon name="ellipsis-vertical" class="icon-menu" [id]="triggerID"></ion-icon>
+      <ion-icon name="ellipsis-vertical" class="icon-menu" [id]="triggerID" />
       <ion-popover #popover [trigger]="triggerID" triggerAction="click" style="
           --max-width: 150px;
           --backdrop-opacity: 0;
@@ -31,7 +31,7 @@
           <ion-content style="--background: transparent">
             <div class="div-display">
               <div class="div-display-sub">
-                <ion-icon name="warning-outline"></ion-icon>
+                <ion-icon name="warning-outline" />
                 <ion-label>Report</ion-label>
               </div>
             </div>
@@ -47,9 +47,9 @@
       @for (message of messages(); track $index) { @defer (on viewport) { @let
       isFirstMessage = message | isSameDay : messages()[$index + 1]; @if
       (message.senderId !== user()?.uid) {
-      <app-left-message [isGroupChat]="false" [message]="message" (onDragOutput)="toReply($event)"></app-left-message>
+      <app-left-message [isGroupChat]="false" [message]="message" (onDragOutput)="toReply($event)" />
       } @else {
-      <app-right-message [message]="message" [userIds]="userIds()" (onDragOutput)="toReply($event)"></app-right-message>
+      <app-right-message [message]="message" [userIds]="userIds()" (onDragOutput)="toReply($event)" />
       } @if(!isFirstMessage){
       <span class="span-date">{{ message.sortDate | startOfDay }}</span>
       } } @placeholder {
@@ -61,7 +61,7 @@
 @if(chat() === undefined){
 <ion-footer class="footer-settings" style="text-align: left">
   <div class="div-footer-flex">
-    <ion-img [src]="'assets/img/footerchat.png'"></ion-img>
+    <ion-img [src]="'assets/img/footerchat.png'" />
     <div style="width: calc(100% - 51px)">
       <ion-label class="label-invite" style="margin: 0">Invite ({{ otherUserData()?.fullName ||
         otherUserData()?.firstName }})
@@ -96,8 +96,8 @@
 <ion-footer style="background: transparent">
   @if(photoCtrl.value){
   <div class="div-img-add">
-    <ion-icon name="close-circle-sharp" (click)="photoCtrl.setValue(null)"></ion-icon>
-    <ion-img [src]="photoCtrl.value"></ion-img>
+    <ion-icon name="close-circle-sharp" (click)="photoCtrl.setValue(null)" />
+    <ion-img [src]="photoCtrl.value" />
   </div>
   }
   <!---->
@@ -117,7 +117,7 @@
         {{ replyMessage()?.message?.message }}</ion-label>
       @if(imageUrl){
       <div class="div-p">
-        <ion-icon name="camera"></ion-icon>
+        <ion-icon name="camera" />
         <ion-label class="p-usertext">Photo</ion-label>
       </div>
       }
@@ -130,10 +130,10 @@
         font-size: 24px;
         color: gray;
         transform: translateY(-50%);
-      "></ion-icon>
+      " />
     @if(imageUrl){
     <div class="div-img">
-      <ion-img [src]="imageUrl" class="img-reply"></ion-img>
+      <ion-img [src]="imageUrl" class="img-reply" />
     </div>
     }
   </div>
@@ -141,21 +141,21 @@
   <form class="conversation-compose" [style.padding-bottom]="iosBottomPadding">
     @if(chat()){
     <div class="emoji" (click)="uploadImages('library')">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add" />
     </div>
     }
     <div class="div-footer-input">
 
       <ion-textarea class="input-msg" name="input" autocomplete="off" [formControl]="messageCtrl" auto-grow="true"
-        rows="1" [required]="true" [minlength]="1" (ionFocus)="onFocus()" (ionBlur)="onBlur()"></ion-textarea>
+        rows="1" [required]="true" [minlength]="1" (ionFocus)="onFocus()" (ionBlur)="onBlur()" />
       <!-- <ion-icon name="document-outline"></ion-icon> -->
     </div>
-    <ion-icon name="camera-outline" class="icon-camera" (click)="uploadImages('camera')"></ion-icon>
+    <ion-icon name="camera-outline" class="icon-camera" (click)="uploadImages('camera')" />
 
     @if((messageCtrl.value?.length ?? 0) > 0){
-    <ion-icon (click)="sendMessage($event)" name="paper-plane-outline" class="i-send-settings"></ion-icon>
+    <ion-icon (click)="sendMessage($event)" name="paper-plane-outline" class="i-send-settings" />
     }@else {
-    <ion-icon name="mic-outline" class="icon-camera"></ion-icon>
+    <ion-icon name="mic-outline" class="icon-camera" />
     }
   </form>
 </ion-footer>
@@ -194,14 +194,14 @@
   <ion-toolbar>
     <div class="user-bar">
       <div class="back" style="display: flex" (click)="close()">
-        <ion-skeleton-text animated="true" style="width: 24px; height: 24px; margin-right: 16px"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 24px; height: 24px; margin-right: 16px" />
       </div>
       <div class="avatar">
-        <ion-skeleton-text animated="true" style="width: 35px; height: 35px; border-radius: 50%"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 35px; height: 35px; border-radius: 50%" />
       </div>
       <div class="name">
-        <ion-skeleton-text animated="true" style="width: 117px; height: 20px"></ion-skeleton-text>
-        <ion-skeleton-text animated="true" style="width: 50px; height: 15px"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 117px; height: 20px" />
+        <ion-skeleton-text animated="true" style="width: 50px; height: 15px" />
       </div>
     </div>
   </ion-toolbar>
@@ -209,23 +209,23 @@
 <ion-content style="display: none">
   <div class="conversation">
     <div class="conversation-container">
-      <app-chatenterbox></app-chatenterbox>
+      <app-chatenterbox />
     </div>
   </div>
 </ion-content>
 <ion-footer style="display: none">
   <form class="conversation-compose">
     <div class="emoji">
-      <ion-skeleton-text animated="true" style="width: 24px; height: 24px"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 24px; height: 24px" />
     </div>
-    <ion-input class="input-msg" name="input" placeholder="Type a message" autocomplete="off" autofocus></ion-input>
+    <ion-input class="input-msg" name="input" placeholder="Type a message" autocomplete="off" autofocus />
     <ion-skeleton-text animated="true" style="
         width: 27px;
         height: 27px;
         border-radius: 50%;
         margin-left: 5px;
         margin-right: 10px;
-      "></ion-skeleton-text>
+      " />
   </form>
 </ion-footer>
 

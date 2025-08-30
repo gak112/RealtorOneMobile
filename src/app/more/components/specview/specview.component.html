@@ -1,18 +1,24 @@
-@if(specifications.length > 0) {
+@if(specifications().length > 0) {
 <div class="div-edit">
   <ion-label class="ion-label-heading">Specifications</ion-label>
 </div>
 <div>
-  @for (sec of specifications; track sec.title; let i = $index) {
+  @for (sec of specifications(); track sec.title; let i = $index) {
   <div class="div-specification-display">
     <div class="div-title-delete">
       <ion-label class="spec-title">{{ sec.title }}</ion-label>
       <div class="div-btn-delete">
-        <ion-icon name="create" class="spec-delete" (click)="openEditSection(i)"></ion-icon>
-        <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)"></ion-icon>
+        <ion-icon name="create"
+          class="spec-delete"
+          (click)="openEditSection(i)"
+         />
+        <ion-icon name="trash-outline"
+          class="spec-delete"
+          (click)="removeSection(i)"
+         />
       </div>
     </div>
-    <div style="padding: 10px;">
+    <div style="padding: 10px">
       @for (kv of sec.specifications; track kv.key; let j = $index) {
       <div class="div-spec-keys-values">
         <div class="div-specification-sub">
@@ -26,9 +32,6 @@
   }
 </div>
 }
-
-
-
 
 <!-- <div class="div-specification-display">
   <ion-label class="ion-label-main" style="border-radius: var(--border-radius-4);">Kitchen

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="arrow-back-outline" class="icon-close" (click)="dismiss('cancel')"></ion-icon>
+    <ion-icon name="arrow-back-outline" class="icon-close" (click)="dismiss('cancel')" />
     <ion-title>Filter – {{ categoryLabel() }}</ion-title>
     <ion-button size="small" [color]="categoryColor()" class="category-pill">{{ categoryLabel() }}</ion-button>
   </ion-toolbar>
@@ -34,12 +34,12 @@
         <div class="option-box" style="display:flex;gap:8px;align-items:center">
           <ion-label>Min</ion-label>
           <ion-input type="number" placeholder="₹ min" [value]="priceMin() ?? ''"
-            (ionInput)="onMinChange($event)"></ion-input>
+            (ionInput)="onMinChange($event)" />
         </div>
         <div class="option-box" style="display:flex;gap:8px;align-items:center">
           <ion-label>Max</ion-label>
           <ion-input type="number" placeholder="₹ max" [value]="priceMax() ?? ''"
-            (ionInput)="onMaxChange($event)"></ion-input>
+            (ionInput)="onMaxChange($event)" />
         </div>
       </div>
       }

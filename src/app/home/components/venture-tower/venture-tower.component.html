@@ -5,12 +5,12 @@
         <swiper-slide>
           <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide"
-          src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
+          src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg" />
         </swiper-slide>
         <swiper-slide>
           <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU" />
         </swiper-slide>
       </swiper-container>
       <!-- <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true" class="mySwiper">
@@ -24,24 +24,23 @@
     </ion-button>
     <div class="div-choosefile ">
       <ngx-uploadcare-widget hidden class="post-entry-btn" #uc (on-upload-complete)="onUploadComplete($event)"
-        [multiple]="true" data-crop="300:300" public-key="563d1afa2618816d4d42">
-      </ngx-uploadcare-widget>
+        [multiple]="true" data-crop="300:300" public-key="563d1afa2618816d4d42" />
     </div>
   </div>
   <div class="div-ventortitle">
     <div>
       <div class="div-formgroup">
         <ion-input type="text" mode="md" label="Tower/APT Name" label-placement="floating" fill="outline"
-        placeholder="Enter Tower/APT Name"></ion-input>
+        placeholder="Enter Tower/APT Name" />
       </div>
       <div class="div-input-flex">
         <div class="div-formgroup" style="margin-bottom: 0;">
           <span>Floors</span>
-          <ion-input class="input-settings" placeholder="No of Floors" type="number"></ion-input>
+          <ion-input class="input-settings" placeholder="No of Floors" type="number" />
         </div>
         <div class="div-formgroup" style="margin-bottom: 0;">
           <span>Flats</span>
-          <ion-input placeholder="No of Flats" class="input-settings" type="number"></ion-input>
+          <ion-input placeholder="No of Flats" class="input-settings" type="number" />
         </div>
       </div>
       <ion-button class="ion-button-settings" (click)="submit()" expand="block" color="primary" mode="ios">
@@ -64,19 +63,19 @@
     <div style="display: none;">
       <div class="div-icons-main">
         <div class="div-title-img">
-          <ion-img [src]="'assets/img/building.png'"></ion-img>
+          <ion-img [src]="'assets/img/building.png'" />
           <ion-label>Tower/Apt</ion-label>
         </div>
         <div class="div-icons">
-          <ion-icon (click)="towerEntry = !towerEntry" name="create"></ion-icon>
+          <ion-icon (click)="towerEntry = !towerEntry" name="create" />
           <!-- <ion-icon name="eye"></ion-icon> -->
           <!-- <ion-icon name="copy"></ion-icon>
           <ion-icon name="clipboard"></ion-icon> -->
           @if (true) {
-            <ion-icon name="copy" (click)="copyConfiguration()"></ion-icon>
+            <ion-icon name="copy" (click)="copyConfiguration()" />
             } <!-- copy -->
             @if (true) {
-              <ion-icon (click)="pasteConfiguration()" name="clipboard-outline"></ion-icon>
+              <ion-icon (click)="pasteConfiguration()" name="clipboard-outline" />
               } <!--  paste -->
             </div>
           </div>

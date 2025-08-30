@@ -46,13 +46,13 @@
     <!-- (click)="openLikes()" -->
     @if (!savedLike ) {
       <div class="div-like-sub">
-        <ion-icon (click)="saveLike(hit())" class="icon-settings" name="heart-outline"></ion-icon>
+        <ion-icon (click)="saveLike(hit())" class="icon-settings" name="heart-outline" />
         <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
       </div>
     }
     @if (savedLike ) {
       <div class="div-like-sub">
-        <ion-icon (click)="removeLike()" style="color: red;" class="icon-settings" name="heart"></ion-icon>
+        <ion-icon (click)="removeLike()" style="color: red;" class="icon-settings" name="heart" />
         <ion-label (click)="openLikes()" class="span-settings">Like</ion-label>
       </div>
     }
@@ -61,18 +61,18 @@
   <div class="div-like-main">
 
     <div class="div-bookmark" (click)="share($event)">
-      <ion-icon class="icon-settings" name="share-outline"></ion-icon>
+      <ion-icon class="icon-settings" name="share-outline" />
       <ion-label class="span-settings">Share</ion-label>
     </div>
     @if (!savedPost ) {
       <div class="div-bookmark" (click)="saveBookMark(hit())">
-        <ion-icon class="icon-settings" name="bookmark-outline"></ion-icon>
+        <ion-icon class="icon-settings" name="bookmark-outline" />
         <ion-label class="span-settings">Save</ion-label>
       </div>
     }
     @if (savedPost ) {
       <div class="div-bookmark" (click)="removeBookMark()">
-        <ion-icon class="icon-settings" name="bookmark"></ion-icon>
+        <ion-icon class="icon-settings" name="bookmark" />
         <ion-label class="span-settings">Saved</ion-label>
       </div>
     }

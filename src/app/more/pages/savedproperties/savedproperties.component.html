@@ -1,16 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Saved Properties</ion-title>
   </ion-toolbar>
 
   <ion-toolbar style="--padding-start:0;--padding-end:0;--min-height:55px;--padding-top:0;--padding-bottom:0;">
-    <ion-searchbar
-      [debounce]="500"
+    <ion-searchbar [debounce]="500"
       placeholder="Search by title, location, ID, or price"
       style="padding:0"
-      (ionInput)="onSearch($event)">
-    </ion-searchbar>
+      (ionInput)="onSearch($event)" />
   </ion-toolbar>
 </ion-header>
 
@@ -28,10 +26,8 @@
   }
 
   @for (p of filtered(); track trackById($index, p)) {
-    <app-savedpropertycard
-      [property]="p"
+    <app-savedpropertycard [property]="p"
       [admin]="uid()"
-      (removed)="onRemoved($event)">
-    </app-savedpropertycard>
+      (removed)="onRemoved($event)" />
   }
 </ion-content>

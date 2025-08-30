@@ -3,7 +3,7 @@
     <div class="div-media-sub" >
       @for (certificate of certificates; track certificate) {
         <div>
-          <ion-img (click)="openImageModal([certificate.resource])" [src]="certificate.resource" class="img-certificate"></ion-img>
+          <ion-img (click)="openImageModal([certificate.resource])" [src]="certificate.resource" class="img-certificate" />
         </div>
       }
     </div>

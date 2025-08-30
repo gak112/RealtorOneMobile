@@ -15,24 +15,24 @@
                   <div class="div-content">
                     @if (content.typex === 'text') {
                       <div>
-                        <ion-label class="p-settings5" [innerHTML]="content.content"></ion-label>
+                        <ion-label class="p-settings5" [innerHTML]="content.content" />
                       </div>
                     }
                     @if (content.typex === 'limg') {
                       <div class="div-imgtext">
-                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
-                        <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px" />
+                        <ion-label class="p-settings5" [innerHTML]="content.content.content" />
                       </div>
                     }
                     @if (content.typex === 'rimg') {
                       <div class="div-textimg">
-                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
-                        <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px" />
+                        <ion-label class="p-settings5" [innerHTML]="content.content.content" />
                       </div>
                     }
                     @if (content.typex ==='image') {
                       <div>
-                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px" />
                       </div>
                     }
                   </div>

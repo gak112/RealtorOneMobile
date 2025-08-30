@@ -1,22 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()" />
     <ion-title>Floor Configuaration</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="div-form-main">
     <div class="div-formgroup">
-      <ion-input class="input-settings" [(ngModel)]="floor.carpetArea" type="number" placeholder="Enter Carpet Area"></ion-input>
+      <ion-input class="input-settings" [(ngModel)]="floor().carpetArea" type="number" placeholder="Enter Carpet Area" />
     </div>
     <div class="div-formgroup">
-      <ion-input class="input-settings" [(ngModel)]="floor.balconyArea" type="number" placeholder="Enter Balcony Area"></ion-input>
+      <ion-input class="input-settings" [(ngModel)]="floor().balconyArea" type="number" placeholder="Enter Balcony Area" />
     </div>
     <div class="div-formgroup">
-      <ion-input class="input-settings" [(ngModel)]="floor.commonArea" type="number" placeholder="Enter Common Area"></ion-input>
+      <ion-input class="input-settings" [(ngModel)]="floor().commonArea" type="number" placeholder="Enter Common Area" />
     </div>
     <div class="div-formgroup">
-      <ion-input class="input-settings" [(ngModel)]="floor.saleableArea" type="number" placeholder="Enter Saleable Area"></ion-input>
+      <ion-input class="input-settings" [(ngModel)]="floor().saleableArea" type="number" placeholder="Enter Saleable Area" />
     </div>
     <!-- <div class="div-formgroup">
     <ion-input class="input-settings" type="number" placeholder="Enter Cost of Property"></ion-input>
@@ -24,30 +24,28 @@
   <div class="div-upload">
     <div class="file-select">
       <div class="div-choosefile ">
-        <ngx-uploadcare-widget
-          class="post-entry-btn"
+        <ngx-uploadcare-widget class="post-entry-btn"
           #uc
           (on-upload-complete)="onFloorLayoutComplete($event)"
           [multiple]="true"
           [multiple-max]="3"
           data-crop="300:300"
           [images-only] = true
-          public-key="563d1afa2618816d4d42">
-        </ngx-uploadcare-widget>
+          public-key="563d1afa2618816d4d42" />
 
       </div>
       <ion-label class="upload-label">Upload Layout</ion-label>
     </div>
   </div>
-  @if (floor.layout.length > 0) {
+  @if (floor().layout.length > 0) {
     <swiper-container
       [autoplay]="{delay: 5000,disableOnInteraction: false}"
       [centeredSlides]="true"
       class="mySwiper">
-      @for (img of floor.layout; track img; let i = $index) {
+      @for (img of floor().layout; track img; let i = $index) {
         <swiper-slide>
           <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
-          <ion-img class="slide" [src]="img"></ion-img>
+          <ion-img class="slide" [src]="img" />
         </swiper-slide>
       }
     </swiper-container>
@@ -56,30 +54,28 @@
   <div class="div-upload">
     <div class="file-select">
       <div class="div-choosefile ">
-        <ngx-uploadcare-widget
-          class="post-entry-btn"
+        <ngx-uploadcare-widget class="post-entry-btn"
           #uc
           (on-upload-complete)="onFloorImagesComplete($event)"
           [multiple]="true"
           [multiple-max]="3"
           data-crop="300:300"
           [images-only] = true
-          public-key="563d1afa2618816d4d42">
-        </ngx-uploadcare-widget>
+          public-key="563d1afa2618816d4d42" />
 
       </div>
       <ion-label class="upload-label">Upload Images</ion-label>
     </div>
   </div>
-  @if (floor.resources.length > 0) {
+  @if (floor().resources.length > 0) {
     <swiper-container
       [autoplay]="{delay: 5000,disableOnInteraction: false}"
       [centeredSlides]="true"
       class="mySwiper">
-      @for (img of floor.resources; track img; let i = $index) {
+      @for (img of floor().resources; track img; let i = $index) {
         <swiper-slide>
           <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
-          <ion-img class="slide" [src]="img"></ion-img>
+          <ion-img class="slide" [src]="img" />
         </swiper-slide>
       }
     </swiper-container>

@@ -1,30 +1,30 @@
 <div class="div-tower-box">
   <div class="div-title-section">
     <ion-label class="label-title">
-      {{floor.floorName | uppercase}}
+      {{floor().floorName | uppercase}}
     </ion-label>
     <div class="div-icons-button">
 
-      @if (floor.configured) {
-        <ion-icon name="copy-outline" (click)="copyConfiguration()" style="color: var(--color-white);"></ion-icon>
+      @if (floor().configured) {
+        <ion-icon name="copy-outline" (click)="copyConfiguration()" style="color: var(--color-white);" />
       }
-      @if (displayPaste) {
-        <ion-icon name="clipboard-outline" (click)="pasteConfiguration()" style="color: var(--color-white);"></ion-icon>
+      @if (displayPaste()) {
+        <ion-icon name="clipboard-outline" (click)="pasteConfiguration()" style="color: var(--color-white);" />
       }
       <!-- <ion-icon class="blink" name="clipboard" *ngIf="!clipboard"></ion-icon> -->
     </div>
-    @if (!floor.configured) {
-      <ion-button (click)="openFloorConfigure(floor)" class="ion-button-settings" size="small" expand="block" color="warning">
+    @if (!floor().configured) {
+      <ion-button (click)="openFloorConfigure(floor())" class="ion-button-settings" size="small" expand="block" color="warning">
         Configure
       </ion-button>
     }
-    @if (floor.configured) {
-      <ion-button (click)="openFloorConfigure(floor)" class="ion-button-settings" size="small" expand="block" color="warning">
+    @if (floor().configured) {
+      <ion-button (click)="openFloorConfigure(floor())" class="ion-button-settings" size="small" expand="block" color="warning">
         Configured
       </ion-button>
     }
     <!-- *ngIf="pasteAllFlats" -->
-    <ion-button  (click)="pasteFlatsConfiguration(floor)" class="ion-button-settings" style="margin-left: 10px;" size="small" expand="block" color="warning">
+    <ion-button  (click)="pasteFlatsConfiguration(floor())" class="ion-button-settings" style="margin-left: 10px;" size="small" expand="block" color="warning">
       Paste
     </ion-button>
   </div>
@@ -33,17 +33,17 @@
 
     @for (flat of flats; track flat; let i = $index) {
       <div class="div-icon shake-animation"  (click)="openFlatConfigure(flat)">
-        <ion-img [src]="'assets/img/tower.png'"></ion-img>
-        <ion-label>{{floor.floorNumber * 100 + flat.flatNumber}}
+        <ion-img [src]="'assets/img/tower.png'" />
+        <ion-label>{{floor().floorNumber * 100 + flat.flatNumber}}
         </ion-label>
         @if (flat.configured) {
-          <ion-icon (click)="copyFlatConfiguration(flat)" class="icon-copy" name="copy" ></ion-icon>
+          <ion-icon (click)="copyFlatConfiguration(flat)" class="icon-copy" name="copy"  />
         }
         @if (!flat.configured) {
-          <ion-icon (click)="pasteFlatConfiguration(flat)" class="blink icon-copy" name="clipboard" ></ion-icon>
+          <ion-icon (click)="pasteFlatConfiguration(flat)" class="blink icon-copy" name="clipboard"  />
         }
         @if (i === 1) {
-          <ion-icon name="remove-circle"></ion-icon>
+          <ion-icon name="remove-circle" />
         }
       </div>
     }

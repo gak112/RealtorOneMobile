@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon class="icon-close" name="chevron-back-outline" (click)="dismiss()"></ion-icon>
+    <ion-icon class="icon-close" name="chevron-back-outline" (click)="dismiss()" />
     <ion-title>Viewers List</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,7 +12,7 @@
     </div>
     <div class="div-flex">
       <ion-avatar>
-        <ion-img alt="Silhouette of a person's head" [src]="viewer.image" class="img-viewer"></ion-img>
+        <ion-img alt="Silhouette of a person's head" [src]="viewer.image" class="img-viewer" />
       </ion-avatar>
       <div class="div-viewer-name">
         <ion-label class="label-name">{{ viewer.name }}</ion-label>
@@ -20,7 +20,7 @@
       </div>
     </div>
     <div style="position:relative;">
-      <ion-img src="assets/img/call-bg.png" class="call-bg"></ion-img>
+      <ion-img src="assets/img/call-bg.png" class="call-bg" />
       <span class="label-call">Call</span>
     </div>
   </div>

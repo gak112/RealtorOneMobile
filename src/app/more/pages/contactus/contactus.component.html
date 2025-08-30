@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Contact Us</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -8,20 +8,20 @@
   <div class="div-form-main">
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Subject" label-placement="floating" fill="outline"
-      placeholder="Enter Subject"></ion-input>
+      placeholder="Enter Subject" />
     </div>
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Name" label-placement="floating" fill="outline"
-      placeholder="Enter Name"></ion-input>
+      placeholder="Enter Name" />
     </div>
     <div class="div-formgroup">
       <ion-input pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
         type="text" mode="md" label="Email" label-placement="floating" fill="outline"
-      placeholder="Enter Email"></ion-input>
+      placeholder="Enter Email" />
     </div>
     <div class="div-formgroup">
       <ion-textarea [(ngModel)]="message" type="text" mode="md" label="Message" label-placement="floating"
-      fill="outline" placeholder="Enter Message" rows="5" style="height: auto;"></ion-textarea>
+      fill="outline" placeholder="Enter Message" rows="5" style="height: auto;" />
     </div>
   </div>
 </ion-content>

@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-icon name="ellipsis-horizontal" class="icon-ellipsis"></ion-icon>
+    <ion-icon name="ellipsis-horizontal" class="icon-ellipsis" />
     <ion-title>Chats</ion-title>
     <div class="div-icon-flex">
-      <ion-icon name="camera"></ion-icon>
-      <ion-icon name="add-circle"></ion-icon>
+      <ion-icon name="camera" />
+      <ion-icon name="add-circle" />
     </div>
   </ion-toolbar>
 </ion-header>
@@ -25,10 +25,9 @@
     "
   >
     <!-- <ion-icon class="icon-microphone" name="mic-outline"></ion-icon> -->
-    <ion-searchbar
-      [placeholder]="'Ask Meta AI or Search'"
+    <ion-searchbar [placeholder]="'Ask Meta AI or Search'"
       [formControl]="searchCtrl"
-    ></ion-searchbar>
+     />
   </ion-toolbar>
   <div class="div-tabs">
     <ion-label
@@ -47,11 +46,10 @@
     <!---->
     @let show = showChats().includes(personalChat?.id || personalChat?.objectID
     || '') ;
-    <app-individual-box
-      [style.display]="show ? 'block' : 'none'"
+    <app-individual-box [style.display]="show ? 'block' : 'none'"
       [personalChat]="personalChat"
       (chatData)="chatDataUpdate($event)"
-    ></app-individual-box>
+     />
     }
   </div>
 </ion-content>
@@ -60,21 +58,18 @@
 <ion-header style="display: none">
   <ion-toolbar>
     <div class="div-flex-header">
-      <ion-skeleton-text
-        animated="true"
+      <ion-skeleton-text animated="true"
         style="width: 35px; height: 35px; border-radius: 50%"
-      ></ion-skeleton-text>
+       />
 
-      <ion-skeleton-text
-        animated="true"
+      <ion-skeleton-text animated="true"
         style="width: 138px; height: 27px; margin-left: 10px"
-      ></ion-skeleton-text>
+       />
     </div>
     <div class="div-icon" (click)="openNotifications()">
-      <ion-skeleton-text
-        animated="true"
+      <ion-skeleton-text animated="true"
         style="width: 35px; height: 35px"
-      ></ion-skeleton-text>
+       />
     </div>
   </ion-toolbar>
 </ion-header>

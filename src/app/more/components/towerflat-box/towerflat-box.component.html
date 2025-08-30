@@ -1,23 +1,23 @@
 <div class="div-tower-box" >
   <div class="div-title-section">
     <ion-label class="label-title">
-      Flat No: {{villa.houseNumber}}
+      Flat No: {{villa().houseNumber}}
     </ion-label>
     <div class="div-icons-button">
-      @if (villa.configured) {
-        <ion-icon name="copy-outline" (click)="copyConfiguration()"></ion-icon>
+      @if (villa().configured) {
+        <ion-icon name="copy-outline" (click)="copyConfiguration()" />
         } <!-- copy -->
-        @if (displayPaste) {
-          <ion-icon (click)="pasteConfiguration()" name="clipboard-outline"></ion-icon>
+        @if (displayPaste()) {
+          <ion-icon (click)="pasteConfiguration()" name="clipboard-outline" />
           }  <!--  paste -->
         </div>
-        @if (!villa.configured) {
-          <ion-button (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
+        @if (!villa().configured) {
+          <ion-button (click)="openFloorConfigure(villa())" class="ion-button-settings" size="small" expand="block" color="warning">
             Configure
           </ion-button>
         }
-        @if (villa.configured) {
-          <ion-button (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
+        @if (villa().configured) {
+          <ion-button (click)="openFloorConfigure(villa())" class="ion-button-settings" size="small" expand="block" color="warning">
             Configured
           </ion-button>
         }
@@ -26,9 +26,9 @@
         [autoplay]="{delay: 5000,disableOnInteraction: false}"
         [centeredSlides]="true"
         class="mySwiper">
-        @for (img of villa.resources; track img) {
+        @for (img of villa().resources; track img) {
           <swiper-slide>
-            <ion-img class="slide" [src]="img"></ion-img>
+            <ion-img class="slide" [src]="img" />
           </swiper-slide>
         }
       </swiper-container>

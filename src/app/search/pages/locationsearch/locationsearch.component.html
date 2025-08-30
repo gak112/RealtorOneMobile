@@ -5,15 +5,13 @@
     </ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar
-      search-icon="search-circle"
+    <ion-searchbar search-icon="search-circle"
       animated="true"
       show-clear-button="focus"
       clear-icon="close"
       debounce="800"
       placeholder="Search your property location..."
-      (ionInput)="onSearchChange($event)">
-    </ion-searchbar>
+      (ionInput)="onSearchChange($event)" />
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +21,7 @@
     <ion-list>
       @for (place of places; track place) {
         <ion-item class="ion-margin-top">
-          <ion-icon name="location-outline" slot="start"></ion-icon>
+          <ion-icon name="location-outline" slot="start" />
           <ion-label>
             {{ place?.title }}
             <p>

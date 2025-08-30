@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon class="icon-close" (click)="dismiss()" name="arrow-back-outline"></ion-icon>
+    <ion-icon class="icon-close" (click)="dismiss()" name="arrow-back-outline" />
     <ion-title>Your Profile</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -8,37 +8,33 @@
 <ion-content class="ion-padding" style="--background: var(--content-background)">
   <form [formGroup]="profileForm" novalidate>
     <div class="div-profile-main">
-      <ion-img class="img-icon" src="assets/img/profile2.png"></ion-img>
+      <ion-img class="img-icon" src="assets/img/profile2.png" />
 
       <div class="div-profile-main-img">
         <div class="div-img-settings">
-          <ion-img
-            src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000">
-          </ion-img>
-          <ion-icon name="person-outline" style="height: 50%; width: 50%; color: var(--color-red)"></ion-icon>
-          <ion-icon class="icon-edit" name="create-outline"></ion-icon>
+          <ion-img src="https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000" />
+          <ion-icon name="person-outline" style="height: 50%; width: 50%; color: var(--color-red)" />
+          <ion-icon class="icon-edit" name="create-outline" />
         </div>
       </div>
 
       <!-- First Name -->
       <div class="div-formgroup">
         <ion-input autocomplete="off" mode="md" label="Full Name" label-placement="floating" fill="outline" type="text"
-          placeholder="Full Name" formControlName="fullName">
-        </ion-input>
+          placeholder="Full Name" formControlName="fullName" />
         @if (showError('fullName','required')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Full name is
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Full name is
           required.</ion-label>
         }
         @if (showError('fullName','minlength')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Minimum 3 characters.</ion-label>
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Minimum 3 characters.</ion-label>
         }
       </div>
 
       <!-- Mobile -->
       <div class="div-formgroup">
         <ion-input autocomplete="off" mode="md" label="Mobile Number" label-placement="floating" fill="outline"
-          type="tel" placeholder="Enter Mobile Number" formControlName="phone">
-        </ion-input>
+          type="tel" placeholder="Enter Mobile Number" formControlName="phone" />
 
         @if (profileForm.controls.mobileNoVerified.value) {
         <span class="span-verified">Verified</span>
@@ -47,17 +43,17 @@
         }
 
         @if (showError('phone','required')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Phone is required.</ion-label>
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Phone is required.</ion-label>
         }
         @if (showError('phone','pattern')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Enter a valid 10-digit
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Enter a valid 10-digit
           number.</ion-label>
         }
         @if (mobileChecking()) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Checking phone…</ion-label>
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Checking phone…</ion-label>
         }
         @if (mobileTaken()) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Phone number already taken. Please
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Phone number already taken. Please
           enter another phone number.</ion-label>
         }
       </div>
@@ -65,8 +61,7 @@
       <!-- Email -->
       <div class="div-formgroup">
         <ion-input style="--padding-end:85px" autocomplete="off" mode="md" label="Email" label-placement="floating"
-          fill="outline" type="email" placeholder="Email" formControlName="email">
-        </ion-input>
+          fill="outline" type="email" placeholder="Email" formControlName="email" />
 
         @if (profileForm.controls.emailVerified.value) {
         <span class="span-verified">Verified</span>
@@ -75,13 +70,13 @@
         }
 
         @if (showError('email','email')) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Enter a valid email.</ion-label>
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Enter a valid email.</ion-label>
         }
         @if (emailChecking()) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Checking email…</ion-label>
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Checking email…</ion-label>
         }
         @if (emailTaken()) {
-        <ion-label class="label-info"><ion-icon name="information-circle"></ion-icon> Email already taken. Please enter
+        <ion-label class="label-info"><ion-icon name="information-circle" /> Email already taken. Please enter
           another email.</ion-label>
         }
       </div>
@@ -89,8 +84,7 @@
       <!-- DOB -->
       <div class="div-formgroup">
         <ion-input autocomplete="off" mode="md" label="Date Of Birth" label-placement="floating" fill="outline"
-          type="date" placeholder="Enter Date of Birth" formControlName="dob">
-        </ion-input>
+          type="date" placeholder="Enter Date of Birth" formControlName="dob" />
       </div>
 
       <!-- Gender -->
@@ -110,6 +104,6 @@
 <ion-footer>
   <ion-button mode="ios" expand="block" [disabled]="profileForm.invalid || saving() || mobileTaken() || emailTaken()"
     (click)="updateProfile()">
-    @if (saving()) { <ion-spinner name="bubbles"></ion-spinner> } @else { Update Profile }
+    @if (saving()) { <ion-spinner name="bubbles" /> } @else { Update Profile }
   </ion-button>
 </ion-footer>

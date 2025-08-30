@@ -1,17 +1,17 @@
 <ion-content [scrollY]="false">
   <div class="div-bg-dot">
-    <ion-img src="assets/img/dot-bg.jpg"></ion-img>
+    <ion-img src="assets/img/dot-bg.jpg" />
   </div>
 
   <div class="div-login-main">
     <!-- Header -->
     <div class="div-logo-title">
-      <ion-img src="assets/img/shape2.png" class="logo-image"></ion-img>
+      <ion-img src="assets/img/shape2.png" class="logo-image" />
       <div class="div-label">
         <ion-label class="label-title">Verify OTP</ion-label>
         <span class="subtitle">Realtor One</span>
       </div>
-      <ion-icon name="arrow-back-outline" class="close" (click)="close()"></ion-icon>
+      <ion-icon name="arrow-back-outline" class="close" (click)="close()" />
     </div>
 
     <!-- OTP section -->
@@ -26,7 +26,7 @@
         @for (d of digits(); track $index) {
         <ion-input class="otp-box" mode="md" fill="outline" inputmode="numeric" maxlength="1" [value]="d"
           (ionInput)="onInput($index, $event)" (keydown)="onKeyDown($index, $event)"
-          (paste)="onPaste($index, $event)"></ion-input>
+          (paste)="onPaste($index, $event)" />
         }
       </div>
 
@@ -42,7 +42,7 @@
 
       @if (canResend()) {
       <div class="div-resend" (click)="onResend()">
-        <ion-icon name="reload-outline"></ion-icon>
+        <ion-icon name="reload-outline" />
         <ion-label>Resend Code</ion-label>
       </div>
       }
@@ -53,7 +53,7 @@
       <ion-button class="ion-button-settings" expand="block" color="warning"
         [disabled]="!isValidOtp() || loadingVerify()" (click)="onVerify()" enterkeyhint="done">
         @if (loadingVerify()) {
-        <ion-spinner name="bubbles"></ion-spinner>
+        <ion-spinner name="bubbles" />
         } @else {
         <span>Verify Code</span>
         }

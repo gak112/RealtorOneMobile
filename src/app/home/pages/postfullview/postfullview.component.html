@@ -1,9 +1,8 @@
 <ion-content>
     <div class="div-images">
         <div class="div-icons-header">
-            <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
-            <ion-icon slot="end" name="share-outline" class="back-icon" (click)="share()">
-            </ion-icon>
+            <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()" />
+            <ion-icon slot="end" name="share-outline" class="back-icon" (click)="share()" />
         </div>
 
         @if (hasImages()) {
@@ -12,13 +11,13 @@
             @for (img of images(); track img.id) {
             <swiper-slide>
                 <div class="div-img">
-                    <ion-img [src]="img.image || 'assets/img/no-image.png'"></ion-img>
+                    <ion-img [src]="img.image || 'assets/img/no-image.png'" />
                 </div>
             </swiper-slide>
             }
         </swiper-container>
         } @else {
-        <ion-img src="assets/img/no-image.png" class="media-image"></ion-img>
+        <ion-img src="assets/img/no-image.png" class="media-image" />
         }
 
 
@@ -31,13 +30,13 @@
     <!-- TITLE + PRICE -->
     <div class="div-title-location">
         <div class="div-img-flex">
-            <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
+            <ion-img src="assets/img/onlylogo.png" class="img-logo" />
             <ion-label class="label-title">{{ model()?.propertyTitle || 'Property' }}</ion-label>
-            <ion-icon name="navigate-circle" class="icon-navigate"></ion-icon>
+            <ion-icon name="navigate-circle" class="icon-navigate" />
         </div>
         @if (model()?.addressOfProperty) {
         <div class="div-location-flex">
-            <ion-icon name="location-outline"></ion-icon>
+            <ion-icon name="location-outline" />
             <ion-label class="label-address">{{ model()?.addressOfProperty }}</ion-label>
         </div>
         }
@@ -247,7 +246,7 @@
     @if (hasVideo()) {
     <div class="section">
         <div class="title-row">
-            <ion-icon name="film-outline"></ion-icon>
+            <ion-icon name="film-outline" />
             <ion-label class="subtitle">Video</ion-label>
         </div>
         <video [src]="video()" controls playsinline style="width:100%;max-height:300px;border-radius:12px;"></video>
@@ -266,7 +265,7 @@
                 <ion-label>+91 9876543210</ion-label>
             </div>
             <a href="tel:property.phone" style="height: 45px;">
-                <ion-icon name="call-outline"></ion-icon>
+                <ion-icon name="call-outline" />
             </a>
         </div>
     </div>

@@ -7,7 +7,7 @@
       @for (team of teams; track team) {
         <div class="card card-profile">
           <div class="div-poistioning">
-            <ion-img (click)="openImageModal([team.photo])" class="img img-raised" [src]="team.photo || 'assets/img/no-image.png'"></ion-img>
+            <ion-img (click)="openImageModal([team.photo])" class="img img-raised" [src]="team.photo || 'assets/img/no-image.png'" />
           </div>
           <div class="card-body div-card" >
             <div class="div-naming">
@@ -18,10 +18,10 @@
               <ion-label class="label-desc">{{team.description}} </ion-label>
             </div>
             <div class="div-icons">
-              <a [href]="team.twitter" target="_blank"><ion-icon class="color-twitter" name="logo-twitter"></ion-icon></a>
-              <a [href]="team.facebook" target="_blank"><ion-icon class="color-facebook" name="logo-facebook"></ion-icon>  </a>
-              <a [href]="team.instagram" target="_blank"><ion-icon class="color-instagram" name="logo-instagram"></ion-icon>  </a>
-              <a [href]="team.linkedin" target="_blank"><ion-icon class="color-linkedin" name="logo-linkedin"></ion-icon> </a>
+              <a [href]="team.twitter" target="_blank"><ion-icon class="color-twitter" name="logo-twitter" /></a>
+              <a [href]="team.facebook" target="_blank"><ion-icon class="color-facebook" name="logo-facebook" />  </a>
+              <a [href]="team.instagram" target="_blank"><ion-icon class="color-instagram" name="logo-instagram" />  </a>
+              <a [href]="team.linkedin" target="_blank"><ion-icon class="color-linkedin" name="logo-linkedin" /> </a>
             </div>
           </div>
         </div>

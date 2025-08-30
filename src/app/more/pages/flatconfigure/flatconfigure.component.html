@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()" />
     <ion-title>Flat Configuaration</ion-title>
     @if (action === 'display') {
       <ion-button size="small" color="warning" (click)="action = 'dataEntry'">Edit</ion-button>
@@ -16,7 +16,7 @@
     <div class="div-form-main">
       <div class="div-formgroup">
         <!-- <ion-label>Select BHK Type</ion-label> -->
-        <ion-select [(ngModel)]="flat.bhkType" placeholder="Select BHK Type" class="select-settings" interface="action-sheet">
+        <ion-select [(ngModel)]="flat().bhkType" placeholder="Select BHK Type" class="select-settings" interface="action-sheet">
           <ion-select-option value="1BHK">1BHK</ion-select-option>
           <ion-select-option value="2BHK">2BHK</ion-select-option>
           <ion-select-option value="3BHK">3BHK</ion-select-option>
@@ -26,23 +26,23 @@
         </ion-select>
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.toilets" type="number" placeholder="Toilets"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().toilets" type="number" placeholder="Toilets" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.poojaRoom" type="number" placeholder="Pooja Room"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().poojaRoom" type="number" placeholder="Pooja Room" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.livingDining" type="number" placeholder="Living/Dining"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().livingDining" type="number" placeholder="Living/Dining" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.kitchen" type="number" placeholder="Kitchen"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().kitchen" type="number" placeholder="Kitchen" />
       </div>
       <div class="div-input-select">
         <!-- <ion-label>Enter North Dimensions</ion-label> -->
         <div class="div-input-select-sub">
-          <ion-input class="input-settings" [(ngModel)]="flat.northFacing" placeholder="North Face" type="text"></ion-input>
-          <ion-input class="input-settings2" [(ngModel)]="flat.northSize" placeholder="Size" type="number" style="margin-right: 5px;"></ion-input>
-          <ion-select class="select-settings" [(ngModel)]="flat.units" placeholder="Units">
+          <ion-input class="input-settings" [(ngModel)]="flat().northFacing" placeholder="North Face" type="text" />
+          <ion-input class="input-settings2" [(ngModel)]="flat().northSize" placeholder="Size" type="number" style="margin-right: 5px;" />
+          <ion-select class="select-settings" [(ngModel)]="flat().units" placeholder="Units">
             <ion-select-option value="Feet">Feet</ion-select-option>
             <ion-select-option value="Yard">Yard</ion-select-option>
             <ion-select-option value="Mtr">Mtr</ion-select-option>
@@ -53,58 +53,58 @@
       <div class="div-input-select">
         <!-- <ion-label>Enter South Dimensions</ion-label> -->
         <div class="div-input-select-sub">
-          <ion-input class="input-settings" [(ngModel)]="flat.southFacing" placeholder="South Face" type="text"></ion-input>
-          <ion-input class="input-settings2" [(ngModel)]="flat.southSize" placeholder="Size" type="number"></ion-input>
+          <ion-input class="input-settings" [(ngModel)]="flat().southFacing" placeholder="South Face" type="text" />
+          <ion-input class="input-settings2" [(ngModel)]="flat().southSize" placeholder="Size" type="number" />
           <div class="div-label">
-            <ion-label>{{flat.units || 'Ft'}}</ion-label>
+            <ion-label>{{flat().units || 'Ft'}}</ion-label>
           </div>
         </div>
       </div>
       <div class="div-input-select">
         <!-- <ion-label>Enter East Dimensions</ion-label> -->
         <div class="div-input-select-sub">
-          <ion-input class="input-settings" [(ngModel)]="flat.eastFacing" placeholder="East Face" type="text"></ion-input>
-          <ion-input class="input-settings2" [(ngModel)]="flat.eastSize" type="number" placeholder="Size"></ion-input>
+          <ion-input class="input-settings" [(ngModel)]="flat().eastFacing" placeholder="East Face" type="text" />
+          <ion-input class="input-settings2" [(ngModel)]="flat().eastSize" type="number" placeholder="Size" />
           <div class="div-label">
-            <ion-label>{{flat.units || 'Ft'}}</ion-label>
+            <ion-label>{{flat().units || 'Ft'}}</ion-label>
           </div>
         </div>
       </div>
       <div class="div-input-select">
         <!-- <ion-label>Enter East Dimensions</ion-label> -->
         <div class="div-input-select-sub">
-          <ion-input class="input-settings" [(ngModel)]="flat.westFacing" placeholder="West Face" type="text"></ion-input>
-          <ion-input class="input-settings2" [(ngModel)]="flat.westSize" type="number" placeholder="Size"></ion-input>
+          <ion-input class="input-settings" [(ngModel)]="flat().westFacing" placeholder="West Face" type="text" />
+          <ion-input class="input-settings2" [(ngModel)]="flat().westSize" type="number" placeholder="Size" />
           <div class="div-label">
             <ion-label>Ft</ion-label>
           </div>
         </div>
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.carpetArea" type="number" placeholder="Enter Carpet Area"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().carpetArea" type="number" placeholder="Enter Carpet Area" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.balconyArea" type="number" placeholder="Enter Balcony Area"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().balconyArea" type="number" placeholder="Enter Balcony Area" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.commonArea" type="number" placeholder="Enter Common Area"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().commonArea" type="number" placeholder="Enter Common Area" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.saleableArea" type="number" placeholder="Enter Saleable Area"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().saleableArea" type="number" placeholder="Enter Saleable Area" />
       </div>
       <div class="div-formgroup">
-        <ion-input class="input-settings" [(ngModel)]="flat.costOfProperty" type="number" placeholder="Enter Cost of Property"></ion-input>
+        <ion-input class="input-settings" [(ngModel)]="flat().costOfProperty" type="number" placeholder="Enter Cost of Property" />
       </div>
       <div class="div-formgroup flex">
         <ion-label style="margin: 0;">Amenities</ion-label>
         <ion-button size="small" (click)="amenitiesList()">
-          <ion-icon slot="start" name="add"></ion-icon>
+          <ion-icon slot="start" name="add" />
           Add
         </ion-button>
       </div>
-      @if (flat.amenities.length > 0) {
+      @if (flat().amenities.length > 0) {
         <div class="div-amenities">
-          @for (amenity of flat.amenities; track amenity) {
+          @for (amenity of flat().amenities; track amenity) {
             <h4>{{amenity}}</h4>
           }
         </div>
@@ -115,29 +115,27 @@
     <div class="div-upload">
       <div class="file-select">
         <div class="div-choosefile ">
-          <ngx-uploadcare-widget
-            class="post-entry-btn"
+          <ngx-uploadcare-widget class="post-entry-btn"
             #uc
             (on-upload-complete)="onFlatLayoutComplete($event)"
             [multiple]="true"
             [multiple-max]="3"
             data-crop="300:300"
             [images-only] = true
-            public-key="563d1afa2618816d4d42">
-          </ngx-uploadcare-widget>
+            public-key="563d1afa2618816d4d42" />
         </div>
         <ion-label class="upload-label">Upload Layout</ion-label>
       </div>
     </div>
-    @if (flat.layout.length > 0) {
+    @if (flat().layout.length > 0) {
       <swiper-container
         [autoplay]="{delay: 5000,disableOnInteraction: false}"
         [centeredSlides]="true"
         class="mySwiper">
-        @for (img of flat.layout; track img; let i = $index) {
+        @for (img of flat().layout; track img; let i = $index) {
           <swiper-slide>
             <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
-            <ion-img class="slide" [src]="img"></ion-img>
+            <ion-img class="slide" [src]="img" />
           </swiper-slide>
         }
       </swiper-container>
@@ -145,29 +143,27 @@
     <div class="div-upload">
       <div class="file-select">
         <div class="div-choosefile ">
-          <ngx-uploadcare-widget
-            class="post-entry-btn"
+          <ngx-uploadcare-widget class="post-entry-btn"
             #uc
             (on-upload-complete)="onFlatImagesComplete($event)"
             [multiple]="true"
             [multiple-max]="3"
             data-crop="300:300"
             [images-only] = true
-            public-key="563d1afa2618816d4d42">
-          </ngx-uploadcare-widget>
+            public-key="563d1afa2618816d4d42" />
         </div>
         <ion-label class="upload-label">Upload Images</ion-label>
       </div>
     </div>
-    @if (flat.resources.length > 0) {
+    @if (flat().resources.length > 0) {
       <swiper-container
         [autoplay]="{delay: 5000,disableOnInteraction: false}"
         [centeredSlides]="true"
         class="mySwiper">
-        @for (img of flat.resources; track img; let i = $index) {
+        @for (img of flat().resources; track img; let i = $index) {
           <swiper-slide>
             <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
-            <ion-img class="slide" [src]="img"></ion-img>
+            <ion-img class="slide" [src]="img" />
           </swiper-slide>
         }
       </swiper-container>
@@ -175,15 +171,13 @@
     <div class="div-upload">
       <div class="file-select">
         <div class="div-choosefile ">
-          <ngx-uploadcare-widget
-            class="post-entry-btn"
+          <ngx-uploadcare-widget class="post-entry-btn"
             #uc
             [multiple]="false"
             [multiple-max]="3"
             data-crop="300:300"
             [images-only] = true
-            public-key="563d1afa2618816d4d42">
-          </ngx-uploadcare-widget>
+            public-key="563d1afa2618816d4d42" />
         </div>
         <ion-label class="upload-label">Upload Video</ion-label>
       </div>
@@ -193,7 +187,7 @@
         <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <ion-icon name="trash-outline"></ion-icon>
+      <ion-icon name="trash-outline" />
     </div>
   </div>
 }
@@ -201,55 +195,55 @@
   <div class="div-form-main">
     <div class="div-details-display">
       <div style="text-align: center;">
-        <ion-label class="label-hbk">{{flat.bhkType}}</ion-label>
+        <ion-label class="label-hbk">{{flat().bhkType}}</ion-label>
       </div>
       <div class="div-title-flex">
         <div class="div-title-value">
           <ion-label>
             <span>Toiltes</span>
-            {{flat.toilets || 0}}
+            {{flat().toilets || 0}}
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Pooja Room</span>
-            {{flat.poojaRoom || 0}}
+            {{flat().poojaRoom || 0}}
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Living/Dining</span>
-            {{flat.livingDining || 0}}
+            {{flat().livingDining || 0}}
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Kitchen</span>
-            {{flat.kitchen || 0}}
+            {{flat().kitchen || 0}}
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Carpet area</span>
-            {{flat.carpetArea}} Sft
+            {{flat().carpetArea}} Sft
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Balcony area</span>
-            {{flat.balconyArea}} Sft
+            {{flat().balconyArea}} Sft
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Common area</span>
-            {{flat.commonArea}} Sft
+            {{flat().commonArea}} Sft
           </ion-label>
         </div>
         <div class="div-title-value">
           <ion-label>
             <span>Saleable area</span>
-            {{flat.saleableArea}} Sft
+            {{flat().saleableArea}} Sft
           </ion-label>
         </div>
       </div>
@@ -257,42 +251,42 @@
       <div class="div-dimension-sub">
         <ion-label class="label-face">North Face</ion-label>
         <div class="div-face">
-          <ion-label>{{flat.northFacing}}</ion-label>
-          <ion-label>{{flat.northSize}} {{flat.units}}</ion-label>
+          <ion-label>{{flat().northFacing}}</ion-label>
+          <ion-label>{{flat().northSize}} {{flat().units}}</ion-label>
         </div>
       </div>
       <div class="div-dimension-sub">
         <ion-label class="label-face">South Face</ion-label>
         <div class="div-face">
-          <ion-label>{{flat.southFacing}}</ion-label>
-          <ion-label>{{flat.southSize}} {{flat.units}}</ion-label>
+          <ion-label>{{flat().southFacing}}</ion-label>
+          <ion-label>{{flat().southSize}} {{flat().units}}</ion-label>
         </div>
       </div>
       <div class="div-dimension-sub">
         <ion-label class="label-face">East Face</ion-label>
         <div class="div-face">
-          <ion-label>{{flat.eastFacing}}</ion-label>
-          <ion-label>{{flat.eastSize}} {{flat.units}}</ion-label>
+          <ion-label>{{flat().eastFacing}}</ion-label>
+          <ion-label>{{flat().eastSize}} {{flat().units}}</ion-label>
         </div>
       </div>
       <div class="div-dimension-sub">
         <ion-label class="label-face">West Face</ion-label>
         <div class="div-face">
-          <ion-label>{{flat.westFacing}}</ion-label>
-          <ion-label>{{flat.westSize}} {{flat.units}}</ion-label>
+          <ion-label>{{flat().westFacing}}</ion-label>
+          <ion-label>{{flat().westSize}} {{flat().units}}</ion-label>
         </div>
       </div>
       <ion-label class="label-layout">Amenities</ion-label>
       <div class="div-amenities">
-        @for (amenity of flat.amenities; track amenity) {
+        @for (amenity of flat().amenities; track amenity) {
           <div class="div-amenity">
             <div class="div-title">
               <div class="div-img">
-                <ion-img [src]="'https://firebasestorage.googleapis.com/v0/b/realtorone-210b5.appspot.com/o/amenities%2F1669378985878_cctv.png?alt=media&token=13beec28-b3f6-4aa2-a525-f5b702cf2a98'"></ion-img>
+                <ion-img [src]="'https://firebasestorage.googleapis.com/v0/b/realtorone-210b5.appspot.com/o/amenities%2F1669378985878_cctv.png?alt=media&token=13beec28-b3f6-4aa2-a525-f5b702cf2a98'" />
               </div>
               <ion-label>{{amenity}}</ion-label>
             </div>
-            <ion-checkbox color="primary" slot="start"></ion-checkbox>
+            <ion-checkbox color="primary" slot="start" />
           </div>
         }
       </div>
@@ -304,9 +298,9 @@
           [autoplay]="{delay: 5000,disableOnInteraction: false}"
           [centeredSlides]="true"
           class="mySwiper">
-          @for (img of flat.layout; track img) {
+          @for (img of flat().layout; track img) {
             <swiper-slide>
-              <ion-img class="slide" [src]="img"></ion-img>
+              <ion-img class="slide" [src]="img" />
             </swiper-slide>
           }
         </swiper-container>
@@ -319,9 +313,9 @@
           [autoplay]="{delay: 5000,disableOnInteraction: false}"
           [centeredSlides]="true"
           class="mySwiper">
-          @for (img of flat.resources; track img) {
+          @for (img of flat().resources; track img) {
             <swiper-slide>
-              <ion-img class="slide" [src]="img"></ion-img>
+              <ion-img class="slide" [src]="img" />
             </swiper-slide>
           }
         </swiper-container>
@@ -333,7 +327,7 @@
         <source src="assets/img/dummy/testvideo.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <ion-icon name="trash-outline"></ion-icon>
+      <ion-icon name="trash-outline" />
     </div>
   </div>
 }

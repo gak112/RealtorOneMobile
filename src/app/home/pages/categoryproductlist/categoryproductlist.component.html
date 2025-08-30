@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()" /></ion-buttons>
     <ion-title>
       {{actionType | uppercase}} Properties
     </ion-title>
@@ -13,7 +13,7 @@
     <div class="div-main">
       {{properties | json}}
       <div >
-        <app-homeventurecard [venture]="properties"></app-homeventurecard>
+        <app-homeventurecard [venture]="properties" />
       </div>
     </div>
   }

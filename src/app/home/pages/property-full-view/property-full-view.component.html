@@ -7,23 +7,23 @@
         @for (img of images(); track $index) {
         <swiper-slide>
           <div class="div-img">
-            <ion-img [src]="img || 'assets/img/no-image.png'" alt=""></ion-img>
+            <ion-img [src]="img || 'assets/img/no-image.png'" alt="" />
           </div>
         </swiper-slide>
         }
       </swiper-container>
 
       <!-- Back -->
-      <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+      <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()" />
 
       <!-- thumbs / count -->
       <div class="tags">
         @for (img of images().slice(0, 5); track $index) {
-        <ion-img [src]="img || 'assets/img/no-image.png'" class="tag-img"></ion-img>
+        <ion-img [src]="img || 'assets/img/no-image.png'" class="tag-img" />
         }
         @if (images().length > 6) {
         <div style="position: relative;" (click)="openAllPhotos()">
-          <ion-img [src]="images()[6]" class="tag-img" style="opacity:0.3;"></ion-img>
+          <ion-img [src]="images()[6]" class="tag-img" style="opacity:0.3;" />
           <span class="tag-count">+{{ images().length - 6 }}</span>
         </div>
         }
@@ -52,11 +52,11 @@
     <div class="div-ventortitle">
       <div class="div-details">
         <div class="div-img-flex">
-          <ion-img src="assets/img/onlylogo.png" class="img-logo"></ion-img>
+          <ion-img src="assets/img/onlylogo.png" class="img-logo" />
           <ion-label class="label-title">{{ vm()!.propertyTitle }}</ion-label>
         </div>
         <div class="div-location-flex">
-          <ion-icon name="location-outline"></ion-icon>
+          <ion-icon name="location-outline" />
           <ion-label class="label-address">{{ vm()!.addressOfProperty }}</ion-label>
         </div>
       </div>
@@ -188,7 +188,7 @@
       <ion-label class="label-description">Amenities</ion-label>
       <div style="margin-top: 10px;">
         @for (amenity of amenities(); track amenity.id) {
-        <app-amentitycard [amentity]="amenity"></app-amentitycard>
+        <app-amentitycard [amentity]="amenity" />
         }
       </div>
     </div>
@@ -207,7 +207,7 @@
         <ion-label>+91 9876543210</ion-label>
       </div>
       <a href="tel:property.phone" style="height: 45px;">
-        <ion-icon name="call-outline"></ion-icon>
+        <ion-icon name="call-outline" />
       </a>
     </div>
   </div>

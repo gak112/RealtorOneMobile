@@ -4,14 +4,14 @@
       <div class="div-f" (click)="openLocation()">
         <span class="span-location">Location</span>
         <div class="div-location-flex">
-          <ion-img src="https://cdn-icons-png.flaticon.com/128/14035/14035451.png" class="icon-location"></ion-img>
+          <ion-img src="https://cdn-icons-png.flaticon.com/128/14035/14035451.png" class="icon-location" />
           <ion-label class="label-location">Hyderabad, Jubilee Hills</ion-label>
-          <ion-icon name="chevron-down-outline" class="icon-chevron-down"></ion-icon>
+          <ion-icon name="chevron-down-outline" class="icon-chevron-down" />
         </div>
       </div>
       <div class="div-notifi">
         <div class="div-notifications" (click)="manageAlerts()">
-          <ion-icon name="notifications-outline"></ion-icon>
+          <ion-icon name="notifications-outline" />
           <ion-label class="order-count">10</ion-label>
         </div>
       </div>
@@ -19,8 +19,8 @@
   </ion-toolbar>
   <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
     <div class="div-search-filter">
-      <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;"></ion-searchbar>
-      <ion-icon name="funnel-outline" class="icon-filter" (click)="openFilters()"></ion-icon>
+      <ion-searchbar [debounce]="1000" [placeholder]="'Search'" style="padding-top: 10px;" />
+      <ion-icon name="funnel-outline" class="icon-filter" (click)="openFilters()" />
     </div>
   </ion-toolbar>
 </ion-header>
@@ -42,7 +42,7 @@
                 </div>
               </div>
             </div>
-            <ion-img src="assets/img/agent.png"></ion-img>
+            <ion-img src="assets/img/agent.png" />
           </div>
         </div>
         }
@@ -50,32 +50,32 @@
       <div class="div-categories-list">
         <div class="div-category" (click)="productlist('Residential')">
           <div class="div-img">
-            <ion-img src="assets/img/residential.png" style="background: rgb(12 119 193 / 30%);"></ion-img>
+            <ion-img src="assets/img/residential.png" style="background: rgb(12 119 193 / 30%);" />
           </div>
           <ion-label>Residential</ion-label>
         </div>
         <div class="div-category" (click)="productlist('Commercial')">
           <div class="div-img">
-            <ion-img src="assets/img/commercial.png" style="background: rgb(66 221 109 / 30%);"></ion-img>
+            <ion-img src="assets/img/commercial.png" style="background: rgb(66 221 109 / 30%);" />
           </div>
           <ion-label style="color: hsl(137 70% 45% / 1);">Commercial</ion-label>
         </div>
         <div class="div-category" (click)="productlist('plot')">
           <div class="div-img">
-            <ion-img src="assets/img/plot.png" style="background: rgb(232 136 44 / 30%);"></ion-img>
+            <ion-img src="assets/img/plot.png" style="background: rgb(232 136 44 / 30%);" />
           </div>
           <ion-label style="color: #e8882c;">Plots</ion-label>
         </div>
         <div class="div-category" (click)="productlist('Land')">
           <div class="div-img">
-            <ion-img src="assets/img/field.png" style="background: rgb(228 49 133 / 30%);"></ion-img>
+            <ion-img src="assets/img/field.png" style="background: rgb(228 49 133 / 30%);" />
           </div>
           <ion-label style="color: #e43185;">Lands</ion-label>
         </div>
       </div>
       <div style="margin: 16px 10px; height: 20px;" class="div-heading">
         <ion-label>Trending</ion-label>
-        <ion-icon name="chevron-forward-outline" (click)="trendingFV()"></ion-icon>
+        <ion-icon name="chevron-forward-outline" (click)="trendingFV()" />
       </div>
       <div class="div-banners">
         <swiper-container [spaceBetween]="30" [autoplay]="{delay: 5000,disableOnInteraction: false}"
@@ -83,7 +83,7 @@
           <swiper-slide>
             <div class="">
               <ion-img class="slide" (click)="bannersview()"
-                [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'"></ion-img>
+                [src]="'https://ucarecdn.com/882d06f0-0cb7-44b0-a4e7-eafb7d811699/'" />
             </div>
           </swiper-slide>
         </swiper-container>
@@ -99,7 +99,7 @@
     <div class="div vendors">
       <!-- <app-product-box></app-product-box> -->
       @for (p of properties(); track p.id) {
-      <app-realestate-card [property]="p" [saleType]="'sale'" [admin]="{ uid: 'admin' }"></app-realestate-card>
+      <app-realestate-card [property]="p" [saleType]="'sale'" [admin]="{ uid: 'admin' }" />
       }
     </div>
     <ion-fab slot="fixed" style="position: fixed;" vertical="bottom" horizontal="end">
@@ -122,10 +122,10 @@
       <ion-fab-list side="top">
         <ion-fab-button style="--background: darkslateblue;
         --color: white;" (click)="openRequestForm()">
-          <ion-icon name="home"></ion-icon>
+          <ion-icon name="home" />
         </ion-fab-button>
         <ion-fab-button style="--background: darkslateblue; --color: white">
-          <ion-icon name="business" (click)="openVentureCreation()"></ion-icon>
+          <ion-icon name="business" (click)="openVentureCreation()" />
         </ion-fab-button>
       </ion-fab-list>
     </ion-fab>

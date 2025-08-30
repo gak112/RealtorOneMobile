@@ -4,17 +4,13 @@
   </div>
 
   <div class="div-icons">
-    <ion-icon
-      name="create"
+    <ion-icon name="create"
       (click)="editAmenity()"
-      aria-label="Edit amenity">
-    </ion-icon>
+      aria-label="Edit amenity" />
 
-    <ion-icon
-      name="trash-outline"
+    <ion-icon name="trash-outline"
       [class.disabled]="isDeleting()"
       (click)="confirmDelete()"
-      aria-label="Delete amenity">
-    </ion-icon>
+      aria-label="Delete amenity" />
   </div>
 </div>

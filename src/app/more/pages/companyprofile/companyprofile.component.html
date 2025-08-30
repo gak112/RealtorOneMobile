@@ -1,10 +1,10 @@
 <ion-header>
   @if (company$| async; as company) {
     <ion-toolbar style="--min-height: 75px;">
-      <ion-buttons slot="start"><ion-icon class="icon-back" name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+      <ion-buttons slot="start"><ion-icon class="icon-back" name="chevron-back-outline" (click)="dismiss()" /></ion-buttons>
       <div class="div-img" >
         <!-- <ion-img (click)="openImageModal([company.photoURL], company.companyName)" [src]="company.photoURL"></ion-img> -->
-        <ion-img [src]="'assets/img/dummy/house2.jpg'"></ion-img>
+        <ion-img [src]="'assets/img/dummy/house2.jpg'" />
         <div class="div-name">
           <ion-label class="h6-username"> Arha Constructions
             <!-- <span class="span-active">&#x25CF;</span>
@@ -16,7 +16,7 @@
   }
 </ion-header>
 <ion-content>
-  <app-companybanners></app-companybanners>
+  <app-companybanners />
   <ion-toolbar class="ion-toolbar-settings">
     <ion-segment mode="ios" value="aboutus" (ionChange)="segmentChanged($event)">
       <!-- <ion-segment-button value="products">
@@ -47,32 +47,32 @@
 </div> -->
 @if (action === 'aboutus') {
   <div>
-    <app-companyabout></app-companyabout>
+    <app-companyabout />
   </div>
 }
 @if (action === 'media') {
   <div>
-    <app-companymedia></app-companymedia>
+    <app-companymedia />
   </div>
 }
 @if (action === 'team') {
   <div>
-    <app-companyteam></app-companyteam>
+    <app-companyteam />
   </div>
 }
 @if (action === 'events') {
   <div>
-    <app-companyevents></app-companyevents>
+    <app-companyevents />
   </div>
 }
 @if (action === 'certificates') {
   <div>
-    <app-companycertificates></app-companycertificates>
+    <app-companycertificates />
   </div>
 }
 @if (action === 'branches') {
   <div>
-    <app-companybranches></app-companybranches>
+    <app-companybranches />
   </div>
 }
 </ion-content>

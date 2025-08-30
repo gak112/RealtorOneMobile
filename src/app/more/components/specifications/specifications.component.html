@@ -1,7 +1,7 @@
 @if(true) {
 <ion-header>
     <ion-toolbar>
-        <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+        <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
         <ion-title>Specifications</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -9,8 +9,7 @@
     <form [formGroup]="specificationsForm">
         <div class="div-flex">
             <ion-input type="text" mode="md" label="Specification Title" label-placement="floating" fill="outline"
-                placeholder="Enter Specification Title" [formControl]="newTitle">
-            </ion-input>
+                placeholder="Enter Specification Title" [formControl]="newTitle" />
             <ion-button color="warning" (click)="addSection()" [disabled]="newTitle.invalid">+&nbsp;Add</ion-button>
         </div>
         <div formArrayName="sections">
@@ -20,20 +19,18 @@
                     <ion-label class="spec-title" style="font-weight:600;">
                         {{ sectionAt(i).controls.title.value }}
                     </ion-label>
-                    <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)"></ion-icon>
+                    <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)" />
                 </div>
                 <!-- Add new item -->
                 <div class="div-spec-inputs">
                     <div formGroupName="newItem">
                         <div class="div-formgroup">
                             <ion-input type="text" mode="md" label="Keyword" label-placement="floating" fill="outline"
-                                placeholder="Enter Keyword" formControlName="key">
-                            </ion-input>
+                                placeholder="Enter Keyword" formControlName="key" />
                         </div>
                         <div class="div-formgroup">
                             <ion-textarea mode="md" label="Value" label-placement="floating" fill="outline"
-                                placeholder="Enter Value" rows="4" style="height:auto;" formControlName="value">
-                            </ion-textarea>
+                                placeholder="Enter Value" rows="4" style="height:auto;" formControlName="value" />
                         </div>
 
                         <ion-button expand="block" color="primary" (click)="addItem(i)">
@@ -50,7 +47,7 @@
                     <ion-label class="ion-label-main" style="font-weight:600;">
                         {{ sectionAt(i).controls.title.value }}
                     </ion-label>
-                    <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)"></ion-icon>
+                    <ion-icon name="trash-outline" class="spec-delete" (click)="removeSection(i)" />
                 </div>
                 <div style="padding: 10px;" formArrayName="items">
                     @for (item of sectionAt(i).controls.items.controls; track trackItem($index); let j = $index) {
@@ -61,7 +58,7 @@
                             <ion-label class="ion-label-title">{{ item.controls.value.value
                                 }}</ion-label>
                         </div>
-                        <ion-icon name="trash-outline" class="spec-delete" (click)="removeItem(i, j)"></ion-icon>
+                        <ion-icon name="trash-outline" class="spec-delete" (click)="removeItem(i, j)" />
                     </div>
                     }
                 </div>

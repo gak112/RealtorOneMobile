@@ -1,10 +1,10 @@
 @if (aboutUs$ | async; as about) {
   <div class="div-description">
     <div class="div-desc">
-      <ion-label [innerHTML]="about[0].about">  </ion-label>
+      <ion-label [innerHTML]="about[0].about" />
     </div>
     <div class="div-img">
-      <ion-img [src]="about[0].img"></ion-img>
+      <ion-img [src]="about[0].img" />
     </div>
   </div>
 }

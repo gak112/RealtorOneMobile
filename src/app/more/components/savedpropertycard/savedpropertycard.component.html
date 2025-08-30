@@ -5,7 +5,7 @@
       autoplay-disable-on-interaction="false" class="mySwiper">
       @for (image of property().propertyImages; track image.id) {
       <swiper-slide>
-        <ion-img [src]="image.image || 'assets/img/no-image.png'" alt="Property Image" class="property-image"></ion-img>
+        <ion-img [src]="image.image || 'assets/img/no-image.png'" alt="Property Image" class="property-image" />
       </swiper-slide>
       }
     </swiper-container>
@@ -14,7 +14,7 @@
 
     <!-- Heart / Favorite -->
     <div class="heart-icon" [class.disabled]="busy()" (click)="onToggleFavorite($event)">
-      <ion-icon [name]="isSaved() ? 'heart' : 'heart-outline'"></ion-icon>
+      <ion-icon [name]="isSaved() ? 'heart' : 'heart-outline'" />
     </div>
   </div>
 

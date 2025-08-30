@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>
       Trending
     </ion-title>
@@ -17,7 +17,7 @@
 <div class="div-main">
   @for (banner of dummyBanners; track banner) {
     <div class="div-img" (click)="bannersview(banner)">
-      <ion-img [src]="banner.banner"></ion-img>
+      <ion-img [src]="banner.banner" />
     </div>
   }
 </div>

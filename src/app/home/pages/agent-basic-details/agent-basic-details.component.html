@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon (click)="dismiss()" name="chevron-back-outline" class="icon-close"></ion-icon>
+    <ion-icon (click)="dismiss()" name="chevron-back-outline" class="icon-close" />
     <ion-title>@if (isEdit()) { Edit Agent Basic Details } @else { Agent Basic Details }</ion-title>
   </ion-toolbar>
 
@@ -15,7 +15,7 @@
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Full Name" label-placement="floating" fill="outline"
-        placeholder="Enter Full Name" formControlName="agentFullName" (ionBlur)="trim('agentFullName')"></ion-input>
+        placeholder="Enter Full Name" formControlName="agentFullName" (ionBlur)="trim('agentFullName')" />
       @if (touchedInvalid('agentFullName')) {
       <small class="text-rose-600">@if (hasError('agentFullName','required')) { Full name is required } @else { Min 3
         characters }</small>
@@ -24,7 +24,7 @@
 
     <div class="div-formgroup">
       <ion-input type="email" mode="md" label="Email" label-placement="floating" fill="outline"
-        placeholder="Enter Email" formControlName="email" (ionBlur)="trim('email')"></ion-input>
+        placeholder="Enter Email" formControlName="email" (ionBlur)="trim('email')" />
       @if (touchedInvalid('email')) {
       <small class="text-rose-600">@if (hasError('email','required')) { Email is required } @else { Enter a valid email
         }</small>
@@ -34,7 +34,7 @@
     <div class="div-formgroup">
       <ion-input type="tel" inputmode="numeric" mode="md" label="Phone Number" label-placement="floating" fill="outline"
         placeholder="Enter Phone Number" maxlength="10" formControlName="phone"
-        (ionBlur)="digits('phone',10)"></ion-input>
+        (ionBlur)="digits('phone',10)" />
       @if (touchedInvalid('phone')) {
       <small class="text-rose-600">Enter a valid 10-digit phone</small>
       }
@@ -42,7 +42,7 @@
 
     <div class="div-formgroup">
       <ion-textarea rows="3" mode="md" label="Address" label-placement="floating" fill="outline"
-        placeholder="Enter Address" formControlName="address" (ionBlur)="trim('address')"></ion-textarea>
+        placeholder="Enter Address" formControlName="address" (ionBlur)="trim('address')" />
       @if (touchedInvalid('address')) {
       <small class="text-rose-600">Address is required (min 5 chars)</small>
       }
@@ -50,7 +50,7 @@
 
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="City" label-placement="floating" fill="outline" placeholder="Enter City"
-        formControlName="city" (ionBlur)="trim('city')"></ion-input>
+        formControlName="city" (ionBlur)="trim('city')" />
       @if (touchedInvalid('city')) {
       <small class="text-rose-600">City is required</small>
       }
@@ -58,7 +58,7 @@
 
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="State" label-placement="floating" fill="outline" placeholder="Enter State"
-        formControlName="state" (ionBlur)="trim('state')"></ion-input>
+        formControlName="state" (ionBlur)="trim('state')" />
       @if (touchedInvalid('state')) {
       <small class="text-rose-600">State is required</small>
       }
@@ -66,7 +66,7 @@
 
     <div class="div-formgroup">
       <ion-input type="text" inputmode="numeric" mode="md" label="Pincode" label-placement="floating" fill="outline"
-        placeholder="Enter Pincode" maxlength="6" formControlName="pincode" (ionBlur)="digits('pincode',6)"></ion-input>
+        placeholder="Enter Pincode" maxlength="6" formControlName="pincode" (ionBlur)="digits('pincode',6)" />
       @if (touchedInvalid('pincode')) {
       <small class="text-rose-600">Enter a valid 6-digit pincode</small>
       }

@@ -1,10 +1,10 @@
 <div class="div-chat-individual" (click)="openChatFullview()">
   <div class="div-chat-img">
     <ion-skeleton-text animated style="height: 55px; width: 55px; border-radius: 50%; overflow: hidden"
-      [style.display]="isLoaded() ? 'none' : 'block'"></ion-skeleton-text>
+      [style.display]="isLoaded() ? 'none' : 'block'" />
     <ion-img class="img-chat" (ionImgDidLoad)="onImageLoaded($event)"
       [src]="otherUser()?.photoURL || 'assets/img/noimage.avif'"
-      [style.visibility]="isLoaded() ? 'visible' : 'hidden'"></ion-img>
+      [style.visibility]="isLoaded() ? 'visible' : 'hidden'" />
   </div>
   <div class="div-name-time">
     <div class="div-chat-name">
@@ -19,7 +19,7 @@
           }}</ion-label>
         <div class="div-time">
           <app-chat-timestamp [isUnseen]="(unSeenMessages()?.length ?? 0) > 0"
-            [timestamp]="lastMessage()?.sortDate ?? 0"></app-chat-timestamp>
+            [timestamp]="lastMessage()?.sortDate ?? 0" />
         </div>
       </div>
       <div class="div-p-flex">
@@ -29,12 +29,12 @@
 
         @if(tickIconShow){
         @if(lastMessage()?.seenBy?.[OtherUserID??'']){
-        <ion-icon class="icon-double-tick" name="checkmark-done" style="color: #3880ff"></ion-icon>
+        <ion-icon class="icon-double-tick" name="checkmark-done" style="color: #3880ff" />
         }@else {
-        <ion-icon class="icon-double-tick" name="checkmark" style="color: #777"></ion-icon>
+        <ion-icon class="icon-double-tick" name="checkmark" style="color: #777" />
         }} @if(lastMessage()?.image){
         <ion-icon name="image" class="icon-double-tick" style="color: var(--color-999)"
-          [ngStyle]="{left : tickIconShow ? '22px' : '0px'}"></ion-icon>
+          [ngStyle]="{left : tickIconShow ? '22px' : '0px'}" />
         } @if(lastMessage()?.message){
         <ion-label class="p-settings1" [ngStyle]="{
             'text-indent':
@@ -133,18 +133,18 @@
       height: 35px;
       border-radius: 50%;
       margin-right: 16px;
-    "></ion-skeleton-text>
+    " />
   <div class="div-flex">
     <div class="div-flex1">
-      <ion-skeleton-text animated="true" style="width: 138px; height: 20px"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 138px; height: 20px" />
       <div class="div-flex2">
-        <ion-skeleton-text animated="true" style="width: 245px; height: 18px"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 245px; height: 18px" />
       </div>
     </div>
     <ion-item style="width: 65px; --inner-padding-end: 0; --background: transparent">
       <div class="" style="display: flex; flex-direction: column; align-items: center">
-        <ion-skeleton-text animated="true" style="width: 20px; height: 20px; border-radius: 50%"></ion-skeleton-text>
-        <ion-skeleton-text animated="true" style="width: 56px; height: 15px"></ion-skeleton-text>
+        <ion-skeleton-text animated="true" style="width: 20px; height: 20px; border-radius: 50%" />
+        <ion-skeleton-text animated="true" style="width: 56px; height: 15px" />
       </div>
     </ion-item>
   </div>

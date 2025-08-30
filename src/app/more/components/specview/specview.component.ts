@@ -1,20 +1,15 @@
-
-import { Component, inject, Input, OnInit, input } from '@angular/core';
-import {
-  ModalController,
-  IonLabel,
-  IonIcon
-} from '@ionic/angular/standalone';
-import {
-  SpecificationsComponent,
-  SpecSection,
-} from '../specifications/specifications.component';
+import { Component, inject, input, model } from '@angular/core';
+import { IonIcon, IonLabel, ModalController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { create, trashOutline } from 'ionicons/icons';
 import {
   backwardEnterAnimation,
   forwardEnterAnimation,
 } from 'src/app/services/animation';
-import { addIcons } from 'ionicons';
-import { create, trashOutline } from 'ionicons/icons';
+import {
+  SpecificationsComponent,
+  SpecSection,
+} from '../specifications/specifications.component';
 
 @Component({
   selector: 'app-specview',
@@ -24,9 +19,11 @@ import { create, trashOutline } from 'ionicons/icons';
   imports: [IonIcon, IonLabel],
   providers: [ModalController],
 })
-export class SpecviewComponent implements OnInit {
+export class SpecviewComponent {
   private modalController = inject(ModalController);
-  @Input() specifications: SpecSection[] = [];
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
+  readonly specifications = model<SpecSection[]>([]);
   readonly user = input<any>(undefined);
   constructor() {
     addIcons({
@@ -35,24 +32,15 @@ export class SpecviewComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    return;
-  }
-
-  keyChanged(event: any, i: number, j: number) {
-    this.specifications[i].specifications[j].key = event.srcElement.innerText;
-  }
-
-  valueChanged(event: any, i: number, j: number) {
-    this.specifications[i].specifications[j].value = event.srcElement.innerText;
-  }
-
   removeSection(index: number): void {
-    this.specifications.splice(index, 1);
+    this.specifications().splice(index, 1);
+    this.specifications.update((sections) =>
+      sections.filter((_, j) => j !== index)
+    );
   }
 
   async openEditSection(index: number) {
-    const sectionToEdit = this.specifications[index];
+    const sectionToEdit = this.specifications()[index];
     const modal = await this.modalController.create({
       component: SpecificationsComponent,
       componentProps: {
@@ -68,10 +56,10 @@ export class SpecviewComponent implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'submit' && data?.sections) {
-      const updated = [...this.specifications];
+      const updated = [...this.specifications()];
       // replace only that section (first returned section)
       updated[index] = (data.sections as SpecSection[])[0];
-      this.specifications = updated;
+      this.specifications.set(updated);
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
+import { Component, OnInit, inject, input, output } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   IonButton,
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
   private toast = inject(ToastService);
   private nav = inject(NavController);
 
-  @Output() setLogin = new EventEmitter();
+  readonly setLogin = output();
   registerForm: FormGroup;
   showPassword = false;
   loading = false;

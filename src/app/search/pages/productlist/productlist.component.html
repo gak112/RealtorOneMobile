@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()" /></ion-buttons>
     <ion-title>
       Properties List
     </ion-title>
@@ -13,7 +13,7 @@
     <div class="div-main">
       @for (property of properties; track property; let i = $index) {
         <div>
-          <app-homeventurecard ></app-homeventurecard>
+          <app-homeventurecard />
         </div>
       }
     </div>

@@ -1,31 +1,31 @@
 <div class="div-product-main">
-  <app-post-user-header></app-post-user-header>
+  <app-post-user-header />
   <label class="dropdown">
     <div class="dd-button">
-      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      <ion-icon name="ellipsis-vertical-outline" />
     </div>
     <input type="checkbox" class="dd-input" id="test">
     <ul class="dd-menu">
-      <li (click)="editProperty(hit())"><ion-icon name="create"></ion-icon>Edit</li>
-      <li (click)="deleteIt(hit())"><ion-icon name="trash"></ion-icon>Delete</li>
-      <li><ion-icon name="document-text"></ion-icon>Report</li>
+      <li (click)="editProperty(hit())"><ion-icon name="create" />Edit</li>
+      <li (click)="deleteIt(hit())"><ion-icon name="trash" />Delete</li>
+      <li><ion-icon name="document-text" />Report</li>
     </ul>
   </label>
   <div class="div-img">
-    <ion-skeleton-text [animated]="true" style="height: 150px; width: 100%;"></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" style="height: 150px; width: 100%;" />
 
   </div>
   <div class="div-details">
     <div class="div-rent">
-      <ion-skeleton-text [animated]="true" style="height:40px;width:70px;border-radius:100px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="height:40px;width:70px;border-radius:100px;" />
 
-      <ion-skeleton-text [animated]="true" style="height:27px;width:159px;border-radius:100px;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="height:27px;width:159px;border-radius:100px;" />
 
 
     </div>
     <ion-skeleton-text [animated]="true"
-      style="height:25px;width:190px; margin-bottom: 10px;"></ion-skeleton-text><ion-skeleton-text [animated]="true"
-      style="height:18px;width:220px;"></ion-skeleton-text>
+      style="height:25px;width:190px; margin-bottom: 10px;" /><ion-skeleton-text [animated]="true"
+      style="height:18px;width:220px;" />
   </div>
-  <app-post-likes></app-post-likes>
+  <app-post-likes />
 </div>

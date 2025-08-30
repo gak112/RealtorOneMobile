@@ -1,13 +1,12 @@
 
 import {
   Component,
-  EventEmitter,
-  Output,
   OnInit,
   inject,
   signal,
   computed,
-  input
+  input,
+  output
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -152,7 +151,9 @@ export class AddAmenitiesComponent implements OnInit {
 
   readonly docId = input<string>(undefined); // if present => Edit mode
   readonly initial = input<Partial<Amenity>>(undefined); // prefilled values for Edit
-  @Output() saved = new EventEmitter<{ id: string }>();
+  readonly saved = output<{
+    id: string;
+}>();
 
   // Form
   amenityForm = this.fb.nonNullable.group({

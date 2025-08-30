@@ -1,21 +1,21 @@
 <div class="div-product-main">
   <label class="dropdown">
     <div class="dd-button">
-      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+      <ion-icon name="ellipsis-vertical-outline" />
     </div>
     <input type="checkbox" class="dd-input" id="test">
     <ul class="dd-menu">
-      <li><ion-icon name="trash"></ion-icon>Delete</li>
-      <li><ion-icon name="document-text"></ion-icon>Report</li>
+      <li><ion-icon name="trash" />Delete</li>
+      <li><ion-icon name="document-text" />Report</li>
     </ul>
   </label>
-  <app-post-user-header></app-post-user-header>
+  <app-post-user-header />
   <div style="width: 100%;height: 250px;" class="div-img">
 
     <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
       @for (image of dummydetails.resources; track image) {
         <swiper-slide>
-          <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
+          <ion-img class="slide" [src]="image.resourceUrl" />
         </swiper-slide>
       }
     </swiper-container>
@@ -37,7 +37,7 @@
       >{{hit()?.addressOfProperty?.address}}</ion-label>
     }
   </div>
-  <app-post-likes></app-post-likes>
+  <app-post-likes />
 </div>
 
 <!-- skeleton-code -->

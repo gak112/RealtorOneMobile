@@ -9,8 +9,7 @@
   "
 >
   @if(selectedMessage()?.id === message().id){
-  <ion-icon
-    (click)="selectedMessage.set(null)"
+  <ion-icon (click)="selectedMessage.set(null)"
     name="close-circle"
     style="
       position: absolute;
@@ -20,7 +19,7 @@
       font-size: 24px;
       color: gray;
     "
-  ></ion-icon>
+   />
   }
   <ion-item
     style="
@@ -34,15 +33,14 @@
   >
     <div class="left-flex">
       @if(isGroupChat()){
-      <ion-img
-        [src]="sender()?.photoURL || 'assets/img/noimage.avif'"
+      <ion-img [src]="sender()?.photoURL || 'assets/img/noimage.avif'"
         class="ion-img-profile"
-      ></ion-img>
+       />
       }
       <div class="message received">
         @if(message().isDeleted){
         <ion-label class="p-entertext">
-          <ion-icon name="warning-outline"></ion-icon> The message has been
+          <ion-icon name="warning-outline" /> The message has been
           deleted</ion-label
         >
         }@else { @if(isGroupChat()){
@@ -61,25 +59,24 @@
             >
             @if(imageUrl) {
             <div class="div-p">
-              <ion-icon name="camera"></ion-icon>
+              <ion-icon name="camera" />
               <ion-label class="p-usertext">Photo</ion-label>
             </div>
             }
           </div>
           @if(imageUrl){
           <div class="div-img">
-            <ion-img [src]="imageUrl" class="img-reply"></ion-img>
+            <ion-img [src]="imageUrl" class="img-reply" />
           </div>
           }
         </div>
         }
         <ion-label class="p-entertext"> {{ message().message }}</ion-label>
         @if(message().image){
-        <ion-img
-          (click)="openImage(message().image)"
+        <ion-img (click)="openImage(message().image)"
           [src]="message().image"
           class="img-settings"
-        ></ion-img>
+         />
         }
         <span class="metadata">
           <span class="time">{{ message().sortDate | date : "h:mm a" }}</span>
@@ -88,5 +85,5 @@
       </div>
     </div>
   </ion-item>
-  <ion-item-options side="start"> </ion-item-options>
+  <ion-item-options side="start" />
 </ion-item-sliding>

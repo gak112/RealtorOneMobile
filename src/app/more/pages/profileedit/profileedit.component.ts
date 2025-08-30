@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild, inject, input } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, inject, input, viewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonBadge, IonButton, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { IProfile } from 'src/app/languages/interface/profile/profile.interface';
@@ -21,8 +21,7 @@ export class ProfileeditComponent  implements OnInit {
   private languageService = inject(LanguageService);
 
 
-  @ViewChild('places')
-  places!: ElementRef<HTMLInputElement>;
+  readonly places = viewChild.required<ElementRef<HTMLInputElement>>('places');
   readonly user = input.required<any>();
     loading = false;
     profileEditForm: FormGroup;

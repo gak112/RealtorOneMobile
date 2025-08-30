@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar style="--border-width: 0;">
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Create&nbsp;Venture</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,13 +13,12 @@
     <!-- Venture Name -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Venture Name" label-placement="floating" fill="outline"
-        placeholder="Enter Venture Name" formControlName="ventureName">
-      </ion-input>
+        placeholder="Enter Venture Name" formControlName="ventureName" />
       @let fullName = ventureForm.controls.ventureName;
       @if (fullName.invalid && (fullName.touched || fullName.dirty)) {
       @if(fullName.errors?.['required']) {
       <div class="div-error">
-        <ion-icon name="information-circle" class="icon-info"></ion-icon>
+        <ion-icon name="information-circle" class="icon-info" />
         <span class="name-error">Venture Name is
           Required
         </span>
@@ -27,7 +26,7 @@
       }
       @else if (fullName.errors?.['minlength']) {
       <div class="div-form">
-        <ion-icon name="information-circle" class="icon-info"></ion-icon>
+        <ion-icon name="information-circle" class="icon-info" />
         <span class="name-error">Venture Name should have mininum of 3 Characetrs
         </span>
       </div>
@@ -38,20 +37,18 @@
     <!-- Description -->
     <div class="div-formgroup">
       <ion-textarea type="text" mode="md" label="Description" label-placement="floating" fill="outline"
-        placeholder="Enter Description" rows="5" style="height: auto;" formControlName="description">
-      </ion-textarea>
+        placeholder="Enter Description" rows="5" style="height: auto;" formControlName="description" />
     </div>
 
     <!-- Venture Location -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Venture Location" label-placement="floating" fill="outline"
-        placeholder="Enter Venture Location" formControlName="ventureLocation">
-      </ion-input>
+        placeholder="Enter Venture Location" formControlName="ventureLocation" />
       @let location = ventureForm.controls.ventureLocation;
       @if (location.invalid && (location.touched || location.dirty)) {
       @if(location.errors?.['required']) {
       <div class="div-error">
-        <ion-icon name="information-circle" class="icon-info"></ion-icon>
+        <ion-icon name="information-circle" class="icon-info" />
         <span class="name-error">Venture Location is
           Required
         </span>
@@ -71,8 +68,7 @@
     <!-- Venture Website -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Venture Website" label-placement="floating" fill="outline"
-        placeholder="Enter Venture Website" formControlName="ventureWebsite">
-      </ion-input>
+        placeholder="Enter Venture Website" formControlName="ventureWebsite" />
       @if (isInvalid('ventureWebsite')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('ventureWebsite','url')) { Enter a valid URL (http/https). }
@@ -84,7 +80,7 @@
     <div class="div-upload">
       <ion-label class="upload-label">Upload logo</ion-label>
       <div class="div-add" (click)="logoFileInput.click()">
-        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-icon name="cloud-upload-outline" class="icon-upload" />
         <ion-label class="label-add">Upload a file or drag and drop</ion-label>
         <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
         <input #logoFileInput type="file" accept="image/*" hidden (change)="selectLogo($event)" />
@@ -98,8 +94,8 @@
     @if(ventureForm.controls.logo.value) {
     <div class="div-dataimg2">
       <div class="div-uploading" style="width: auto;">
-        <ion-icon name="trash-outline" (click)="clearLogo()"></ion-icon>
-        <ion-img [src]="ventureForm.controls.logo.value" style="object-fit: contain;"></ion-img>
+        <ion-icon name="trash-outline" (click)="clearLogo()" />
+        <ion-img [src]="ventureForm.controls.logo.value" style="object-fit: contain;" />
       </div>
     </div>
     }
@@ -108,7 +104,7 @@
     <div class="div-upload">
       <ion-label class="upload-label">Upload Venture Images</ion-label>
       <div class="div-add" (click)="imagesFileInput.click()">
-        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-icon name="cloud-upload-outline" class="icon-upload" />
         <ion-label class="label-add">Upload a file or drag and drop</ion-label>
         <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
         <input #imagesFileInput type="file" accept="image/*" multiple hidden (change)="selectVentureImages($event)" />
@@ -124,8 +120,8 @@
     <div class="div-venture-images">
       @for (image of ventureForm.controls.ventureImages.value; track $index) {
       <div class="div-uploading">
-        <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)"></ion-icon>
-        <ion-img [src]="image"></ion-img>
+        <ion-icon name="trash-outline" (click)="deleteImageByUrl(image)" />
+        <ion-img [src]="image" />
       </div>
       }
     </div>
@@ -135,7 +131,7 @@
     <div class="div-formgroup flex">
       <ion-label class="label-heading">Amenities</ion-label>
       <ion-button size="small" color="warning" (click)="openAmenities()">
-        <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+        <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;" />
         Add
       </ion-button>
     </div>
@@ -143,7 +139,7 @@
       @for (a of amenities(); track a; let i = $index) {
       <span class="badge-amenity">
         {{ a }}
-        <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;"></ion-icon>
+        <ion-icon name="close" (click)="removeAmenity(i)" style="font-size: 14px; color: #fff;" />
       </span>
       }
     </div>
@@ -151,8 +147,7 @@
     <!-- Directors -->
     <div class="div-formgroup">
       <ion-textarea type="text" mode="md" label="Directors" label-placement="floating" fill="outline"
-        placeholder="Enter Directors" rows="5" style="height: auto;" formControlName="directors">
-      </ion-textarea>
+        placeholder="Enter Directors" rows="5" style="height: auto;" formControlName="directors" />
       @if (isInvalid('directors')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('directors','maxlength')) { Maximum 2000 characters. }
@@ -163,8 +158,7 @@
     <!-- Company Name -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Company Name" label-placement="floating" fill="outline"
-        placeholder="Enter Company Name" formControlName="companyName">
-      </ion-input>
+        placeholder="Enter Company Name" formControlName="companyName" />
       @if (isInvalid('companyName')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('companyName','maxlength')) { Maximum 120 characters. }
@@ -175,8 +169,7 @@
     <!-- Company Website -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Company Website" label-placement="floating" fill="outline"
-        placeholder="Enter Company Website" formControlName="companyWebsite">
-      </ion-input>
+        placeholder="Enter Company Website" formControlName="companyWebsite" />
       @if (isInvalid('companyWebsite')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('companyWebsite','url')) { Enter a valid URL (http/https). }
@@ -187,8 +180,7 @@
     <!-- Facebook -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Facebook Link" label-placement="floating" fill="outline"
-        placeholder="Enter Facebook Link" formControlName="facebookLink">
-      </ion-input>
+        placeholder="Enter Facebook Link" formControlName="facebookLink" />
       @if (isInvalid('facebookLink')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('facebookLink','url')) { Enter a valid URL (http/https). }
@@ -199,8 +191,7 @@
     <!-- Instagram -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Instagram Link" label-placement="floating" fill="outline"
-        placeholder="Enter Instagram Link" formControlName="instagramLink">
-      </ion-input>
+        placeholder="Enter Instagram Link" formControlName="instagramLink" />
       @if (isInvalid('instagramLink')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('instagramLink','url')) { Enter a valid URL (http/https). }
@@ -211,8 +202,7 @@
     <!-- Twitter -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Twitter Link" label-placement="floating" fill="outline"
-        placeholder="Enter Twitter Link" formControlName="twitterLink">
-      </ion-input>
+        placeholder="Enter Twitter Link" formControlName="twitterLink" />
       @if (isInvalid('twitterLink')) {
       <div class="text-rose-600 text-xs mt-1">
         @if (hasError('twitterLink','url')) { Enter a valid URL (http/https). }
@@ -224,7 +214,7 @@
     <div class="div-upload">
       <ion-label class="upload-label">Upload Brochure</ion-label>
       <div class="div-add" (click)="brochureFileInput.click()">
-        <ion-icon name="cloud-upload-outline" class="icon-upload"></ion-icon>
+        <ion-icon name="cloud-upload-outline" class="icon-upload" />
         <ion-label class="label-add">Upload a file or drag and drop</ion-label>
         <span class="label-span">.jpg, .jpeg, .png, up to 2MB</span>
         <input #brochureFileInput type="file" accept="image/*" hidden (change)="selectBrochure($event)" />
@@ -237,8 +227,8 @@
     @if(ventureForm.controls.brochure.value.length > 0) {
     <div class="div-dataimg2">
       <div class="div-uploading" style="width: auto;">
-        <ion-icon name="trash-outline" (click)="clearBrochure()"></ion-icon>
-        <ion-img [src]="ventureForm.controls.brochure.value" style="object-fit: contain;"></ion-img>
+        <ion-icon name="trash-outline" (click)="clearBrochure()" />
+        <ion-img [src]="ventureForm.controls.brochure.value" style="object-fit: contain;" />
       </div>
     </div>
     }
@@ -248,8 +238,7 @@
       <div style="display: flex;align-items: center; margin-bottom: 16px;">
         <div style="margin-right: 16px;flex-grow: 1;">
           <ion-input type="text" mode="md" label="Land Area" label-placement="floating" fill="outline"
-            placeholder="Enter Land Area" formControlName="landArea">
-          </ion-input>
+            placeholder="Enter Land Area" formControlName="landArea" />
           @if (isInvalid('landArea')) {
           <div class="text-rose-600 text-xs mt-1">
             @if (hasError('landArea','number')) { Enter a valid number. }
@@ -279,8 +268,7 @@
       <div style="display: flex;align-items: center; margin-bottom: 16px;">
         <div style="margin-right: 16px;flex-grow: 1;">
           <ion-input type="text" mode="md" label="Property Size (Build up)" label-placement="floating" fill="outline"
-            placeholder="Enter Property Size (Build up)" formControlName="propertySizeBuildUp">
-          </ion-input>
+            placeholder="Enter Property Size (Build up)" formControlName="propertySizeBuildUp" />
           @if (isInvalid('propertySizeBuildUp')) {
           <div class="text-rose-600 text-xs mt-1">
             @if (hasError('propertySizeBuildUp','number')) { Enter a valid number. }
@@ -309,8 +297,7 @@
     <div style="display: flex;align-items: center;margin-bottom: 16px;">
       <div style="margin: 0;margin-right: 16px;flex-grow: 1;">
         <ion-input type="text" mode="md" label="Open Area" label-placement="floating" fill="outline"
-          placeholder="Enter Open Area" style="margin: 0 !important;" formControlName="openArea">
-        </ion-input>
+          placeholder="Enter Open Area" style="margin: 0 !important;" formControlName="openArea" />
         @if (isInvalid('openArea')) {
         <div class="text-rose-600 text-xs mt-1">
           @if (hasError('openArea','percentRange')) { Enter a % between 0 and 100. }
@@ -324,25 +311,25 @@
     <div class="div-formgroup flex">
       <ion-label class="label-heading">Specifications</ion-label>
       <ion-button size="small" color="warning" (click)="openAddSpecifications()">
-        <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+        <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;" />
         Add
       </ion-button>
     </div>
     @if(hasSpecs()) {
-    <app-specview [specifications]="specifications()"></app-specview>
+    <app-specview [specifications]="specifications()" />
     }
 
     <!-- Type tabs -->
     <div class="div-input-grid">
       <div class="div-input-sub" [class.active]="actionTab() === 'towerAPT'" (click)="actionTab.set('towerAPT')">
         <div class="div-img-label">
-          <ion-img [src]="'assets/img/building.png'"></ion-img>
+          <ion-img [src]="'assets/img/building.png'" />
           <ion-label class="label-text">Tower/Apartment</ion-label>
         </div>
       </div>
       <div class="div-input-sub" [class.active]="actionTab() === 'houseVilla'" (click)="actionTab.set('houseVilla')">
         <div class="div-img-label">
-          <ion-img [src]="'assets/img/duplex.png'"></ion-img>
+          <ion-img [src]="'assets/img/duplex.png'" />
           <ion-label class="label-text">House/Villa</ion-label>
         </div>
       </div>
@@ -354,12 +341,12 @@
       <div class="div-edit">
         <ion-label class="label-heading">Tower/Apartments</ion-label>
         <ion-button size="small" color="warning" (click)="openTower()">
-          <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+          <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;" />
           Add
         </ion-button>
       </div>
       @if(isTowerDataOpen()) {
-      <app-venture-tower></app-venture-tower>
+      <app-venture-tower />
       }
     </div>
     }
@@ -370,12 +357,12 @@
       <div class="div-edit">
         <ion-label class="label-heading">Houses/Villas</ion-label>
         <ion-button size="small" color="warning" (click)="openTower()">
-          <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;"></ion-icon>
+          <ion-icon slot="start" name="add" style="font-size: 14px; color: #000;" />
           Add
         </ion-button>
       </div>
       @if(isTowerDataOpen()) {
-      <app-venture-housevilla></app-venture-housevilla>
+      <app-venture-housevilla />
       }
     </div>
     }

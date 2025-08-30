@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Edit Profile</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,15 +9,15 @@
     <div class="div-form-main">
       <div class="div-formgroup">
         <ion-input formControlName="fullName" type="text" mode="md" label="Full Name" label-placement="floating"
-        fill="outline" placeholder="Enter Full Name"></ion-input>
+        fill="outline" placeholder="Enter Full Name" />
       </div>
       <div class="div-formgroup">
         <ion-input formControlName="email" type="email" mode="md" label="Email" label-placement="floating"
-        fill="outline" placeholder="Enter Email"></ion-input>
+        fill="outline" placeholder="Enter Email" />
       </div>
       <div class="div-formgroup">
         <ion-input formControlName="Location" type="text" mode="md" label="Location" label-placement="floating"
-        fill="outline" placeholder="Enter Location"></ion-input>
+        fill="outline" placeholder="Enter Location" />
       </div>
       <!-- <div class="div-formgroup">
       <ion-label >Location</ion-label>
@@ -34,7 +34,7 @@
 
     <div style="margin-bottom: 16px;">
       <ion-textarea formControlName="description" type="text" mode="md" label="Description" label-placement="floating"
-      fill="outline" placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
+      fill="outline" placeholder="Enter Description" rows="5" style="height: auto;" />
     </div>
     <div class="div-submit">
 
@@ -45,7 +45,7 @@
 <ion-footer>
   <ion-button color="warning" expand="block" mode="ios" (click)="submit($event)">
     @if (loading) {
-      <ion-spinner></ion-spinner>
+      <ion-spinner />
     }
     Submit
   </ion-button>

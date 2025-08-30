@@ -1,22 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon
-      name="chevron-back-outline"
+    <ion-icon name="chevron-back-outline"
       class="icon-close"
       (click)="dismiss()"
-    ></ion-icon>
+     />
     <ion-title>My properties</ion-title>
   </ion-toolbar>
 
   <ion-toolbar style="--padding-start:0;--padding-end:0;--min-height:55px;--padding-top:0;--padding-bottom:0;">
-    <ion-searchbar
-      [debounce]="500"
+    <ion-searchbar [debounce]="500"
       placeholder="Search by title, address, agent…"
       style="padding:0"
       (ionInput)="onSearch($event)"
       (ionClear)="clearSearch()"
       show-clear-button="focus"
-    ></ion-searchbar>
+     />
   </ion-toolbar>
 </ion-header>
 
@@ -45,7 +43,7 @@
   <!-- Results -->
   <div class="list-wrap">
     @for (p of filtered(); track p.id) {
-      <app-my-property-card [property]="p"></app-my-property-card>
+      <app-my-property-card [property]="p" />
     }
   </div>
 

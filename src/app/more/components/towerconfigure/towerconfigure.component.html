@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-arrow" (click)="dismiss()" />
     <ion-title>Configuaration</ion-title>
     <!-- <ion-button color="warning" *ngIf="copiedFlatData" size="small" expand="block" (click)="pasteAllFlats()" >
     <ion-label>Paste All Flats</ion-label>
@@ -23,7 +23,7 @@
 
   @if (configuring) {
     <div class="div-img">
-      <ion-img src="assets/img/configure.gif"></ion-img>
+      <ion-img src="assets/img/configure.gif" />
       <ion-label>Configuring<br>Please Wait ...</ion-label>
     </div>
   }
@@ -31,9 +31,9 @@
   @if (!configuring) {
     <div>
       @for (floor of floorsData; track floor; let i = $index) {
-        <app-towerfloor-box  (copied)="copiedVilla($event)" (copiedFlatData)="copiedFData($event)"
+        <app-towerfloor-box (copied)="copiedVilla($event)" (copiedFlatData)="copiedFData($event)"
           [user]="user()"
-        [copiedData]="copiedData" [pasteAll]="pasteAllData" [copiedFltsData]="copiedFlatData" [floor]="floor"></app-towerfloor-box>
+        [copiedData]="copiedData" [pasteAll]="pasteAllData" [copiedFltsData]="copiedFlatData" [floor]="floor" />
       }
       <!-- <app-towerflat-box *ngIf="false"></app-towerflat-box> -->
     </div>

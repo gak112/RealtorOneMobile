@@ -9,8 +9,7 @@
   "
 >
   @if(selectedMessage()?.id === message().id){
-  <ion-icon
-    (click)="selectedMessage.set(null)"
+  <ion-icon (click)="selectedMessage.set(null)"
     name="close-circle"
     style="
       position: absolute;
@@ -20,7 +19,7 @@
       font-size: 24px;
       color: gray;
     "
-  ></ion-icon>
+   />
   }
   <ion-item
     style="
@@ -37,7 +36,7 @@
       <div class="message sent" style="margin-left: 0; margin-right: 10px">
         @if(message().isDeleted){
         <ion-label class="p-entertext">
-          <ion-icon name="warning-outline"></ion-icon> The message has been
+          <ion-icon name="warning-outline" /> The message has been
           deleted</ion-label
         >
         }@else { @if(message().type === 'reply') {
@@ -54,21 +53,21 @@
             >
             @if(imageUrl){
             <div class="div-p">
-              <ion-icon name="camera"></ion-icon>
+              <ion-icon name="camera" />
               <ion-label class="p-usertext">Photo</ion-label>
             </div>
             }
           </div>
           @if(imageUrl){
           <div class="div-img">
-            <ion-img [src]="imageUrl" class="img-reply" style="margin: 0;border-radius: 0px;"></ion-img>
+            <ion-img [src]="imageUrl" class="img-reply" style="margin: 0;border-radius: 0px;" />
           </div>
           }
         </div>
         }
         <ion-label class="p-entertext">{{ message().message }}</ion-label>
         @if(message().image){
-        <ion-img (click)="openImage(message().image)" [src]="message().image" class="img-settings"></ion-img>
+        <ion-img (click)="openImage(message().image)" [src]="message().image" class="img-settings" />
         }
         <span class="metadata">
 
@@ -76,14 +75,13 @@
           <span class="time">{{ message().sortDate | date : "h:mm a" }}</span>
           @if(message().seenBy[otherUserId() ?? '']){
           <span class="tick">
-            <ion-icon
-              name="checkmark-done-sharp"
+            <ion-icon name="checkmark-done-sharp"
               style="color: #3880ff"
-            ></ion-icon>
+             />
           </span>
           }@else {
           <span class="tick">
-            <ion-icon name="checkmark-sharp" style="color: var(--color-777);"></ion-icon>
+            <ion-icon name="checkmark-sharp" style="color: var(--color-777);" />
           </span>
           }
         </span>
@@ -91,5 +89,5 @@
       </div>
     </div>
   </ion-item>
-  <ion-item-options> </ion-item-options>
+  <ion-item-options />
 </ion-item-sliding>

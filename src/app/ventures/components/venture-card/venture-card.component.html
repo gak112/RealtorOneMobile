@@ -4,13 +4,13 @@
     @for(image of venture().ventureImage; track image.id) {
     <swiper-slide>
       <div class="card-image">
-        <ion-img [src]="image.image" alt="Venture Image"></ion-img>
+        <ion-img [src]="image.image" alt="Venture Image" />
 
       </div>
     </swiper-slide>
     }
   </swiper-container>
-  <ion-icon name="heart-outline" class="menu-icon"></ion-icon>
+  <ion-icon name="heart-outline" class="menu-icon" />
   <div class="card-position">
     <div class="card-content">
       <div class="status-row">
@@ -20,13 +20,13 @@
       </div>
 
       <div class="div-img" (click)="openVentureFullview()">
-        <ion-img [src]="'assets/img/onlylogo.png'"></ion-img>
+        <ion-img [src]="'assets/img/onlylogo.png'" />
         <div style="width: calc(100% - 70px);">
           <ion-label class="label-hbk"><span>{{ venture().ventureName
               }}</span></ion-label>
           <div class="div-location-flex">
             <div style="width: 16px; margin-right: 4px;">
-              <ion-icon name="location-outline"></ion-icon>
+              <ion-icon name="location-outline" />
             </div>
             <ion-label class="label-address">{{ venture().ventureLocation }}</ion-label>
           </div>
@@ -42,7 +42,7 @@
           <ion-label class="footer-label">Tower/Apt</ion-label>
           <div class="divider-section">
             <div class="divider-icon">
-              <ion-icon name="home-outline"></ion-icon>
+              <ion-icon name="home-outline" />
             </div>
           </div>
           @if(venture().towerName) {

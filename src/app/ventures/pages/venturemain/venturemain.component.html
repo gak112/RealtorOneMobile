@@ -6,7 +6,7 @@
     </div>
   </ion-toolbar>
   <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
-    <ion-searchbar [debounce]="1000" [placeholder]="'Search Area/City/Pincode'"></ion-searchbar>
+    <ion-searchbar [debounce]="1000" [placeholder]="'Search Area/City/Pincode'" />
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -17,7 +17,7 @@
   </div> -->
   <div class="">
     @for(venture of ventures(); track venture.id) {
-    <app-venture-card [venture]="venture"></app-venture-card>
+    <app-venture-card [venture]="venture" />
     }
   </div>
 
@@ -41,7 +41,7 @@
     </ion-fab-button>
     <ion-fab-list side="top">
       <ion-fab-button style="--background: darkslateblue; --color: white" (click)="openVentureTypeForm()">
-        <ion-icon name="business" ></ion-icon>
+        <ion-icon name="business"  />
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

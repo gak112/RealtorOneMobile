@@ -5,7 +5,7 @@
       autoplay-disable-on-interaction="false" class="mySwiper">
       @for (image of property().propertyImages; track image.id) {
       <swiper-slide>
-        <ion-img [src]="image.image" alt="Property Image" class="property-image"></ion-img>
+        <ion-img [src]="image.image" alt="Property Image" class="property-image" />
       </swiper-slide>
       }
     </swiper-container>
@@ -17,13 +17,13 @@
   <div class="info-container">
     <!-- menu icon -->
     <div class="heart-icon" (click)="toggleMenu()">
-      <ion-icon name="ellipsis-vertical"></ion-icon>
+      <ion-icon name="ellipsis-vertical" />
     </div>
 
     @if (isMenuOpen()) {
     <ul class="dd-menu">
-      <li (click)="editProperty()"><ion-icon name="create"></ion-icon>Edit</li>
-      <li (click)="deleteProperty()"><ion-icon name="trash"></ion-icon>Delete</li>
+      <li (click)="editProperty()"><ion-icon name="create" />Edit</li>
+      <li (click)="deleteProperty()"><ion-icon name="trash" />Delete</li>
     </ul>
     }
 

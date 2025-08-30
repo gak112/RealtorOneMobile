@@ -13,38 +13,37 @@
         <swiper-container [autoplay]="{delay: 5000,disableOnInteraction: false}" [centeredSlides]="true"
           class="mySwiper">
           <swiper-slide>
-            <ion-img class="slide" src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/"></ion-img>
+            <ion-img class="slide" src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" />
           </swiper-slide>
         </swiper-container>
         <div class="div-icons-position">
-          <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+          <ion-icon name="chevron-back-outline" class="back-icon" (click)="dismiss()" />
           <div class="div-icons">
-            <ion-icon name="heart-outline" class="back-icon" (click)="dismiss()"></ion-icon>
-            <ion-icon name="arrow-redo-outline" class="back-icon" (click)="dismiss()"></ion-icon>
+            <ion-icon name="heart-outline" class="back-icon" (click)="dismiss()" />
+            <ion-icon name="arrow-redo-outline" class="back-icon" (click)="dismiss()" />
           </div>
         </div>
         <div class="tags">
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
-          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"></ion-img>
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
+          <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img" />
           <div class="" style="position: relative;" (click)="openAllPhotos()">
             <ion-img src="https://ucarecdn.com/a64fce22-5799-45c3-b980-3d653ca8a4e6~3//nth/0/" class="tag-img"
-              style="opacity: 0.3;">
-            </ion-img>
+              style="opacity: 0.3;" />
             <span class="tag-count">+10</span>
           </div>
         </div>
       </div>
       <div class="div-ventortitle">
         <div class="div-img">
-          <ion-img src="assets/img/onlylogo.png"></ion-img>
+          <ion-img src="assets/img/onlylogo.png" />
           <ion-label class="label-hbk"><span>Ashok Constructions</span></ion-label>
         </div>
         <div class="div-location-flex">
-          <ion-icon name="location-outline"></ion-icon>
+          <ion-icon name="location-outline" />
           <ion-label class="label-address">18-1350, Ashok Nagar, Near Sitting Gandhi , Miryalaguda, Nalgonda Dist -
             508207</ion-label>
         </div>
@@ -64,7 +63,7 @@
       <ion-label class="label-title">Amenities</ion-label>
       <div>
         @for(amentity of amentities(); track amentity) {
-        <app-amentitycard [amentity]="amentity"></app-amentitycard>
+        <app-amentitycard [amentity]="amentity" />
         }
       </div>
     </div>
@@ -73,7 +72,7 @@
     <div class="div-desc-sub" style="padding: 16px; border-bottom: var(--border-7);">
       <div class="div-pdf">
         <div class="div-pdf-img">
-          <ion-img src="assets/img/pdf.png" alt=""></ion-img>
+          <ion-img src="assets/img/pdf.png" alt="" />
         </div>
         <div class="div-details-pdf">
           <ion-label>Ashok Ventures</ion-label>
@@ -88,7 +87,7 @@
         </div>
         <div class="div-pdf-img2">
           <a [href]="" target="_blank" download>
-            <ion-img src="assets/img/download.png" alt=""></ion-img>
+            <ion-img src="assets/img/download.png" alt="" />
           </a>
         </div>
       </div>
@@ -113,7 +112,7 @@
     <div class="div-description" style="padding: 16px 0 ;">
       <ion-label class="label-title" style="padding: 0 16px;">Specifications</ion-label>
       <div style="padding-top: 16px;">
-        <app-house-facts-features></app-house-facts-features>
+        <app-house-facts-features />
       </div>
     </div>
     <div style="border-bottom: var(--border-7);">
@@ -124,11 +123,11 @@
               class="mySwiper">
               <swiper-slide>
                 <ion-img class="slide"
-                  src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg"></ion-img>
+                  src="https://www.commercialproperty.review/wp-content/uploads/2021/03/Aparna-Serene-Park-Apartments-Kondapur-Hyderabad.jpg" />
               </swiper-slide>
               <swiper-slide>
                 <ion-img class="slide"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU"></ion-img>
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnUx47eQNf9gSHpsusa9WAkBOVuSZN7jbQyO1X5fE61x8xYKr-u9hwixWCdSU-Q651ej8&usqp=CAU" />
               </swiper-slide>
             </swiper-container>
           </div>
@@ -136,7 +135,7 @@
             <div>
               <div class="div-icons-main">
                 <div class="div-title-img">
-                  <ion-img src="assets/img/building.png"></ion-img>
+                  <ion-img src="assets/img/building.png" />
                   <ion-label>Tower/Apt</ion-label>
                 </div>
                 <ion-button (click)="openVentureFloorDetails()" color="warning" size="small"
@@ -192,17 +191,17 @@
 
 
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998"></ion-icon>Facebook
+          <ion-label class="label-name"><ion-icon name="logo-facebook" style="color:#3b5998" />Facebook
             Link</ion-label>
           <a href="www.as-infra.com" target="_blank" class="label-links">www.as-infra.com</a>
         </div>
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee"></ion-icon>Twitter
+          <ion-label class="label-name"><ion-icon name="logo-twitter" style="color:#00acee" />Twitter
             Link</ion-label>
           <a href="www.twitter.com/u/asinfra" target="_blank" class="label-links">www.twitter.com/u/asinfra</a>
         </div>
         <div class="div-details">
-          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50"></ion-icon>Instagram
+          <ion-label class="label-name"><ion-icon name="logo-instagram" style="color:#fbad50" />Instagram
             Link</ion-label>
           <a href="www.instagram.com/u/asinfra" target="_blank" class="label-links">www.instagram.com/u/asinfra</a>
         </div>

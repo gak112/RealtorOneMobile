@@ -5,12 +5,12 @@
         <swiper-slide>
           <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide"
-            src="https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg"></ion-img>
+            src="https://signaturevillas.co.in/wp-content/uploads/2020/01/signature-villas-nv.jpg" />
         </swiper-slide>
         <swiper-slide>
           <!-- <ion-icon name="trash" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide"
-            src="https://is1-2.housingcdn.com/4f2250e8/597d139da7217705ad0ff568ef9dba38/v0/fs/vision_urjith-tellapur-hyderabad-vision_avenues_pvt_ltd.jpeg"></ion-img>
+            src="https://is1-2.housingcdn.com/4f2250e8/597d139da7217705ad0ff568ef9dba38/v0/fs/vision_urjith-tellapur-hyderabad-vision_avenues_pvt_ltd.jpeg" />
         </swiper-slide>
       </swiper-container>
       <ion-button class="ion-button-settings2" (click)="ucare.openDialog()" size="small" color="warning">
@@ -18,19 +18,18 @@
       </ion-button>
       <div class="div-choosefile">
         <ngx-uploadcare-widget hidden class="post-entry-btn" #uc (on-upload-complete)="onUploadComplete($event)"
-          [multiple]="true" data-crop="300:300" public-key="563d1afa2618816d4d42">
-        </ngx-uploadcare-widget>
+          [multiple]="true" data-crop="300:300" public-key="563d1afa2618816d4d42" />
       </div>
     </div>
     <div class="div-ventortitle">
       <div>
         <div class="div-formgroup">
           <ion-input type="text" mode="md" label="House/Villa" label-placement="floating" fill="outline"
-            placeholder="Enter House/Villa"></ion-input>
+            placeholder="Enter House/Villa" />
         </div>
         <div class="div-formgroup">
           <ion-input type="number" mode="md" label="No of Houses" label-placement="floating" fill="outline"
-            placeholder="Enter No of Houses"></ion-input>
+            placeholder="Enter No of Houses" />
         </div>
         <ion-button class="ion-button-settings" (click)="submit()" expand="block" color="primary" mode="ios">
           <span class="spinner-border spinner-border-sm"></span>
@@ -47,14 +46,14 @@
       <div style="display: none;">
         <div class="div-icons-main">
           <div class="div-title-img">
-            <ion-img [src]="'assets/img/duplex.png'"></ion-img>
+            <ion-img [src]="'assets/img/duplex.png'" />
             <ion-label>House/Villa</ion-label>
           </div>
           <div class="div-icons">
-            <ion-icon (click)="towerEntry = !towerEntry" name="create"></ion-icon>
-            <ion-icon name="eye"></ion-icon>
-            <ion-icon name="copy"></ion-icon>
-            <ion-icon name="clipboard"></ion-icon>
+            <ion-icon (click)="towerEntry = !towerEntry" name="create" />
+            <ion-icon name="eye" />
+            <ion-icon name="copy" />
+            <ion-icon name="clipboard" />
           </div>
         </div>
         <ion-label class="label-tower-title">{{ventures.villaName}}</ion-label>

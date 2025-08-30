@@ -2,7 +2,7 @@
   @if (medias$ | async; as media) {
     <div class="div-media-sub">
       @for (m of media; track m) {
-        <app-mediaimg [media]="m"></app-mediaimg>
+        <app-mediaimg [media]="m" />
       }
     </div>
   }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>{{ isEdit() ? 'Edit Amenity' : 'Create Amenities' }}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,19 +10,19 @@
     <!-- Amenity Name -->
     <div class="div-formgroup">
       <ion-input type="text" mode="md" label="Amenity Name" label-placement="floating" fill="outline"
-        placeholder="Enter Amenity Name" formControlName="amenityName"></ion-input>
+        placeholder="Enter Amenity Name" formControlName="amenityName" />
 
       @let amenityName = amenityForm.controls.amenityName;
       @if (amenityName.invalid && (amenityName.touched || amenityName.dirty)) {
       @if (amenityName.errors?.['required']) {
       <div class="div-error">
-        <ion-icon name="information-circle" class="icon-info"></ion-icon>
+        <ion-icon name="information-circle" class="icon-info" />
         <span class="name-error">Amenity Name is Required</span>
       </div>
       }
       @else if (amenityName.errors?.['minlength']) {
       <div class="div-error">
-        <ion-icon name="information-circle" class="icon-info"></ion-icon>
+        <ion-icon name="information-circle" class="icon-info" />
         <span class="name-error">Amenity Name should have minimum of 3 characters</span>
       </div>
       }
@@ -32,7 +32,7 @@
     <!-- Description -->
     <div class="div-formgroup">
       <ion-textarea mode="md" label="Description" label-placement="floating" fill="outline"
-        placeholder="Enter Description" rows="5" style="height:auto;" formControlName="description"></ion-textarea>
+        placeholder="Enter Description" rows="5" style="height:auto;" formControlName="description" />
     </div>
 
     <!-- Upload Logo (single) -->

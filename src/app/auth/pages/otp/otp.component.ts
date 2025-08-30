@@ -2,13 +2,12 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewChildren,
-  QueryList,
   signal,
   computed,
   effect,
   inject,
   NgZone,
+  viewChildren
 } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,7 +54,7 @@ export class OtpComponent {
   private readonly zone = inject(NgZone);
   private readonly toast = inject(ToastController);
 
-  @ViewChildren(IonInput) inputs!: QueryList<IonInput>;
+  readonly inputs = viewChildren(IonInput);
 
   // ---- State ----
   phone = signal('');
@@ -105,8 +104,8 @@ export class OtpComponent {
 
     // Auto focus first box when cleared
     effect(() => {
-      if (this.digits().every((v) => v === '') && this.inputs?.first) {
-        queueMicrotask(() => this.inputs.first.setFocus());
+      if (this.digits().every((v) => v === '') && this.inputs()?.at(0)!) {
+        queueMicrotask(() => this.inputs().at(0)!.setFocus());
       }
     });
   }
@@ -148,7 +147,7 @@ export class OtpComponent {
   }
   private resetDigitsAndFocus() {
     this.digits.set(['', '', '', '', '', '']);
-    queueMicrotask(() => this.inputs?.first?.setFocus());
+    queueMicrotask(() => this.inputs()?.at(0)!?.setFocus());
   }
 
   // ---- Resend ----
@@ -183,7 +182,7 @@ export class OtpComponent {
       arr[i] = only || '';
       this.digits.set(arr);
       if (only && i < arr.length - 1) {
-        queueMicrotask(() => this.inputs.get(i + 1)?.setFocus());
+        queueMicrotask(() => this.inputs().at(i + 1)?.setFocus());
       }
     } else {
       // pasted multiple digits
@@ -193,7 +192,7 @@ export class OtpComponent {
       }
       this.digits.set(arr);
       queueMicrotask(() =>
-        this.inputs.get(Math.min(idx, arr.length - 1))?.setFocus()
+        this.inputs().at(Math.min(idx, arr.length - 1))?.setFocus()
       );
     }
 
@@ -215,18 +214,18 @@ export class OtpComponent {
         arr[i - 1] = '';
         this.digits.set(arr);
         ev.preventDefault();
-        queueMicrotask(() => this.inputs.get(i - 1)?.setFocus());
+        queueMicrotask(() => this.inputs().at(i - 1)?.setFocus());
       }
       return;
     }
     if (key === 'ArrowLeft' && i > 0) {
       ev.preventDefault();
-      queueMicrotask(() => this.inputs.get(i - 1)?.setFocus());
+      queueMicrotask(() => this.inputs().at(i - 1)?.setFocus());
       return;
     }
     if (key === 'ArrowRight' && i < this.digits().length - 1) {
       ev.preventDefault();
-      queueMicrotask(() => this.inputs.get(i + 1)?.setFocus());
+      queueMicrotask(() => this.inputs().at(i + 1)?.setFocus());
       return;
     }
   }
@@ -245,7 +244,7 @@ export class OtpComponent {
     }
     this.digits.set(arr);
     queueMicrotask(() =>
-      this.inputs.get(Math.min(idx, arr.length - 1))?.setFocus()
+      this.inputs().at(Math.min(idx, arr.length - 1))?.setFocus()
     );
 
     if (this.isValidOtp()) {

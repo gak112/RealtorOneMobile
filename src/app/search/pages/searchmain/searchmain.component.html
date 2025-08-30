@@ -6,7 +6,7 @@
     </div>
   </ion-toolbar>
   <ion-toolbar style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;">
-    <ion-searchbar [debounce]="1000" [placeholder]="'Search Area/City/Pincode'"></ion-searchbar>
+    <ion-searchbar [debounce]="1000" [placeholder]="'Search Area/City/Pincode'" />
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -17,7 +17,7 @@
 
   <div class="">
     @for(property of properties(); track property.id) {
-    <app-realestate-card [property]="property"></app-realestate-card>
+    <app-realestate-card [property]="property" />
     }
   </div>
 

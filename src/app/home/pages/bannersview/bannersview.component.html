@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()"></ion-icon>
+    <ion-icon name="chevron-back-outline" class="icon-close" (click)="dismiss()" />
     <ion-title>Banner Products</ion-title>
     <div class="div-select-filter">
       <ion-button size="small" color="warning" class="span-apply" (click)=" showFilters()">Filter (10)</ion-button>
@@ -8,11 +8,11 @@
   </ion-toolbar>
   <ion-toolbar
     style="--padding-start: 0px;--padding-end: 0px;--min-height: 55px;--padding-top: 0;--padding-bottom: 0;padding: 0;">
-    <ion-searchbar [debounce]="1000" [placeholder]="'Search Products'"></ion-searchbar>
+    <ion-searchbar [debounce]="1000" [placeholder]="'Search Products'" />
   </ion-toolbar>
 </ion-header>
 <ion-content>
   @for(property of properties(); track property.id) {
-  <app-banner-product [property]="property"></app-banner-product>
+  <app-banner-product [property]="property" />
   }
 </ion-content>

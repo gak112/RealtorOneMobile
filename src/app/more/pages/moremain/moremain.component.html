@@ -1,7 +1,7 @@
 <ion-content fullscreen="true">
   <!-- Header background & header row -->
   <div class="header-wrap">
-    <ion-img src="assets/img/more-bg1.png" class="img-more-bg"></ion-img>
+    <ion-img src="assets/img/more-bg1.png" class="img-more-bg" />
     <span class="span-more">More</span>
 
     <div class="ion-item-settings">
@@ -14,14 +14,13 @@
 
       @if (userPhoto()) {
       <div class="div-img" (click)="selectMedia()">
-        <ion-img [src]="userPhoto()" class="img-user-settings" (click)="openFullImage([userPhoto()])">
-        </ion-img>
-        <ion-icon name="camera-outline"></ion-icon>
+        <ion-img [src]="userPhoto()" class="img-user-settings" (click)="openFullImage([userPhoto()])" />
+        <ion-icon name="camera-outline" />
       </div>
       } @else {
       <div class="div-img" (click)="selectMedia()" style="background: var(--background-main);">
         <ion-label class="label-firstchar">{{ initials() }}</ion-label>
-        <ion-icon name="camera-outline"></ion-icon>
+        <ion-icon name="camera-outline" />
       </div>
       }
     </div>
@@ -31,10 +30,9 @@
 
     <!-- Dark mode -->
     <ion-item lines="full">
-      <ion-icon class="icon-toggle" slot="start" name="moon-outline"></ion-icon>
+      <ion-icon class="icon-toggle" slot="start" name="moon-outline" />
       <ion-label class="label-toggle">Dark Mode</ion-label>
-      <ion-toggle slot="end" color="tertiary" [checked]="isDark()" (ionChange)="onThemeToggle($event)">
-      </ion-toggle>
+      <ion-toggle slot="end" color="tertiary" [checked]="isDark()" (ionChange)="onThemeToggle($event)" />
     </ion-item>
 
     <ion-list-header style="padding-top: 16px;">Personal Information</ion-list-header>
@@ -43,92 +41,92 @@
       <!-- About -->
       <div class="div-icon-name" (click)="openAbout()">
         <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-icon name="person-outline" class="icon-title" />
           <ion-label>About Realtor '1'</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Profile -->
       <div class="div-icon-name" (click)="goToProfile()">
         <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-icon name="person-outline" class="icon-title" />
           <ion-label>Profile</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Agent Profile -->
       @if (userAgent()) {
       <div class="div-icon-name" (click)="goToAgentProfile()">
         <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-icon name="person-outline" class="icon-title" />
           <ion-label>Agent Profile</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
       }
 
       <!-- Billing -->
       <div class="div-icon-name" (click)="goToBilling()">
         <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-icon name="person-outline" class="icon-title" />
           <ion-label>Billing</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Subscription -->
       <div class="div-icon-name" (click)="goToSubscription()">
         <div class="div-icon-sub">
-          <ion-icon name="person-outline" class="icon-title"></ion-icon>
+          <ion-icon name="person-outline" class="icon-title" />
           <ion-label>Subscription</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- My Properties -->
       <div class="div-icon-name" (click)="goToMyRequests()">
         <div class="div-icon-sub">
-          <ion-icon name="git-compare-outline" class="icon-title"></ion-icon>
+          <ion-icon name="git-compare-outline" class="icon-title" />
           <ion-label>My Properties</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Saved Properties -->
       <div class="div-icon-name" (click)="goToSavedProperties()">
         <div class="div-icon-sub">
-          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-icon name="bookmark-outline" class="icon-title" />
           <ion-label>Saved Properties</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Property Views -->
       <div class="div-icon-name" (click)="goToPropertyViews()">
         <div class="div-icon-sub">
-          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-icon name="bookmark-outline" class="icon-title" />
           <ion-label>Property Views</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <!-- Amenities -->
       <div class="div-icon-name" (click)="openAmenities()">
         <div class="div-icon-sub">
-          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-icon name="bookmark-outline" class="icon-title" />
           <ion-label>Amenities</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <div class="div-icon-name" (click)="openLanguage()">
         <div class="div-icon-sub">
-          <ion-icon name="bookmark-outline" class="icon-title"></ion-icon>
+          <ion-icon name="bookmark-outline" class="icon-title" />
           <ion-label>Languages</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
   </div>
 
@@ -136,42 +134,42 @@
     <div class="div-icon-main" style="margin-bottom:0;">
       <div class="div-icon-name" (click)="faqs()">
         <div class="div-icon-sub">
-          <ion-icon name="help-outline" class="icon-title"></ion-icon>
+          <ion-icon name="help-outline" class="icon-title" />
           <ion-label>Faqs</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <div class="div-icon-name" (click)="helpus()">
         <div class="div-icon-sub">
-          <ion-icon name="mail-outline" class="icon-title"></ion-icon>
+          <ion-icon name="mail-outline" class="icon-title" />
           <ion-label>Help Us</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <div class="div-icon-name" (click)="termsConditions()">
         <div class="div-icon-sub">
-          <ion-icon name="clipboard-outline" class="icon-title"></ion-icon>
+          <ion-icon name="clipboard-outline" class="icon-title" />
           <ion-label>Terms &amp; Conditions</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <div class="div-icon-name" (click)="privacyPolicy()">
         <div class="div-icon-sub">
-          <ion-icon name="document-outline" class="icon-title"></ion-icon>
+          <ion-icon name="document-outline" class="icon-title" />
           <ion-label>Privacy Policy</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
 
       <div class="div-icon-name" (click)="alertLogout()">
         <div class="div-icon-sub">
-          <ion-icon name="log-out-outline" class="icon-title"></ion-icon>
+          <ion-icon name="log-out-outline" class="icon-title" />
           <ion-label>Logout</ion-label>
         </div>
-        <ion-icon name="chevron-forward-outline" class="icon-arrow"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-arrow" />
       </div>
     </div>
   </ion-list>
