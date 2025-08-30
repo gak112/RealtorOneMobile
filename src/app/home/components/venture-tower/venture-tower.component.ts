@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonIcon, IonImg, IonInput, IonLabel, ModalController } from '@ionic/angular/standalone';
@@ -13,7 +13,7 @@ register();
   templateUrl: './venture-tower.component.html',
   styleUrls: ['./venture-tower.component.scss'],
   standalone: true,
-  imports: [IonImg,IonIcon,IonButton,UcWidgetModule,NgIf,IonInput,FormsModule,IonLabel],
+  imports: [IonImg, IonIcon, IonButton, UcWidgetModule, IonInput, FormsModule, IonLabel],
   providers:[ModalController],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

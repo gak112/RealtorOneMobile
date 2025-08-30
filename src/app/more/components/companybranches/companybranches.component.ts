@@ -1,10 +1,10 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonImg, IonItem, IonLabel, ModalController } from '@ionic/angular/standalone';
 
 @Component({
   standalone:true,
-  imports:[IonItem,IonImg,IonLabel,NgIf,AsyncPipe,],
+  imports: [IonItem, IonImg, IonLabel, AsyncPipe],
   providers:[ModalController],
   selector: 'app-companybranches',
   templateUrl: './companybranches.component.html',

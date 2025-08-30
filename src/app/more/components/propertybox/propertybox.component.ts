@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, inject, input } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonIcon, IonSkeletonText, ModalController } from '@ionic/angular/standalone';
 import { PostfullviewComponent } from 'src/app/home/pages/postfullview/postfullview.component';
@@ -23,11 +23,12 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PropertyboxComponent implements OnInit {
-  @Input() hit: any;
-  @Input() user: any;
-  constructor(private modalController: ModalController,
-    /*private afs: AngularFirestore,*/
-    private toast: ToastService) {
+  private modalController = inject(ModalController);
+  private toast = inject(ToastService);
+
+  readonly hit = input<any>(undefined);
+  readonly user = input<any>(undefined);
+  constructor() {
     addIcons({ documentText,ellipsisVerticalOutline,create,trash, })
   }
 
@@ -44,7 +45,7 @@ export class PropertyboxComponent implements OnInit {
     const modal = await this.modalController.create(
       {
         component: PostfullviewComponent,
-        componentProps: { property: this.hit, user: this.user }
+        componentProps: { property: this.hit(), user: this.user() }
       }
     );
     return await modal.present();
@@ -63,7 +64,7 @@ export class PropertyboxComponent implements OnInit {
     const modal = await this.modalController.create(
       {
         component: PropertiesviewsComponent,
-        componentProps: { hit: this.hit, user: this.user }
+        componentProps: { hit: this.hit(), user: this.user() }
       }
     );
     return await modal.present();

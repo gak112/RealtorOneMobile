@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonRadio, IonRadioGroup, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 
 @Component({
@@ -10,10 +10,10 @@ import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonRadio, 
   providers:[ModalController],
 })
 export class AddaddressComponent  implements OnInit {
+  private modalController = inject(ModalController);
+
 
   action = 'tab-1';
-
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

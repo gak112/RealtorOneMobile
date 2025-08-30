@@ -11,30 +11,34 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div class="div-property-main" *ngIf="venture">
-    <div class="div-property-sub" *ngFor="let property of venture.propertyTypes; let i = index;">
-      <div class="div-flex">
-        <ion-label class="label-title">{{property.ventureType}}</ion-label>
-        <div class="div-icons">
-          <ion-icon name="create" (click)="editProperty()"></ion-icon>
-          <ion-icon name="trash" (click)="deleteIt(i)" style="color: red;"></ion-icon>
+  @if (venture) {
+    <div class="div-property-main">
+      @for (property of venture.propertyTypes; track property; let i = $index) {
+        <div class="div-property-sub">
+          <div class="div-flex">
+            <ion-label class="label-title">{{property.ventureType}}</ion-label>
+            <div class="div-icons">
+              <ion-icon name="create" (click)="editProperty()"></ion-icon>
+              <ion-icon name="trash" (click)="deleteIt(i)" style="color: red;"></ion-icon>
+            </div>
+          </div>
+          <div class="div-inputs">
+            <div class="div-formgroup">
+              <ion-label class="label-title">Flats</ion-label>
+              <ion-input type="text" [value]="property.plots" readonly></ion-input>
+            </div>
+            <div class="div-formgroup">
+              <ion-label class="label-title">From</ion-label>
+              <ion-input type="text" [value]="property.from" readonly></ion-input>
+            </div>
+            <div class="div-formgroup">
+              <ion-label class="label-title">To</ion-label>
+              <ion-input type="text" [value]="property.to" readonly></ion-input>
+            </div>
+          </div>
+          <ion-button class="ion-button-view" expand="block" (click)="openFlatNumbers()">View</ion-button>
         </div>
-      </div>
-      <div class="div-inputs">
-        <div class="div-formgroup">
-          <ion-label class="label-title">Flats</ion-label>
-          <ion-input type="text" [value]="property.plots" readonly></ion-input>
-        </div>
-        <div class="div-formgroup">
-          <ion-label class="label-title">From</ion-label>
-          <ion-input type="text" [value]="property.from" readonly></ion-input>
-        </div>
-        <div class="div-formgroup">
-          <ion-label class="label-title">To</ion-label>
-          <ion-input type="text" [value]="property.to" readonly></ion-input>
-        </div>
-      </div>
-      <ion-button class="ion-button-view" expand="block" (click)="openFlatNumbers()">View</ion-button>
+      }
     </div>
-  </div>
+  }
 </ion-content>

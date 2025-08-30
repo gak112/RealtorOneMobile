@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonContent, IonIcon, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { SubscriptionsComponent } from 'src/app/more/pages/subscriptions/subscriptions.component';
 
@@ -11,8 +11,8 @@ import { SubscriptionsComponent } from 'src/app/more/pages/subscriptions/subscri
   providers:[ModalController],
 })
 export class NotificationComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

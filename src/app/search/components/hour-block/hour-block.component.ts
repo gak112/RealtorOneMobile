@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 
@@ -13,8 +13,8 @@ import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 })
 export class HourBlockComponent  implements OnInit {
 
-  @Input() data: any;
-  @Input() units: string;
+  readonly data = input<any>(undefined);
+  readonly units = input<string>(undefined);
 
   constructor() { }
 
@@ -27,7 +27,7 @@ export class HourBlockComponent  implements OnInit {
   }
 
   getUnitsString() {
-    return this.units === 'metric' ? '°C' : '°F';
+    return this.units() === 'metric' ? '°C' : '°F';
   }
 
 }

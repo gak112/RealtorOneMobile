@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {
   IonContent,
   IonIcon,
@@ -16,7 +16,7 @@ import { chevronBackOutline } from 'ionicons/icons';
   imports: [IonContent, IonIcon, IonImg],
 })
 export class ImgfullviewComponent {
-  @Input() img: any;
+  readonly img = input<any>(undefined);
   modalController = inject(ModalController);
   dismiss() {
     this.modalController.dismiss();

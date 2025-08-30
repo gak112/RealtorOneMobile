@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonSearchbar, IonTitle, IonToolbar, ModalController} from '@ionic/angular/standalone';
 import { DeliverylocationComponent } from '../deliverylocation/deliverylocation.component';
 import { IonicModule } from '@ionic/angular';
@@ -14,8 +14,10 @@ import { chevronDownOutline, chevronForwardOutline, addOutline, homeOutline, ell
   providers:[ModalController],
 })
 export class LocationnewComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) {
+
+  constructor() {
     addIcons({chevronDownOutline,chevronForwardOutline,addOutline,homeOutline,ellipsisHorizontal,arrowRedoOutline,})
    }
 

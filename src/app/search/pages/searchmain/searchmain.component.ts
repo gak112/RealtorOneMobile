@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   IonButton,
@@ -34,12 +34,11 @@ import { IProperty } from 'src/app/models/property.model';
   providers: [ModalController],
 })
 export class SearchmainComponent implements OnInit {
+  private modalController = inject(ModalController);
+  private auth = inject(AuthService);
+
   properties$!: Observable<any>;
   user: any;
-  constructor(
-    private modalController: ModalController /*private afs: AngularFirestore,*/,
-    private auth: AuthService
-  ) {}
 
   ngOnInit(): void {
     return;

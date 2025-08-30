@@ -1,15 +1,15 @@
 // src/app/components/amenities/amenities.component.ts
 import {
   Component,
-  Input,
   OnInit,
   ChangeDetectionStrategy,
   signal,
   computed,
   effect,
   inject,
+  input
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonButton,
   IonCheckbox,
@@ -37,7 +37,6 @@ type AmenityVM = AmenityDoc & { selected: boolean };
   templateUrl: './amenities.component.html',
   styleUrls: ['./amenities.component.scss'],
   imports: [
-    CommonModule,
     IonSearchbar,
     IonHeader,
     IonToolbar,
@@ -47,7 +46,7 @@ type AmenityVM = AmenityDoc & { selected: boolean };
     IonCheckbox,
     IonIcon,
     IonButton
-  ],
+],
   providers: [ModalController],
 })
 export class AmenitiesComponent implements OnInit {
@@ -55,7 +54,7 @@ export class AmenitiesComponent implements OnInit {
   private amenitiesSvc = inject(AmenitiesService);
 
   /** Names or IDs to preselect */
-  @Input() selectedAmenities: string[] = [];
+  readonly selectedAmenities = input<string[]>([]);
 
   // UI
   loading = signal(true);
@@ -89,7 +88,7 @@ export class AmenitiesComponent implements OnInit {
     effect(
       () => {
         const docs = this.amenitiesDocs();
-        const pre = new Set((this.selectedAmenities ?? []).map(s => s.trim().toLowerCase()));
+        const pre = new Set((this.selectedAmenities() ?? []).map(s => s.trim().toLowerCase()));
 
         const next = docs.map(d => {
           const byName = pre.has(d.amenityName?.toLowerCase() ?? '');

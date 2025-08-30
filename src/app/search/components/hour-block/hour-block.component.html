@@ -1,8 +1,8 @@
 <div class="div-cards">
   <div class="div-card-sub1">
-    <ion-label class="p-settings1">{{ data.dt*1000 | date: 'MM/dd' }}</ion-label>
-    <ion-label class="p-settings2">{{ data.dt*1000 | date: 'hh a' }}</ion-label>
-    <ion-img [src]="getWeatherIcon(data.weather[0]?.icon)"></ion-img>
-    <ion-label class="p-settings3">{{ data.main.temp.toFixed() }} {{ getUnitsString() }}</ion-label>
+    <ion-label class="p-settings1">{{ data().dt*1000 | date: 'MM/dd' }}</ion-label>
+    <ion-label class="p-settings2">{{ data().dt*1000 | date: 'hh a' }}</ion-label>
+    <ion-img [src]="getWeatherIcon(data().weather[0]?.icon)"></ion-img>
+    <ion-label class="p-settings3">{{ data().main.temp.toFixed() }} {{ getUnitsString() }}</ion-label>
   </div>
 </div>

@@ -1,11 +1,11 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { Observable, Subscribable } from 'rxjs';
 
 @Component({
   standalone:true,
-  imports:[IonImg,NgFor,IonLabel,IonIcon,NgIf,AsyncPipe],
+  imports: [IonImg, IonLabel, IonIcon, AsyncPipe],
   providers:[ModalController],
   selector: 'app-companyteam',
   templateUrl: './companyteam.component.html',

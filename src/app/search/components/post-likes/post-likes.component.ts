@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { NgIf } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { IonIcon, IonLabel } from '@ionic/angular/standalone';
@@ -21,23 +21,22 @@ import { ViewPersonsComponent } from '../view-persons/view-persons.component';
   templateUrl: './post-likes.component.html',
   styleUrls: ['./post-likes.component.scss'],
   standalone: true,
-  imports: [IonIcon, IonLabel, NgIf],
+  imports: [IonIcon, IonLabel],
   providers: [ModalController],
 })
 export class PostLikesComponent implements OnInit {
-  @Input() user: any;
-  @Input() hit: any;
-  @Input() id: any;
+  private modalController = inject(ModalController);
+  private toast = inject(ToastService);
+  private router = inject(Router);
+
+  readonly user = input<any>(undefined);
+  readonly hit = input<any>(undefined);
+  readonly id = input<any>(undefined);
   savedPost = true;
   savedPostObj: any;
   savedLike = true;
   savedLikeObj: any;
-  constructor(
-    private modalController: ModalController,
-    private toast: ToastService,
-    /*private afs: AngularFirestore,*/
-    private router: Router
-  ) {
+  constructor() {
     addIcons({ heartOutline, heart, shareOutline, bookmarkOutline, bookmark });
   }
 
@@ -60,7 +59,7 @@ export class PostLikesComponent implements OnInit {
   async openLikes() {
     const modal = await this.modalController.create({
       component: LikesComponent,
-      componentProps: { user: this.user, hit: this.hit },
+      componentProps: { user: this.user(), hit: this.hit() },
     });
 
     return await modal.present();
@@ -77,7 +76,7 @@ export class PostLikesComponent implements OnInit {
   }
 
   saveBookMark(hit: any) {
-    if (!this.user) {
+    if (!this.user()) {
       this.toast.showError('User Does not Exist., Please Login');
       this.router.navigateByUrl('/auth');
     } else {
@@ -103,7 +102,7 @@ export class PostLikesComponent implements OnInit {
   }
 
   saveLike(hit: any) {
-    if (!this.user) {
+    if (!this.user()) {
       this.toast.showError('User Does not Exist., Please Login');
       this.router.navigateByUrl('/auth');
     } else {

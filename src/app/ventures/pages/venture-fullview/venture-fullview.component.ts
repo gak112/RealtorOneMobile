@@ -1,10 +1,10 @@
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
-  Input,
   OnInit,
   inject,
   signal,
+  input
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
@@ -60,11 +60,13 @@ register();
   providers: [ModalController],
 })
 export class VentureFullviewComponent implements OnInit {
+  private sanitizer = inject(DomSanitizer);
+
   private modalController = inject(ModalController);
-  @Input() venture: any;
+  readonly venture = input<any>(undefined);
   safeURL: any;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
     addIcons({
       chevronBackOutline,
       locationOutline,
@@ -80,7 +82,7 @@ export class VentureFullviewComponent implements OnInit {
 
   ngOnInit() {
     this.safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.venture?.brochure
+      this.venture()?.brochure
     );
   }
 

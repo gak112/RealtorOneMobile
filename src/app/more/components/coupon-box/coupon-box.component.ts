@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController, IonLabel, IonImg } from '@ionic/angular/standalone';
 import { CouponappliedComponent } from '../../pages/couponapplied/couponapplied.component';
 
@@ -11,8 +11,8 @@ import { CouponappliedComponent } from '../../pages/couponapplied/couponapplied.
   providers:[ModalController],
 })
 export class CouponBoxComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

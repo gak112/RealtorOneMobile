@@ -10,11 +10,11 @@
   <div class="div-delivery-location">
     <div class="div-searchbar">
       <ion-searchbar
-        search-icon="search" 
-        animated="true" 
-        show-clear-button="focus" 
+        search-icon="search"
+        animated="true"
+        show-clear-button="focus"
         clear-icon="close"
-        debounce="800" 
+        debounce="800"
         placeholder="Search for area, street name ...">
         <!-- (ionInput)="onSearchChange($event)" -->
       </ion-searchbar>
@@ -36,21 +36,23 @@
           Confirm location
         </ion-button>
       </div>
-      <div class="div-location-main2" *ngIf="false">
-        <div class="div-location-sub">
+      @if (false) {
+        <div class="div-location-main2">
+          <div class="div-location-sub">
             <ion-label class="skeleton-box"></ion-label>
             <span class="skeleton-box"></span>
-        </div>
-        <div class="div-location-sub">
+          </div>
+          <div class="div-location-sub">
             <ion-label class="skeleton-box" style="width: 55px;"></ion-label>
             <span class="skeleton-box" style="width: 100px;"></span>
+          </div>
+          <div class="div-flex-skeleton">
+            <ion-label class="skeleton-box"></ion-label>
+            <ion-label class="skeleton-box"></ion-label>
+            <ion-label class="skeleton-box"></ion-label>
+          </div>
         </div>
-        <div class="div-flex-skeleton">
-          <ion-label class="skeleton-box"></ion-label>
-          <ion-label class="skeleton-box"></ion-label>
-          <ion-label class="skeleton-box"></ion-label>
-        </div>
-      </div>
+      }
     </div>
   </div>
 </ion-content>

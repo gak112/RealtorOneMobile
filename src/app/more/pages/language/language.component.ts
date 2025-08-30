@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule } from '@ionic/angular';
 import { ModalController ,IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonTitle, IonContent, IonLabel } from '@ionic/angular/standalone';
@@ -18,6 +18,12 @@ import { environment } from 'src/environments/environment';
   providers:[ModalController],
 })
 export class LanguageComponent  implements OnInit {
+private languageService = inject(LanguageService);
+private auth = inject(AuthService);
+private afs = inject(AngularFirestore);
+private toast = inject(ToastService);
+private modalController = inject(ModalController);
+
 // action = 'english';
 
 lngData: ILanguage;
@@ -26,11 +32,7 @@ action = 'telugu';
 language: string;
 user: any;
 
-constructor( private languageService: LanguageService,
-  private auth: AuthService,
-  private afs: AngularFirestore,
-  private toast: ToastService,
-  private modalController: ModalController) {
+constructor() {
 
     this.language = environment.language;
 

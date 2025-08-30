@@ -1,17 +1,21 @@
 <div class="div-address">
-  <div class="div-address-sub" *ngIf="branches$ | async as branches">
-      <ion-item class="animate__animated animate__fadeInRight" *ngFor="let branch of branches">
+  @if (branches$ | async; as branches) {
+    <div class="div-address-sub">
+      @for (branch of branches; track branch) {
+        <ion-item class="animate__animated animate__fadeInRight">
           <div class="item_inner d-flex">
-              <div class="img_box ion-text-center">
-                  <ion-img src="assets/img/ic_homeadd.png" style="margin-bottom: 0;"></ion-img>
-                  <ion-label class="label-branch-name">{{branch.branchName}}</ion-label>
-              </div>
-              <div class="text_box">
-                  <ion-label class="label-location">
-                      {{branch.location}}
-                  </ion-label>
-              </div>
+            <div class="img_box ion-text-center">
+              <ion-img src="assets/img/ic_homeadd.png" style="margin-bottom: 0;"></ion-img>
+              <ion-label class="label-branch-name">{{branch.branchName}}</ion-label>
+            </div>
+            <div class="text_box">
+              <ion-label class="label-location">
+                {{branch.location}}
+              </ion-label>
+            </div>
           </div>
-      </ion-item>      
-  </div>
+        </ion-item>
+      }
+    </div>
+  }
 </div>

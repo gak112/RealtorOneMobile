@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { VentureflatdetailsComponent } from '../ventureflatdetails/ventureflatdetails.component';
 import { IonicModule } from '@ionic/angular';
@@ -12,8 +12,8 @@ import { IonicModule } from '@ionic/angular';
   providers:[ModalController],
 })
 export class VenturefloordetailsComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController,) { }
 
   ngOnInit() {
     return;

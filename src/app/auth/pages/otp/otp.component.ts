@@ -10,7 +10,7 @@ import {
   inject,
   NgZone,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonContent,
@@ -39,13 +39,12 @@ import { arrowBackOutline, closeOutline, reloadOutline } from 'ionicons/icons';
   imports: [
     IonIcon,
     IonImg,
-    CommonModule,
     IonContent,
     IonLabel,
     IonButton,
     IonInput,
-    IonSpinner,
-  ],
+    IonSpinner
+],
 })
 export class OtpComponent {
   private readonly route = inject(ActivatedRoute);

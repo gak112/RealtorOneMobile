@@ -18,7 +18,7 @@ import {
   ToastController,
 } from '@ionic/angular/standalone';
 
-import { CommonModule } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import {
   cameraOutline,
@@ -69,7 +69,6 @@ import {
   styleUrls: ['./moremain.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonContent,
     IonList,
     IonImg,
@@ -77,8 +76,8 @@ import {
     IonLabel,
     IonItem,
     IonToggle,
-    IonListHeader,
-  ],
+    IonListHeader
+],
   providers: [ModalController],
 })
 export class MoremainComponent implements OnInit {

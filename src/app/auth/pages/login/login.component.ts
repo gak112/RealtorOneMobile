@@ -8,7 +8,7 @@ import {
   IonImg,
   IonSpinner,
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { OtpSessionService } from '../../services/otp-session.service';
 import { OtpService } from '../../services/otp.service';
@@ -22,15 +22,14 @@ import { MessageService } from '../../services/message.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
-    CommonModule,
     IonContent,
     IonInput,
     IonLabel,
     IonButton,
     IonIcon,
     IonImg,
-    IonSpinner,
-  ],
+    IonSpinner
+],
 })
 export default class LoginComponent {
   private router = inject(Router);

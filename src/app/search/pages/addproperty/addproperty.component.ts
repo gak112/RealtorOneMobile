@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { IVentures } from 'src/app/models/ventures.modal';
 import { FlatnumbersComponent } from 'src/app/more/pages/flatnumbers/flatnumbers.component';
 import { ToastService } from 'src/app/services/toast.service';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonTitle, IonToolbar,  } from '@ionic/angular/standalone';
 import { PropertyviewsComponent } from 'src/app/more/pages/propertyviews/propertyviews.component';
 
@@ -13,15 +13,17 @@ import { PropertyviewsComponent } from 'src/app/more/pages/propertyviews/propert
   templateUrl: './addproperty.component.html',
   styleUrls: ['./addproperty.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonButton,IonContent,IonLabel,NgIf,NgFor,IonInput,],
+  imports: [IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonButton, IonContent, IonLabel, IonInput],
   providers:[ModalController],
 })
 export class AddpropertyComponent implements OnInit {
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
 
   @Input() venture;
   ventures: IVentures;
-  constructor(private modalController: ModalController,
-    private afs: AngularFirestore, private toast: ToastService) { }
 
   ngOnInit() {
     this.intializeVentures();

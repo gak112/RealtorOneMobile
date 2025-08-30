@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -13,7 +13,9 @@ import { chevronBackOutline } from 'ionicons/icons';
 })
 
 export class TermsandconditionsComponent  implements OnInit {
-  constructor(private modalController: ModalController) { 
+  private modalController = inject(ModalController);
+
+  constructor() { 
     addIcons({chevronBackOutline})
   }
 

@@ -9,42 +9,44 @@
     <div class="div-form-main">
       <div class="div-formgroup">
         <ion-input formControlName="fullName" type="text" mode="md" label="Full Name" label-placement="floating"
-          fill="outline" placeholder="Enter Full Name"></ion-input>
+        fill="outline" placeholder="Enter Full Name"></ion-input>
       </div>
       <div class="div-formgroup">
         <ion-input formControlName="email" type="email" mode="md" label="Email" label-placement="floating"
-          fill="outline" placeholder="Enter Email"></ion-input>
+        fill="outline" placeholder="Enter Email"></ion-input>
       </div>
       <div class="div-formgroup">
         <ion-input formControlName="Location" type="text" mode="md" label="Location" label-placement="floating"
-          fill="outline" placeholder="Enter Location"></ion-input>
+        fill="outline" placeholder="Enter Location"></ion-input>
       </div>
       <!-- <div class="div-formgroup">
-        <ion-label >Location</ion-label>
-        <input ngx-google-places-autocomplete #places  (onAddressChange)="handleAddressChange($event)" type="text" formControlName="location" class="location-input-settings">
-      </div> -->
+      <ion-label >Location</ion-label>
+      <input ngx-google-places-autocomplete #places  (onAddressChange)="handleAddressChange($event)" type="text" formControlName="location" class="location-input-settings">
+    </div> -->
 
-      <div class="div-location-display">
-        <ion-badge color="tertiary">{{user.location}}</ion-badge>
-        <ion-badge color="tertiary">{{user.city}}</ion-badge>
-        <ion-badge color="tertiary">{{user.district}}</ion-badge>
-        <ion-badge color="tertiary">{{user.state}}</ion-badge>
-        <ion-badge color="tertiary">{{user.pincode}}</ion-badge>
-      </div>
-
-      <div style="margin-bottom: 16px;">
-        <ion-textarea formControlName="description" type="text" mode="md" label="Description" label-placement="floating"
-          fill="outline" placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
-      </div>
-      <div class="div-submit">
-
-      </div>
+    <div class="div-location-display">
+      <ion-badge color="tertiary">{{user().location}}</ion-badge>
+      <ion-badge color="tertiary">{{user().city}}</ion-badge>
+      <ion-badge color="tertiary">{{user().district}}</ion-badge>
+      <ion-badge color="tertiary">{{user().state}}</ion-badge>
+      <ion-badge color="tertiary">{{user().pincode}}</ion-badge>
     </div>
-  </form>
+
+    <div style="margin-bottom: 16px;">
+      <ion-textarea formControlName="description" type="text" mode="md" label="Description" label-placement="floating"
+      fill="outline" placeholder="Enter Description" rows="5" style="height: auto;"></ion-textarea>
+    </div>
+    <div class="div-submit">
+
+    </div>
+  </div>
+</form>
 </ion-content>
 <ion-footer>
   <ion-button color="warning" expand="block" mode="ios" (click)="submit($event)">
-    <ion-spinner *ngIf="loading"></ion-spinner>
+    @if (loading) {
+      <ion-spinner></ion-spinner>
+    }
     Submit
   </ion-button>
 </ion-footer>

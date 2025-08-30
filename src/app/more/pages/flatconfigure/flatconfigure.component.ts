@@ -1,5 +1,5 @@
-import {  NgFor, NgIf } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+
+import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnInit, Output, ViewChild, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonSelect, IonSelectOption, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
@@ -16,26 +16,27 @@ register();
   templateUrl: './flatconfigure.component.html',
   styleUrls: ['./flatconfigure.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonIcon,IonTitle,IonButton,IonContent,IonSelect,FormsModule,IonSelectOption,IonLabel,UcWidgetModule,NgIf,NgFor,IonImg,],
+  imports: [IonHeader, IonToolbar, IonIcon, IonTitle, IonButton, IonContent, IonSelect, FormsModule, IonSelectOption, IonLabel, UcWidgetModule, IonImg],
   providers:[ModalController],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class FlatconfigureComponent implements OnInit {
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
   @ViewChild('uc')
   ucare!: UcWidgetComponent;
   @Input() flat: any;
-  @Input() user: any;
-  @Input() type!: string;
-  @Input() copiedData: any;
-  @Input() pasteAll: any;
+  readonly user = input<any>(undefined);
+  readonly type = input.required<string>();
+  readonly copiedData = input<any>(undefined);
+  readonly pasteAll = input<any>(undefined);
   action = 'display';
   loading = false;
 
 
   @Output() copied = new EventEmitter();
-
-  constructor(private modalController: ModalController, private afs: AngularFirestore,
-    private toast: ToastService) { }
 
   ngOnInit() {
     console.log(this.flat.costOfProperty, this.flat.costOfProperty)
@@ -135,11 +136,12 @@ export class FlatconfigureComponent implements OnInit {
 
     }
     const batch = this.afs.firestore.batch();
-    console.log(this.type);
-    if (this.type === 'floor') {
+    const type = this.type();
+    console.log(type);
+    if (type === 'floor') {
       const ventureTowersRef = this.afs.firestore.collection(`ventureTowers/${this.flat.towerId}/floors/${this.flat.floorId}/flats`).doc(this.flat.id);
       batch.update(ventureTowersRef, Object.assign(towerFlat));
-    } else if (this.type === 'flat') {
+    } else if (type === 'flat') {
       const ventureTowersRef = this.afs.firestore.collection(`ventureVillas`).doc(this.flat.id);
       batch.update(ventureTowersRef, Object.assign(towerVilla));
     }

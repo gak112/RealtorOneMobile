@@ -1,5 +1,5 @@
 
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonSearchbar, IonTitle, IonToolbar, ModalController,  } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, chevronForwardOutline, locationOutline, location } from 'ionicons/icons';
@@ -18,6 +18,9 @@ declare var google: { maps: { places: { AutocompleteService: new () => any; }; G
   providers:[ModalController],
 })
 export class LocationComponent implements OnInit {
+  private zone = inject(NgZone);
+  private modalController = inject(ModalController);
+
 
   places: any[] = [];
   query!: string;
@@ -28,7 +31,7 @@ export class LocationComponent implements OnInit {
     return this._places.asObservable();
   }
 
-  constructor(private zone: NgZone, private modalController: ModalController) { 
+  constructor() { 
     addIcons({ chevronBackOutline, location, chevronForwardOutline, locationOutline })
   }
 

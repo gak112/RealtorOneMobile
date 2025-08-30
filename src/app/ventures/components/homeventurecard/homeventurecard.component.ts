@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
+
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, inject, input } from '@angular/core';
 import { register } from 'swiper/element';
 import { VentureFullviewComponent } from '../../pages/venture-fullview/venture-fullview.component';
 import { addIcons } from 'ionicons';
@@ -17,9 +17,11 @@ register();
   providers:[ModalController],
 })
 export class HomeventurecardComponent implements OnInit {
-  @Input() venture: any;
+  private modalController = inject(ModalController);
+
+  readonly venture = input<any>(undefined);
   
-  constructor(private modalController: ModalController) {
+  constructor() {
     addIcons({ locationOutline })
   }
 

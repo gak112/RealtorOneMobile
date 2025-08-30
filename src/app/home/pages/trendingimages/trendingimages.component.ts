@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController, IonImg } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { BannersviewComponent } from '../bannersview/bannersview.component';
-import {  NgFor } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 
@@ -12,13 +12,15 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './trendingimages.component.html',
   styleUrls: ['./trendingimages.component.scss'],
   standalone: true,
-  imports: [IonImg, IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,NgFor],
+  imports: [IonImg, IonHeader, IonToolbar, IonIcon, IonTitle, IonContent],
   providers:[ModalController],
 })
 export class TrendingimagesComponent implements OnInit {
+  private modalController = inject(ModalController);
+
 
   banners$!: Observable<any>;
-  constructor(private modalController: ModalController, /*private afs: AngularFirestore,*/) {
+  constructor() {
     addIcons({ chevronBackOutline })
   }
 

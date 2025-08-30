@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/use-lifecycle-interface */
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonSearchbar, IonText, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { Subscription, BehaviorSubject } from 'rxjs';
 
@@ -14,6 +14,8 @@ declare var google;
   providers:[ModalController],
 })
 export class LocationsearchComponent  implements OnInit {
+  private zone = inject(NgZone);
+
 
   places: any[] = [];
   query: string;
@@ -23,8 +25,6 @@ export class LocationsearchComponent  implements OnInit {
   get search_places() {
     return this._places.asObservable();
   }
-
-  constructor(private zone: NgZone) {}
 
   ngOnInit(): void {
       this.placesSub = this.search_places.subscribe({

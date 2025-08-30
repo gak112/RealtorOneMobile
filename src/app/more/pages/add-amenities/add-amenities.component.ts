@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   EventEmitter,
-  Input,
   Output,
   OnInit,
   inject,
   signal,
   computed,
+  input
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -65,7 +65,6 @@ type Amenity = {
   selector: 'app-add-amenities',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonContent,
     IonHeader,
@@ -75,8 +74,8 @@ type Amenity = {
     IonButton,
     IonIcon,
     IonInput,
-    IonTextarea,
-  ],
+    IonTextarea
+],
   templateUrl: './add-amenities.component.html',
   styleUrls: ['./add-amenities.component.scss'],
 })
@@ -121,9 +120,9 @@ export class AddAmenitiesComponent implements OnInit {
       };
       if (uploadedLogo) update.logo = uploadedLogo;
 
-      const ref = doc(this.db, 'amenities', this.docId!);
+      const ref = doc(this.db, 'amenities', this.docId()!);
       await updateDoc(ref, update);
-      this.saved.emit({ id: this.docId! });
+      this.saved.emit({ id: this.docId()! });
     }
 
     if (this.logoURL()?.startsWith('blob:'))
@@ -151,8 +150,8 @@ export class AddAmenitiesComponent implements OnInit {
     });
   }
 
-  @Input() docId?: string; // if present => Edit mode
-  @Input() initial?: Partial<Amenity>; // prefilled values for Edit
+  readonly docId = input<string>(undefined); // if present => Edit mode
+  readonly initial = input<Partial<Amenity>>(undefined); // prefilled values for Edit
   @Output() saved = new EventEmitter<{ id: string }>();
 
   // Form
@@ -166,20 +165,21 @@ export class AddAmenitiesComponent implements OnInit {
   logoURL = signal<string | null>(null);
   loading = signal(false);
   uploading = signal(false);
-  isEdit = computed<boolean>(() => !!this.docId);
+  isEdit = computed<boolean>(() => !!this.docId());
 
   private readonly maxBytes = 2 * 1024 * 1024; // 2MB
   private readonly allowed = new Set(['image/jpeg', 'image/png', 'image/jpg']);
 
   ngOnInit() {
-    if (this.initial) {
-      const { amenityName, description } = this.initial;
+    const initial = this.initial();
+    if (initial) {
+      const { amenityName, description } = initial;
       this.amenityForm.patchValue({
         amenityName: amenityName ?? '',
         description: description ?? '',
       });
-      if (this.initial.logo?.url) {
-        this.logoURL.set(this.initial.logo.url);
+      if (initial.logo?.url) {
+        this.logoURL.set(initial.logo.url);
       }
     }
   }

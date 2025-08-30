@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController ,IonContent, IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonLabel } from '@ionic/angular/standalone';
 import { FlatviewersComponent } from '../flatviewers/flatviewers.component';
 import { IonicModule } from '@ionic/angular';
@@ -12,8 +12,8 @@ import { IonicModule } from '@ionic/angular';
   providers:[ModalController],
 })
 export class FlatnumbersComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return;

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, inject, input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonBadge, IonButton, IonContent, IonHeader, IonIcon, IonSpinner, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { IProfile } from 'src/app/languages/interface/profile/profile.interface';
@@ -14,10 +14,16 @@ import { ToastService } from 'src/app/services/toast.service';
   providers:[ModalController],
 })
 export class ProfileeditComponent  implements OnInit {
+  private fb = inject(FormBuilder);
+  zone = inject(NgZone);
+  private toast = inject(ToastService);
+  private modalController = inject(ModalController);
+  private languageService = inject(LanguageService);
+
 
   @ViewChild('places')
   places!: ElementRef<HTMLInputElement>;
-  @Input() user!:any;
+  readonly user = input.required<any>();
     loading = false;
     profileEditForm: FormGroup;
 
@@ -42,11 +48,7 @@ export class ProfileeditComponent  implements OnInit {
         ],
 
       };
-    constructor(private fb: FormBuilder,
-      public zone: NgZone, 
-      // private afs: AngularFirestore,
-      private toast: ToastService, private modalController: ModalController,
-       private languageService: LanguageService,) {
+    constructor() {
         this.profileEditForm = this.fb.group ({
           fullName: ['', [Validators.required]],
           email: [''],
@@ -65,11 +67,11 @@ export class ProfileeditComponent  implements OnInit {
 
 
 
-     this.profileEditForm.controls['fullName'].setValue(this.user.fullName);
-     this.profileEditForm.controls['email'].setValue(this.user.email || null);
-     this.profileEditForm.controls['address'].setValue(this.user.address || null);
-     this.profileEditForm.controls['location'].setValue(this.user.location || null);
-     this.profileEditForm.controls['description'].setValue(this.user.description || null);
+     this.profileEditForm.controls['fullName'].setValue(this.user().fullName);
+     this.profileEditForm.controls['email'].setValue(this.user().email || null);
+     this.profileEditForm.controls['address'].setValue(this.user().address || null);
+     this.profileEditForm.controls['location'].setValue(this.user().location || null);
+     this.profileEditForm.controls['description'].setValue(this.user().description || null);
 
      }
 
@@ -87,14 +89,14 @@ export class ProfileeditComponent  implements OnInit {
       }
 
       this.loading = true;
-      this.user.location = this.user.location +','+  this.user.city +','+
-      this.user.district+','+   this.user.state+','+
-      this.user.lCountry;
+      user.location = user.location +','+  user.city +','+
+      user.district+','+   user.state+','+
+      user.lCountry;
 
-      this.user.fullName = this.profileEditForm.controls['fullName'].value ;
-      this.user.email = this.profileEditForm.controls['email'].value || null;
+      user.fullName = this.profileEditForm.controls['fullName'].value ;
+      user.email = this.profileEditForm.controls['email'].value || null;
       // this.user.location = this.profileEditForm.controls.location.value || null;
-      this.user.description = this.profileEditForm.controls['description'].value || null;
+      user.description = this.profileEditForm.controls['description'].value || null;
 
     }
 
@@ -116,23 +118,23 @@ export class ProfileeditComponent  implements OnInit {
         switch(a.types[0]) {
 
           case 'sublocality_level_1':
-             this.user.location = a.long_name;
+             this.user().location = a.long_name;
              break;
 
           case 'locality':
-            this.user.city = a.long_name;
+            this.user().city = a.long_name;
             break;
           case 'administrative_area_level_2':
-            this.user.district = a.long_name;
+            this.user().district = a.long_name;
             break;
           case 'administrative_area_level_1':
-            this.user.state = a.long_name;
+            this.user().state = a.long_name;
             break;
           case 'country':
-            this.user.lCountry = a.long_name;
+            this.user().lCountry = a.long_name;
             break;
           case 'postal_code':
-            this.user.pincode =  a.long_name;
+            this.user().pincode =  a.long_name;
             break;
         }
 

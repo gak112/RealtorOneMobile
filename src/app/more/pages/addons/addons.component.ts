@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController ,IonHeader ,IonImg, IonToolbar, IonIcon, IonTitle, IonContent, IonLabel, IonRange } from '@ionic/angular/standalone';
 
 @Component({
@@ -10,8 +10,8 @@ import { ModalController ,IonHeader ,IonImg, IonToolbar, IonIcon, IonTitle, IonC
   providers:[ModalController],
 })
 export class AddonsComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

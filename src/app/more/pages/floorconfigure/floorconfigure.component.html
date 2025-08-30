@@ -19,68 +19,78 @@
       <ion-input class="input-settings" [(ngModel)]="floor.saleableArea" type="number" placeholder="Enter Saleable Area"></ion-input>
     </div>
     <!-- <div class="div-formgroup">
-      <ion-input class="input-settings" type="number" placeholder="Enter Cost of Property"></ion-input>
-    </div> -->
-    <div class="div-upload">
-      <div class="file-select">
+    <ion-input class="input-settings" type="number" placeholder="Enter Cost of Property"></ion-input>
+  </div> -->
+  <div class="div-upload">
+    <div class="file-select">
       <div class="div-choosefile ">
-        <ngx-uploadcare-widget 
+        <ngx-uploadcare-widget
           class="post-entry-btn"
           #uc
           (on-upload-complete)="onFloorLayoutComplete($event)"
-          [multiple]="true" 
-          [multiple-max]="3"          
+          [multiple]="true"
+          [multiple-max]="3"
           data-crop="300:300"
           [images-only] = true
           public-key="563d1afa2618816d4d42">
         </ngx-uploadcare-widget>
-        
-        </div>
-        <ion-label class="upload-label">Upload Layout</ion-label>
+
       </div>
+      <ion-label class="upload-label">Upload Layout</ion-label>
     </div>
+  </div>
+  @if (floor.layout.length > 0) {
     <swiper-container
-    [autoplay]="{delay: 5000,disableOnInteraction: false}"
-    [centeredSlides]="true"
-    class="mySwiper" *ngIf="floor.layout.length > 0">
-        <swiper-slide *ngFor="let img of floor.layout;let i=index">
+      [autoplay]="{delay: 5000,disableOnInteraction: false}"
+      [centeredSlides]="true"
+      class="mySwiper">
+      @for (img of floor.layout; track img; let i = $index) {
+        <swiper-slide>
           <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide" [src]="img"></ion-img>
         </swiper-slide>
+      }
     </swiper-container>
+  }
 
-    <div class="div-upload">
-      <div class="file-select">
+  <div class="div-upload">
+    <div class="file-select">
       <div class="div-choosefile ">
-        <ngx-uploadcare-widget 
+        <ngx-uploadcare-widget
           class="post-entry-btn"
           #uc
           (on-upload-complete)="onFloorImagesComplete($event)"
-          [multiple]="true" 
-          [multiple-max]="3"          
+          [multiple]="true"
+          [multiple-max]="3"
           data-crop="300:300"
           [images-only] = true
           public-key="563d1afa2618816d4d42">
         </ngx-uploadcare-widget>
-        
-        </div>
-        <ion-label class="upload-label">Upload Images</ion-label>
+
       </div>
+      <ion-label class="upload-label">Upload Images</ion-label>
     </div>
+  </div>
+  @if (floor.resources.length > 0) {
     <swiper-container
-    [autoplay]="{delay: 5000,disableOnInteraction: false}"
-    [centeredSlides]="true"
-    class="mySwiper" *ngIf="floor.resources.length > 0">
-        <swiper-slide *ngFor="let img of floor.resources;let i=index">
+      [autoplay]="{delay: 5000,disableOnInteraction: false}"
+      [centeredSlides]="true"
+      class="mySwiper">
+      @for (img of floor.resources; track img; let i = $index) {
+        <swiper-slide>
           <!-- <ion-icon name="trash" (click)="deleteImg(i)" class="ion-icon-settings"></ion-icon> -->
           <ion-img class="slide" [src]="img"></ion-img>
         </swiper-slide>
+      }
     </swiper-container>
-  </div>
+  }
+</div>
 </ion-content>
 <ion-footer>
   <ion-button class="ion-button-settings"  (click)="submit()" size="small" expand="block" color="warning">
-    <span *ngIf="loading" class="spinner-border spinner-border-sm"></span> 
+    @if (loading) {
+      <span class="spinner-border spinner-border-sm"></span>
+    }
     {{loading ? "...." : 'Submit'}}
-</ion-button>
+  </ion-button>
 </ion-footer>

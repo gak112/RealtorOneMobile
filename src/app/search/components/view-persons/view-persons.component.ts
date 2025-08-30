@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { ProfileComponent } from 'src/app/more/pages/profile/profile.component';
@@ -12,8 +12,8 @@ import { ProfileComponent } from 'src/app/more/pages/profile/profile.component';
   providers:[ModalController],
 })
 export class ViewPersonsComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
     ngOnInit(): void { 
       return;

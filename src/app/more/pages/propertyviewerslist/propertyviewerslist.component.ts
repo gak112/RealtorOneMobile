@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonAvatar,
   IonContent,
@@ -31,11 +31,13 @@ import { chevronBackOutline } from 'ionicons/icons';
   providers: [ModalController],
 })
 export class PropertyviewerslistComponent implements OnInit {
+  private modalController = inject(ModalController);
+
   dismiss() {
     this.modalController.dismiss();
   }
 
-  constructor(private modalController: ModalController) {
+  constructor() {
     addIcons({ chevronBackOutline });
   }
 

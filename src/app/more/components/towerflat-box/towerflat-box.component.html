@@ -4,27 +4,37 @@
       Flat No: {{villa.houseNumber}}
     </ion-label>
     <div class="div-icons-button">
-      <ion-icon name="copy-outline" *ngIf="villa.configured" (click)="copyConfiguration()"></ion-icon> <!-- copy -->
-      <ion-icon *ngIf="displayPaste" (click)="pasteConfiguration()" name="clipboard-outline"></ion-icon>  <!--  paste -->
+      @if (villa.configured) {
+        <ion-icon name="copy-outline" (click)="copyConfiguration()"></ion-icon>
+        } <!-- copy -->
+        @if (displayPaste) {
+          <ion-icon (click)="pasteConfiguration()" name="clipboard-outline"></ion-icon>
+          }  <!--  paste -->
+        </div>
+        @if (!villa.configured) {
+          <ion-button (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
+            Configure
+          </ion-button>
+        }
+        @if (villa.configured) {
+          <ion-button (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
+            Configured
+          </ion-button>
+        }
+      </div>
+      <swiper-container
+        [autoplay]="{delay: 5000,disableOnInteraction: false}"
+        [centeredSlides]="true"
+        class="mySwiper">
+        @for (img of villa.resources; track img) {
+          <swiper-slide>
+            <ion-img class="slide" [src]="img"></ion-img>
+          </swiper-slide>
+        }
+      </swiper-container>
+      <!-- <ion-img [src]="'https://www.satyamevgroups.com/blog/wp-content/uploads/2019/12/residential-apartment-in-patna.jpg'"></ion-img> -->
     </div>
-    <ion-button *ngIf="!villa.configured" (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
-      Configure
-    </ion-button>
-    <ion-button *ngIf="villa.configured" (click)="openFloorConfigure(villa)" class="ion-button-settings" size="small" expand="block" color="warning">
-      Configured
-    </ion-button>
-  </div>
-  <swiper-container
-  [autoplay]="{delay: 5000,disableOnInteraction: false}"
-  [centeredSlides]="true"
-  class="mySwiper">
-  <swiper-slide *ngFor="let img of villa.resources">
-    <ion-img class="slide" [src]="img"></ion-img>
-  </swiper-slide>
-</swiper-container>
-  <!-- <ion-img [src]="'https://www.satyamevgroups.com/blog/wp-content/uploads/2019/12/residential-apartment-in-patna.jpg'"></ion-img> -->
-</div>
 
-<!-- <div *ngFor="let villa of houses;let i=index">
-  {{villa.houseNumber}}
-</div> -->
+    <!-- <div *ngFor="let villa of houses;let i=index">
+    {{villa.houseNumber}}
+  </div> -->

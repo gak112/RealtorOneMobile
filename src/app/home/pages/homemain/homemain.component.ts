@@ -1,12 +1,11 @@
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
-  Input,
   OnInit,
   computed,
   inject,
   input,
-  signal,
+  signal
 } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular/standalone';
 import { RequestmenuComponent } from '../requestmenu/requestmenu.component';
@@ -95,7 +94,7 @@ type CatKey = 'residential' | 'commercial' | 'plots' | 'agriculturalLands';
 export class HomemainComponent implements OnInit {
   private modalController = inject(ModalController);
   private auth = inject(AuthService);
-  @Input() uid: string | null = null; // supply your authenticated uid
+  readonly uid = input<string | null>(null); // supply your authenticated uid
   private router = inject(Router);
   private toast = inject(ToastController);
   private svc = inject(AgentService);
@@ -214,7 +213,7 @@ export class HomemainComponent implements OnInit {
   readonly pageError = signal<string | null>(null);
 
   private getUid(): string {
-    return this.uid ?? 'demo-uid'; // replace with your auth source
+    return this.uid() ?? 'demo-uid'; // replace with your auth source
   }
 
   async openAgentConfirmation() {

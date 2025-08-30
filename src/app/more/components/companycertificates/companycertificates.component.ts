@@ -1,11 +1,11 @@
-import { AsyncPipe, NgFor, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonImg, ModalController } from '@ionic/angular/standalone';
 import { Observable, Subscribable } from 'rxjs';
 
 @Component({
   standalone:true,
-  imports:[NgFor, IonImg,NgIf,AsyncPipe,],
+  imports: [IonImg, AsyncPipe],
   providers:[ModalController],
   selector: 'app-companycertificates',
   templateUrl: './companycertificates.component.html',

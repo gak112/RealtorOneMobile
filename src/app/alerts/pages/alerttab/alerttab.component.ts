@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { AlertsBoxComponent } from '../../components/alerts-box/alerts-box.component';
 import { addIcons } from 'ionicons';
@@ -13,10 +13,12 @@ import {chevronBackOutline} from 'ionicons/icons';
   providers:[ModalController]
 })
 export class AlerttabComponent  implements OnInit {
+  private modalController = inject(ModalController);
+
 
   action = 'alerts';
 
-    constructor(private modalController: ModalController) {
+    constructor() {
       addIcons({chevronBackOutline})
      }
 

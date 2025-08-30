@@ -7,24 +7,17 @@ import {
   inject,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonIcon,
   IonImg,
   IonLabel,
-  IonButton,
-  IonBadge,
-  IonChip,
   IonList,
   IonItem,
-  IonSkeletonText,
   ModalController,
   ToastController,
-  IonFooter,
+  IonFooter
 } from '@ionic/angular/standalone';
 
 import { Location } from '@angular/common';
@@ -125,22 +118,14 @@ export interface IProperty {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonIcon,
     IonImg,
     IonLabel,
-    IonButton,
-    IonBadge,
-    IonChip,
     IonList,
     IonItem,
-    IonSkeletonText,
-    IonFooter,
-  ],
+    IonFooter
+],
   providers: [ModalController],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

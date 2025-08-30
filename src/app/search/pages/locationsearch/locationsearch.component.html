@@ -6,11 +6,11 @@
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar
-      search-icon="search-circle" 
-      animated="true" 
-      show-clear-button="focus" 
+      search-icon="search-circle"
+      animated="true"
+      show-clear-button="focus"
       clear-icon="close"
-      debounce="800" 
+      debounce="800"
       placeholder="Search your property location..."
       (ionInput)="onSearchChange($event)">
     </ion-searchbar>
@@ -19,18 +19,22 @@
 
 <ion-content>
 
-  <ion-list *ngIf="places?.length > 0">
-    <ion-item *ngFor="let place of places" class="ion-margin-top">
-      <ion-icon name="location-outline" slot="start"></ion-icon>
-      <ion-label>
-        {{ place?.title }}
-        <p>
-          <ion-text>
-            {{ place?.address }}
-          </ion-text>
-        </p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  @if (places?.length > 0) {
+    <ion-list>
+      @for (place of places; track place) {
+        <ion-item class="ion-margin-top">
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          <ion-label>
+            {{ place?.title }}
+            <p>
+              <ion-text>
+                {{ place?.address }}
+              </ion-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
 
 </ion-content>

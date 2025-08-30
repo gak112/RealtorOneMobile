@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import {IonImg,IonLabel,IonSkeletonText } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { camera } from 'ionicons/icons';
@@ -13,8 +13,8 @@ import { camera } from 'ionicons/icons';
 export class ChatenterboxComponent  implements OnInit {
 
   
-  @Input() conversation: any;
-  @Input() type: any;
+  readonly conversation = input<any>(undefined);
+  readonly type = input<any>(undefined);
 
 constructor() { 
   addIcons({camera})

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   IonButton,
@@ -28,22 +28,22 @@ import { OtpComponent } from '../otp/otp.component';
   providers: [ModalController],
 })
 export class RegisterComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private modalController = inject(ModalController);
+  private toast = inject(ToastService);
+  private nav = inject(NavController);
+
   @Output() setLogin = new EventEmitter();
   registerForm: FormGroup;
   showPassword = false;
   loading = false;
-  @Input() phone: any;
+  readonly phone = input<any>(undefined);
 
   phoneValid: any;
   initialCountry = { initialCountry: 'in' };
   country: any;
   selectedCountry: any;
-  constructor(
-    private fb: FormBuilder,
-    private modalController: ModalController,
-    private toast: ToastService,
-    private nav: NavController /*private afs: AngularFirestore*/
-  ) {
+  constructor() {
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(4)]],
       email: [''],
@@ -53,8 +53,9 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.phone) {
-      this.registerForm.controls['phone'].setValue(this.phone);
+    const phone = this.phone();
+    if (phone) {
+      this.registerForm.controls['phone'].setValue(phone);
     }
   }
   get f(): any {

@@ -1,8 +1,10 @@
-<div class="div-description" *ngIf="aboutUs$ | async as about"> 
-  <div class="div-desc">
+@if (aboutUs$ | async; as about) {
+  <div class="div-description">
+    <div class="div-desc">
       <ion-label [innerHTML]="about[0].about">  </ion-label>
-  </div>
-  <div class="div-img">
+    </div>
+    <div class="div-img">
       <ion-img [src]="about[0].img"></ion-img>
-  </div>      
-</div>
+    </div>
+  </div>
+}

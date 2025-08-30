@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -22,14 +22,17 @@ import { FormsModule } from '@angular/forms';
   providers: [ModalController]
 })
 export class DeleteaccountComponent {
-  @Input() user;
+  private toast = inject(ToastService);
+  private afs = inject(AngularFirestore);
+  private afAuth = inject(AngularFireAuth);
+  private auth = inject(AuthService);
+  private modalController = inject(ModalController);
+
+  readonly user = input(undefined);
   password;
   showPassword = false;
   showConfirmPassword;
   deleteAccError;
-  constructor(private toast: ToastService, 
-    private afs: AngularFirestore, private afAuth: AngularFireAuth,
-     private auth: AuthService, private modalController: ModalController) { }
 
 
   // submit(event) {

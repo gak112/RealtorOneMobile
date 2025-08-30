@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/use-lifecycle-interface */
-import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonButton, IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
@@ -8,7 +8,7 @@ import { FlatconfigureComponent } from '../../pages/flatconfigure/flatconfigure.
 import { firstValueFrom } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { register } from 'swiper/element';
-import { NgIf, NgFor } from '@angular/common';
+
 import { serverTimestamp } from '@angular/fire/firestore';
 register();
 
@@ -17,24 +17,25 @@ register();
   templateUrl: './towerflat-box.component.html',
   styleUrls: ['./towerflat-box.component.scss'],
   standalone:true,
-  imports:[IonLabel,IonIcon,IonButton,NgIf,NgFor,IonImg,],
+  imports: [IonLabel, IonIcon, IonButton, IonImg],
   providers:[ModalController],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TowerflatBoxComponent  implements OnInit {
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
   @Input() villa : any;
-  @Input() user : any;
+  readonly user = input<any>(undefined);
   @Input() displayPaste = false;
   @Input() copiedData : any;
-  @Input() pasteAll : any;
+  readonly pasteAll = input<any>(undefined);
 
 
 
   @Output() copied = new EventEmitter();
   houses : any;
-
-  
-  constructor(private modalController: ModalController, private afs: AngularFirestore, private toast: ToastService) { }
 
   ngOnInit() {
     return
@@ -73,7 +74,7 @@ export class TowerflatBoxComponent  implements OnInit {
     const modal = await this.modalController.create(
       {
         component: FlatconfigureComponent,
-        componentProps:{flat, user: this.user, type: 'flat'}
+        componentProps:{flat, user: this.user(), type: 'flat'}
       }      
     );
 
@@ -117,7 +118,7 @@ export class TowerflatBoxComponent  implements OnInit {
       sortTime:  this.copiedData.sortTime,
       configured: true,
       createdAt: serverTimestamp(),
-      createdBy: this.user.uid,
+      createdBy: this.user().uid,
       displayDate: new Date().toDateString(),
     }
 

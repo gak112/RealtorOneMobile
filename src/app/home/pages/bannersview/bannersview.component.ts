@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, input } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   IonButton,
@@ -36,7 +36,7 @@ import { BannerProductComponent, IProperty } from '../../components/banner-produ
 export class BannersviewComponent implements OnInit {
   private modalController = inject(ModalController);
 
-  @Input() banner: any;
+  readonly banner = input<any>(undefined);
   hit: any;
   // showFilter;
 

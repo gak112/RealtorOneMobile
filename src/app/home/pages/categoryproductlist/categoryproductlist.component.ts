@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgIf, UpperCasePipe } from '@angular/common';
+import { AsyncPipe, JsonPipe, UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { Observable, Subscribable } from 'rxjs';
@@ -10,7 +10,7 @@ import { HomeventurecardComponent } from './../../../ventures/components/homeven
   selector: 'app-categoryproductlist',
   templateUrl: './categoryproductlist.component.html',
   styleUrls: ['./categoryproductlist.component.scss'],
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,NgIf,AsyncPipe,JsonPipe,UpperCasePipe,HomeventurecardComponent,  ],
+  imports: [IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonContent, AsyncPipe, JsonPipe, UpperCasePipe, HomeventurecardComponent],
   providers:[ModalController],
 })
 

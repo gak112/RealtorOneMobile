@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, OnInit, input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { Observable, Subscribable } from 'rxjs';
 
@@ -9,11 +9,11 @@ import { Observable, Subscribable } from 'rxjs';
   templateUrl: './mediaimg.component.html',
   styleUrls: ['./mediaimg.component.scss'],
   standalone: true,
-  imports : [IonLabel,NgIf,IonImg,AsyncPipe,],
+  imports: [IonLabel, IonImg, AsyncPipe],
   providers:[ModalController],
 })
 export class MediaimgComponent  implements OnInit {
-@Input() media;
+readonly media = input(undefined);
 openImageModal: any;
 imgFiles$: Observable<unknown>|Subscribable<unknown>|Promise<unknown>;
   constructor() { }

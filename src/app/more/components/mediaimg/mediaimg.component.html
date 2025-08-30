@@ -1,9 +1,13 @@
 <div class="div-media">
-  <ion-label>{{media.imageCategory}}</ion-label>
+  <ion-label>{{media().imageCategory}}</ion-label>
 
-  <div *ngIf="imgFiles$ | async as images" class="div-img">
-      <ion-img (click)="openImageModal([image.imageSource])" *ngFor="let image of images" [src]="image.imageSource"></ion-img>
-  </div>
+  @if (imgFiles$ | async; as images) {
+    <div class="div-img">
+      @for (image of images; track image) {
+        <ion-img (click)="openImageModal([image.imageSource])" [src]="image.imageSource"></ion-img>
+      }
+    </div>
+  }
 </div>
 
 

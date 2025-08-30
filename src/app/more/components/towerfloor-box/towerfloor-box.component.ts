@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/use-lifecycle-interface */
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { firstValueFrom } from 'rxjs';
@@ -7,7 +7,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { FlatconfigureComponent } from '../../pages/flatconfigure/flatconfigure.component';
 import { FloorconfigureComponent } from '../../pages/floorconfigure/floorconfigure.component';
 
-import { CommonModule, NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 import { IonButton, IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 
 @Component({
@@ -15,17 +15,21 @@ import { IonButton, IonIcon, IonImg, IonLabel, ModalController } from '@ionic/an
   templateUrl: './towerfloor-box.component.html',
   styleUrls: ['./towerfloor-box.component.scss'],
   standalone:true,
-  imports:[IonLabel,UpperCasePipe,IonIcon,NgIf,IonButton,NgIf,IonImg,NgFor],
+  imports: [IonLabel, UpperCasePipe, IonIcon, IonButton, IonImg],
   providers:[ModalController],
 })
 export class TowerfloorBoxComponent  implements OnInit {
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
 
   @Input() floor: any;
-  @Input() user: any;  
+  readonly user = input<any>(undefined);  
   @Input() displayPaste = false;
   @Input() copiedData: any;
   @Input() copiedFltsData: any;
-  @Input() pasteAll: any;
+  readonly pasteAll = input<any>(undefined);
 
   flats: any = [];
 
@@ -38,9 +42,6 @@ export class TowerfloorBoxComponent  implements OnInit {
 
   configured = false;
   pasteAllFlats = false;
-
-  constructor(private modalController: ModalController, private afs: AngularFirestore,
-    private toast: ToastService) { }
 
   ngOnInit() {
     this.loadFlats();
@@ -90,7 +91,7 @@ export class TowerfloorBoxComponent  implements OnInit {
     const modal = await this.modalController.create(
       {
         component: FloorconfigureComponent,
-        componentProps:{floor, user: this.user}
+        componentProps:{floor, user: this.user()}
       }      
     );
 
@@ -101,7 +102,7 @@ export class TowerfloorBoxComponent  implements OnInit {
     const modal = await this.modalController.create(
       {
         component: FlatconfigureComponent,
-        componentProps:{flat, user: this.user, type: 'floor'}
+        componentProps:{flat, user: this.user(), type: 'floor'}
       }      
     );
 
@@ -136,7 +137,7 @@ export class TowerfloorBoxComponent  implements OnInit {
       sortTime:  this.copiedData.sortTime,
       configured: true,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      createdBy: this.user.uid,
+      createdBy: this.user().uid,
       displayDate: new Date().toDateString(),
 
     
@@ -204,7 +205,7 @@ export class TowerfloorBoxComponent  implements OnInit {
         sortTime: await this.copiedFltsData.sortTime,
         configured: await true,
         createdAt:await firebase.firestore.FieldValue.serverTimestamp(),
-        createdBy: await this.user.uid,
+        createdBy: await this.user().uid,
         displayDate: await new Date().toDateString(),
   
       }
@@ -259,7 +260,7 @@ export class TowerfloorBoxComponent  implements OnInit {
         sortTime: await this.copiedFlat.sortTime,
         configured: await true,
         createdAt:await firebase.firestore.FieldValue.serverTimestamp(),
-        createdBy: await this.user.uid,
+        createdBy: await this.user().uid,
         displayDate: await new Date().toDateString(),
   
       }
@@ -334,7 +335,7 @@ export class TowerfloorBoxComponent  implements OnInit {
         sortTime: await this.copiedFltsData.sortTime,
         configured: await true,
         createdAt:await firebase.firestore.FieldValue.serverTimestamp(),
-        createdBy: await this.user.uid,
+        createdBy: await this.user().uid,
         displayDate: await new Date().toDateString(),
   
       }
@@ -374,7 +375,7 @@ export class TowerfloorBoxComponent  implements OnInit {
         sortTime: await this.copiedFlat.sortTime,
         configured: await true,
         createdAt:await firebase.firestore.FieldValue.serverTimestamp(),
-        createdBy: await this.user.uid,
+        createdBy: await this.user().uid,
         displayDate: await new Date().toDateString(),
   
       }

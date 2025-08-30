@@ -26,13 +26,13 @@
     <div class="div-bill" style="margin-top: 0;">
         <div class="div-icon-name" >
             <ion-label class="label">Subcription Plan</ion-label>
-            @if(request.paymentAction === 'singlePlan') {
+            @if(request().paymentAction === 'singlePlan') {
             <ion-label class="label-title1">Single post / 1 Month</ion-label>
             }
-            @if(request.paymentAction === 'basicPlan') {
+            @if(request().paymentAction === 'basicPlan') {
             <ion-label class="label-title1">Single post / 1 Month</ion-label>
             }
-            @if(request.paymentAction === 'bulkPlan') {
+            @if(request().paymentAction === 'bulkPlan') {
             <ion-label class="label-title1">20 posts / 1 Month</ion-label>
             }
         </div>
@@ -42,26 +42,26 @@
         </div> -->
         <div class="div-icon-name" >
             <ion-label class="label">Price</ion-label>
-            @if(request.paymentAction === 'singlePlan') {
+            @if(request().paymentAction === 'singlePlan') {
             <ion-label class="label-title1">₹199.00</ion-label>
             }
-            @if(request.paymentAction === 'basicPlan') {
+            @if(request().paymentAction === 'basicPlan') {
             <ion-label class="label-title1">₹599.00</ion-label>
             }
-            @if(request.paymentAction === 'bulkPlan') {
+            @if(request().paymentAction === 'bulkPlan') {
             <ion-label class="label-title1">₹1499.00</ion-label>
             }
         </div>
 
         <div class="div-icon-name final" >
           <ion-label class="label">Total</ion-label>
-          @if(request.paymentAction === 'singlePlan') {
+          @if(request().paymentAction === 'singlePlan') {
           <ion-label class="label-title1">₹199.00</ion-label>
           }
-          @if(request.paymentAction === 'basicPlan') {
+          @if(request().paymentAction === 'basicPlan') {
           <ion-label class="label-title1">₹599.00</ion-label>
           }
-          @if(request.paymentAction === 'bulkPlan') {
+          @if(request().paymentAction === 'bulkPlan') {
           <ion-label class="label-title1">₹1499.00</ion-label>
           }
       </div>

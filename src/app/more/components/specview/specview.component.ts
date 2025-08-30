@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+
+import { Component, inject, Input, OnInit, input } from '@angular/core';
 import {
   ModalController,
   IonLabel,
@@ -27,7 +27,7 @@ import { create, trashOutline } from 'ionicons/icons';
 export class SpecviewComponent implements OnInit {
   private modalController = inject(ModalController);
   @Input() specifications: SpecSection[] = [];
-  @Input() user: any;
+  readonly user = input<any>(undefined);
   constructor() {
     addIcons({
       create,

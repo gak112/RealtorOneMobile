@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonButton, IonContent, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { PostentryComponent } from 'src/app/home/pages/postentry/postentry.component';
@@ -12,7 +12,8 @@ import { PostentryComponent } from 'src/app/home/pages/postentry/postentry.compo
   providers:[ModalController],
 })
 export class InitialrequestComponent  implements OnInit {
-  constructor(private modalController: ModalController,) { }
+  private modalController = inject(ModalController);
+
 
   ngOnInit(): void {
     return;

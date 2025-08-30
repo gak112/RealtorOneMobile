@@ -1,10 +1,10 @@
 import {
   Component,
-  Input,
   OnInit,
   computed,
   inject,
   signal,
+  input
 } from '@angular/core';
 import {
   IonTitle,
@@ -50,7 +50,7 @@ export type Filters = {
 export class ProductfilterComponent implements OnInit {
   private modalController = inject(ModalController);
 
-  @Input() initial?: Filters;
+  readonly initial = input<Filters>(undefined);
 
   activeTab = signal<'saleType' | 'price' | 'houseType' | 'bhkType'>(
     'saleType'
@@ -79,13 +79,14 @@ export class ProductfilterComponent implements OnInit {
 
   ngOnInit(): void {
     // Seed from list page (includes category)
-    if (this.initial) {
-      this.saleType.set(this.initial.saleType);
-      this.category.set(this.initial.category);
-      this.priceMin.set(this.initial.priceMin);
-      this.priceMax.set(this.initial.priceMax);
-      this.houseType.set([...(this.initial.houseType ?? [])]);
-      this.bhkType.set([...(this.initial.bhkType ?? [])]);
+    const initial = this.initial();
+    if (initial) {
+      this.saleType.set(initial.saleType);
+      this.category.set(initial.category);
+      this.priceMin.set(initial.priceMin);
+      this.priceMax.set(initial.priceMax);
+      this.houseType.set([...(initial.houseType ?? [])]);
+      this.bhkType.set([...(initial.bhkType ?? [])]);
     }
   }
 

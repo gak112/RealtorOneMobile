@@ -1,5 +1,5 @@
-import { CommonModule, NgIf } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
+
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit, inject, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { IonContent, ModalController, IonicSlides, IonButton, IonImg, IonLabel } from '@ionic/angular/standalone';
@@ -12,17 +12,18 @@ register();
   templateUrl: './imagemodal.component.html',
   styleUrls: ['./imagemodal.component.scss'],
   standalone:true,
-  imports:[IonContent,IonButton,IonImg,IonLabel,NgIf,],
+  imports: [IonContent, IonButton, IonImg, IonLabel],
   providers:[ModalController],
   // schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ImagemodalComponent  implements OnInit {
+  private modalController = inject(ModalController);
+  private activatedRoute = inject(ActivatedRoute);
 
-  @Input() media = [];
+
+  readonly media = input([]);
   @Input() description: any;
 m: any;
-  
-  constructor(private modalController: ModalController, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
 

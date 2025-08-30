@@ -1,42 +1,49 @@
 <div class="div-events">
-  <div class="div-events-sub" *ngIf="events$ | async as events">
-    <div class="div-event-card animate__animated animate__fadeInRight" *ngFor="let event of events">
-        <!-- <div class="div-img">
-            <ion-img src="assets/img/dummy/store8.jpg"></ion-img>
+  @if (events$ | async; as events) {
+    <div class="div-events-sub">
+      @for (event of events; track event) {
+        <div class="div-event-card animate__animated animate__fadeInRight">
+          <!-- <div class="div-img">
+          <ion-img src="assets/img/dummy/store8.jpg"></ion-img>
         </div> -->
         <div class="div-details-event">
-            <ion-label class="label-title">{{event.title}}</ion-label>
-
-            <span *ngFor="let content of event.content; let i = index" >
+          <ion-label class="label-title">{{event.title}}</ion-label>
+          @for (content of event.content; track content; let i = $index) {
+            <span >
               <div class="div-padding">
-              <div class="div-content" *ngIf =" i < 2">
-                <div *ngIf = "content.typex === 'text'">
-                    <ion-label class="p-settings5" [innerHTML]="content.content"></ion-label>
-                </div>
-
-                <div class="div-imgtext" *ngIf="content.typex === 'limg'">
-
-                  <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
-
-                  <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
-
-                </div>
-
-                <div class="div-textimg" *ngIf="content.typex === 'rimg'">
-                    <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
-                    <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
-                </div>
-
-                <div *ngIf="content.typex ==='image'">
-                    <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
-                </div>
-
+                @if ( i < 2) {
+                  <div class="div-content">
+                    @if (content.typex === 'text') {
+                      <div>
+                        <ion-label class="p-settings5" [innerHTML]="content.content"></ion-label>
+                      </div>
+                    }
+                    @if (content.typex === 'limg') {
+                      <div class="div-imgtext">
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
+                        <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
+                      </div>
+                    }
+                    @if (content.typex === 'rimg') {
+                      <div class="div-textimg">
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
+                        <ion-label class="p-settings5" [innerHTML]="content.content.content"></ion-label>
+                      </div>
+                    }
+                    @if (content.typex ==='image') {
+                      <div>
+                        <ion-img (click)="openImageModal([content.content.img])" [src]="content.content.img" height="200px"></ion-img>
+                      </div>
+                    }
+                  </div>
+                }
               </div>
-            </div>
             </span>
-            <!-- <ion-label>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea maiores a voluptates quas ullam praesentium qui impedit animi nobis error ut, nisi voluptas nesciunt? Consectetur velit dolore illum ab excepturi.</ion-label> -->
+          }
+          <!-- <ion-label>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea maiores a voluptates quas ullam praesentium qui impedit animi nobis error ut, nisi voluptas nesciunt? Consectetur velit dolore illum ab excepturi.</ion-label> -->
         </div>
-    </div>
-  
+      </div>
+    }
   </div>
+}
 </div>

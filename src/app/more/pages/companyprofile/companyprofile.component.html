@@ -1,66 +1,78 @@
 <ion-header>
-  <ion-toolbar style="--min-height: 75px;" *ngIf="company$| async as company">
+  @if (company$| async; as company) {
+    <ion-toolbar style="--min-height: 75px;">
       <ion-buttons slot="start"><ion-icon class="icon-back" name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
       <div class="div-img" >
-         
-          <!-- <ion-img (click)="openImageModal([company.photoURL], company.companyName)" [src]="company.photoURL"></ion-img> -->
-          <ion-img [src]="'assets/img/dummy/house2.jpg'"></ion-img>
-          <div class="div-name">               
-              <ion-label class="h6-username"> Arha Constructions
-                  <!-- <span class="span-active">&#x25CF;</span>
-                  <span class="span-inactive">&#x25CF;</span> -->
-              </ion-label>
-          
-          </div>                
+        <!-- <ion-img (click)="openImageModal([company.photoURL], company.companyName)" [src]="company.photoURL"></ion-img> -->
+        <ion-img [src]="'assets/img/dummy/house2.jpg'"></ion-img>
+        <div class="div-name">
+          <ion-label class="h6-username"> Arha Constructions
+            <!-- <span class="span-active">&#x25CF;</span>
+            <span class="span-inactive">&#x25CF;</span> -->
+          </ion-label>
+        </div>
       </div>
-  </ion-toolbar>
+    </ion-toolbar>
+  }
 </ion-header>
 <ion-content>
   <app-companybanners></app-companybanners>
   <ion-toolbar class="ion-toolbar-settings">
-      <ion-segment mode="ios" value="aboutus" (ionChange)="segmentChanged($event)">
-          <!-- <ion-segment-button value="products">
-              <ion-label>Products</ion-label>
-          </ion-segment-button> -->
-          <ion-segment-button value="aboutus">
-              <ion-label>About&nbsp;Us</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="media">
-              <ion-label>Media</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="team">
-              <ion-label>Team</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="events">
-              <ion-label>Events</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="certificates">
-              <ion-label>Certificates</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="branches">
-              <ion-label>Branches</ion-label>
-          </ion-segment-button>
-      </ion-segment>
-  </ion-toolbar>
-  <!-- <div *ngIf = "action === 'products'">
-      <app-companyproducts></app-companyproducts>
-  </div> -->
-  <div *ngIf = "action === 'aboutus'">
-      <app-companyabout></app-companyabout>
+    <ion-segment mode="ios" value="aboutus" (ionChange)="segmentChanged($event)">
+      <!-- <ion-segment-button value="products">
+      <ion-label>Products</ion-label>
+    </ion-segment-button> -->
+    <ion-segment-button value="aboutus">
+      <ion-label>About&nbsp;Us</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="media">
+      <ion-label>Media</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="team">
+      <ion-label>Team</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="events">
+      <ion-label>Events</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="certificates">
+      <ion-label>Certificates</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="branches">
+      <ion-label>Branches</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+<!-- <div *ngIf = "action === 'products'">
+<app-companyproducts></app-companyproducts>
+</div> -->
+@if (action === 'aboutus') {
+  <div>
+    <app-companyabout></app-companyabout>
   </div>
-  <div *ngIf="action === 'media'">
-      <app-companymedia></app-companymedia>
+}
+@if (action === 'media') {
+  <div>
+    <app-companymedia></app-companymedia>
   </div>
-  <div *ngIf="action === 'team'">
-      <app-companyteam></app-companyteam>
+}
+@if (action === 'team') {
+  <div>
+    <app-companyteam></app-companyteam>
   </div>
-  <div *ngIf="action === 'events'">
-      <app-companyevents></app-companyevents>
+}
+@if (action === 'events') {
+  <div>
+    <app-companyevents></app-companyevents>
   </div>
-  <div *ngIf="action === 'certificates'">
-      <app-companycertificates></app-companycertificates>
+}
+@if (action === 'certificates') {
+  <div>
+    <app-companycertificates></app-companycertificates>
   </div>
-  <div *ngIf="action === 'branches'">
-      <app-companybranches></app-companybranches>
+}
+@if (action === 'branches') {
+  <div>
+    <app-companybranches></app-companybranches>
   </div>
+}
 </ion-content>

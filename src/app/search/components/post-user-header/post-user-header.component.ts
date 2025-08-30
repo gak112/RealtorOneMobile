@@ -1,5 +1,5 @@
-import { CommonModule, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+
+import { Component, Input, OnInit, inject } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule } from '@ionic/angular';
 import { IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
@@ -10,10 +10,12 @@ import { Observable } from 'rxjs';
   templateUrl: './post-user-header.component.html',
   styleUrls: ['./post-user-header.component.scss'],
   standalone: true,
-  imports: [IonImg,IonLabel,NgIf,],
+  imports: [IonImg, IonLabel],
   providers:[ModalController],
 })
 export class PostUserHeaderComponent implements OnInit {
+  private modalController = inject(ModalController);
+
 
   // @Input()
   // hit!: any;
@@ -23,8 +25,6 @@ export class PostUserHeaderComponent implements OnInit {
     photoURL: "",
     fullName: "K. Ashok Kumar"
   }
-
-  constructor(private modalController: ModalController, /*private afs: AngularFirestore*/) { }
 
   ngOnInit() {
     return;

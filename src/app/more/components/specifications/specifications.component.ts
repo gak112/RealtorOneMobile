@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, computed, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, input } from '@angular/core';
 import {
   ReactiveFormsModule,
   NonNullableFormBuilder,
@@ -20,7 +20,7 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 
 /** Public types used by parent */
 export type SpecKV = { key: string; value: string };
@@ -45,7 +45,6 @@ type SectionFG = FormGroup<{
   selector: 'app-specifications',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonContent,
     IonInput,
@@ -56,8 +55,8 @@ type SectionFG = FormGroup<{
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonFooter,
-  ],
+    IonFooter
+],
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
@@ -69,13 +68,13 @@ export class SpecificationsComponent implements OnInit {
    *  - 'add'  -> open fresh (ignore incoming)
    *  - 'edit' -> prefill with given `sections` (usually one) and return only that edited one
    */
-  @Input() mode: 'add' | 'edit' = 'add';
-  @Input() index?: number;
+  readonly mode = input<'add' | 'edit'>('add');
+  readonly index = input<number>(undefined);
 
   /** When mode === 'edit', parent passes one section in this array.
    *  When mode === 'add', parent passes [] to force a fresh form.
    */
-  @Input() sections: SpecSection[] = [];
+  readonly sections = input<SpecSection[]>([]);
 
   // top input to add a new section title
   newTitle = this.fb.control('', [
@@ -99,9 +98,10 @@ export class SpecificationsComponent implements OnInit {
   sectionAt = (i: number) => this.sectionsArray.at(i);
 
   ngOnInit(): void {
-    if (this.mode === 'edit' && this.sections && this.sections.length) {
+    const sections = this.sections();
+    if (this.mode() === 'edit' && sections && sections.length) {
       // Prefill with provided section(s)
-      for (const sec of this.sections) {
+      for (const sec of sections) {
         const s = this.makeSection(sec.title);
         for (const kv of sec.specifications) {
           s.controls.items.push(this.makeItem(kv.key, kv.value));
@@ -177,7 +177,7 @@ export class SpecificationsComponent implements OnInit {
     }));
 
     await this.modal.dismiss(
-      { sections: payload, mode: this.mode, index: this.index },
+      { sections: payload, mode: this.mode(), index: this.index() },
       'submit'
     );
 

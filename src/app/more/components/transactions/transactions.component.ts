@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MyrequestsComponent } from '../../pages/myrequests/myrequests.component';
 import { IonImg, IonLabel,  } from '@ionic/angular/standalone';
@@ -12,8 +12,8 @@ import { IonImg, IonLabel,  } from '@ionic/angular/standalone';
   providers:[ModalController],
 })
 export class TransactionsComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

@@ -1,14 +1,14 @@
 <!-- <div class="div-header-main" >
-  <div class="div-header">
-    <div class="flex-toggle" *ngIf="users$ | async as user">
+<div class="div-header">
+  <div class="flex-toggle" *ngIf="users$ | async as user">
       <div style=" display: flex;    width: 100%;
       align-items: center;">
-        <ion-img  [src]="user.photoURL || 'assets/img/nouser.jpg'" class="img-settings"></ion-img>
-        <div class="div-p">
-          <div style="display: flex;align-items: center;">
-            <ion-label class="span-settings" style="text-transform: capitalize">{{user.fullName}}</ion-label>
+      <ion-img  [src]="user.photoURL || 'assets/img/nouser.jpg'" class="img-settings"></ion-img>
+      <div class="div-p">
+        <div style="display: flex;align-items: center;">
+          <ion-label class="span-settings" style="text-transform: capitalize">{{user.fullName}}</ion-label>
 
-            <br>
+          <br>
 
 
             <div class="div-status">
@@ -16,60 +16,72 @@
             </div>
 
             <br>
-            
-          </div>
-        
-          <ion-label class="p-textformat" *ngIf="1 > 0"> {{5}} {{false ? 'day' : 'days'}} ago</ion-label>
-          <span *ngIf="1 <=0 ">
+
+            </div>
+
+            <ion-label class="p-textformat" *ngIf="1 > 0"> {{5}} {{false ? 'day' : 'days'}} ago</ion-label>
+            <span *ngIf="1 <=0 ">
               <ion-label class="p-textformat" *ngIf="1 > 0"> {{0}} {{true ? 'hour' : 'hours'}} ago</ion-label>
-  
-              <span *ngIf="1 <= 0">
-  
-                  <ion-label class="p-textformat" *ngIf="1 > 0"> {{1}} {{false ? 'minute' : 'minutes'}} ago</ion-label>
-  
-                  <span *ngIf="1 <= 0">
-                    <ion-label class="p-textformat"> just now</ion-label>
-                  </span>
-              </span>
-          </span>
-        </div>
-      </div>
-    </div>
-    
-  </div>
-  
-</div> -->
 
-
-<div class="div-header-main" style="width: 100%;height: 50px;padding: 0px 10px 10px;">
-  <div class="div-header">
-    <div class="flex-toggle">
-      <div style=" display: flex;    width: 100%;
-      align-items: center;">
-        <ion-img [src]="user.photoURL || 'assets/img/nouser.jpg'" class="img-settings"></ion-img>
-        <div class="div-p">
-          <div style="display: flex;align-items: center;">
-            <ion-label class="span-settings" style="text-transform: capitalize">{{user.fullName}}</ion-label>
-          </div>
-          <ion-label class="p-textformat" *ngIf="1 > 0"> {{5}} {{false ? 'day' : 'days'}} ago</ion-label>
-          <span *ngIf="1 <=0 ">
-            <ion-label class="p-textformat" *ngIf="1 > 0"> {{0}} {{true ? 'hour' : 'hours'}} ago</ion-label>
-            <span *ngIf="1 <= 0">
-              <ion-label class="p-textformat" *ngIf="1 > 0"> {{1}} {{false ? 'minute' : 'minutes'}} ago</ion-label>
               <span *ngIf="1 <= 0">
-                <ion-label class="p-textformat"> just now</ion-label>
+
+                <ion-label class="p-textformat" *ngIf="1 > 0"> {{1}} {{false ? 'minute' : 'minutes'}} ago</ion-label>
+
+                <span *ngIf="1 <= 0">
+                  <ion-label class="p-textformat"> just now</ion-label>
+                </span>
               </span>
             </span>
-          </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div> -->
+
+
+  <div class="div-header-main" style="width: 100%;height: 50px;padding: 0px 10px 10px;">
+    <div class="div-header">
+      <div class="flex-toggle">
+      <div style=" display: flex;    width: 100%;
+      align-items: center;">
+          <ion-img [src]="user.photoURL || 'assets/img/nouser.jpg'" class="img-settings"></ion-img>
+          <div class="div-p">
+            <div style="display: flex;align-items: center;">
+              <ion-label class="span-settings" style="text-transform: capitalize">{{user.fullName}}</ion-label>
+            </div>
+            @if (1 > 0) {
+              <ion-label class="p-textformat"> {{5}} {{false ? 'day' : 'days'}} ago</ion-label>
+            }
+            @if (1 <=0 ) {
+              <span>
+                @if (1 > 0) {
+                  <ion-label class="p-textformat"> {{0}} {{true ? 'hour' : 'hours'}} ago</ion-label>
+                }
+                @if (1 <= 0) {
+                  <span>
+                    @if (1 > 0) {
+                      <ion-label class="p-textformat"> {{1}} {{false ? 'minute' : 'minutes'}} ago</ion-label>
+                    }
+                    @if (1 <= 0) {
+                      <span>
+                        <ion-label class="p-textformat"> just now</ion-label>
+                      </span>
+                    }
+                  </span>
+                }
+              </span>
+            }
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<!-- Skeleton Code -->
-<!-- <div class="div-header-main" style="width: 321px;height: 50px;padding: 0px 10px 10px;">
+  <!-- Skeleton Code -->
+  <!-- <div class="div-header-main" style="width: 321px;height: 50px;padding: 0px 10px 10px;">
   <div class="div-header">
     <div class="flex-toggle">
       <div style=" display: flex;    width: 100%;
@@ -78,10 +90,10 @@
         <div class="div-p">
           <div style="display: flex;align-items: center;">
             <ion-skeleton-text [animated]="true"
-              style="height: 14px;width: 123px;margin-left: 5px;"></ion-skeleton-text>
+            style="height: 14px;width: 123px;margin-left: 5px;"></ion-skeleton-text>
           </div>
           <ion-skeleton-text [animated]="true"
-            style="width: 123px;height: 10px;margin: 5px 0px 0px;margin-left: 5px;"></ion-skeleton-text>
+          style="width: 123px;height: 10px;margin: 5px 0px 0px;margin-left: 5px;"></ion-skeleton-text>
           <span *ngIf="1 <=0 ">
             <ion-label class="p-textformat" *ngIf="1 > 0"> {{0}} {{true ? 'hour' : 'hours'}} ago</ion-label>
             <span *ngIf="1 <= 0">

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { LikeboxComponent } from 'src/app/home/components/likebox/likebox.component';
 
@@ -11,9 +11,10 @@ import { LikeboxComponent } from 'src/app/home/components/likebox/likebox.compon
   providers:[ModalController],
 })
 export class PropertiesviewsComponent  implements OnInit {
-  @Input() user: any;
-  @Input() hit: any;
-  constructor(private modalController: ModalController) { }
+  private modalController = inject(ModalController);
+
+  readonly user = input<any>(undefined);
+  readonly hit = input<any>(undefined);
 
   ngOnInit() {
     return;

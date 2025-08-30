@@ -6,10 +6,9 @@ import {
   IonToolbar,
   IonIcon,
   IonSearchbar,
-  IonSpinner,
-  ModalController,
+  ModalController
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 
@@ -92,16 +91,14 @@ type PostDoc = {
   templateUrl: './myrequests.component.html',
   styleUrls: ['./myrequests.component.scss'],
   imports: [
-    CommonModule,
     IonSearchbar,
     IonHeader,
     IonToolbar,
     IonIcon,
     IonTitle,
     IonContent,
-    IonSpinner,
-    MyPropertyCardComponent,
-  ],
+    MyPropertyCardComponent
+],
 })
 export class MyrequestsComponent implements OnInit {
   private readonly modalController = inject(ModalController);

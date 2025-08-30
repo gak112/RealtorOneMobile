@@ -1,4 +1,4 @@
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { HomeventurecardComponent } from 'src/app/ventures/components/homeventur
   selector: 'app-productlist',
   templateUrl: './productlist.component.html',
   styleUrls: ['./productlist.component.scss'],
-  imports:[IonHeader,IonToolbar,IonButtons,IonIcon,IonTitle,IonContent,NgIf,NgFor,AsyncPipe,HomeventurecardComponent],
+  imports: [IonHeader, IonToolbar, IonButtons, IonIcon, IonTitle, IonContent, AsyncPipe, HomeventurecardComponent],
   providers:[ModalController],
 })
 

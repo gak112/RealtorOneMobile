@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import  firebase from 'firebase/compat/app';
@@ -15,8 +15,11 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class PresenceService {
+  private afAuth = inject(AngularFireAuth);
+  private db = inject(AngularFireDatabase);
 
-  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase) {
+
+  constructor() {
   
     this.updateOnUser().subscribe();
     this.updateOnDisconnect().subscribe();

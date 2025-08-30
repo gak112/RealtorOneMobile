@@ -1,12 +1,12 @@
 import {
   Component,
-  Input,
   ChangeDetectionStrategy,
   inject,
   signal,
   computed,
+  input
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -52,7 +52,6 @@ type AgentForm = {
   styleUrls: ['./agent-basic-details.component.scss'],
   imports: [
     IonIcon,
-    CommonModule,
     ReactiveFormsModule,
     IonHeader,
     IonToolbar,
@@ -61,12 +60,12 @@ type AgentForm = {
     IonInput,
     IonTextarea,
     IonFooter,
-    IonButton,
-  ],
+    IonButton
+],
 })
 export class AgentBasicDetailsComponent {
-  @Input({ required: true }) uid!: string;
-  @Input() agentId: string | null = null; // edit mode when present
+  readonly uid = input.required<string>();
+  readonly agentId = input<string | null>(null); // edit mode when present
 
   private fb = inject(NonNullableFormBuilder);
   private svc = inject(AgentService);
@@ -142,7 +141,8 @@ export class AgentBasicDetailsComponent {
 
   constructor() {
     addIcons({ chevronBackOutline });
-    if (this.agentId) this.editId.set(this.agentId);
+    const agentId = this.agentId();
+    if (agentId) this.editId.set(agentId);
   }
 
   dismiss() {
@@ -220,7 +220,8 @@ export class AgentBasicDetailsComponent {
       return;
     }
 
-    if (!this.uid) {
+    const uid = this.uid();
+    if (!uid) {
       this.pageError.set('Missing user id (uid).');
       await this.toast(this.pageError()!, 'danger');
       return;
@@ -235,7 +236,7 @@ export class AgentBasicDetailsComponent {
         await this.svc.updateAgent(id, payload);
         await this.toast('Agent updated successfully', 'success');
       } else {
-        const newId = await this.svc.createAgent(this.uid, payload);
+        const newId = await this.svc.createAgent(uid, payload);
         this.editId.set(newId);
         await this.toast('Agent created successfully', 'success');
       }

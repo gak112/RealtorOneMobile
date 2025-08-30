@@ -1,5 +1,9 @@
 <div class="div-media">
-  <div class="div-media-sub" *ngIf="medias$ | async as media">     
-    <app-mediaimg *ngFor="let m of media" [media]="m"></app-mediaimg>
-  </div>
+  @if (medias$ | async; as media) {
+    <div class="div-media-sub">
+      @for (m of media; track m) {
+        <app-mediaimg [media]="m"></app-mediaimg>
+      }
+    </div>
+  }
 </div>

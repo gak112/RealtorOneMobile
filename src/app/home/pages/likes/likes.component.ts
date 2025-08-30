@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { LikeboxComponent } from '../../components/likebox/likebox.component';
@@ -14,11 +14,12 @@ import { IonContent, IonHeader, IonIcon, IonTitle, IonToolbar,  } from '@ionic/a
   providers:[ModalController],
 })
 export class LikesComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  @Input() user: any;
-  @Input() hit: any;
+
+  readonly user = input<any>(undefined);
+  readonly hit = input<any>(undefined);
   likesList: any;
-  constructor(private modalController: ModalController, /*private afs: AngularFirestore*/) { }
 
   ngOnInit(): void {
     return

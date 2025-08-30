@@ -1,28 +1,31 @@
-<div class="div-media" *ngIf="teams$ | async as teams">
-  <div class="div-media-sub">
-    <!-- <div *ngFor="let team of teams">
+@if (teams$ | async; as teams) {
+  <div class="div-media">
+    <div class="div-media-sub">
+      <!-- <div *ngFor="let team of teams">
       <ion-img [src]="team.">
-    </div> -->
-    <div class="card card-profile" *ngFor="let team of teams">                
-      <div class="div-poistioning">
-        <ion-img (click)="openImageModal([team.photo])" class="img img-raised" [src]="team.photo || 'assets/img/no-image.png'"></ion-img>
-      </div>
-   
-    <div class="card-body div-card" >
-        <div class="div-naming">
-          <ion-label class="label-name" >{{team.name}}</ion-label>
-          <ion-label class="label-desig">{{team.designation}}</ion-label>
+      </div> -->
+      @for (team of teams; track team) {
+        <div class="card card-profile">
+          <div class="div-poistioning">
+            <ion-img (click)="openImageModal([team.photo])" class="img img-raised" [src]="team.photo || 'assets/img/no-image.png'"></ion-img>
+          </div>
+          <div class="card-body div-card" >
+            <div class="div-naming">
+              <ion-label class="label-name" >{{team.name}}</ion-label>
+              <ion-label class="label-desig">{{team.designation}}</ion-label>
+            </div>
+            <div class="div-paragraph">
+              <ion-label class="label-desc">{{team.description}} </ion-label>
+            </div>
+            <div class="div-icons">
+              <a [href]="team.twitter" target="_blank"><ion-icon class="color-twitter" name="logo-twitter"></ion-icon></a>
+              <a [href]="team.facebook" target="_blank"><ion-icon class="color-facebook" name="logo-facebook"></ion-icon>  </a>
+              <a [href]="team.instagram" target="_blank"><ion-icon class="color-instagram" name="logo-instagram"></ion-icon>  </a>
+              <a [href]="team.linkedin" target="_blank"><ion-icon class="color-linkedin" name="logo-linkedin"></ion-icon> </a>
+            </div>
+          </div>
         </div>
-        <div class="div-paragraph">
-          <ion-label class="label-desc">{{team.description}} </ion-label>
-        </div>
-        <div class="div-icons">
-          <a [href]="team.twitter" target="_blank"><ion-icon class="color-twitter" name="logo-twitter"></ion-icon></a>
-          <a [href]="team.facebook" target="_blank"><ion-icon class="color-facebook" name="logo-facebook"></ion-icon>  </a>
-          <a [href]="team.instagram" target="_blank"><ion-icon class="color-instagram" name="logo-instagram"></ion-icon>  </a>
-          <a [href]="team.linkedin" target="_blank"><ion-icon class="color-linkedin" name="logo-linkedin"></ion-icon> </a>
-        </div>
+      }
     </div>
-  </div>    
-</div>
-</div>
+  </div>
+}

@@ -1,11 +1,11 @@
 import {
   Component,
-  Input,
   ChangeDetectionStrategy,
   inject,
   signal,
+  input
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonHeader,
   IonToolbar,
@@ -37,7 +37,6 @@ import { AgentService } from 'src/app/more/services/agent.service';
   templateUrl: './agentconfirmation.component.html',
   styleUrls: ['./agentconfirmation.component.scss'],
   imports: [
-    CommonModule,
     IonHeader,
     IonToolbar,
     IonIcon,
@@ -46,11 +45,11 @@ import { AgentService } from 'src/app/more/services/agent.service';
     IonCheckbox,
     IonLabel,
     IonFooter,
-    IonButton,
-  ],
+    IonButton
+],
 })
 export class AgentconfirmationComponent {
-  @Input() uid: string | null = null;
+  readonly uid = input<string | null>(null);
 
   // Services
   private modalCtrl = inject(ModalController);
@@ -102,7 +101,8 @@ export class AgentconfirmationComponent {
       );
       return;
     }
-    if (!this.uid) {
+    const uid = this.uid();
+    if (!uid) {
       this.pageError.set('Missing user id (uid).');
       await this.toast('Missing user id (uid).', 'danger');
       return;
@@ -112,12 +112,12 @@ export class AgentconfirmationComponent {
     this.pageError.set(null);
     try {
       // Record acceptance (adjust version/tag as you wish)
-      await this.svc.recordTerms(this.uid, 'v1');
+      await this.svc.recordTerms(uid, 'v1');
 
       // Open the Agent Basic Details as a modal on top
       const details = await this.modalCtrl.create({
         component: AgentBasicDetailsComponent,
-        componentProps: { uid: this.uid },
+        componentProps: { uid: uid },
         enterAnimation: forwardEnterAnimation,
         leaveAnimation: backwardEnterAnimation,
         canDismiss: true,

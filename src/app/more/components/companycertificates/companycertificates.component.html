@@ -1,7 +1,11 @@
-<div class="div-media" *ngIf="certificates$ | async as certificates">
-  <div class="div-media-sub" >
-      <div *ngFor="let certificate of certificates">
+@if (certificates$ | async; as certificates) {
+  <div class="div-media">
+    <div class="div-media-sub" >
+      @for (certificate of certificates; track certificate) {
+        <div>
           <ion-img (click)="openImageModal([certificate.resource])" [src]="certificate.resource" class="img-certificate"></ion-img>
-      </div>           
+        </div>
+      }
+    </div>
   </div>
-</div>
+}

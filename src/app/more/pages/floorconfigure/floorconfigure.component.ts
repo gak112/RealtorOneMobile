@@ -1,5 +1,5 @@
-import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit, ViewChild } from '@angular/core';
+
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit, ViewChild, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -13,19 +13,22 @@ register();
   templateUrl: './floorconfigure.component.html',
   styleUrls: ['./floorconfigure.component.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonInput,FormsModule,UcWidgetModule,IonLabel,NgIf,NgFor,IonImg,IonFooter,IonButton,],
+  imports: [IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonInput, FormsModule, UcWidgetModule, IonLabel, IonImg, IonFooter, IonButton],
   providers:[ModalController],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class FloorconfigureComponent  implements OnInit {
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
 
   @ViewChild('uc') ucare!: UcWidgetComponent;
   @Input() floor: any;
-  @Input() user: any;
+  readonly user = input<any>(undefined);
 
   ventureTowerFloors: any;
   loading = false;
-  constructor(private modalController: ModalController, private afs: AngularFirestore, private toast: ToastService) { }
 
   ngOnInit() {
     return;

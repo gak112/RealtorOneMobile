@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonImg, IonLabel, IonSkeletonText, ModalController } from '@ionic/angular/standalone';

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {
   ModalController,
@@ -17,7 +17,7 @@ import { ToastService } from 'src/app/services/toast.service';
 // import firebase from 'firebase/compat/app';
 import { IonicModule } from '@ionic/angular';
 import { TowerflatBoxComponent } from '../../components/towerflat-box/towerflat-box.component';
-import { CommonModule, NgIf } from '@angular/common';
+
 import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
@@ -34,15 +34,18 @@ import { serverTimestamp } from '@angular/fire/firestore';
     IonLabel,
     IonContent,
     IonImg,
-    NgIf,
-    TowerflatBoxComponent,
-  ],
+    TowerflatBoxComponent
+],
   providers: [ModalController],
 })
 export class VillaconfigureComponent implements OnInit {
-  @Input() venture: any;
-  @Input() user: any;
-  @Input() ventureID: any;
+  private modalController = inject(ModalController);
+  private afs = inject(AngularFirestore);
+  private toast = inject(ToastService);
+
+  readonly venture = input<any>(undefined);
+  readonly user = input<any>(undefined);
+  readonly ventureID = input<any>(undefined);
 
   villas: any[] = [];
   eachRowFlats: any;
@@ -57,16 +60,10 @@ export class VillaconfigureComponent implements OnInit {
 
   copiedData: any;
 
-  constructor(
-    private modalController: ModalController,
-    private afs: AngularFirestore,
-    private toast: ToastService
-  ) {}
-
   ngOnInit() {
     this.configuring = true;
 
-    for (let i = 1; i <= this.venture.houseVilla; i++) {
+    for (let i = 1; i <= this.venture().houseVilla; i++) {
       this.villas.push(i);
     }
 
@@ -83,7 +80,7 @@ export class VillaconfigureComponent implements OnInit {
     const isHousesExisted = await firstValueFrom(
       this.afs
         .collection(`ventureVillas`, (ref) =>
-          ref.where('ventureId', '==', this.ventureID)
+          ref.where('ventureId', '==', this.ventureID())
         )
         .get()
     );
@@ -108,38 +105,38 @@ export class VillaconfigureComponent implements OnInit {
         .doc(id);
 
       let towerFloor: IVentureHouses = {
-        ventureId: this.ventureID,
+        ventureId: this.ventureID(),
 
-        houseName: this.venture.houseName || '',
+        houseName: this.venture().houseName || '',
         houseNumber: floor,
-        bhkType: this.venture.bhkType || 0,
-        floors: this.venture.floors || 0,
-        lifts: this.venture.lifts || 0,
-        type: this.venture.type || '', // simplex, duplex, triplex or anything..
-        resources: this.venture.resources || [],
-        layout: this.venture.layout || [],
-        videos: this.venture.videos || [],
-        toilets: this.venture.toilets || 0,
-        poojaRoom: this.venture.poojaRoom || 0,
-        livingDining: this.venture.livingDining || 0,
-        kitchen: this.venture.kitchen || 0,
-        northFacing: this.venture.northFacing || '',
-        northSize: this.venture.northSize || 0,
-        units: this.venture.units || '',
-        southFacing: this.venture.southFacing || '',
-        southSize: this.venture.southSize || 0,
-        eastFacing: this.venture.eastFacing || '',
-        eastSize: this.venture.eastSize || 0,
-        westFacing: this.venture.westFacing || '',
-        westSize: this.venture.westSize || 0,
-        carpetArea: this.venture.carpetArea || '',
-        balconyArea: this.venture.balconyArea || '',
-        commonArea: this.venture.commonArea || '',
-        saleableArea: this.venture.saleableArea || '',
+        bhkType: this.venture().bhkType || 0,
+        floors: this.venture().floors || 0,
+        lifts: this.venture().lifts || 0,
+        type: this.venture().type || '', // simplex, duplex, triplex or anything..
+        resources: this.venture().resources || [],
+        layout: this.venture().layout || [],
+        videos: this.venture().videos || [],
+        toilets: this.venture().toilets || 0,
+        poojaRoom: this.venture().poojaRoom || 0,
+        livingDining: this.venture().livingDining || 0,
+        kitchen: this.venture().kitchen || 0,
+        northFacing: this.venture().northFacing || '',
+        northSize: this.venture().northSize || 0,
+        units: this.venture().units || '',
+        southFacing: this.venture().southFacing || '',
+        southSize: this.venture().southSize || 0,
+        eastFacing: this.venture().eastFacing || '',
+        eastSize: this.venture().eastSize || 0,
+        westFacing: this.venture().westFacing || '',
+        westSize: this.venture().westSize || 0,
+        carpetArea: this.venture().carpetArea || '',
+        balconyArea: this.venture().balconyArea || '',
+        commonArea: this.venture().commonArea || '',
+        saleableArea: this.venture().saleableArea || '',
         amenities: [],
-        costOfProperty: this.venture.costOfProperty || 0,
+        costOfProperty: this.venture().costOfProperty || 0,
         createdAt: serverTimestamp(),
-        createdBy: this.user.uid,
+        createdBy: this.user().uid,
         sortDate: +new Date(),
         sortDate2: new Date(),
         displayDate: new Date().toDateString(),
@@ -200,7 +197,7 @@ export class VillaconfigureComponent implements OnInit {
       this.afs
         .collection(`ventureVillas`, (ref) =>
           ref
-            .where('ventureId', '==', this.ventureID)
+            .where('ventureId', '==', this.ventureID())
             .orderBy('houseNumber', 'asc')
         )
         .valueChanges({ idField: 'id' })
@@ -221,7 +218,7 @@ export class VillaconfigureComponent implements OnInit {
       this.afs
         .collection(`ventureVillas`, (ref) =>
           ref
-            .where('ventureId', '==', this.ventureID)
+            .where('ventureId', '==', this.ventureID())
             .where('configured', '==', false)
         )
         .valueChanges({ idField: 'id' })
@@ -260,7 +257,7 @@ export class VillaconfigureComponent implements OnInit {
       sortTime: await this.copiedData.sortTime,
       configured: await true,
       createdAt: await serverTimestamp(),
-      createdBy: await this.user.uid,
+      createdBy: await this.user().uid,
       displayDate: await new Date().toDateString(),
     };
 

@@ -2,16 +2,16 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnInit,
   computed,
   effect,
   inject,
   signal,
   viewChild,
+  input
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, firstValueFrom, timeout } from 'rxjs';
 
@@ -202,7 +202,6 @@ type PostEntryForm = {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonHeader,
     IonToolbar,
@@ -219,8 +218,8 @@ type PostEntryForm = {
     IonFooter,
     IonCheckbox,
     IonProgressBar,
-    UcWidgetModule,
-  ],
+    UcWidgetModule
+],
   templateUrl: './postentry.component.html',
   styleUrls: ['./postentry.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -236,23 +235,19 @@ export class PostentryComponent implements OnInit {
   private actionSheetCtrl = inject(ActionSheetController);
 
   /* ---------------- Inputs ---------------- */
-  @Input() saleType: 'sale' | 'rent' = 'sale';
-  @Input() category:
-    | 'residential'
-    | 'commercial'
-    | 'plots'
-    | 'agriculturalLands' = 'residential';
-  @Input() editId: string | null = null;
+  readonly saleType = input<'sale' | 'rent'>('sale');
+  readonly category = input<'residential' | 'commercial' | 'plots' | 'agriculturalLands'>('residential');
+  readonly editId = input<string | null>(null);
 
   /* ---------------- Signals/UI ---------------- */
-  readonly saleTypeSig = signal<'sale' | 'rent'>(this.saleType);
+  readonly saleTypeSig = signal<'sale' | 'rent'>(this.saleType());
   readonly categorySig = signal<
     'residential' | 'commercial' | 'plots' | 'agriculturalLands'
-  >(this.category);
+  >(this.category());
   readonly loading = signal(false);
   readonly pageError = signal<string | null>(null);
 
-  readonly isEdit = computed(() => !!this.editId);
+  readonly isEdit = computed(() => !!this.editId());
   readonly headerTitle = computed(() =>
     this.isEdit() ? 'Edit Property Details' : 'Property Details Entry'
   );
@@ -412,12 +407,13 @@ export class PostentryComponent implements OnInit {
 
   /* ---------------- Lifecycle ---------------- */
   async ngOnInit() {
-    this.saleTypeSig.set(this.saleType);
-    this.categorySig.set(this.category);
+    this.saleTypeSig.set(this.saleType());
+    this.categorySig.set(this.category());
 
-    if (this.editId) {
+    const editId = this.editId();
+    if (editId) {
       try {
-        await this.hydrateEdit(this.editId);
+        await this.hydrateEdit(editId);
       } catch (e) {
         this.pageError.set(this.mapError(e));
       }
@@ -865,7 +861,7 @@ export class PostentryComponent implements OnInit {
         isDeleted: false,
       };
 
-      let postId = this.editId;
+      let postId = this.editId();
 
       if (!this.isEdit()) {
         const colRef = collection(this.afs, 'posts');

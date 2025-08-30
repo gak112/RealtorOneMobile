@@ -1,18 +1,20 @@
 <ion-header>
   <ion-toolbar>
-      <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
-      <ion-title>
-        {{actionType | uppercase}} Properties
-      </ion-title>
-     
+    <ion-buttons slot="start"><ion-icon name="chevron-back-outline" (click)="dismiss()"></ion-icon></ion-buttons>
+    <ion-title>
+      {{actionType | uppercase}} Properties
+    </ion-title>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="div-main" *ngIf="properties$ | async as properties">
-    {{properties | json}}
-    <div >
+  @if (properties$ | async; as properties) {
+    <div class="div-main">
+      {{properties | json}}
+      <div >
         <app-homeventurecard [venture]="properties"></app-homeventurecard>
+      </div>
     </div>
-  </div>
+  }
 </ion-content>

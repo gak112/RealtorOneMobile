@@ -1,9 +1,9 @@
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
-  Input,
   OnInit,
   inject,
+  input
 } from '@angular/core';
 import {
   IonContent,
@@ -33,9 +33,8 @@ import { PostentryComponent } from '../postentry/postentry.component';
 export class RequestsubmenuComponent implements OnInit {
   private modalController = inject(ModalController);
 
-  @Input() saleType: 'sale' | 'rent' = 'sale';
-  @Input() category: 'residential' | 'commercial' | 'plots' | 'agriculturalLands' =
-    'residential';
+  readonly saleType = input<'sale' | 'rent'>('sale');
+  readonly category = input<'residential' | 'commercial' | 'plots' | 'agriculturalLands'>('residential');
   propertyComponent = PostentryComponent;
 
   constructor() {
@@ -54,7 +53,7 @@ export class RequestsubmenuComponent implements OnInit {
       enterAnimation: forwardEnterAnimation,
       leaveAnimation: backwardEnterAnimation,
       componentProps: {
-        saleType: this.saleType,
+        saleType: this.saleType(),
         category: type,
       },
     });

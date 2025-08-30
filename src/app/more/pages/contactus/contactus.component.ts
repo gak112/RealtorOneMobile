@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonTitle, IonToolbar, ModalController, IonFooter } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 
@@ -12,9 +12,11 @@ import { chevronBackOutline } from 'ionicons/icons';
   templateUrl: './contactus.component.html',
   styleUrls: ['./contactus.component.scss'],
   standalone: true,
-  imports: [IonFooter, IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,IonInput,FormsModule,IonButton,NgIf],
+  imports: [IonFooter, IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, IonInput, FormsModule, IonButton],
 })
 export class ContactusComponent implements OnInit {
+  private toast = inject(ToastService);
+
 
   private modalController = inject(ModalController);
 
@@ -24,8 +26,7 @@ export class ContactusComponent implements OnInit {
   email!: string;
   message!: string;
 
-  constructor(
-    private toast: ToastService,/* private afs: AngularFirestore*/) {
+  constructor() {
     addIcons({ chevronBackOutline })
   }
 

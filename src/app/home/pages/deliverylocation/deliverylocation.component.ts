@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonButton, IonContent, IonHeader, IonIcon, IonImg, IonLabel, IonSearchbar, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import { AddaddressComponent } from '../addaddress/addaddress.component';
-import {  NgIf } from '@angular/common';
+
 import { LivelocationComponent } from '../../components/livelocation/livelocation.component';
 
 @Component({
@@ -9,12 +9,12 @@ import { LivelocationComponent } from '../../components/livelocation/livelocatio
   templateUrl: './deliverylocation.component.html',
   styleUrls: ['./deliverylocation.component.scss'],
   standalone: true,
-  imports: [IonHeader,IonToolbar,IonIcon,IonTitle,IonContent,LivelocationComponent,IonSearchbar,IonImg,IonLabel,IonButton,NgIf,],
+  imports: [IonHeader, IonToolbar, IonIcon, IonTitle, IonContent, LivelocationComponent, IonSearchbar, IonImg, IonLabel, IonButton],
   providers:[ModalController],
 })
 export class DeliverylocationComponent implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

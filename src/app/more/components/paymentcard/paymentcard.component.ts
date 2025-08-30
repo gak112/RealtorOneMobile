@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ModalController ,IonLabel, IonImg, IonIcon } from '@ionic/angular/standalone';
 import { PaymentsData } from 'src/app/languages/data/more/payments.data';
@@ -14,10 +14,12 @@ import { LanguageService } from 'src/app/services/language.service';
   providers:[ModalController],
 })
 export class PaymentcardComponent  implements OnInit {
+  private modalController = inject(ModalController);
+  private languageService = inject(LanguageService);
+
 
   profileData!: IPayments;
   language!: string;
-  constructor(private modalController: ModalController, private languageService: LanguageService) { }
 
   ngOnInit(): void {
         this.languageService.language.subscribe(language => {

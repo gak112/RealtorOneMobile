@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonAccordion, IonAccordionGroup, IonIcon, IonImg, IonItem, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { MyrequestsComponent } from '../../pages/myrequests/myrequests.component';
 
@@ -11,8 +11,8 @@ import { MyrequestsComponent } from '../../pages/myrequests/myrequests.component
   providers:[ModalController],
 })
 export class RenewalpropertiesComponent  implements OnInit {
+  private modalController = inject(ModalController);
 
-  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     return

@@ -1,10 +1,10 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input, OnInit } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit, inject, input } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { IonIcon, IonImg, IonLabel, ModalController } from '@ionic/angular/standalone';
 import { PostfullviewComponent } from 'src/app/home/pages/postfullview/postfullview.component';
 import { PostUserHeaderComponent } from '../post-user-header/post-user-header.component';
 import { register } from 'swiper/element';
-import { CommonModule, CurrencyPipe, NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { PostLikesComponent } from '../post-likes/post-likes.component';
 import { addIcons } from 'ionicons';
 import { documentText, ellipsisVerticalOutline, trash } from 'ionicons/icons';
@@ -14,15 +14,17 @@ register();
   templateUrl: './product-box.component.html',
   styleUrls: ['./product-box.component.scss'],
   standalone: true,
-  imports: [IonIcon,PostUserHeaderComponent,IonImg,IonLabel,NgFor,UpperCasePipe,CurrencyPipe,PostLikesComponent,NgIf,NgFor,],
+  imports: [IonIcon, PostUserHeaderComponent, IonImg, IonLabel, UpperCasePipe, CurrencyPipe, PostLikesComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers:[ModalController],
 })
 export class ProductBoxComponent implements OnInit {
+  private modalController = inject(ModalController);
 
-  @Input() hit: any;
-  @Input() user: any;
-  constructor(private modalController: ModalController) {
+
+  readonly hit = input<any>(undefined);
+  readonly user = input<any>(undefined);
+  constructor() {
     addIcons({ documentText,trash,ellipsisVerticalOutline });
   }
 

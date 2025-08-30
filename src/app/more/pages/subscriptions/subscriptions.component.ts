@@ -38,6 +38,9 @@ import {
   providers: [ModalController],
 })
 export class SubscriptionsComponent implements OnInit {
+  private auth = inject(AuthService);
+  private afs = inject(AngularFirestore);
+
   private modalController = inject(ModalController);
 
   language;
@@ -52,7 +55,7 @@ export class SubscriptionsComponent implements OnInit {
 
   vProperties;
   vMonths;
-  constructor(private auth: AuthService, private afs: AngularFirestore) {
+  constructor() {
     addIcons({ chevronBackOutline });
   }
 

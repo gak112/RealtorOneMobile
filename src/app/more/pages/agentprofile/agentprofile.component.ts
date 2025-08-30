@@ -6,7 +6,7 @@ import {
   effect,
   input, // <— signals Input (not required)
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   IonButton,
   IonContent,
@@ -61,7 +61,6 @@ type Agent = {
   templateUrl: './agentprofile.component.html',
   styleUrls: ['./agentprofile.component.scss'],
   imports: [
-    CommonModule,
     IonButton,
     IonContent,
     IonLabel,
@@ -73,8 +72,8 @@ type Agent = {
     IonToolbar,
     IonTitle,
     TransactionsComponent,
-    RenewalpropertiesComponent,
-  ],
+    RenewalpropertiesComponent
+],
 })
 export class AgentprofileComponent {
   // Make uid optional initially; Ionic will set componentProps after construction

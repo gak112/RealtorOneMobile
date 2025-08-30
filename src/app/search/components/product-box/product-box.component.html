@@ -13,10 +13,11 @@
   <div style="width: 100%;height: 250px;" class="div-img">
 
     <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
-      <swiper-slide *ngFor="let image of dummydetails.resources">
-
-        <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
-      </swiper-slide>
+      @for (image of dummydetails.resources; track image) {
+        <swiper-slide>
+          <ion-img class="slide" [src]="image.resourceUrl"></ion-img>
+        </swiper-slide>
+      }
     </swiper-container>
 
   </div>
@@ -28,9 +29,13 @@
     </div>
 
     <ion-label class="label-hbk" (click)="openFullview()"><span>{{dummydetails.actionType}}</span>
-      <span *ngIf="dummydetails.bhkType">&nbsp;&mdash;&nbsp;{{dummydetails.bhkType}}</span></ion-label>
-    <ion-label class="label-address"
-      *ngIf="dummydetails?.addressOfProperty?.address">{{hit?.addressOfProperty?.address}}</ion-label>
+    @if (dummydetails.bhkType) {
+      <span>&nbsp;&mdash;&nbsp;{{dummydetails.bhkType}}</span>
+    }</ion-label>
+    @if (dummydetails?.addressOfProperty?.address) {
+      <ion-label class="label-address"
+      >{{hit()?.addressOfProperty?.address}}</ion-label>
+    }
   </div>
   <app-post-likes></app-post-likes>
 </div>
@@ -38,33 +43,33 @@
 <!-- skeleton-code -->
 
 <!-- <div class="div-product-main" >
-  <label class="dropdown">
-    <div class="dd-button">
-      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-    </div>
-    <input type="checkbox" class="dd-input" id="test">
-    <ul class="dd-menu">
-      <li><ion-icon name="trash"></ion-icon>Delete</li>
-      <li><ion-icon name="document-text"></ion-icon>Report</li>
-    </ul>
-  </label>
-  <app-post-user-header></app-post-user-header>
-  <div style="width: 322px;height: 250px;" class="div-img">
-    <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
-      <swiper-slide *ngFor="let image of dummydetails.resources">
-        <ion-skeleton-text [animated]="true" style="width: 322px;height: 250px;border-radius: 20px;"></ion-skeleton-text>
-      </swiper-slide>
-    </swiper-container>
-
+<label class="dropdown">
+  <div class="dd-button">
+    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
   </div>
-  <div class="div-details">
-    <div class="div-rent" style="margin: 0px 0px 10px">
+  <input type="checkbox" class="dd-input" id="test">
+  <ul class="dd-menu">
+    <li><ion-icon name="trash"></ion-icon>Delete</li>
+    <li><ion-icon name="document-text"></ion-icon>Report</li>
+  </ul>
+</label>
+<app-post-user-header></app-post-user-header>
+<div style="width: 322px;height: 250px;" class="div-img">
+  <swiper-container [slidesPerView]="1" [autoplay]="true" class="mySwiper">
+    <swiper-slide *ngFor="let image of dummydetails.resources">
+      <ion-skeleton-text [animated]="true" style="width: 322px;height: 250px;border-radius: 20px;"></ion-skeleton-text>
+    </swiper-slide>
+  </swiper-container>
+
+</div>
+<div class="div-details">
+  <div class="div-rent" style="margin: 0px 0px 10px">
       <ion-skeleton-text [animated]="true" style="height: 40px; width: 70px; border-radius: 100px;padding: 5px 16px;
       "></ion-skeleton-text>
-      <ion-skeleton-text [animated]="true" style="width: 150px; height: 28px; padding: 7px 7px 12px ;border-radius: 100px; "></ion-skeleton-text>
-    </div>
-    <ion-skeleton-text [animated]="true" style="width: 300px; height: 24px;line-height: 10px" (click)="openFullview()"></ion-skeleton-text>
-    <ion-skeleton-text [animated]="true" style="width: 300px;height: 18px;margin: 10px 0px;" ></ion-skeleton-text>
+    <ion-skeleton-text [animated]="true" style="width: 150px; height: 28px; padding: 7px 7px 12px ;border-radius: 100px; "></ion-skeleton-text>
   </div>
-  <app-post-likes></app-post-likes>
+  <ion-skeleton-text [animated]="true" style="width: 300px; height: 24px;line-height: 10px" (click)="openFullview()"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true" style="width: 300px;height: 18px;margin: 10px 0px;" ></ion-skeleton-text>
+</div>
+<app-post-likes></app-post-likes>
 </div> -->
